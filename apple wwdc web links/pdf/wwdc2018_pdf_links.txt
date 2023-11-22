@@ -1,0 +1,14 @@
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/211fjjqs9t1cbwzwgf0/211/211_introduction_to_siri_shortcuts.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/213ivbgp77y4z4/213/213_carplay_audio_and_navigation_apps.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/230bqynnqagiq4p8/230/230_deliver_an_exceptional_accessibility_experience.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/405bjty1j94taqv8ii/405/405_measuring_performance_using_logging.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/408bhgyeffq8acmv/408/408_building_faster_in_xcode.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/410naz8a8zy0rq9cg/410/410_creating_custom_instruments.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/411gl7b9ztm2imp/411/411_getting_to_know_swift_package_manager.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/414djzbkfdpkvf50/414/414_understanding_crashes_and_crash_logs.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/416n2fmzz0fz88f/416/416_ios_memory_deep_dive.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/417j8ucs9p8w7seip/417/417_testing_tips__tricks.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/612wlpc4tnd47e9245/612/612_metal_game_performance_optimization.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/801srpnrtij2lqi6/801/801_the_qualities_of_great_design.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/802shgxe9sj19r/802/802_intentional_design.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2018/803lpnlacvg2jsndx/803/803_designing_fluid_interfaces.pdf

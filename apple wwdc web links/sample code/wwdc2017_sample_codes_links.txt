@@ -1,0 +1,4 @@
+https://developer.apple.com/sample-code/wwdc/2017/Automatic-Assessment-Configuration-Sample-Code.zip
+https://developer.apple.com/sample-code/wwdc/2017/CoreNFC-Tag-Reading.zip
+https://developer.apple.com/sample-code/wwdc/2017/Using-Depth-Data.zip
+https://developer.apple.com/sample-code/wwdc/2017/tvOS-Deep-Linking-Demo.zip

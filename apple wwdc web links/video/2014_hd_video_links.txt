@@ -1,0 +1,7 @@
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/219xxebl6quoz05/219/219_hd_adopting_handoff_on_ios_and_os_x.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/223xxp1uag2jn3n/223/223_hd_prototyping_fake_it_till_you_make_it.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/513xxhfudagscto/513/513_hd_direct_access_to_media_encoding_and_decoding.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/602xx0qpmdkc2ki/602/602_hd_ingredients_of_great_games.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/603xx33n8igr5n1/603/603_hd_working_with_metal_overview.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/604xxg7crkljcr8/604/604_hd_working_with_metal_fundamentals.mov
+https://devstreaming-cdn.apple.com/videos/wwdc/2014/605xxygcz4pd0h6/605/605_hd_working_with_metal_advanced.mov

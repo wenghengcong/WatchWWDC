@@ -1,0 +1,8 @@
+https://developer.apple.com/sample-code/ml/sample-mov.zip
+https://developer.apple.com/sample-code/swift/swans-quest/a-time-for-tones.zip
+https://developer.apple.com/sample-code/swift/swans-quest/quest-create.zip
+https://developer.apple.com/sample-code/swift/swans-quest/the-notable-scroll.zip
+https://developer.apple.com/sample-code/swift/swans-quest/the-sequence-completes.zip
+https://developer.apple.com/sample-code/swift/swans-quest/voices-in-the-dark.zip
+https://developer.apple.com/sample-code/wwdc/2017/Building-Apps-with-Dynamic-Type.zip
+https://example.com/Emoji/Emoji-1.0.0.xcframework.zip

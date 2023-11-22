@@ -1,0 +1,15 @@
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/219g66mxt0n74iogsgp/219/219_whats_new_in_uicollectionview_in_ios_10.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/241fgk9sdmxcb6c6wz2/241/241_public_transit_in_apple_maps.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/411jge60tmuuh7dolja/411/411_system_trace_in_depth.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/416k7f0xkmz28rvlvwb/416/416_understanding_swift_performance.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/419lgbsyhjrmqtmq0qh/419/419_protocol_and_value_oriented_programming_in_uikit_apps.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/501l32ujtbnw2ad06wy/501/501_advances_in_ios_photography.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/509n1cnykqms19r9jyp/509/509_speech_recognition_api.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/510ndmh9wkcvzneegv2/510/510_validating_http_live_streams.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/511nqyciexman7sf932/511/511_avcapturephotooutput__beyond_the_basics.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/606oluchfgwakjbymy8/606/606_advanced_metal_shader_optimization.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/720w6g8t9zhd23va0ai/720/720_concurrent_programming_with_gcd_in_swift_3.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/722x2eefo3u2rp8k8qs/722/722_developing_carplay_systems_part_1.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/723x16j75lwkg414uxk/723/723_developing_carplay_systems_part_2.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/724x4wbpmrtkjpgfdlj/724/724_whats_new_in_the_apple_push_notification_service.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/725xk1hwmcfqkiv0jfh/725/725_deploying_airprint_in_enterprise.pdf

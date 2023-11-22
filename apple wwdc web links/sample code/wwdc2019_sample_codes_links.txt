@@ -1,0 +1,3 @@
+https://developer.apple.com/sample-code/wwdc/2017/AccelerateSparse.zip
+https://developer.apple.com/sample-code/wwdc/2017/CoreNFC-Tag-Reading.zip
+https://developer.apple.com/sample-code/wwdc/2017/ImageClassificationwithVisionandCoreML.zip

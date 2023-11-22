@@ -1,0 +1,15 @@
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/219g66mxt0n74iogsgp/219/219_hd_whats_new_in_uicollectionview_in_ios_10.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/241fgk9sdmxcb6c6wz2/241/241_hd_public_transit_in_apple_maps.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/411jge60tmuuh7dolja/411/411_hd_system_trace_in_depth.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/416k7f0xkmz28rvlvwb/416/416_hd_understanding_swift_performance.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/419lgbsyhjrmqtmq0qh/419/419_hd_protocol_and_value_oriented_programming_in_uikit_apps.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/501l32ujtbnw2ad06wy/501/501_hd_advances_in_ios_photography.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/509n1cnykqms19r9jyp/509/509_hd_speech_recognition_api.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/510ndmh9wkcvzneegv2/510/510_hd_validating_http_live_streams.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/511nqyciexman7sf932/511/511_hd_avcapturephotooutput__beyond_the_basics.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/606oluchfgwakjbymy8/606/606_hd_advanced_metal_shader_optimization.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/720w6g8t9zhd23va0ai/720/720_hd_concurrent_programming_with_gcd_in_swift_3.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/722x2eefo3u2rp8k8qs/722/722_hd_developing_carplay_systems_part_1.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/723x16j75lwkg414uxk/723/723_hd_developing_carplay_systems_part_2.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/724x4wbpmrtkjpgfdlj/724/724_hd_whats_new_in_the_apple_push_notification_service.mp4
+https://devstreaming-cdn.apple.com/videos/wwdc/2016/725xk1hwmcfqkiv0jfh/725/725_hd_deploying_airprint_in_enterprise.mp4

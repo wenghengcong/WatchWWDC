@@ -1,0 +1,8 @@
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/206v5ce46maax7s/206/206_whats_new_in_mapkit.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/401gee20yy5v2men/401/401_swift_and_objectivec_interoperability.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/402c0mhxbs8tt52t/402/402_whats_new_in_lldb.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/5048tyhotl6/504/504_introducing_safari_view_controller.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/5062qehwhs/506/506_editing_movies_in_av_foundation.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/602868pb0ow6idb3w/602/602_managing_3d_assets_with_model_io.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/703kp2dwbwkr/703/703_privacy_and_your_app.pdf
+https://devstreaming-cdn.apple.com/videos/wwdc/2015/705qrxhfxo0/705/705_whats_new_in_core_motion.pdf
