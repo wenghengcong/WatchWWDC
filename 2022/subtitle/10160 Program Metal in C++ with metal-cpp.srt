@@ -1,0 +1,2474 @@
+1
+00:00:00,100 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,676
+♪
+
+3
+00:00:09,676 --> 00:00:11,311
+Hi, my name is Keyi Yu,
+
+4
+00:00:11,311 --> 00:00:14,014
+and I'm an engineer
+from the Metal Ecosystem team.
+
+5
+00:00:14,014 --> 00:00:17,017
+Today, it's my pleasure
+to introduce metal-cpp.
+
+6
+00:00:17,017 --> 00:00:21,955
+We created metal-cpp for anyone
+who uses C++ and wants to build
+
+7
+00:00:21,955 --> 00:00:25,058
+Metal applications
+for Apple platforms.
+
+8
+00:00:25,058 --> 00:00:27,594
+Metal-cpp is
+a low-overhead library
+
+9
+00:00:27,594 --> 00:00:31,698
+that connects your C++
+applications to Metal.
+
+10
+00:00:31,698 --> 00:00:35,702
+First, I'll start with
+an overview of what metal-cpp is
+
+11
+00:00:35,702 --> 00:00:39,706
+and how it works,
+and then I'll cover some details
+
+12
+00:00:39,706 --> 00:00:43,310
+about the lifecycles
+for Objective-C objects.
+
+13
+00:00:43,310 --> 00:00:47,781
+C++ and Objective-C handle
+lifecycles a bit differently,
+
+14
+00:00:47,781 --> 00:00:52,219
+and I'll show you how to handle
+those differences.
+
+15
+00:00:52,219 --> 00:00:55,756
+Xcode and metal-cpp
+have some great utilities
+
+16
+00:00:55,756 --> 00:00:58,392
+that can help you manage
+the object lifecycles
+
+17
+00:00:58,392 --> 00:01:01,094
+in your apps.
+
+18
+00:01:01,094 --> 00:01:05,098
+And finally, I'll show you
+how to integrate C++ code
+
+19
+00:01:05,098 --> 00:01:09,102
+with Objective-C classes.
+
+20
+00:01:09,102 --> 00:01:13,340
+So here's a look at metal-cpp
+and how it works.
+
+21
+00:01:13,340 --> 00:01:16,343
+Metal is the foundation
+for accelerated graphics
+
+22
+00:01:16,343 --> 00:01:20,314
+and compute on Apple platforms,
+enabling your apps and games
+
+23
+00:01:20,314 --> 00:01:23,317
+to tap into the incredible power
+of the GPU.
+
+24
+00:01:23,317 --> 00:01:26,553
+It was originally designed
+using the powerful features
+
+25
+00:01:26,553 --> 00:01:29,323
+and the conventions
+offered by Objective-C.
+
+26
+00:01:29,323 --> 00:01:34,061
+But if your code base is in C++,
+you may need something to bridge
+
+27
+00:01:34,061 --> 00:01:37,464
+between your code
+and Metal's Objective-C code.
+
+28
+00:01:37,464 --> 00:01:39,999
+Introducing metal-cpp!
+
+29
+00:01:39,999 --> 00:01:43,337
+It serves as a hub
+between your C++ application
+
+30
+00:01:43,337 --> 00:01:45,605
+and Objective-C Metal.
+
+31
+00:01:45,605 --> 00:01:48,208
+With metal-cpp
+in your application,
+
+32
+00:01:48,208 --> 00:01:51,678
+you can use Metal classes
+and functions in C++,
+
+33
+00:01:51,678 --> 00:01:54,915
+and metal-cpp can help you
+call Objective-C functions
+
+34
+00:01:54,915 --> 00:01:56,450
+in runtime.
+
+35
+00:01:56,450 --> 00:02:00,520
+metal-cpp is a lightweight
+Metal C++ wrapper.
+
+36
+00:02:00,520 --> 00:02:03,657
+I say it's lightweight,
+because it's implemented
+
+37
+00:02:03,657 --> 00:02:07,627
+as a header-only library
+with inline function calls.
+
+38
+00:02:07,627 --> 00:02:11,331
+It provides 100 percent
+coverage of the Metal API
+
+39
+00:02:11,331 --> 00:02:14,835
+by implementing a one-to-one
+mapping of C++ calls
+
+40
+00:02:14,835 --> 00:02:16,770
+to Objective-C APIs.
+
+41
+00:02:16,770 --> 00:02:20,007
+To do this, metal-cpp wraps
+parts of the Foundation
+
+42
+00:02:20,007 --> 00:02:22,442
+and CoreAnimation frameworks.
+
+43
+00:02:22,442 --> 00:02:24,711
+It's open source
+under Apache 2 License,
+
+44
+00:02:24,711 --> 00:02:27,214
+so you can modify the library
+and include it
+
+45
+00:02:27,214 --> 00:02:29,649
+to your applications, easily.
+
+46
+00:02:29,649 --> 00:02:32,853
+metal-cpp uses C
+to call directly
+
+47
+00:02:32,853 --> 00:02:35,622
+into the Objective-C runtime.
+
+48
+00:02:35,622 --> 00:02:38,959
+This is the exact same mechanism
+that the Objective-C compiler
+
+49
+00:02:38,959 --> 00:02:42,963
+uses to execute
+Objective-C methods.
+
+50
+00:02:42,963 --> 00:02:47,167
+So this wrapper
+introduces little overhead.
+
+51
+00:02:47,167 --> 00:02:51,438
+Since metal-cpp implements
+a one-to-one mapping of C++
+
+52
+00:02:51,438 --> 00:02:53,440
+to Objective-C calls,
+
+53
+00:02:53,440 --> 00:02:57,077
+it follows the same Cocoa
+memory-management rules.
+
+54
+00:02:57,077 --> 00:02:59,946
+I will discuss this
+in more detail later.
+
+55
+00:02:59,946 --> 00:03:02,215
+This one-to-one mapping
+also allows
+
+56
+00:03:02,215 --> 00:03:05,318
+all of the developer tools
+to work seamlessly,
+
+57
+00:03:05,318 --> 00:03:10,791
+including GPU Frame Capture
+and the Xcode debugger.
+
+58
+00:03:10,791 --> 00:03:13,760
+These are the series of calls
+necessary to draw a triangle
+
+59
+00:03:13,760 --> 00:03:15,695
+with metal-cpp.
+
+60
+00:03:15,695 --> 00:03:19,499
+If you are familiar with C++,
+it's a good time to learn Metal,
+
+61
+00:03:19,499 --> 00:03:22,869
+because you don't need to worry
+about language syntax.
+
+62
+00:03:22,869 --> 00:03:26,306
+If you've already used Metal
+with Objective-C,
+
+63
+00:03:26,306 --> 00:03:29,443
+in terms of function calls,
+there's very little difference
+
+64
+00:03:29,443 --> 00:03:31,912
+between the Objective-C
+interface of Metal
+
+65
+00:03:31,912 --> 00:03:33,780
+and metal-cpp.
+
+66
+00:03:33,780 --> 00:03:38,852
+I am going to demonstrate
+how easy it is to use metal-cpp.
+
+67
+00:03:38,852 --> 00:03:41,555
+First, I create
+a command buffer,
+
+68
+00:03:41,555 --> 00:03:45,258
+which I will fill with commands
+for the GPU to execute.
+
+69
+00:03:45,258 --> 00:03:48,495
+I can simply use
+the raw pointer in C++
+
+70
+00:03:48,495 --> 00:03:51,665
+as a mapping to ID
+in Objective-C.
+
+71
+00:03:51,665 --> 00:03:54,234
+I can create a render
+command encoder
+
+72
+00:03:54,234 --> 00:03:57,504
+and write render commands
+with a command buffer.
+
+73
+00:03:57,504 --> 00:04:00,540
+The C++ function
+renderCommandEncoder
+
+74
+00:04:00,540 --> 00:04:02,642
+and the Objective-C method
+
+75
+00:04:02,642 --> 00:04:06,980
+renderCommandEncoder
+WithDescriptor are the same.
+
+76
+00:04:06,980 --> 00:04:09,749
+The only differences
+are the name conventions
+
+77
+00:04:09,749 --> 00:04:11,551
+of the languages.
+
+78
+00:04:11,551 --> 00:04:14,321
+I then set a render pipeline
+state object
+
+79
+00:04:14,321 --> 00:04:17,257
+which contains the vertex
+and fragment shaders
+
+80
+00:04:17,257 --> 00:04:19,860
+and various other
+rendering states.
+
+81
+00:04:19,860 --> 00:04:24,631
+Then I encode my draw call
+to render a single triangle.
+
+82
+00:04:24,631 --> 00:04:25,999
+Then I indicate that
+
+83
+00:04:25,999 --> 00:04:29,402
+I've finished encoding
+render commands.
+
+84
+00:04:29,402 --> 00:04:33,340
+I present the drawable, so the
+triangle is displayed onscreen.
+
+85
+00:04:33,340 --> 00:04:36,409
+Finally, I commit
+my command buffer.
+
+86
+00:04:36,409 --> 00:04:40,847
+This tells the GPU that it can
+begin executing my commands.
+
+87
+00:04:40,847 --> 00:04:43,783
+Obviously, metal-cpp
+and Objective-C Metal
+
+88
+00:04:43,783 --> 00:04:45,485
+are almost the same.
+
+89
+00:04:45,485 --> 00:04:48,155
+You don't need to worry
+about language syntax now
+
+90
+00:04:48,155 --> 00:04:49,956
+with metal-cpp,
+
+91
+00:04:49,956 --> 00:04:52,726
+you can directly look into
+the Metal documentation
+
+92
+00:04:52,726 --> 00:04:56,463
+to learn the concepts
+and usage of Metal.
+
+93
+00:04:56,463 --> 00:04:58,098
+You may have already played
+
+94
+00:04:58,098 --> 00:05:00,500
+with this deferred lighting
+sample before.
+
+95
+00:05:00,500 --> 00:05:03,703
+We now provide a new version
+of this deferred lighting sample
+
+96
+00:05:03,703 --> 00:05:06,206
+which uses metal-cpp.
+
+97
+00:05:06,206 --> 00:05:09,509
+We hope this can help you learn
+how to code with metal-cpp
+
+98
+00:05:09,509 --> 00:05:11,077
+in practice.
+
+99
+00:05:11,077 --> 00:05:13,380
+I'm also excited
+to introduce a series
+
+100
+00:05:13,380 --> 00:05:17,851
+of incremental C++ samples
+that introduces the Metal API
+
+101
+00:05:17,851 --> 00:05:21,488
+and shows you how to accomplish
+different tasks with it.
+
+102
+00:05:25,158 --> 00:05:28,695
+So now that you know
+a little bit about metal-cpp,
+
+103
+00:05:28,695 --> 00:05:30,463
+how do you actually use it?
+
+104
+00:05:30,463 --> 00:05:32,933
+We published
+metal-cpp last year.
+
+105
+00:05:32,933 --> 00:05:35,302
+Here's the webpage where
+you can find the downloads
+
+106
+00:05:35,302 --> 00:05:36,937
+and instructions.
+
+107
+00:05:36,937 --> 00:05:39,906
+Let me show you the steps
+you will need to take.
+
+108
+00:05:39,906 --> 00:05:41,908
+After downloading metal-cpp,
+
+109
+00:05:41,908 --> 00:05:44,878
+you should tell Xcode
+where to find it.
+
+110
+00:05:44,878 --> 00:05:49,616
+Here, I put metal-cpp
+under the current project.
+
+111
+00:05:49,616 --> 00:05:53,019
+Then, you need to set
+C++17 or higher
+
+112
+00:05:53,019 --> 00:05:56,990
+as the C++ language dialect.
+
+113
+00:05:56,990 --> 00:05:59,859
+Next, add three frameworks
+to the project:
+
+114
+00:05:59,859 --> 00:06:03,997
+Foundation, QuartzCore,
+and Metal.
+
+115
+00:06:03,997 --> 00:06:05,532
+Now there's only one thing
+left to do
+
+116
+00:06:05,532 --> 00:06:09,336
+before using C++ interfaces
+of those frameworks.
+
+117
+00:06:09,336 --> 00:06:12,138
+There are three headers
+in metal-cpp.
+
+118
+00:06:12,138 --> 00:06:14,841
+Since metal-cpp is
+a header-only library,
+
+119
+00:06:14,841 --> 00:06:17,444
+you need to generate
+their implementations
+
+120
+00:06:17,444 --> 00:06:19,846
+before importing
+the header files.
+
+121
+00:06:19,846 --> 00:06:24,985
+To do this, define three macros:
+NS_PRIVATE_IMPLEMENTATION,
+
+122
+00:06:24,985 --> 00:06:29,656
+CA_PRIVATE_IMPLEMENTATION,
+AND MTL_PRIVATE_IMPLEMENTATION.
+
+123
+00:06:29,656 --> 00:06:32,692
+If you are interested in what
+metal-cpp does with the macros
+
+124
+00:06:32,692 --> 00:06:33,994
+under the hood,
+
+125
+00:06:33,994 --> 00:06:37,631
+please check out header bridge
+files in the metal-cpp folder.
+
+126
+00:06:37,631 --> 00:06:39,499
+You can use
+the headers separately
+
+127
+00:06:39,499 --> 00:06:42,168
+or put them in a single header.
+
+128
+00:06:42,168 --> 00:06:45,071
+You can import the header files
+whenever you need them.
+
+129
+00:06:45,071 --> 00:06:48,908
+But remember,
+do not define the NS, CA,
+
+130
+00:06:48,908 --> 00:06:52,746
+or MTL_PRIVATE_IMPLEMENTATION
+macros more than once.
+
+131
+00:06:52,746 --> 00:06:56,950
+Otherwise, you may cause
+duplicate definition errors.
+
+132
+00:06:56,950 --> 00:06:59,286
+To use metal-cpp effectively,
+
+133
+00:06:59,286 --> 00:07:02,322
+you'll need to know Cocoa's
+memory management rules,
+
+134
+00:07:02,322 --> 00:07:05,425
+how to use the great utilities
+that can help you
+
+135
+00:07:05,425 --> 00:07:07,994
+manage object lifecycles,
+and how to design
+
+136
+00:07:07,994 --> 00:07:10,497
+your application architecture
+when you interface
+
+137
+00:07:10,497 --> 00:07:12,732
+with other frameworks.
+
+138
+00:07:12,732 --> 00:07:16,336
+I'll start with object
+lifecycle management.
+
+139
+00:07:16,336 --> 00:07:18,638
+During your application's
+operation,
+
+140
+00:07:18,638 --> 00:07:21,908
+you typically need to allocate
+and release memory.
+
+141
+00:07:21,908 --> 00:07:24,811
+You also need to manage
+command buffers,
+
+142
+00:07:24,811 --> 00:07:27,213
+pipeline objects, and resources.
+
+143
+00:07:27,213 --> 00:07:29,182
+To help manage this memory,
+
+144
+00:07:29,182 --> 00:07:33,019
+Objective-C and Cocoa objects
+include a reference count.
+
+145
+00:07:33,019 --> 00:07:36,089
+This is also present
+in metal-cpp.
+
+146
+00:07:36,089 --> 00:07:39,025
+Reference counting helps you
+manage your memory.
+
+147
+00:07:39,025 --> 00:07:40,627
+Using reference counting,
+
+148
+00:07:40,627 --> 00:07:43,596
+all objects contain
+a retainCount property.
+
+149
+00:07:43,596 --> 00:07:45,732
+Components in an app
+increase the count
+
+150
+00:07:45,732 --> 00:07:48,568
+to keep objects
+they're interacting with alive
+
+151
+00:07:48,568 --> 00:07:51,304
+and decrease it
+when they are done with them.
+
+152
+00:07:51,304 --> 00:07:53,473
+When the retainCount hits zero,
+
+153
+00:07:53,473 --> 00:07:56,176
+the runtime
+deallocates the object.
+
+154
+00:07:56,176 --> 00:07:59,279
+There are two types of reference
+counting in Objective-C.
+
+155
+00:07:59,279 --> 00:08:02,615
+One is called
+Manual Retain-Release -- MRR;
+
+156
+00:08:02,615 --> 00:08:06,252
+the other is Automatic
+Reference Counting -- ARC.
+
+157
+00:08:06,252 --> 00:08:08,688
+When compiling code
+with the ARC feature,
+
+158
+00:08:08,688 --> 00:08:11,257
+the compiler takes
+the references you create
+
+159
+00:08:11,257 --> 00:08:13,293
+and automatically inserts calls
+
+160
+00:08:13,293 --> 00:08:16,429
+to the underlying
+memory-management mechanism.
+
+161
+00:08:16,429 --> 00:08:20,233
+metal-cpp objects are manually
+retained and released.
+
+162
+00:08:20,233 --> 00:08:23,303
+So you need to understand
+Cocoa's conventions
+
+163
+00:08:23,303 --> 00:08:26,973
+to know when to retain
+and release objects.
+
+164
+00:08:26,973 --> 00:08:31,478
+Unlike creating objects in C++,
+metal-cpp objects
+
+165
+00:08:31,478 --> 00:08:34,948
+are neither created with new
+nor destroyed with delete.
+
+166
+00:08:34,948 --> 00:08:38,785
+With Cocoa's conventions,
+you own any object you create
+
+167
+00:08:38,785 --> 00:08:43,423
+with methods starting
+with the alloc, new, copy,
+
+168
+00:08:43,423 --> 00:08:45,892
+mutableCopy, or create.
+
+169
+00:08:45,892 --> 00:08:49,562
+You can take ownership
+of an object using retain.
+
+170
+00:08:49,562 --> 00:08:53,333
+When you no longer need it,
+you must relinquish ownership
+
+171
+00:08:53,333 --> 00:08:54,868
+of an object you own.
+
+172
+00:08:54,868 --> 00:08:58,972
+You can release it immediately
+or release it afterwards.
+
+173
+00:08:58,972 --> 00:09:02,475
+You must not relinquish
+ownership of an object
+
+174
+00:09:02,475 --> 00:09:05,912
+you do not own
+as you risk a double free.
+
+175
+00:09:05,912 --> 00:09:08,081
+Next, I'll walk through
+an example
+
+176
+00:09:08,081 --> 00:09:10,150
+of these Cocoa conventions.
+
+177
+00:09:10,150 --> 00:09:14,154
+In class A, a method uses alloc
+to create an object
+
+178
+00:09:14,154 --> 00:09:16,756
+and init to initialize
+this object.
+
+179
+00:09:16,756 --> 00:09:20,960
+Remember, never call init
+on an object twice.
+
+180
+00:09:20,960 --> 00:09:22,896
+Class A takes the ownership
+
+181
+00:09:22,896 --> 00:09:25,832
+and is responsible
+for deallocating it.
+
+182
+00:09:25,832 --> 00:09:29,302
+Now the retain count
+for this object is one.
+
+183
+00:09:29,302 --> 00:09:33,373
+Next, class B uses retain
+to get the object
+
+184
+00:09:33,373 --> 00:09:35,975
+and takes ownership
+of this object.
+
+185
+00:09:35,975 --> 00:09:39,279
+So far, I have two objects
+that share the ownership
+
+186
+00:09:39,279 --> 00:09:42,582
+of this object represented
+by the orange cube.
+
+187
+00:09:42,582 --> 00:09:44,651
+The retain count
+increases by one.
+
+188
+00:09:46,519 --> 00:09:49,355
+Class A doesn't need
+this object anymore,
+
+189
+00:09:49,355 --> 00:09:53,126
+so class A should manually
+call release for it.
+
+190
+00:09:53,126 --> 00:09:56,830
+As a result, the retain count
+decreases by one.
+
+191
+00:09:56,830 --> 00:10:00,066
+Now, only class B
+owns the object.
+
+192
+00:10:00,066 --> 00:10:03,670
+OK, finally, class B wants
+to release this object too.
+
+193
+00:10:03,670 --> 00:10:08,374
+Now the retain count is zero,
+so the runtime frees the object.
+
+194
+00:10:08,374 --> 00:10:11,144
+Here's a situation where
+a method in class B
+
+195
+00:10:11,144 --> 00:10:13,513
+returns an object.
+
+196
+00:10:13,513 --> 00:10:16,616
+You still need this object
+in the rest of the programs.
+
+197
+00:10:16,616 --> 00:10:19,552
+In other words, you want
+to relinquish ownership
+
+198
+00:10:19,552 --> 00:10:22,222
+of an object in a method
+in class B,
+
+199
+00:10:22,222 --> 00:10:26,226
+but you don't want it to be
+deallocated immediately.
+
+200
+00:10:26,226 --> 00:10:30,263
+In this case, you should call
+autorelease in class B.
+
+201
+00:10:30,263 --> 00:10:33,333
+The retain count is still one
+after you call autorelease,
+
+202
+00:10:33,333 --> 00:10:36,836
+and thus, you can still use
+the object later.
+
+203
+00:10:36,836 --> 00:10:38,238
+Here's the question:
+
+204
+00:10:38,238 --> 00:10:41,574
+since class B does not own
+this object anymore,
+
+205
+00:10:41,574 --> 00:10:44,577
+who is responsible
+for deallocating it?
+
+206
+00:10:44,577 --> 00:10:47,580
+The Foundation Framework
+provides an important object,
+
+207
+00:10:47,580 --> 00:10:49,649
+called the AutoreleasePool.
+
+208
+00:10:49,649 --> 00:10:54,387
+The Autorelease API puts the
+object into an AutoreleasePool.
+
+209
+00:10:54,387 --> 00:10:58,992
+Now, the AutoreleasePool takes
+the ownership of the object.
+
+210
+00:10:58,992 --> 00:11:02,028
+The AutoreleasePool decrements
+the receiver's retain count
+
+211
+00:11:02,028 --> 00:11:04,797
+when the AutoreleasePool
+is destroyed.
+
+212
+00:11:04,797 --> 00:11:08,835
+You are not the only one who
+can create autoreleased objects.
+
+213
+00:11:08,835 --> 00:11:11,304
+Metal creates several
+autoreleased objects
+
+214
+00:11:11,304 --> 00:11:13,473
+as part of its operation.
+
+215
+00:11:13,473 --> 00:11:16,175
+All methods that create
+temporary objects
+
+216
+00:11:16,175 --> 00:11:18,211
+add them to AutoreleasePools
+
+217
+00:11:18,211 --> 00:11:21,014
+by calling autorelease
+under the hood.
+
+218
+00:11:21,014 --> 00:11:24,717
+It is the AutoreleasePool's
+responsibility to release them.
+
+219
+00:11:24,717 --> 00:11:27,320
+In other words,
+with an AutoreleasePool,
+
+220
+00:11:27,320 --> 00:11:30,156
+you can code
+in a more elegant way.
+
+221
+00:11:30,156 --> 00:11:33,526
+You can have an AutoreleasePool
+for the main application.
+
+222
+00:11:33,526 --> 00:11:36,429
+We also encourage you
+to create and manage
+
+223
+00:11:36,429 --> 00:11:38,932
+additional AutoreleasePools
+at smaller scopes
+
+224
+00:11:38,932 --> 00:11:41,401
+to reduce your program's
+working set.
+
+225
+00:11:41,401 --> 00:11:45,204
+You also need AutoreleasePools
+for every thread you create.
+
+226
+00:11:45,204 --> 00:11:48,508
+Here's an example showing
+how to use an AutoreleasePool
+
+227
+00:11:48,508 --> 00:11:51,077
+and autoreleased objects.
+
+228
+00:11:51,077 --> 00:11:53,680
+In this sample,
+an AutoreleasePool
+
+229
+00:11:53,680 --> 00:11:57,917
+is created by alloc, which
+means you take the ownership
+
+230
+00:11:57,917 --> 00:12:00,587
+and it should be
+manually released.
+
+231
+00:12:00,587 --> 00:12:03,289
+Now we have an AutoreleasePool.
+
+232
+00:12:03,289 --> 00:12:05,124
+As we discussed
+in the beginning,
+
+233
+00:12:05,124 --> 00:12:07,927
+you should create
+a command buffer.
+
+234
+00:12:07,927 --> 00:12:11,130
+It's not created
+with alloc or create,
+
+235
+00:12:11,130 --> 00:12:13,566
+so you don't own it.
+
+236
+00:12:13,566 --> 00:12:19,706
+Instead, it's an autoreleased
+object created by Metal.
+
+237
+00:12:19,706 --> 00:12:22,942
+This command buffer will be put
+into the AutoreleasePool.
+
+238
+00:12:22,942 --> 00:12:26,613
+It's the AutoreleasePool's
+responsibility to deallocate it.
+
+239
+00:12:26,613 --> 00:12:28,181
+You can use it as you wish
+
+240
+00:12:28,181 --> 00:12:31,551
+until you release
+the AutoreleasePool.
+
+241
+00:12:31,551 --> 00:12:35,655
+Then you need to create
+a RenderPassDescriptor.
+
+242
+00:12:35,655 --> 00:12:39,192
+This RenderPassDescriptor will
+be put into the AutoreleasePool
+
+243
+00:12:39,192 --> 00:12:40,393
+as well.
+
+244
+00:12:40,393 --> 00:12:43,196
+Same to RenderCommandEncoder.
+
+245
+00:12:43,196 --> 00:12:46,899
+It's also an autoreleased object
+created by Metal.
+
+246
+00:12:46,899 --> 00:12:49,936
+Don't forget
+this currentDrawable object.
+
+247
+00:12:49,936 --> 00:12:53,606
+It will be put into
+the AutoreleasePool too.
+
+248
+00:12:53,606 --> 00:12:56,943
+At the end of the piece of code,
+I use pPool-release
+
+249
+00:12:56,943 --> 00:12:59,112
+to release the AutoreleasePool.
+
+250
+00:12:59,112 --> 00:13:02,115
+Before being deallocated,
+the AutoreleasePool
+
+251
+00:13:02,115 --> 00:13:04,651
+releases everything
+that it owns,
+
+252
+00:13:04,651 --> 00:13:07,920
+in this case, it releases
+the CommandBuffer,
+
+253
+00:13:07,920 --> 00:13:12,058
+RenderPassDescriptor,
+RenderCommandEncoder,
+
+254
+00:13:12,058 --> 00:13:14,060
+and currentDrawable.
+
+255
+00:13:14,060 --> 00:13:16,863
+Then the AutoreleasePool
+is released.
+
+256
+00:13:16,863 --> 00:13:19,532
+So far, you got to know
+Cocoa's conventions,
+
+257
+00:13:19,532 --> 00:13:22,669
+autoreleased objects,
+and AutoreleasePools.
+
+258
+00:13:22,669 --> 00:13:26,439
+It's important to correctly
+manage object lifecycles
+
+259
+00:13:26,439 --> 00:13:29,842
+to avoid memory leaks
+and zombie objects,
+
+260
+00:13:29,842 --> 00:13:32,612
+and we have great tools
+to help you avoid
+
+261
+00:13:32,612 --> 00:13:35,014
+and debug these issues.
+
+262
+00:13:35,014 --> 00:13:37,183
+I'll focus on two utilities:
+
+263
+00:13:37,183 --> 00:13:40,586
+NS::SharedPtr and NSZombie.
+
+264
+00:13:40,586 --> 00:13:44,457
+NS::SharedPtr is a new utility
+that can help you manage
+
+265
+00:13:44,457 --> 00:13:46,626
+the object lifecycle.
+
+266
+00:13:46,626 --> 00:13:48,995
+You can find it under
+Foundation framework
+
+267
+00:13:48,995 --> 00:13:51,064
+in the metal-cpp folder.
+
+268
+00:13:51,064 --> 00:13:53,332
+Notice that it is not
+exactly the same
+
+269
+00:13:53,332 --> 00:13:55,268
+as std:shared_ptr.
+
+270
+00:13:55,268 --> 00:13:59,639
+So there's no dependency
+on the C++ standard library
+
+271
+00:13:59,639 --> 00:14:03,042
+and no extra cost
+on storing the reference count.
+
+272
+00:14:03,042 --> 00:14:05,778
+Here's what NS::SharedPtr
+is like.
+
+273
+00:14:05,778 --> 00:14:08,614
+Transfer and retain functions
+clearly express
+
+274
+00:14:08,614 --> 00:14:11,484
+the intent of consuming
+an object.
+
+275
+00:14:11,484 --> 00:14:13,920
+Transfer creates a SharedPtr
+
+276
+00:14:13,920 --> 00:14:16,756
+without increasing
+the pointee's referenceCount,
+
+277
+00:14:16,756 --> 00:14:21,027
+effectively transferring
+ownership to the SharedPtr.
+
+278
+00:14:21,027 --> 00:14:25,531
+The retain function sends a
+retain to the passed-in object.
+
+279
+00:14:25,531 --> 00:14:28,101
+Use this function
+to keep alive objects
+
+280
+00:14:28,101 --> 00:14:29,936
+that are in AutoreleasePools
+
+281
+00:14:29,936 --> 00:14:32,538
+and to express
+that the pointer's owner
+
+282
+00:14:32,538 --> 00:14:36,542
+has a vested interest
+in the pointee's lifecycle.
+
+283
+00:14:36,542 --> 00:14:38,411
+You can access
+the underlying object
+
+284
+00:14:38,411 --> 00:14:42,749
+as expected via get
+and via the operator-.
+
+285
+00:14:42,749 --> 00:14:45,752
+SharedPtr copy,
+move, construction,
+
+286
+00:14:45,752 --> 00:14:48,788
+and assignment work as expected,
+
+287
+00:14:48,788 --> 00:14:51,524
+with copy increasing
+the retainCount.
+
+288
+00:14:51,524 --> 00:14:54,560
+Moves are fast and
+do not affect the retain count
+
+289
+00:14:54,560 --> 00:14:56,429
+in the general case.
+
+290
+00:14:56,429 --> 00:14:59,599
+SharedPtrs always send
+exactly one release
+
+291
+00:14:59,599 --> 00:15:02,034
+to the pointee
+on destruction.
+
+292
+00:15:02,034 --> 00:15:03,703
+You can avoid this if you want
+
+293
+00:15:03,703 --> 00:15:06,239
+by calling
+the detach function.
+
+294
+00:15:06,239 --> 00:15:07,707
+Going back to the top,
+
+295
+00:15:07,707 --> 00:15:10,176
+it's important to know
+the differences between
+
+296
+00:15:10,176 --> 00:15:14,747
+creating a pointer
+by transferring or retaining it.
+
+297
+00:15:14,747 --> 00:15:17,083
+So for TransferPtr,
+
+298
+00:15:17,083 --> 00:15:22,789
+suppose I have an MRR object,
+with a reference count of 1.
+
+299
+00:15:22,789 --> 00:15:25,358
+After I pass it
+to the TransferPtr function,
+
+300
+00:15:25,358 --> 00:15:28,327
+the SharedPtr takes
+ownership of the object,
+
+301
+00:15:28,327 --> 00:15:30,963
+but its retainCount
+doesn't change.
+
+302
+00:15:30,963 --> 00:15:32,799
+When the pointer
+goes out of scope,
+
+303
+00:15:32,799 --> 00:15:34,867
+the SharedPtr's destructor runs
+
+304
+00:15:34,867 --> 00:15:37,637
+and calls release
+on the MRR object,
+
+305
+00:15:37,637 --> 00:15:40,139
+which decrements
+the retainCount to 0.
+
+306
+00:15:40,139 --> 00:15:43,276
+Another function
+is NS::RetainPtr.
+
+307
+00:15:43,276 --> 00:15:46,012
+When you want to avoid
+deallocating an object
+
+308
+00:15:46,012 --> 00:15:47,780
+because you want
+to use it later,
+
+309
+00:15:47,780 --> 00:15:50,216
+you should use NS::RetainPtr.
+
+310
+00:15:50,216 --> 00:15:55,388
+Suppose we have this MRR object;
+the retainCount is one.
+
+311
+00:15:55,388 --> 00:15:58,024
+After we pass it
+to the RetainPtr function,
+
+312
+00:15:58,024 --> 00:16:00,726
+the retainCount increases
+by one.
+
+313
+00:16:00,726 --> 00:16:02,261
+After running out of the scope,
+
+314
+00:16:02,261 --> 00:16:06,499
+this RetainPtr calls release
+for this MRR object.
+
+315
+00:16:06,499 --> 00:16:09,101
+So the retainCount is one.
+
+316
+00:16:09,101 --> 00:16:12,405
+In general, NS::TransferPtr
+takes the ownership
+
+317
+00:16:12,405 --> 00:16:13,940
+of an object for you.
+
+318
+00:16:13,940 --> 00:16:17,443
+But NS::RetainPtr
+helps you retain an object
+
+319
+00:16:17,443 --> 00:16:20,746
+when you don't want it
+to be deallocated.
+
+320
+00:16:20,746 --> 00:16:24,016
+When you pass an object
+to these two functions,
+
+321
+00:16:24,016 --> 00:16:27,320
+NS::TransferPtr doesn't change
+the reference count
+
+322
+00:16:27,320 --> 00:16:31,557
+but NS::RetainPtr increases
+reference count by one
+
+323
+00:16:31,557 --> 00:16:34,493
+as it calls retain for you
+under the hood.
+
+324
+00:16:34,493 --> 00:16:36,829
+The destructor
+of these two functions
+
+325
+00:16:36,829 --> 00:16:39,498
+both call release
+for the passed-in object
+
+326
+00:16:39,498 --> 00:16:43,269
+and, therefore, reference
+count decreases by one.
+
+327
+00:16:43,269 --> 00:16:45,571
+If the reference count
+hits zero,
+
+328
+00:16:45,571 --> 00:16:48,207
+the object will be freed
+in runtime.
+
+329
+00:16:48,207 --> 00:16:51,744
+Here's an example
+of NS::TransferPtr.
+
+330
+00:16:51,744 --> 00:16:53,479
+When I talked about
+the render pass,
+
+331
+00:16:53,479 --> 00:16:55,681
+which drew a single triangle,
+
+332
+00:16:55,681 --> 00:16:58,484
+I needed this
+render pipeline state.
+
+333
+00:16:58,484 --> 00:17:02,355
+Here are the calls to create
+a render pipeline state object.
+
+334
+00:17:02,355 --> 00:17:05,791
+These are the attributes that a
+render pipeline descriptor needs.
+
+335
+00:17:05,791 --> 00:17:07,927
+According to
+Cocoa's conventions,
+
+336
+00:17:07,927 --> 00:17:12,198
+since these calls starts
+with new and alloc,
+
+337
+00:17:12,198 --> 00:17:14,066
+I own these objects.
+
+338
+00:17:14,066 --> 00:17:17,603
+So I need to call release
+for these objects.
+
+339
+00:17:17,603 --> 00:17:20,940
+With NS::SharedPtr,
+I don't need to call release
+
+340
+00:17:20,940 --> 00:17:23,042
+for those MRR objects
+
+341
+00:17:23,042 --> 00:17:27,747
+because NS::SharedPtrs takes
+the ownership of these objects.
+
+342
+00:17:27,747 --> 00:17:33,219
+So here, I pass raw pointers
+to the TransferPtr function.
+
+343
+00:17:33,219 --> 00:17:36,289
+After doing that,
+there's no need to call release
+
+344
+00:17:36,289 --> 00:17:38,724
+as I did in the previous slide.
+
+345
+00:17:38,724 --> 00:17:40,660
+If you are familiar with ARC,
+
+346
+00:17:40,660 --> 00:17:44,363
+you may find that MRR
+used with NS::SharedPtr
+
+347
+00:17:44,363 --> 00:17:46,399
+is similar to using ARC.
+
+348
+00:17:46,399 --> 00:17:48,467
+You may encounter
+use-after-free bugs
+
+349
+00:17:48,467 --> 00:17:50,536
+when handling memory manually.
+
+350
+00:17:50,536 --> 00:17:52,838
+They occur when you are trying
+to use an object
+
+351
+00:17:52,838 --> 00:17:55,207
+which has been already released.
+
+352
+00:17:55,207 --> 00:17:58,311
+NSZombie is a good way
+to check for those bugs.
+
+353
+00:17:58,311 --> 00:18:00,313
+When use-after-free
+bugs occur,
+
+354
+00:18:00,313 --> 00:18:04,450
+it triggers a breakpoint and
+provides you with a stack trace.
+
+355
+00:18:04,450 --> 00:18:06,485
+You can enable Zombies
+very easily
+
+356
+00:18:06,485 --> 00:18:08,321
+with an environment variable.
+
+357
+00:18:08,321 --> 00:18:11,223
+Just set NSZombieEnabled
+to YES.
+
+358
+00:18:11,223 --> 00:18:13,826
+Or If you're using Xcode,
+
+359
+00:18:13,826 --> 00:18:16,028
+you can enable Zombies
+in a scheme.
+
+360
+00:18:16,028 --> 00:18:18,431
+Here's how it works.
+
+361
+00:18:18,431 --> 00:18:21,834
+I want to create a new
+render pipeline state object
+
+362
+00:18:21,834 --> 00:18:25,071
+with the same
+render pipeline settings.
+
+363
+00:18:25,071 --> 00:18:28,841
+So in this
+newRenderPipelineState function,
+
+364
+00:18:28,841 --> 00:18:32,812
+I reuse the pDesc object.
+
+365
+00:18:34,814 --> 00:18:38,684
+After clicking on run,
+Xcode triggers a breakpoint
+
+366
+00:18:38,684 --> 00:18:40,886
+and shows me the stack trace.
+
+367
+00:18:40,886 --> 00:18:43,723
+That means
+I got something wrong.
+
+368
+00:18:43,723 --> 00:18:47,193
+Hm, what's the problem?
+
+369
+00:18:47,193 --> 00:18:53,999
+Maybe NSZombie can help here,
+so I enable NSZombie in scheme.
+
+370
+00:18:57,003 --> 00:19:01,307
+When I run the program again,
+NSZombie triggers a breakpoint.
+
+371
+00:19:01,307 --> 00:19:04,243
+I get something new
+in the console output:
+
+372
+00:19:04,243 --> 00:19:09,181
+"message sent
+to deallocated instance."
+
+373
+00:19:09,181 --> 00:19:12,885
+Oh, I reused an object
+that I have already released.
+
+374
+00:19:12,885 --> 00:19:16,255
+And it's
+the render pipeline descriptor.
+
+375
+00:19:16,255 --> 00:19:19,025
+So I need to use this
+render pipeline descriptor
+
+376
+00:19:19,025 --> 00:19:21,227
+before calling release.
+
+377
+00:19:21,227 --> 00:19:24,096
+By doing that,
+I fix the problem.
+
+378
+00:19:24,096 --> 00:19:28,034
+More tools and details
+are covered in this year's talk,
+
+379
+00:19:28,034 --> 00:19:31,270
+"Profile and optimize
+your game's memory."
+
+380
+00:19:31,270 --> 00:19:34,607
+For example, you can learn
+how to track retainCount
+
+381
+00:19:34,607 --> 00:19:37,143
+in allocations in instruments.
+
+382
+00:19:37,143 --> 00:19:40,546
+Feel free to check out
+other tools on Apple platforms.
+
+383
+00:19:40,546 --> 00:19:43,449
+You will find out that they
+can help you debug your game
+
+384
+00:19:43,449 --> 00:19:45,618
+and improve performance.
+
+385
+00:19:45,618 --> 00:19:50,456
+Now you know how to manage
+object lifecycles in metal-cpp.
+
+386
+00:19:50,456 --> 00:19:53,492
+But you may still need to
+interface with other frameworks,
+
+387
+00:19:53,492 --> 00:19:56,695
+like game controller
+and audio.
+
+388
+00:19:56,695 --> 00:19:59,231
+These are still in Objective-C.
+
+389
+00:19:59,231 --> 00:20:01,534
+How can you interface
+with those APIs
+
+390
+00:20:01,534 --> 00:20:05,704
+and design an elegant
+application architecture?
+
+391
+00:20:05,704 --> 00:20:09,175
+Say you wrote a ViewController
+in Objective-C,
+
+392
+00:20:09,175 --> 00:20:13,279
+but you wrote a renderer in C++
+with metal-cpp.
+
+393
+00:20:13,279 --> 00:20:16,315
+You need to call renderer
+methods, like draw,
+
+394
+00:20:16,315 --> 00:20:18,317
+from the ViewController.
+
+395
+00:20:18,317 --> 00:20:22,221
+The challenge here is to nicely
+separate the two languages
+
+396
+00:20:22,221 --> 00:20:25,624
+but have them work together.
+
+397
+00:20:25,624 --> 00:20:29,028
+The solution is to create
+an adapter class
+
+398
+00:20:29,028 --> 00:20:32,965
+which calls C++
+from Objective-C files.
+
+399
+00:20:32,965 --> 00:20:37,136
+By doing this, you can focus
+on Objective-C or C++
+
+400
+00:20:37,136 --> 00:20:40,439
+in files where
+you implement features.
+
+401
+00:20:40,439 --> 00:20:41,640
+For example,
+
+402
+00:20:41,640 --> 00:20:45,578
+I can create a RendererAdapter
+class in Objective-C.
+
+403
+00:20:45,578 --> 00:20:48,047
+And down in the implementation,
+
+404
+00:20:48,047 --> 00:20:51,450
+I add an Objective-C method
+so that I can call it
+
+405
+00:20:51,450 --> 00:20:53,886
+directly from
+the ViewController.
+
+406
+00:20:53,886 --> 00:20:55,621
+Inside of the interface,
+
+407
+00:20:55,621 --> 00:21:00,459
+I declare a C++ pointer
+to a renderer object.
+
+408
+00:21:00,459 --> 00:21:02,795
+Inside the body of the method,
+
+409
+00:21:02,795 --> 00:21:06,999
+I directly call
+the renderer's C++ method.
+
+410
+00:21:06,999 --> 00:21:10,002
+This method needs to pass
+the MTK::View
+
+411
+00:21:10,002 --> 00:21:13,672
+as a C++ object
+into the draw method,
+
+412
+00:21:13,672 --> 00:21:18,010
+so it casts the view
+as a C++ type
+
+413
+00:21:18,010 --> 00:21:20,112
+by using the __bridge keyword.
+
+414
+00:21:20,112 --> 00:21:23,415
+I'll talk more
+about this cast later.
+
+415
+00:21:23,415 --> 00:21:27,887
+In contrast, you need to call
+MTKView which is written
+
+416
+00:21:27,887 --> 00:21:32,625
+with Objective-C in Renderer
+which is written with C++.
+
+417
+00:21:32,625 --> 00:21:35,060
+It's challenging as well.
+
+418
+00:21:35,060 --> 00:21:39,131
+Similarly, the solution
+is to create an adapter class.
+
+419
+00:21:39,131 --> 00:21:41,967
+With this class, in C++ files,
+
+420
+00:21:41,967 --> 00:21:47,039
+you can call Objective-C methods
+using C++ interface.
+
+421
+00:21:47,039 --> 00:21:50,943
+For example, I can create
+a ViewAdapter class.
+
+422
+00:21:50,943 --> 00:21:53,879
+I write the interfaces in C++,
+
+423
+00:21:53,879 --> 00:21:55,548
+so in the Renderer class,
+
+424
+00:21:55,548 --> 00:21:58,918
+I can call those C++
+view methods easily.
+
+425
+00:21:58,918 --> 00:22:00,553
+While in the implementation,
+
+426
+00:22:00,553 --> 00:22:03,756
+I call Objective-C methods
+from MTKView,
+
+427
+00:22:03,756 --> 00:22:08,394
+including currentDrawable
+and depthStencilTexture.
+
+428
+00:22:08,394 --> 00:22:11,697
+You may notice there're some
+__bridge keywords here.
+
+429
+00:22:11,697 --> 00:22:14,400
+I use them to cast between
+metal-cpp objects
+
+430
+00:22:14,400 --> 00:22:16,402
+and Objective-C objects.
+
+431
+00:22:16,402 --> 00:22:18,003
+As you learned in the beginning,
+
+432
+00:22:18,003 --> 00:22:21,440
+metal-cpp objects are manually
+retained and released,
+
+433
+00:22:21,440 --> 00:22:24,176
+but objects created
+by Objective-C
+
+434
+00:22:24,176 --> 00:22:27,046
+use automatic
+reference counting.
+
+435
+00:22:27,046 --> 00:22:30,816
+You need to move objects
+from MRR to ARC
+
+436
+00:22:30,816 --> 00:22:33,786
+and from ARC to MRR.
+
+437
+00:22:33,786 --> 00:22:35,521
+Here are three types
+of bridge casting
+
+438
+00:22:35,521 --> 00:22:39,558
+which can help you cast
+between Objective-C and C++.
+
+439
+00:22:39,558 --> 00:22:42,561
+They can also help you
+transfer ownership
+
+440
+00:22:42,561 --> 00:22:45,464
+_bridge casting casts
+between Objective-C
+
+441
+00:22:45,464 --> 00:22:47,733
+and metal-cpp objects.
+
+442
+00:22:47,733 --> 00:22:52,104
+There is no transfer of
+ownership between them.
+
+443
+00:22:52,104 --> 00:22:55,741
+__bridge_retained casting
+casts an Objective-C pointer
+
+444
+00:22:55,741 --> 00:23:00,746
+to a metal-cpp pointer and
+takes the ownership from ARC.
+
+445
+00:23:00,746 --> 00:23:03,749
+__bridge_transfer casting moves
+a metal-cpp pointer
+
+446
+00:23:03,749 --> 00:23:07,753
+to Objective-C and transfers
+the ownership to ARC.
+
+447
+00:23:07,753 --> 00:23:10,189
+Going back to the problem,
+you need to cast
+
+448
+00:23:10,189 --> 00:23:13,792
+between metal-cpp objects
+and Objective-C objects.
+
+449
+00:23:13,792 --> 00:23:16,262
+If there's no transfer
+of ownership,
+
+450
+00:23:16,262 --> 00:23:18,731
+you can use __bridge cast.
+
+451
+00:23:18,731 --> 00:23:23,002
+If you want to cast from
+metal-cpp to Objective-C objects
+
+452
+00:23:23,002 --> 00:23:25,704
+and transfer
+the ownership to Objective-C,
+
+453
+00:23:25,704 --> 00:23:29,074
+you should use
+__bridge_transfer cast.
+
+454
+00:23:29,074 --> 00:23:32,444
+If you want to cast from
+Objective-C to metal-cpp objects
+
+455
+00:23:32,444 --> 00:23:34,913
+and take the ownership
+out of ARC,
+
+456
+00:23:34,913 --> 00:23:37,283
+you should use
+__bridge_retained cast.
+
+457
+00:23:37,283 --> 00:23:40,085
+Here's a case when
+I have to use MetalKit
+
+458
+00:23:40,085 --> 00:23:42,388
+to leverage
+the asset loading code.
+
+459
+00:23:42,388 --> 00:23:45,491
+That means in my C++
+application,
+
+460
+00:23:45,491 --> 00:23:49,161
+I need a texture
+as a metal-cpp object,
+
+461
+00:23:49,161 --> 00:23:53,465
+but it is created
+by Objective-C methods.
+
+462
+00:23:53,465 --> 00:23:57,136
+I need the ability to transfer
+ownership out of ARC
+
+463
+00:23:57,136 --> 00:23:59,605
+so I can manually release it.
+
+464
+00:23:59,605 --> 00:24:00,839
+And in this case,
+
+465
+00:24:00,839 --> 00:24:06,045
+I need to pick
+__bridge_retained cast.
+
+466
+00:24:06,045 --> 00:24:10,015
+I have this C++ function that
+loads a texture from the catalog
+
+467
+00:24:10,015 --> 00:24:13,819
+and I want to return
+a metal-cpp texture.
+
+468
+00:24:13,819 --> 00:24:16,822
+But inside, I'm calling
+some Objective-C functions
+
+469
+00:24:16,822 --> 00:24:19,758
+in MetalKit.
+
+470
+00:24:19,758 --> 00:24:23,929
+I need to define the options
+that a texture loader needs.
+
+471
+00:24:23,929 --> 00:24:29,068
+Then I create a texture loader
+by calling an Objective-C method
+
+472
+00:24:29,068 --> 00:24:31,170
+from MetalKit.
+
+473
+00:24:31,170 --> 00:24:35,474
+With that loader,
+I can create a texture object
+
+474
+00:24:35,474 --> 00:24:38,377
+and load a texture
+from the catalog.
+
+475
+00:24:38,377 --> 00:24:41,347
+This method is also
+an Objective-C method
+
+476
+00:24:41,347 --> 00:24:43,215
+from MetalKit.
+
+477
+00:24:43,215 --> 00:24:46,452
+Now I have
+an Objective-C type texture,
+
+478
+00:24:46,452 --> 00:24:49,922
+I need to cast it
+to the metal-cpp object
+
+479
+00:24:49,922 --> 00:24:52,191
+and take it out of ARC.
+
+480
+00:24:52,191 --> 00:24:54,993
+With these steps in mind,
+it's time to code,
+
+481
+00:24:54,993 --> 00:24:58,664
+and I'll show you
+how casting works in practice.
+
+482
+00:24:58,664 --> 00:25:01,667
+First step is to define
+the texture loader options
+
+483
+00:25:01,667 --> 00:25:03,902
+that a texture loader needs.
+
+484
+00:25:03,902 --> 00:25:07,806
+I can safely cast the metal-cpp
+storage mode and usage
+
+485
+00:25:07,806 --> 00:25:09,742
+to the Objective-C type,
+
+486
+00:25:09,742 --> 00:25:13,946
+as the metal-cpp type
+defines them to the same values.
+
+487
+00:25:13,946 --> 00:25:16,849
+Here I create a texture loader.
+
+488
+00:25:16,849 --> 00:25:20,252
+I have a device that
+is a metal-cpp object,
+
+489
+00:25:20,252 --> 00:25:24,757
+and I need to pass it
+to the initWithDevice method.
+
+490
+00:25:24,757 --> 00:25:28,961
+Because the metal-cpp object
+is an Objective-C object,
+
+491
+00:25:28,961 --> 00:25:31,730
+I can cast it
+like a toll-free object.
+
+492
+00:25:31,730 --> 00:25:35,200
+There is no transfer
+of ownership.
+
+493
+00:25:35,200 --> 00:25:37,302
+Now I use
+the texture loader options
+
+494
+00:25:37,302 --> 00:25:39,938
+and a texture loader
+to create a texture.
+
+495
+00:25:39,938 --> 00:25:44,476
+And I want to return the loaded
+texture as a metal-cpp object.
+
+496
+00:25:44,476 --> 00:25:46,812
+So I need
+to take it out of ARC
+
+497
+00:25:46,812 --> 00:25:50,616
+and cast it to the corresponding
+pointer type.
+
+498
+00:25:50,616 --> 00:25:53,252
+This is done with
+a __bridge_retained cast.
+
+499
+00:25:53,252 --> 00:25:55,287
+After this,
+I can use this texture
+
+500
+00:25:55,287 --> 00:25:57,423
+as any metal-cpp object.
+
+501
+00:25:57,423 --> 00:26:00,025
+I am responsible
+for releasing it.
+
+502
+00:26:00,025 --> 00:26:03,929
+In this section,
+I provided an adapter pattern
+
+503
+00:26:03,929 --> 00:26:06,432
+which can help you handle
+two different languages
+
+504
+00:26:06,432 --> 00:26:08,300
+in your program.
+
+505
+00:26:08,300 --> 00:26:13,038
+I also showed how to interface
+with Objective-C and C++
+
+506
+00:26:13,038 --> 00:26:15,174
+with three types of casts.
+
+507
+00:26:15,174 --> 00:26:18,710
+To summarize,
+metal-cpp is a lightweight
+
+508
+00:26:18,710 --> 00:26:22,581
+and very efficient
+Metal C++ wrapper.
+
+509
+00:26:22,581 --> 00:26:26,285
+I talked about how to manage
+object lifecycles
+
+510
+00:26:26,285 --> 00:26:29,021
+when using metal-cpp,
+
+511
+00:26:29,021 --> 00:26:31,557
+how to interface
+with Objective-C
+
+512
+00:26:31,557 --> 00:26:32,958
+in an elegant manner,
+
+513
+00:26:32,958 --> 00:26:37,162
+and how our developer tools
+can help you debug.
+
+514
+00:26:37,162 --> 00:26:41,567
+Download metal-cpp and play with
+all the amazing samples now!
+
+515
+00:26:41,567 --> 00:26:44,203
+See what you can create
+with Metal.
+
+516
+00:26:44,203 --> 00:26:47,206
+We look forward to seeing
+your C++ applications
+
+517
+00:26:47,206 --> 00:26:49,575
+running across
+all Apple platforms.
+
+518
+00:26:49,575 --> 00:26:51,410
+Thanks for watching!
+
+519
+00:26:51,410 --> 00:26:55,614
+♪
+

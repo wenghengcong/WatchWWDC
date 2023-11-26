@@ -1,0 +1,1951 @@
+1
+00:00:00,000 --> 00:00:02,836
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:02,836 --> 00:00:09,843
+♪
+
+3
+00:00:09,843 --> 00:00:11,845
+Miranda Zhou: Hi,
+my name is Miranda
+
+4
+00:00:11,845 --> 00:00:14,681
+and I'm an engineer
+on the Sharing team.
+
+5
+00:00:14,681 --> 00:00:16,250
+Elana Stettin: I'm Elana
+and I'm an engineer
+
+6
+00:00:16,250 --> 00:00:18,218
+on the Messages team.
+
+7
+00:00:18,218 --> 00:00:21,655
+Miranda: In this video,
+Elana and I will be diving into
+
+8
+00:00:21,655 --> 00:00:26,193
+how to enhance collaboration
+with Messages in your app.
+
+9
+00:00:26,193 --> 00:00:31,865
+I'll start with an introduction
+of what the feature is.
+
+10
+00:00:31,865 --> 00:00:35,936
+You'll learn how to prepare
+to adopt this feature,
+
+11
+00:00:35,936 --> 00:00:38,605
+and how to tie Messages
+into the process
+
+12
+00:00:38,605 --> 00:00:42,676
+to start a collaboration.
+
+13
+00:00:42,676 --> 00:00:45,512
+Elana will explain
+how to add collaboration
+
+14
+00:00:45,512 --> 00:00:49,616
+with Messages UI to your app,
+
+15
+00:00:49,616 --> 00:00:52,552
+and finally she will discuss
+how to keep up to date
+
+16
+00:00:52,552 --> 00:00:56,523
+when the collaboration
+is updated.
+
+17
+00:00:56,523 --> 00:01:02,296
+First, let me introduce
+collaboration with Messages!
+
+18
+00:01:02,296 --> 00:01:07,768
+In iOS 16 and macOS Ventura,
+we've added a new and easy way
+
+19
+00:01:07,768 --> 00:01:13,907
+to improve communication between
+people who are collaborating.
+
+20
+00:01:13,907 --> 00:01:17,711
+Collaborators are able to tie
+a document to conversations
+
+21
+00:01:17,711 --> 00:01:21,815
+by sharing via Messages.
+
+22
+00:01:21,815 --> 00:01:25,052
+Collaboration activity
+is surfaced in Messages
+
+23
+00:01:25,052 --> 00:01:31,325
+conversations and in
+ongoing FaceTime calls.
+
+24
+00:01:31,325 --> 00:01:34,227
+A customizable
+Collaboration popover
+
+25
+00:01:34,227 --> 00:01:38,065
+is also provided to your app
+to manage details
+
+26
+00:01:38,065 --> 00:01:44,638
+of the collaboration and connect
+to the Messages conversation.
+
+27
+00:01:44,638 --> 00:01:47,874
+This builds on technologies
+that you are already using,
+
+28
+00:01:47,874 --> 00:01:52,379
+such as the share sheet
+and drag and drop.
+
+29
+00:01:52,379 --> 00:01:56,550
+Next, I'll go over the types of
+collaboration infrastructures
+
+30
+00:01:56,550 --> 00:01:59,653
+we support,
+and how to tie each of those
+
+31
+00:01:59,653 --> 00:02:02,856
+to Messages collaboration.
+
+32
+00:02:02,856 --> 00:02:07,561
+We support three types of
+collaboration infrastructures:
+
+33
+00:02:07,561 --> 00:02:11,164
+CloudKit, iCloud Drive,
+and whatever custom
+
+34
+00:02:11,164 --> 00:02:15,635
+collaboration infrastructure
+you may be using today!
+
+35
+00:02:15,635 --> 00:02:18,138
+In this video,
+I'll mainly focus
+
+36
+00:02:18,138 --> 00:02:22,142
+on the CloudKit
+and iCloud Drive cases.
+
+37
+00:02:22,142 --> 00:02:25,278
+If you are using
+a custom infrastructure,
+
+38
+00:02:25,278 --> 00:02:29,383
+watch the "Integrate your custom
+collaboration app with Messages"
+
+39
+00:02:29,383 --> 00:02:33,286
+video for more details.
+
+40
+00:02:33,286 --> 00:02:36,490
+If you use CloudKit-based
+collaboration,
+
+41
+00:02:36,490 --> 00:02:39,860
+we've provided a new API
+to create an object
+
+42
+00:02:39,860 --> 00:02:44,264
+that the system
+can recognize for collaboration.
+
+43
+00:02:44,264 --> 00:02:47,534
+This is based off
+the macOS Sierra API
+
+44
+00:02:47,534 --> 00:02:52,639
+to start or manage a share
+with NSSharingService.
+
+45
+00:02:52,639 --> 00:02:55,375
+Once you have
+the collaboration object,
+
+46
+00:02:55,375 --> 00:02:58,612
+identify where in the app
+you are showing UI
+
+47
+00:02:58,612 --> 00:03:02,149
+to start or manage the share.
+
+48
+00:03:02,149 --> 00:03:04,484
+You need to update
+to the new API
+
+49
+00:03:04,484 --> 00:03:07,454
+to enhance your
+collaboration with Messages,
+
+50
+00:03:07,454 --> 00:03:13,894
+as we will deprecate
+the existing AppKit API.
+
+51
+00:03:13,894 --> 00:03:19,299
+The new collaboration object API
+uses NSItemProvider.
+
+52
+00:03:19,299 --> 00:03:23,136
+NSItemProvider is used
+by system services
+
+53
+00:03:23,136 --> 00:03:28,308
+to transport your app's data to
+other processes on the system.
+
+54
+00:03:28,308 --> 00:03:31,044
+The provider requires
+either the CKShare
+
+55
+00:03:31,044 --> 00:03:35,382
+for the collaboration item,
+or a preparation handler
+
+56
+00:03:35,382 --> 00:03:39,920
+to create a CKShare
+when collaboration starts.
+
+57
+00:03:39,920 --> 00:03:43,723
+Your app's CKContainer
+is also required.
+
+58
+00:03:43,723 --> 00:03:48,328
+And finally, provide a
+CKAllowedSharingOptions object
+
+59
+00:03:48,328 --> 00:03:51,698
+representing the access
+and permissions options
+
+60
+00:03:51,698 --> 00:03:54,634
+for the collaboration.
+
+61
+00:03:54,634 --> 00:03:57,204
+The values of the options
+are the same as the
+
+62
+00:03:57,204 --> 00:04:02,342
+NSCloudKitSharingServiceOptions
+which were previously requested
+
+63
+00:04:02,342 --> 00:04:05,378
+from
+NSCloudSharingServiceDelegate
+
+64
+00:04:05,378 --> 00:04:08,048
+methods.
+
+65
+00:04:08,048 --> 00:04:11,051
+Here's a brief overview
+of what it looks like to create
+
+66
+00:04:11,051 --> 00:04:15,622
+a CloudKit collaboration object.
+
+67
+00:04:15,622 --> 00:04:19,126
+If the collaboration
+is being started and you pass in
+
+68
+00:04:19,126 --> 00:04:21,995
+a preparation handler,
+you need to both
+
+69
+00:04:21,995 --> 00:04:28,535
+create the share and save it
+to the server in the handler.
+
+70
+00:04:28,535 --> 00:04:35,575
+If it's already started, just
+pass in the associated share.
+
+71
+00:04:35,575 --> 00:04:39,446
+The CKAllowedSharingOptions
+instance being registered
+
+72
+00:04:39,446 --> 00:04:42,782
+is using
+a static standard property
+
+73
+00:04:42,782 --> 00:04:46,853
+which returns the default set
+of allowed options.
+
+74
+00:04:46,853 --> 00:04:51,158
+CloudKit adopters can use that
+or create a custom instance
+
+75
+00:04:51,158 --> 00:04:55,862
+of the class for a restricted
+set of allowed options.
+
+76
+00:04:57,864 --> 00:05:02,235
+For those of you who might be
+interested in adopting CloudKit,
+
+77
+00:05:02,235 --> 00:05:05,805
+CloudKit lets you use iCloud
+as your app's database
+
+78
+00:05:05,805 --> 00:05:09,276
+without writing your own
+server code.
+
+79
+00:05:09,276 --> 00:05:12,412
+You will also get a built-in
+method of sharing parts
+
+80
+00:05:12,412 --> 00:05:15,916
+of that data
+with other iCloud users.
+
+81
+00:05:15,916 --> 00:05:22,389
+For more details, watch the
+"What's new in CloudKit" video.
+
+82
+00:05:22,389 --> 00:05:24,591
+If you're using iCloud Drive,
+
+83
+00:05:24,591 --> 00:05:29,062
+your object for collaboration
+is simply your file URL --
+
+84
+00:05:29,062 --> 00:05:33,166
+we'll do all the work
+to recognize it!
+
+85
+00:05:33,166 --> 00:05:36,336
+Once you have that,
+identify the entry points
+
+86
+00:05:36,336 --> 00:05:40,140
+to start or manage collaboration
+in your app
+
+87
+00:05:40,140 --> 00:05:46,313
+and prepare to replace them with
+the new and improved versions.
+
+88
+00:05:46,313 --> 00:05:49,349
+For custom collaboration
+infrastructures,
+
+89
+00:05:49,349 --> 00:05:54,988
+your collaboration object is
+called SWCollaborationMetadata,
+
+90
+00:05:54,988 --> 00:05:59,192
+wrapped in new
+NSItemProvider API.
+
+91
+00:05:59,192 --> 00:06:02,929
+Watch the "Integrate your custom
+collaboration app with Messages"
+
+92
+00:06:02,929 --> 00:06:06,733
+video for details on
+how to use this API
+
+93
+00:06:06,733 --> 00:06:10,804
+to update your collaboration UI.
+
+94
+00:06:10,804 --> 00:06:13,039
+Now you're ready to go.
+
+95
+00:06:13,039 --> 00:06:16,409
+Next, initiating
+a collaboration.
+
+96
+00:06:16,409 --> 00:06:19,279
+There are two different ways:
+through the share sheet
+
+97
+00:06:19,279 --> 00:06:23,049
+in its new collaboration mode,
+and through drag and drop
+
+98
+00:06:23,049 --> 00:06:25,852
+to Messages,
+either from your app
+
+99
+00:06:25,852 --> 00:06:31,891
+or from the Files app on iOS
+and Finder on macOS.
+
+100
+00:06:31,891 --> 00:06:34,661
+The new share sheet
+collaboration mode
+
+101
+00:06:34,661 --> 00:06:38,498
+can be identified
+by an indicator in the header,
+
+102
+00:06:38,498 --> 00:06:41,635
+which also provides
+a choice between collaboration
+
+103
+00:06:41,635 --> 00:06:44,404
+and sending a copy.
+
+104
+00:06:44,404 --> 00:06:47,641
+In order to have collaboration
+in the share sheet,
+
+105
+00:06:47,641 --> 00:06:50,543
+give the share sheet
+the collaboration object
+
+106
+00:06:50,543 --> 00:06:54,481
+you prepared earlier.
+
+107
+00:06:54,481 --> 00:06:57,517
+On macOS,
+this collaboration indicator
+
+108
+00:06:57,517 --> 00:07:01,788
+is shown in a beautiful
+new share popover!
+
+109
+00:07:01,788 --> 00:07:05,825
+The share popover
+also includes a title and image
+
+110
+00:07:05,825 --> 00:07:09,496
+in the header, plus a row
+of conversation suggestions,
+
+111
+00:07:09,496 --> 00:07:13,600
+and all the transports
+we offered already.
+
+112
+00:07:13,600 --> 00:07:15,502
+For more details about this,
+
+113
+00:07:15,502 --> 00:07:20,874
+watch the WWDC22
+"What's new in AppKit" video.
+
+114
+00:07:20,874 --> 00:07:24,978
+On iOS and Mac Catalyst,
+show the share sheet using
+
+115
+00:07:24,978 --> 00:07:28,648
+the UIActivityViewController
+class.
+
+116
+00:07:28,648 --> 00:07:36,456
+On macOS, show the share popover
+using NSSharingServicePicker.
+
+117
+00:07:36,456 --> 00:07:40,694
+Pass the collaboration object
+to UIActivityViewController
+
+118
+00:07:40,694 --> 00:07:47,300
+as an activity item to present
+it with collaboration enabled.
+
+119
+00:07:47,300 --> 00:07:51,071
+And similarly, initialize
+NSSharingServicePicker
+
+120
+00:07:51,071 --> 00:07:54,140
+with the collaboration object
+to show it
+
+121
+00:07:54,140 --> 00:07:57,811
+with collaboration enabled.
+
+122
+00:07:57,811 --> 00:08:01,448
+CloudKit adopters
+will need to take an extra step
+
+123
+00:08:01,448 --> 00:08:06,052
+to provide a title
+and image for the headers.
+
+124
+00:08:06,052 --> 00:08:12,525
+On iOS, use existing API such
+as UIActivityItemsConfiguration
+
+125
+00:08:12,525 --> 00:08:16,296
+or UIActivityItemSource
+to provide
+
+126
+00:08:16,296 --> 00:08:23,670
+an LPLinkMetadata object
+with a title and imageProvider.
+
+127
+00:08:23,670 --> 00:08:28,108
+Create your configuration
+with your collaboration object,
+
+128
+00:08:28,108 --> 00:08:31,611
+then set the metadata provider
+to return
+
+129
+00:08:31,611 --> 00:08:38,318
+your LPLinkMetadata object
+for the item being shared.
+
+130
+00:08:38,318 --> 00:08:42,088
+Finally, initialize
+UIActivityViewController
+
+131
+00:08:42,088 --> 00:08:45,692
+with that configuration.
+
+132
+00:08:45,692 --> 00:08:48,762
+On macOS,
+we have a new API called
+
+133
+00:08:48,762 --> 00:08:52,332
+NSPreviewRepresenting
+ActivityItem
+
+134
+00:08:52,332 --> 00:08:55,268
+for providing
+the header metadata.
+
+135
+00:08:55,268 --> 00:08:56,336
+Refer to the
+
+136
+00:08:56,336 --> 00:09:00,340
+NSPreviewRepresenting
+ActivityItem documentation
+
+137
+00:09:00,340 --> 00:09:04,244
+for more details.
+
+138
+00:09:04,244 --> 00:09:07,914
+To use NSPreviewRepresenting
+ActivityItem,
+
+139
+00:09:07,914 --> 00:09:12,519
+first choose your title,
+image, and icon.
+
+140
+00:09:12,519 --> 00:09:15,588
+The image represents
+the item being shared,
+
+141
+00:09:15,588 --> 00:09:18,725
+while the icon represents
+the source of the item
+
+142
+00:09:18,725 --> 00:09:24,831
+being shared --
+for example, an app icon.
+
+143
+00:09:24,831 --> 00:09:28,401
+Create an NSPreviewRepresenting
+ActivityItem
+
+144
+00:09:28,401 --> 00:09:34,174
+with your collaboration object,
+title, image, and icon,
+
+145
+00:09:34,174 --> 00:09:37,610
+and initialize
+NSSharingServicePicker
+
+146
+00:09:37,610 --> 00:09:41,414
+with that preview item.
+
+147
+00:09:41,414 --> 00:09:45,652
+On an exciting note,
+the new SwiftUI ShareLink API
+
+148
+00:09:45,652 --> 00:09:50,256
+for the share sheet will also
+support collaboration mode!
+
+149
+00:09:50,256 --> 00:09:53,760
+To adopt, the item you are
+sharing must be represented
+
+150
+00:09:53,760 --> 00:10:00,066
+by Transferable, a new protocol
+for sharing and data transfer.
+
+151
+00:10:00,066 --> 00:10:03,770
+CloudKit adopters provide
+the share, container,
+
+152
+00:10:03,770 --> 00:10:08,041
+and options through
+a CKShareTransferRepresentation
+
+153
+00:10:08,041 --> 00:10:11,444
+returned by your
+Transferable item.
+
+154
+00:10:11,444 --> 00:10:15,081
+For more details,
+watch the "Meet Transferable"
+
+155
+00:10:15,081 --> 00:10:22,155
+and WWDC22
+"What's new in SwiftUI" videos.
+
+156
+00:10:22,155 --> 00:10:25,725
+Here's an example of how
+a CloudKit adopter like Notes
+
+157
+00:10:25,725 --> 00:10:32,065
+would create a transferable
+object to share with ShareLink.
+
+158
+00:10:32,065 --> 00:10:38,304
+The note provides a
+CKShareTransferRepresentation,
+
+159
+00:10:38,304 --> 00:10:41,608
+which is constructed either
+as its existing value
+
+160
+00:10:41,608 --> 00:10:45,712
+with an existing CKShare,
+CKContainer,
+
+161
+00:10:45,712 --> 00:10:49,716
+and CKAllowedSharingOptions
+value,
+
+162
+00:10:49,716 --> 00:10:54,120
+or as its prepareShare value
+with a CKContainer,
+
+163
+00:10:54,120 --> 00:10:59,125
+CKAllowedSharingOptions value,
+and a preparation handler
+
+164
+00:10:59,125 --> 00:11:06,399
+to create and save a CKShare
+for the collaboration object.
+
+165
+00:11:06,399 --> 00:11:10,537
+For iCloud Drive adopters,
+your file URL
+
+166
+00:11:10,537 --> 00:11:15,742
+is the Transferable object which
+you share through ShareLink.
+
+167
+00:11:15,742 --> 00:11:19,279
+If you have a custom
+collaboration infrastructure,
+
+168
+00:11:19,279 --> 00:11:23,483
+watch the "Integrate your custom
+collaboration app with Messages"
+
+169
+00:11:23,483 --> 00:11:29,289
+video for how to return an
+SWCollaborationMetadata object
+
+170
+00:11:29,289 --> 00:11:33,993
+from your transferable object.
+
+171
+00:11:33,993 --> 00:11:36,796
+Once you have
+your Transferable object,
+
+172
+00:11:36,796 --> 00:11:38,998
+pass it
+to the ShareLink initializer
+
+173
+00:11:38,998 --> 00:11:41,367
+as the item to share.
+
+174
+00:11:41,367 --> 00:11:44,003
+At the same time,
+pass in a preview
+
+175
+00:11:44,003 --> 00:11:50,977
+with a title and image to
+fill in the share sheet header.
+
+176
+00:11:50,977 --> 00:11:52,378
+One notable feature
+
+177
+00:11:52,378 --> 00:11:55,281
+of the share sheet
+collaboration mode header
+
+178
+00:11:55,281 --> 00:11:59,986
+is the summary of the access
+and permissions options.
+
+179
+00:11:59,986 --> 00:12:03,256
+Tapping this summary brings up
+a view where collaborators
+
+180
+00:12:03,256 --> 00:12:06,459
+choose what access
+and permissions options
+
+181
+00:12:06,459 --> 00:12:11,631
+to use when collaborating.
+
+182
+00:12:11,631 --> 00:12:14,534
+For CloudKit adopters,
+this view shows
+
+183
+00:12:14,534 --> 00:12:19,339
+the set of options registered
+in the collaboration object.
+
+184
+00:12:19,339 --> 00:12:21,074
+iCloud Drive adopters
+
+185
+00:12:21,074 --> 00:12:25,478
+show the standard set
+of iCloud Drive options.
+
+186
+00:12:25,478 --> 00:12:27,880
+If you have a custom
+infrastructure,
+
+187
+00:12:27,880 --> 00:12:32,085
+watch the "Integrate your custom
+collaboration app with Messages"
+
+188
+00:12:32,085 --> 00:12:36,189
+video for how to specify
+your custom options
+
+189
+00:12:36,189 --> 00:12:41,094
+and have them
+show up in this view.
+
+190
+00:12:41,094 --> 00:12:44,097
+There's one more way
+to start a collaboration,
+
+191
+00:12:44,097 --> 00:12:46,833
+and that's through
+drag and drop.
+
+192
+00:12:46,833 --> 00:12:51,204
+A collaborator can simply drag
+your document into Messages
+
+193
+00:12:51,204 --> 00:12:54,507
+and get the new
+collaboration-enabled rich link
+
+194
+00:12:54,507 --> 00:12:57,543
+for the document in Messages.
+
+195
+00:12:57,543 --> 00:13:00,179
+This rich link
+provides functionality
+
+196
+00:13:00,179 --> 00:13:03,983
+both for collaboration
+and sending a copy,
+
+197
+00:13:03,983 --> 00:13:08,254
+and for selecting
+collaboration options.
+
+198
+00:13:08,254 --> 00:13:11,324
+To adopt, provide your
+collaboration object
+
+199
+00:13:11,324 --> 00:13:18,598
+through ShareLink on iOS 16
+and macOS Ventura.
+
+200
+00:13:18,598 --> 00:13:22,368
+And that's how you prepare for
+and initiate collaborations
+
+201
+00:13:22,368 --> 00:13:24,037
+with Messages.
+
+202
+00:13:24,037 --> 00:13:27,040
+Next, I'll hand it
+over to Elana,
+
+203
+00:13:27,040 --> 00:13:30,710
+who will talk about taking your
+app's collaboration experience
+
+204
+00:13:30,710 --> 00:13:32,979
+to the next level.
+
+205
+00:13:32,979 --> 00:13:34,681
+Elana: Thanks, Miranda!
+
+206
+00:13:34,681 --> 00:13:36,516
+Now that you know
+how to get started,
+
+207
+00:13:36,516 --> 00:13:38,484
+I'll talk about
+how to further integrate
+
+208
+00:13:38,484 --> 00:13:42,422
+our collaboration UI
+into your app.
+
+209
+00:13:42,422 --> 00:13:43,956
+We've added these new features
+
+210
+00:13:43,956 --> 00:13:47,193
+to amplify the collaboration
+experience.
+
+211
+00:13:47,193 --> 00:13:50,763
+The collaboration button is
+placed in your app's navigation
+
+212
+00:13:50,763 --> 00:13:52,031
+and will show the group photo
+
+213
+00:13:52,031 --> 00:13:54,367
+of the associated
+messages group.
+
+214
+00:13:54,367 --> 00:13:56,703
+There is also an active
+participant count
+
+215
+00:13:56,703 --> 00:13:59,072
+to the right of the button
+that will show when others
+
+216
+00:13:59,072 --> 00:14:02,842
+are present in the document.
+
+217
+00:14:02,842 --> 00:14:05,044
+When you tap
+the collaboration button,
+
+218
+00:14:05,044 --> 00:14:08,347
+the new collaboration
+popover appears.
+
+219
+00:14:08,347 --> 00:14:09,782
+The customizable popover
+
+220
+00:14:09,782 --> 00:14:12,585
+shows the overview
+of the collaboration.
+
+221
+00:14:12,585 --> 00:14:15,188
+It also allows users
+to initiate communication
+
+222
+00:14:15,188 --> 00:14:18,324
+with other participants
+with just one tap.
+
+223
+00:14:18,324 --> 00:14:21,961
+This provides them the ability
+to work together in real time
+
+224
+00:14:21,961 --> 00:14:24,864
+via Messages and FaceTime.
+
+225
+00:14:26,866 --> 00:14:30,136
+These UI elements are all
+powered by a single class
+
+226
+00:14:30,136 --> 00:14:34,240
+in the SharedWithYou framework:
+SWCollaborationView.
+
+227
+00:14:34,240 --> 00:14:38,111
+This view represents the
+button view in the navigation.
+
+228
+00:14:38,111 --> 00:14:39,679
+All you need to do
+is initialize
+
+229
+00:14:39,679 --> 00:14:42,381
+the SWCollaborationView
+and we will take care
+
+230
+00:14:42,381 --> 00:14:46,919
+of the popover layout
+and presentation for you.
+
+231
+00:14:46,919 --> 00:14:49,422
+To show custom content,
+you'll provide a view
+
+232
+00:14:49,422 --> 00:14:52,658
+which will be added
+to the popover.
+
+233
+00:14:52,658 --> 00:14:58,865
+Now, I'll go over the code to
+create the SWCollaborationView.
+
+234
+00:14:58,865 --> 00:15:01,367
+Initialize
+the SWCollaborationView
+
+235
+00:15:01,367 --> 00:15:03,269
+with an itemProvider.
+
+236
+00:15:03,269 --> 00:15:04,504
+The itemProvider contains
+
+237
+00:15:04,504 --> 00:15:07,607
+the CKShare
+for CloudKit-based apps,
+
+238
+00:15:07,607 --> 00:15:10,143
+the fileURL
+for iCloud Drive-based apps,
+
+239
+00:15:10,143 --> 00:15:12,512
+or the SW Collaboration
+metadata
+
+240
+00:15:12,512 --> 00:15:16,015
+for custom collaboration
+infrastructures.
+
+241
+00:15:18,017 --> 00:15:20,520
+Set the activeParticipantCount
+property
+
+242
+00:15:20,520 --> 00:15:23,189
+on the collaboration view
+to show the number
+
+243
+00:15:23,189 --> 00:15:27,860
+of active participants
+on the document.
+
+244
+00:15:27,860 --> 00:15:30,163
+Then set the contentView
+property
+
+245
+00:15:30,163 --> 00:15:32,765
+on the collaborationView
+to provide the popover
+
+246
+00:15:32,765 --> 00:15:35,535
+with custom content.
+
+247
+00:15:35,535 --> 00:15:37,470
+The ContentView
+is what makes the popover
+
+248
+00:15:37,470 --> 00:15:39,939
+completely customizable.
+
+249
+00:15:39,939 --> 00:15:42,642
+This is where you'll add
+your own content to give users
+
+250
+00:15:42,642 --> 00:15:47,013
+a unique view of what is
+going on in the collaboration.
+
+251
+00:15:47,013 --> 00:15:49,916
+For example, in Pages,
+the ContentView contains
+
+252
+00:15:49,916 --> 00:15:51,951
+the Current Participants list
+
+253
+00:15:51,951 --> 00:15:55,822
+and the Participant Cursors
+toggle.
+
+254
+00:15:55,822 --> 00:15:58,591
+Now, let's look at
+the "manage" button.
+
+255
+00:15:58,591 --> 00:16:00,927
+For CloudKit
+and iCloud Drive adopters,
+
+256
+00:16:00,927 --> 00:16:04,030
+this manage button
+will bring up the manage UI,
+
+257
+00:16:04,030 --> 00:16:05,965
+where you can add
+and remove participants
+
+258
+00:16:05,965 --> 00:16:08,768
+or change the share settings.
+
+259
+00:16:08,768 --> 00:16:12,505
+I'll talk more
+about this shortly.
+
+260
+00:16:12,505 --> 00:16:15,174
+Customize the provided
+button title by setting
+
+261
+00:16:15,174 --> 00:16:19,011
+the manageButtonTitle property
+on the collaboration view.
+
+262
+00:16:19,011 --> 00:16:21,080
+If you do not set
+this property,
+
+263
+00:16:21,080 --> 00:16:24,383
+the title will default
+to "Manage Share."
+
+264
+00:16:24,383 --> 00:16:27,954
+If your app uses a custom
+collaboration infrastructure,
+
+265
+00:16:27,954 --> 00:16:31,858
+include your own manage button
+in the contentView.
+
+266
+00:16:31,858 --> 00:16:34,694
+One will not be
+provided for you.
+
+267
+00:16:34,694 --> 00:16:38,231
+On Mac, make sure the button
+has a transparent background
+
+268
+00:16:38,231 --> 00:16:43,302
+to adhere to Apple design
+recommendations.
+
+269
+00:16:43,302 --> 00:16:47,073
+Finally,
+create a UIBarButtonItem on iOS
+
+270
+00:16:47,073 --> 00:16:49,642
+as shown here,
+using the collaborationView
+
+271
+00:16:49,642 --> 00:16:51,711
+as the custom view.
+
+272
+00:16:51,711 --> 00:16:54,513
+On Mac,
+initialize an NSToolbarItem
+
+273
+00:16:54,513 --> 00:16:57,183
+using a UIBarButtonItem.
+
+274
+00:16:57,183 --> 00:17:00,553
+Then, add the bar button item
+or toolbar item
+
+275
+00:17:00,553 --> 00:17:04,590
+to the ViewController's
+navigationItem.
+
+276
+00:17:04,590 --> 00:17:06,626
+As I mentioned earlier,
+
+277
+00:17:06,626 --> 00:17:09,128
+CloudKit and iCloud Drive
+adopters are provided
+
+278
+00:17:09,128 --> 00:17:12,131
+with a button
+in the collaboration popover.
+
+279
+00:17:12,131 --> 00:17:14,667
+This enables you to manage
+the share in the same way
+
+280
+00:17:14,667 --> 00:17:17,169
+you've always been able to.
+
+281
+00:17:17,169 --> 00:17:19,772
+Changes in the provided
+manage UI are observable
+
+282
+00:17:19,772 --> 00:17:22,341
+by adhering to
+the same delegate protocols
+
+283
+00:17:22,341 --> 00:17:24,911
+already used to observe changes:
+
+284
+00:17:24,911 --> 00:17:27,046
+UICloudSharing
+ControllerDelegate
+
+285
+00:17:27,046 --> 00:17:30,917
+and NSCloudSharing
+ServiceDelegate.
+
+286
+00:17:30,917 --> 00:17:33,753
+Now you have an understanding
+of how to integrate
+
+287
+00:17:33,753 --> 00:17:38,524
+the new collaboration UI
+into your app.
+
+288
+00:17:38,524 --> 00:17:41,127
+Next, I'll go over how
+to observe and handle
+
+289
+00:17:41,127 --> 00:17:44,997
+updates to collaborations.
+
+290
+00:17:44,997 --> 00:17:48,968
+It is critical to know when
+a share starts or stops.
+
+291
+00:17:48,968 --> 00:17:52,838
+For CloudKit adopters,
+we've added a new protocol
+
+292
+00:17:52,838 --> 00:17:55,808
+called CKSystemSharing
+UIObserver
+
+293
+00:17:55,808 --> 00:17:58,444
+to notify you of just that.
+
+294
+00:17:58,444 --> 00:18:01,147
+With this protocol,
+you get callbacks corresponding
+
+295
+00:18:01,147 --> 00:18:04,350
+to when your CKShare
+is saved or removed
+
+296
+00:18:04,350 --> 00:18:07,753
+without needing
+the CloudKit Sharing UI.
+
+297
+00:18:07,753 --> 00:18:11,824
+I'll take you
+through some code now.
+
+298
+00:18:11,824 --> 00:18:17,163
+Initialize an observer
+using the CKContainer.
+
+299
+00:18:17,163 --> 00:18:19,999
+On the observer,
+define a closure to be executed
+
+300
+00:18:19,999 --> 00:18:22,768
+when the CKShare
+is saved and assign it
+
+301
+00:18:22,768 --> 00:18:28,474
+to the systemSharingUI
+DidSaveShareBlock.
+
+302
+00:18:28,474 --> 00:18:31,444
+In the closure, if the Share
+was saved correctly,
+
+303
+00:18:31,444 --> 00:18:33,212
+you'll get a success result --
+
+304
+00:18:33,212 --> 00:18:35,448
+indicating the share
+was started --
+
+305
+00:18:35,448 --> 00:18:39,952
+and an associated
+CKShare to work with.
+
+306
+00:18:39,952 --> 00:18:42,288
+If the save was unsuccessful,
+
+307
+00:18:42,288 --> 00:18:47,593
+you receive a failure result
+and the associated error.
+
+308
+00:18:47,593 --> 00:18:49,628
+Here is the implementation
+of the closure
+
+309
+00:18:49,628 --> 00:18:53,699
+for when the document owner
+stops sharing.
+
+310
+00:18:53,699 --> 00:18:55,368
+In the success case,
+
+311
+00:18:55,368 --> 00:18:59,372
+the CKShare
+has successfully been deleted.
+
+312
+00:18:59,372 --> 00:19:05,177
+In the failure case, you will
+also get the associated error.
+
+313
+00:19:05,177 --> 00:19:06,746
+Starting and stopping shares
+
+314
+00:19:06,746 --> 00:19:09,882
+are not the only changes
+you may care about.
+
+315
+00:19:09,882 --> 00:19:14,120
+Some changes, you might even
+want to bubble up to users.
+
+316
+00:19:14,120 --> 00:19:17,156
+We've added API to enable you
+to post notices
+
+317
+00:19:17,156 --> 00:19:19,959
+summarizing updates
+to a collaboration,
+
+318
+00:19:19,959 --> 00:19:23,496
+right at the top
+of the relevant Messages thread.
+
+319
+00:19:23,496 --> 00:19:26,198
+Collaborators are shown
+what the update was
+
+320
+00:19:26,198 --> 00:19:30,436
+and who made the change.
+
+321
+00:19:30,436 --> 00:19:34,373
+To post a notice, retrieve
+the SWCollaborationHighlight,
+
+322
+00:19:34,373 --> 00:19:36,208
+which is a
+collaboration-specific
+
+323
+00:19:36,208 --> 00:19:39,278
+type of highlight
+in Shared with You.
+
+324
+00:19:39,278 --> 00:19:43,115
+Use it to create an
+SWCollaborationHighlight event.
+
+325
+00:19:43,115 --> 00:19:47,253
+Learn more about SWHighlights
+and other SharedWithYou APIs
+
+326
+00:19:47,253 --> 00:19:51,290
+in the "Add Shared with You
+to your app" video.
+
+327
+00:19:51,290 --> 00:19:53,559
+Watch this video before
+beginning your work
+
+328
+00:19:53,559 --> 00:19:57,696
+to adopt notices.
+
+329
+00:19:57,696 --> 00:19:59,665
+I'll talk through posting
+different notices
+
+330
+00:19:59,665 --> 00:20:02,668
+using a CloudKit app
+as an example.
+
+331
+00:20:02,668 --> 00:20:06,138
+If your app uses a custom
+collaboration infrastructure,
+
+332
+00:20:06,138 --> 00:20:08,674
+view the "Integrate your
+custom collaboration app
+
+333
+00:20:08,674 --> 00:20:12,278
+with Messages" video
+for detailed instructions.
+
+334
+00:20:12,278 --> 00:20:15,714
+To represent a notice,
+we've introduced a protocol
+
+335
+00:20:15,714 --> 00:20:18,217
+called SWHighlightEvent.
+
+336
+00:20:18,217 --> 00:20:21,587
+Highlight events are
+initialized with SWHighlights
+
+337
+00:20:21,587 --> 00:20:24,857
+retrieved from
+the SWHighlightCenter API.
+
+338
+00:20:24,857 --> 00:20:28,060
+The supported event types
+include a change event
+
+339
+00:20:28,060 --> 00:20:30,463
+for content updates or comments;
+
+340
+00:20:30,463 --> 00:20:34,600
+a mention event when a user
+is mentioned in a collaboration;
+
+341
+00:20:34,600 --> 00:20:39,238
+a persistence event when content
+is moved, renamed, or deleted;
+
+342
+00:20:39,238 --> 00:20:40,706
+and a membership event
+
+343
+00:20:40,706 --> 00:20:45,277
+when a participant is added
+or removed from a document.
+
+344
+00:20:45,277 --> 00:20:48,214
+Here's an example showing
+how to post a change event
+
+345
+00:20:48,214 --> 00:20:52,318
+when a collaboration
+has been edited.
+
+346
+00:20:52,318 --> 00:20:54,386
+Using the highlight center API,
+
+347
+00:20:54,386 --> 00:20:58,324
+retrieve a collaboration
+highlight using the CKShare URL.
+
+348
+00:20:58,324 --> 00:21:01,660
+Remember, this CKShare
+is one you defined during
+
+349
+00:21:01,660 --> 00:21:04,997
+the collaboration initiation,
+so your app should have
+
+350
+00:21:04,997 --> 00:21:09,535
+this available when
+a content change is made.
+
+351
+00:21:09,535 --> 00:21:12,972
+Next, create a
+HighlightChangeEvent instance.
+
+352
+00:21:12,972 --> 00:21:14,640
+The initializer
+takes a highlight,
+
+353
+00:21:14,640 --> 00:21:17,343
+and a trigger enum value.
+
+354
+00:21:17,343 --> 00:21:22,148
+In this case,
+we set the trigger type to edit.
+
+355
+00:21:22,148 --> 00:21:24,617
+Lastly,
+post the notice for that event
+
+356
+00:21:24,617 --> 00:21:27,987
+to the highlightCenter.
+
+357
+00:21:27,987 --> 00:21:30,356
+The rest of the events
+follow a similar format
+
+358
+00:21:30,356 --> 00:21:33,058
+with the sole exception
+being the mentionEvent,
+
+359
+00:21:33,058 --> 00:21:34,560
+as it requires more information
+
+360
+00:21:34,560 --> 00:21:38,330
+to indicate which
+user was mentioned.
+
+361
+00:21:38,330 --> 00:21:40,432
+You are able to post
+this type of event
+
+362
+00:21:40,432 --> 00:21:44,803
+only if your app
+supports user mentions.
+
+363
+00:21:44,803 --> 00:21:47,339
+Create the mentionEvent
+by passing in the retrieved
+
+364
+00:21:47,339 --> 00:21:52,845
+highlight and the handle of the
+mentioned CKShare participant.
+
+365
+00:21:52,845 --> 00:21:57,650
+This notice will only be shown
+to the mentioned user.
+
+366
+00:21:57,650 --> 00:22:00,653
+Use the persistence event type
+when content is moved,
+
+367
+00:22:00,653 --> 00:22:02,955
+renamed, or deleted.
+
+368
+00:22:02,955 --> 00:22:05,991
+Here, the renamed trigger type
+is used to signify
+
+369
+00:22:05,991 --> 00:22:10,262
+the document name
+has been changed.
+
+370
+00:22:10,262 --> 00:22:12,831
+Finally,
+here is a membershipEvent.
+
+371
+00:22:12,831 --> 00:22:15,467
+For a membershipEvent,
+use the addedCollaborator
+
+372
+00:22:15,467 --> 00:22:20,439
+or removedCollaborator
+trigger type instead.
+
+373
+00:22:20,439 --> 00:22:23,108
+With mentionevents,
+notices are posted to show
+
+374
+00:22:23,108 --> 00:22:26,212
+how the document
+membership has changed.
+
+375
+00:22:26,212 --> 00:22:29,582
+However, we've also made it
+possible to keep collaborators
+
+376
+00:22:29,582 --> 00:22:31,850
+on your shared documents
+in sync
+
+377
+00:22:31,850 --> 00:22:35,621
+when the Messages group
+membership changes.
+
+378
+00:22:35,621 --> 00:22:38,857
+For CloudKit and iCloud Drive,
+this is simple:
+
+379
+00:22:38,857 --> 00:22:42,394
+we do the work for you.
+
+380
+00:22:42,394 --> 00:22:45,097
+When someone new is added
+to the Messages group
+
+381
+00:22:45,097 --> 00:22:47,566
+with a collaboration,
+the document owner
+
+382
+00:22:47,566 --> 00:22:51,637
+is prompted via a notice
+to add them to the share.
+
+383
+00:22:51,637 --> 00:22:54,807
+The same goes for when
+someone is removed.
+
+384
+00:22:57,476 --> 00:23:00,179
+For apps with custom
+collaboration infrastructures,
+
+385
+00:23:00,179 --> 00:23:02,381
+there's a little more work
+to be done.
+
+386
+00:23:02,381 --> 00:23:03,816
+You will need to adopt the
+
+387
+00:23:03,816 --> 00:23:07,119
+SWCollaborationActionHandler
+API,
+
+388
+00:23:07,119 --> 00:23:09,722
+which you can learn more about
+in "Integrate your custom
+
+389
+00:23:09,722 --> 00:23:12,758
+collaboration app
+with Messages."
+
+390
+00:23:14,760 --> 00:23:18,163
+Now you know how to get started
+with collaboration in Messages
+
+391
+00:23:18,163 --> 00:23:22,134
+and integrate it into your app,
+whether you're using CloudKit,
+
+392
+00:23:22,134 --> 00:23:26,305
+iCloud Drive, or your own
+collaboration infrastructure.
+
+393
+00:23:26,305 --> 00:23:29,708
+Prepare your app to initiate
+collaborations by adopting
+
+394
+00:23:29,708 --> 00:23:33,712
+the new share sheet
+and drag and drop APIs.
+
+395
+00:23:33,712 --> 00:23:36,215
+Integrate the new
+collaboration UI
+
+396
+00:23:36,215 --> 00:23:38,117
+to provide a customized overview
+
+397
+00:23:38,117 --> 00:23:41,687
+of what is happening
+in the shared document.
+
+398
+00:23:41,687 --> 00:23:43,155
+Once you have that set up,
+
+399
+00:23:43,155 --> 00:23:47,326
+go even further and adopt
+notices to display changes
+
+400
+00:23:47,326 --> 00:23:51,063
+to the collaboration
+from within the Messages thread.
+
+401
+00:23:51,063 --> 00:23:54,199
+Miranda and I can't wait to see
+how your app takes advantage
+
+402
+00:23:54,199 --> 00:23:57,569
+of these new collaboration
+features in Messages!
+
+403
+00:23:57,569 --> 00:23:59,738
+Both: Thank you for watching!
+
+404
+00:23:59,738 --> 00:24:05,077
+♪
+

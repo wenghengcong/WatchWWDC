@@ -1,0 +1,1327 @@
+1
+00:00:01,535 --> 00:00:07,541
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,309 --> 00:00:12,779
+Hello, my name is John, and I'm
+an engineer on the Xcode Cloud team.
+
+3
+00:00:12,813 --> 00:00:15,616
+And I'm Jo Lynn,
+a designer on the Xcode Cloud team.
+
+4
+00:00:15,649 --> 00:00:18,352
+Today we're going to take a look
+at some of the features of Xcode Cloud
+
+5
+00:00:18,385 --> 00:00:20,153
+that are super helpful when
+you're using Xcode Cloud
+
+6
+00:00:20,187 --> 00:00:23,657
+as part of a team,
+whether that's a team of 5 or 500.
+
+7
+00:00:23,690 --> 00:00:27,027
+And I'm going to share
+some other features and best practices
+
+8
+00:00:27,060 --> 00:00:30,464
+that work well when you use
+Xcode Cloud as part of a team.
+
+9
+00:00:30,497 --> 00:00:32,566
+In our session today,
+we're going to go into detail
+
+10
+00:00:32,599 --> 00:00:35,669
+on some topics which are also covered
+in some other sessions.
+
+11
+00:00:35,702 --> 00:00:39,439
+If you want to learn more about webhooks
+and other advanced workflow topics,
+
+12
+00:00:39,473 --> 00:00:43,043
+check out the "Customize your advanced
+Xcode Cloud workflows" session.
+
+13
+00:00:43,076 --> 00:00:45,879
+In this session, we're going to look
+at how we can integrate Xcode Cloud
+
+14
+00:00:45,913 --> 00:00:49,850
+into your existing tools and technologies
+that you use every day,
+
+15
+00:00:49,883 --> 00:00:52,019
+easily manage your code dependencies,
+
+16
+00:00:52,052 --> 00:00:55,589
+and showcase Xcode Cloud best practices
+to help you set up workflows
+
+17
+00:00:55,622 --> 00:00:59,293
+to continuously build, test,
+and distribute your apps effectively.
+
+18
+00:01:01,061 --> 00:01:02,529
+Let's get started.
+
+19
+00:01:02,563 --> 00:01:05,132
+When it comes to integrating Xcode Cloud
+into your existing tools,
+
+20
+00:01:05,165 --> 00:01:06,767
+we have a couple of options.
+
+21
+00:01:06,800 --> 00:01:10,737
+Webhooks allow easy integration with tools
+and services that support them.
+
+22
+00:01:10,771 --> 00:01:12,439
+You can connect a webhook
+in App Store Connect
+
+23
+00:01:12,472 --> 00:01:16,210
+by telling Xcode Cloud what URL to send
+the webhook to,
+
+24
+00:01:16,243 --> 00:01:18,812
+and you should start
+to see those webhooks come in right away.
+
+25
+00:01:20,380 --> 00:01:23,617
+Our API also allows a great amount
+of visibility into your builds,
+
+26
+00:01:23,650 --> 00:01:26,587
+allowing you to do things
+like easily create build dashboards,
+
+27
+00:01:26,620 --> 00:01:30,257
+extract your build artifacts,
+or, in our example today,
+
+28
+00:01:30,290 --> 00:01:33,026
+integrate build information
+into your existing software.
+
+29
+00:01:34,728 --> 00:01:37,531
+We've been building out a bunch
+of new features for our food truck app,
+
+30
+00:01:37,564 --> 00:01:40,067
+but we've also been finding new bugs,
+
+31
+00:01:40,100 --> 00:01:42,569
+and now that we have a team of people
+working on the app together,
+
+32
+00:01:42,603 --> 00:01:45,539
+we've found it difficult
+to understand who is working on what.
+
+33
+00:01:46,673 --> 00:01:49,510
+To solve this problem,
+we've decided to use an issue tracker
+
+34
+00:01:49,543 --> 00:01:51,678
+to track all of the work
+going on in our app.
+
+35
+00:01:52,412 --> 00:01:55,816
+If you're using an issue tracker,
+you often have a view like this.
+
+36
+00:01:55,849 --> 00:01:59,553
+A common workflow with issue trackers
+is to create a ticket,
+
+37
+00:01:59,586 --> 00:02:02,389
+have designers and developers
+work on that ticket,
+
+38
+00:02:02,422 --> 00:02:06,126
+and finally, close it once the feature
+or bug is complete.
+
+39
+00:02:06,159 --> 00:02:08,028
+Having the actual build information
+
+40
+00:02:08,061 --> 00:02:09,363
+shown in our issue tracker
+
+41
+00:02:09,396 --> 00:02:12,466
+would be a big help in connecting
+all the dots together.
+
+42
+00:02:12,499 --> 00:02:14,635
+Let's take a look
+at how we might do that now.
+
+43
+00:02:14,668 --> 00:02:18,705
+Our plan here is to create a very simple
+Swift On Server-based service
+
+44
+00:02:18,739 --> 00:02:19,873
+that will handle everything we need
+
+45
+00:02:19,907 --> 00:02:23,010
+to integrate our issue tracker
+with Xcode Cloud.
+
+46
+00:02:23,043 --> 00:02:25,879
+To speed up development,
+we'll use the Vapor web framework,
+
+47
+00:02:25,913 --> 00:02:29,383
+which will let us focus on writing
+the webhook handling code.
+
+48
+00:02:29,416 --> 00:02:32,653
+The basic flow will look something
+like this.
+
+49
+00:02:32,686 --> 00:02:35,956
+A webhook will come
+from Xcode Cloud to our server.
+
+50
+00:02:35,989 --> 00:02:38,358
+We will read that webhook
+and check if the commit message
+
+51
+00:02:38,392 --> 00:02:40,661
+written by the committer
+has a certain string in it
+
+52
+00:02:40,694 --> 00:02:43,297
+which maps to an issue in our tracker.
+
+53
+00:02:43,330 --> 00:02:45,799
+If it does, we'll hit the Xcode Cloud API
+
+54
+00:02:45,832 --> 00:02:48,902
+to gather more information
+about the build.
+
+55
+00:02:48,936 --> 00:02:52,005
+Then we'll construct a comment we
+can post onto our issue tracker
+
+56
+00:02:52,039 --> 00:02:54,675
+that contains the information
+we're interested in.
+
+57
+00:02:56,076 --> 00:02:57,878
+We'll then call an API
+on our issue tracker,
+
+58
+00:02:57,911 --> 00:03:00,214
+which will save the message
+against our issue.
+
+59
+00:03:01,181 --> 00:03:04,718
+First, let's take a look
+at the Xcode Cloud API documentation.
+
+60
+00:03:04,751 --> 00:03:07,754
+All of the Xcode Cloud API
+lives under the App Store Connect API.
+
+61
+00:03:08,555 --> 00:03:10,657
+If we have already set up
+authentication tokens
+
+62
+00:03:10,691 --> 00:03:12,459
+for the App Store Connect API,
+
+63
+00:03:12,492 --> 00:03:17,397
+we already have everything we need
+to also access our Xcode Cloud data.
+
+64
+00:03:17,431 --> 00:03:20,133
+Opening up the Build Runs collection,
+we can see some endpoints
+
+65
+00:03:20,167 --> 00:03:22,336
+that let us interact with our builds.
+
+66
+00:03:22,369 --> 00:03:24,471
+You can call an endpoint
+to create a build,
+
+67
+00:03:24,505 --> 00:03:29,009
+cancel a build, or get more information
+about a particular build.
+
+68
+00:03:29,042 --> 00:03:31,311
+For example, if you wanted to build
+a dashboard
+
+69
+00:03:31,345 --> 00:03:33,180
+to show the status of your builds,
+
+70
+00:03:33,213 --> 00:03:36,817
+the Ci_Build_Runs endpoint
+should be all we would need to call.
+
+71
+00:03:36,850 --> 00:03:40,587
+Next, let's look at the Artifacts
+collection in the documentation.
+
+72
+00:03:40,621 --> 00:03:42,656
+For our workflow,
+we want to keep our build artifacts
+
+73
+00:03:42,689 --> 00:03:46,760
+outside of Xcode Cloud, and the API
+should have everything we need to do that.
+
+74
+00:03:46,793 --> 00:03:49,963
+First, we can get the artifact ID
+from the build action endpoint,
+
+75
+00:03:49,997 --> 00:03:52,933
+which will return all the artifacts
+produced for a given action.
+
+76
+00:03:52,966 --> 00:03:56,637
+Then we can call ci_artifact,
+which will give us the URL we need
+
+77
+00:03:56,670 --> 00:04:00,774
+to download our artifact
+in the downloadUrl attribute.
+
+78
+00:04:00,807 --> 00:04:02,776
+Let's start by downloading
+the openAPI spec
+
+79
+00:04:02,809 --> 00:04:05,179
+from the App Store Connect documentation,
+
+80
+00:04:05,212 --> 00:04:07,781
+and go through what we need
+to create our client for the API.
+
+81
+00:04:09,216 --> 00:04:12,119
+Let's create a new directory
+where we can create our client code.
+
+82
+00:04:12,152 --> 00:04:14,721
+I'm going to call this xcodecloud-client.
+
+83
+00:04:14,755 --> 00:04:17,391
+Now we need to download
+the command line tool for our generator.
+
+84
+00:04:17,424 --> 00:04:20,727
+There's lots of ways to do this on
+the openAPI website, and for our session,
+
+85
+00:04:20,761 --> 00:04:22,062
+I've already set it up
+
+86
+00:04:22,095 --> 00:04:24,631
+Let's copy the openAPI spec
+that we just got
+
+87
+00:04:24,665 --> 00:04:27,701
+from the app_store_connect_API
+into our directory.
+
+88
+00:04:27,734 --> 00:04:29,870
+Great, now we can call
+the openAPI generator
+
+89
+00:04:29,903 --> 00:04:31,905
+and tell it to create a swift client
+for our API.
+
+90
+00:04:36,977 --> 00:04:38,145
+While the generator is running,
+
+91
+00:04:38,178 --> 00:04:39,880
+we can quickly talk about what it's doing.
+
+92
+00:04:39,913 --> 00:04:42,883
+An openAPI specification
+is made up of information
+
+93
+00:04:42,916 --> 00:04:45,919
+about all the paths and models
+that make up our API.
+
+94
+00:04:45,953 --> 00:04:49,122
+The generator is going
+through each of the API paths
+
+95
+00:04:49,156 --> 00:04:51,892
+and generating Swift code that
+can talk to that particular path,
+
+96
+00:04:51,925 --> 00:04:55,262
+with a strongly typed swift object.
+
+97
+00:04:55,295 --> 00:04:57,030
+In most cases,
+this means you don't have to do
+
+98
+00:04:57,064 --> 00:05:01,335
+any JSON encoding or decoding.
+
+99
+00:05:01,368 --> 00:05:03,704
+Great, our generator is finished,
+
+100
+00:05:03,737 --> 00:05:05,639
+so let's take a quick look
+at the files it created.
+
+101
+00:05:06,607 --> 00:05:09,543
+Conveniently,
+the client code is a Swift package.
+
+102
+00:05:09,576 --> 00:05:12,145
+This makes it really easy to include
+in our webhook server
+
+103
+00:05:12,179 --> 00:05:13,881
+that will update our issue tracker.
+
+104
+00:05:13,914 --> 00:05:17,217
+Now we can commit our code
+to a new git repository,
+
+105
+00:05:17,251 --> 00:05:19,887
+and we can then reference this
+as a Swift package.
+
+106
+00:05:19,920 --> 00:05:22,022
+Now that we've got everything
+we need to talk with our API,
+
+107
+00:05:22,055 --> 00:05:23,991
+let's set up our webhook.
+
+108
+00:05:24,024 --> 00:05:25,893
+in App Store Connect,
+we can register our webhook
+
+109
+00:05:25,926 --> 00:05:28,529
+that will let our server know
+every time a build completes.
+
+110
+00:05:29,396 --> 00:05:32,032
+To do that, go to your product
+in App Store Connect,
+
+111
+00:05:32,065 --> 00:05:34,201
+go to settings,
+and navigate to webhooks.
+
+112
+00:05:44,811 --> 00:05:46,780
+And I'll paste in the URL for our server.
+
+113
+00:05:46,813 --> 00:05:49,383
+This will let Xcode Cloud know
+where to send the webhooks.
+
+114
+00:05:49,416 --> 00:05:51,752
+With our web hook set up,
+the only thing left to do
+
+115
+00:05:51,785 --> 00:05:55,055
+is write the code to process them,
+so let's get started on that.
+
+116
+00:05:55,088 --> 00:05:57,024
+First we have to define a struct
+
+117
+00:05:57,057 --> 00:06:00,160
+which matches to the fields
+we're interested in from our webhook.
+
+118
+00:06:00,194 --> 00:06:03,564
+The webhook will contain information
+about the specific build being executed,
+
+119
+00:06:03,597 --> 00:06:05,632
+as well as each actions being performed,
+
+120
+00:06:05,666 --> 00:06:08,235
+so let's keep those
+in our webhook payload struct.
+
+121
+00:06:09,369 --> 00:06:11,872
+Next, we have to create
+the code to have Vapour correctly route
+
+122
+00:06:11,905 --> 00:06:14,074
+incoming webhooks to our function.
+
+123
+00:06:14,107 --> 00:06:19,079
+We'll define a function that runs
+on a post request to the webhook path.
+
+124
+00:06:19,112 --> 00:06:20,881
+Inside this function, all we need to do
+
+125
+00:06:20,914 --> 00:06:25,085
+to convert the incoming JSON payload
+into a strongly typed Swift object
+
+126
+00:06:25,118 --> 00:06:27,688
+is to decode it,
+so we'll also add that code as well.
+
+127
+00:06:28,689 --> 00:06:31,525
+Great, now all we need to do is call
+the Xcode Cloud API
+
+128
+00:06:31,558 --> 00:06:34,628
+to get a little bit more information
+about the build which just completed
+
+129
+00:06:34,661 --> 00:06:37,197
+so that we can include it
+on our issue tracker page.
+
+130
+00:06:37,231 --> 00:06:39,566
+The webhook payload contains
+a lot of information
+
+131
+00:06:39,600 --> 00:06:40,868
+about the build which just ran,
+
+132
+00:06:40,901 --> 00:06:43,337
+and what actions succeeded or failed.
+
+133
+00:06:43,370 --> 00:06:47,307
+We could probably stop there,
+but let's take it to the next level.
+
+134
+00:06:47,341 --> 00:06:49,810
+I think it would be amazing
+if we also include information
+
+135
+00:06:49,843 --> 00:06:51,845
+about which issues were found
+in each action.
+
+136
+00:06:53,247 --> 00:06:57,184
+We can write an extension function
+to CiBuildActionsAPI
+
+137
+00:06:57,217 --> 00:07:00,454
+that gives us the ability to easily return
+the issues we're interested in
+
+138
+00:07:00,487 --> 00:07:01,989
+for a particular action.
+
+139
+00:07:03,090 --> 00:07:05,025
+In this extension, we'll write a function
+
+140
+00:07:05,058 --> 00:07:07,728
+that takes the build action ID
+as a parameter
+
+141
+00:07:07,761 --> 00:07:10,697
+and returns all the issues found
+for a particular action.
+
+142
+00:07:12,132 --> 00:07:15,435
+I already have this in my project,
+but let's fill in the rest of our code.
+
+143
+00:07:16,537 --> 00:07:19,473
+We only want our webhook handler
+to run if the build is complete,
+
+144
+00:07:19,506 --> 00:07:21,775
+so let's guard against that.
+
+145
+00:07:21,808 --> 00:07:24,077
+Next we can start working
+on our comment string.
+
+146
+00:07:24,111 --> 00:07:26,713
+I think it would be great to have
+the build number, commit hash,
+
+147
+00:07:26,747 --> 00:07:28,749
+as well as the author in this string.
+
+148
+00:07:32,519 --> 00:07:35,289
+Now let's go through each action and call
+our extension function
+
+149
+00:07:35,322 --> 00:07:37,925
+to get the issues for each action.
+
+150
+00:07:37,958 --> 00:07:40,427
+Let's pass this all on
+to our issue tracker now.
+
+151
+00:07:47,401 --> 00:07:48,602
+With all of this information,
+
+152
+00:07:48,635 --> 00:07:50,204
+I think this will help us keep
+our issue tracker
+
+153
+00:07:50,237 --> 00:07:52,139
+up to date with our builds.
+
+154
+00:07:52,840 --> 00:07:53,974
+And we're done!
+
+155
+00:07:54,007 --> 00:07:55,576
+At this point,
+we want to host our server code
+
+156
+00:07:55,609 --> 00:07:58,612
+at the URL we provided
+to Xcode Cloud for the webhooks,
+
+157
+00:07:58,645 --> 00:08:02,349
+and we should start to see Xcode Cloud
+build information in our issue tracker.
+
+158
+00:08:03,550 --> 00:08:06,253
+Let's have a quick summary
+about what we've learned so far.
+
+159
+00:08:06,286 --> 00:08:08,288
+Xcode Cloud has a great API you can use
+
+160
+00:08:08,322 --> 00:08:12,426
+to get an even deeper integration
+with your existing development workflows.
+
+161
+00:08:12,459 --> 00:08:17,030
+You can use that API along with webhooks
+to connect all the dots together
+
+162
+00:08:17,064 --> 00:08:20,267
+and integrate your existing tools
+and technologies with Xcode Cloud.
+
+163
+00:08:20,300 --> 00:08:24,671
+Next, here's Jo to talk
+about other features and best practices.
+
+164
+00:08:24,705 --> 00:08:25,839
+Jo: Thanks, John!
+
+165
+00:08:25,873 --> 00:08:31,512
+Xcode Cloud is designed to integrate
+with Apple developer tools and services
+
+166
+00:08:31,545 --> 00:08:34,414
+that you use
+to create apps and frameworks.
+
+167
+00:08:34,448 --> 00:08:38,986
+However, your Xcode project
+may require additional dependencies
+
+168
+00:08:39,019 --> 00:08:41,522
+or external tools to compile your code.
+
+169
+00:08:41,555 --> 00:08:45,392
+Xcode Cloud works great
+with Swift Package Manager.
+
+170
+00:08:45,425 --> 00:08:47,628
+It supports Swift package dependencies
+
+171
+00:08:47,661 --> 00:08:50,497
+without requiring
+any additional configuration,
+
+172
+00:08:50,531 --> 00:08:53,901
+if the package's repository
+is publicly accessible.
+
+173
+00:08:53,934 --> 00:08:59,006
+You can also make Xcode Cloud work
+with third-party dependency managers
+
+174
+00:08:59,039 --> 00:09:01,175
+like Cocoapods and Carthage,
+
+175
+00:09:01,208 --> 00:09:04,811
+but you'll have to do a little extra work
+by using custom build scripts.
+
+176
+00:09:05,512 --> 00:09:09,483
+You can refer to the Xcode documentation
+for instructions
+
+177
+00:09:09,516 --> 00:09:12,953
+on how to make dependencies
+available to Xcode Cloud.
+
+178
+00:09:15,022 --> 00:09:17,024
+Once we've added our Swift package
+
+179
+00:09:17,057 --> 00:09:19,526
+and pushed changes
+to kick off the workflow,
+
+180
+00:09:19,560 --> 00:09:22,863
+we can go to the cloud tab
+of the Report Navigator,
+
+181
+00:09:22,896 --> 00:09:24,865
+and view the status of our latest build.
+
+182
+00:09:26,900 --> 00:09:30,137
+Select Logs to view
+the detailed build logs.
+
+183
+00:09:31,505 --> 00:09:35,809
+We'll see that Xcode Cloud has
+automagically resolved the dependencies.
+
+184
+00:09:36,610 --> 00:09:40,647
+After Xcode Cloud has
+successfully completed the first build,
+
+185
+00:09:40,681 --> 00:09:42,115
+you should plan next steps
+
+186
+00:09:42,149 --> 00:09:45,719
+for refining your continuous integration
+and delivery practice
+
+187
+00:09:45,752 --> 00:09:50,390
+to make sure that your app or framework
+is always in a shippable state.
+
+188
+00:09:50,424 --> 00:09:54,962
+In this section, I'm going to talk
+about how you can use
+
+189
+00:09:54,995 --> 00:09:58,565
+Xcode Cloud with SwiftLint
+for static code analysis,
+
+190
+00:09:58,599 --> 00:10:01,468
+how to restrict editing on your workflows,
+
+191
+00:10:01,502 --> 00:10:04,938
+and the value of configuring
+multiple start conditions.
+
+192
+00:10:05,906 --> 00:10:09,209
+SwiftLint is an open source linter tool
+that enforces
+
+193
+00:10:09,243 --> 00:10:14,081
+style guide rules and conventions
+generally accepted by the Swift community.
+
+194
+00:10:14,114 --> 00:10:17,818
+It performs static code analysis
+to improve your code quality
+
+195
+00:10:17,851 --> 00:10:19,520
+and prevent bad practices.
+
+196
+00:10:20,254 --> 00:10:22,356
+We have found that SwiftLint
+is a great way
+
+197
+00:10:22,389 --> 00:10:24,791
+to keep your team's codebase consistent,
+
+198
+00:10:24,825 --> 00:10:27,628
+especially when working with larger teams.
+
+199
+00:10:27,661 --> 00:10:30,797
+What we're going to show now
+is how to integrate SwiftLint
+
+200
+00:10:30,831 --> 00:10:33,534
+with Xcode Cloud
+using a custom build script.
+
+201
+00:10:33,567 --> 00:10:36,670
+We want Xcode Cloud to run
+the SwiftLint tool
+
+202
+00:10:36,703 --> 00:10:41,708
+after it clones our source code
+from the team's primary repository.
+
+203
+00:10:41,742 --> 00:10:45,879
+In the Project navigator,
+I've already added a post_clone script
+
+204
+00:10:45,913 --> 00:10:48,916
+in my ci_scripts folder
+to my Food Truck project.
+
+205
+00:10:51,018 --> 00:10:54,621
+The Xcode Cloud build environment
+includes Homebrew,
+
+206
+00:10:54,655 --> 00:10:57,224
+and that's what we're using
+here to install SwiftLint.
+
+207
+00:10:59,026 --> 00:11:02,429
+On this line, we are executing SwiftLint.
+
+208
+00:11:02,462 --> 00:11:07,367
+One thing to remember is that the script
+executes within the ci_scripts directory,
+
+209
+00:11:07,401 --> 00:11:10,871
+so we have to tell SwiftLint
+to run within the ci_workspace
+
+210
+00:11:10,904 --> 00:11:14,241
+environment variable,
+which points to our repository.
+
+211
+00:11:16,310 --> 00:11:19,580
+Let's check out
+the result of the code analysis.
+
+212
+00:11:19,613 --> 00:11:22,449
+Looks like SwiftLint found
+a bunch of violations,
+
+213
+00:11:22,482 --> 00:11:24,451
+15 of them serious.
+
+214
+00:11:24,484 --> 00:11:27,421
+Since this is the first time
+we're integrating our tools,
+
+215
+00:11:27,454 --> 00:11:30,390
+I'm going to temporarily deactivate
+this workflow
+
+216
+00:11:30,424 --> 00:11:34,394
+so that we can have a discussion
+with the rest of our team first,
+
+217
+00:11:34,428 --> 00:11:38,131
+come up with an agreement
+about coding styles and conventions,
+
+218
+00:11:38,165 --> 00:11:42,135
+and then decide as a team
+which issues we want to fix.
+
+219
+00:11:42,169 --> 00:11:46,840
+You can deactivate a workflow in Xcode
+from the Manage Workflows menu.
+
+220
+00:11:46,874 --> 00:11:50,077
+Doing so will stop the start conditions
+from working,
+
+221
+00:11:50,110 --> 00:11:52,546
+and only manual builds can be started.
+
+222
+00:11:57,651 --> 00:12:01,255
+Now that our static code analysis workflow
+has been deactivated,
+
+223
+00:12:01,288 --> 00:12:04,424
+we can focus on fixing the issues
+we want to fix.
+
+224
+00:12:04,458 --> 00:12:07,060
+Then we can come back
+and enable this workflow.
+
+225
+00:12:07,094 --> 00:12:09,196
+Our team has been growing rapidly,
+
+226
+00:12:09,229 --> 00:12:13,166
+and we want to make conscious choices
+about workflow configurations.
+
+227
+00:12:13,200 --> 00:12:15,702
+Because I'm responsible
+for maintaining and managing
+
+228
+00:12:15,736 --> 00:12:18,972
+all of our team's workflows,
+I don't want team members to make
+
+229
+00:12:19,006 --> 00:12:21,308
+unintentional changes to a workflow.
+
+230
+00:12:21,341 --> 00:12:23,243
+That takes a lot of time to undo.
+
+231
+00:12:23,277 --> 00:12:25,979
+To prevent unintentional changes,
+
+232
+00:12:26,013 --> 00:12:29,249
+you can restrict who can make edits
+to your workflow.
+
+233
+00:12:29,283 --> 00:12:34,988
+Select the workflow, then choose
+Restrict Editing from the context menu.
+
+234
+00:12:35,022 --> 00:12:38,158
+Anyone in the team
+can use or run this workflow,
+
+235
+00:12:38,192 --> 00:12:41,762
+but only administrators,
+account holders, and app managers
+
+236
+00:12:41,795 --> 00:12:45,599
+can enforce a restriction,
+which makes it editable only by them.
+
+237
+00:12:47,301 --> 00:12:51,205
+A workflow where editing is
+restricted will have a 'key' symbol.
+
+238
+00:12:51,238 --> 00:12:55,042
+This means that it is locked
+and can only be edited by you
+
+239
+00:12:55,075 --> 00:12:57,044
+and other administrative users.
+
+240
+00:12:59,179 --> 00:13:03,283
+If you see a 'lock' symbol instead,
+this means that it has been locked
+
+241
+00:13:03,317 --> 00:13:06,653
+by an administrator
+and cannot be edited by you.
+
+242
+00:13:06,687 --> 00:13:11,291
+This feature makes it easy
+to manage access for complex workflows,
+
+243
+00:13:11,325 --> 00:13:13,727
+especially if you're part of a large team.
+
+244
+00:13:13,760 --> 00:13:18,599
+We've just learned how easy it is
+to pause or lock down our workflows.
+
+245
+00:13:18,632 --> 00:13:21,768
+Now let's talk about workflow management
+and maintenance.
+
+246
+00:13:22,936 --> 00:13:26,273
+I want to run the same tests
+and archive actions
+
+247
+00:13:26,306 --> 00:13:29,977
+whenever I make a pull request
+or when I merge my branch.
+
+248
+00:13:30,010 --> 00:13:33,947
+The best way to do so is
+through multiple start conditions.
+
+249
+00:13:33,981 --> 00:13:36,450
+This improves the maintenance of workflows
+
+250
+00:13:36,483 --> 00:13:41,355
+because it reduces the number of workflows
+that you'll need to create and manage.
+
+251
+00:13:41,388 --> 00:13:45,025
+To illustrate, in this example,
+I want to kick off a build
+
+252
+00:13:45,058 --> 00:13:49,129
+given the following conditions:
+if there are changes in the main branch
+
+253
+00:13:49,162 --> 00:13:52,065
+or the release branch,
+or if there's a scheduled build
+
+254
+00:13:52,099 --> 00:13:54,168
+for the main branch, then,
+
+255
+00:13:54,201 --> 00:13:57,671
+run the same set
+of archive and test actions
+
+256
+00:13:57,704 --> 00:14:01,275
+as well as deploy
+to TestFlight for internal testing.
+
+257
+00:14:01,308 --> 00:14:03,844
+Instead of creating 3 workflows,
+then managing them
+
+258
+00:14:03,877 --> 00:14:05,879
+and keeping them in sync,
+
+259
+00:14:05,913 --> 00:14:10,884
+I'd create a single workflow specifying
+all the start conditions in one go.
+
+260
+00:14:10,918 --> 00:14:14,321
+This improves manageability,
+especially when the team has
+
+261
+00:14:14,354 --> 00:14:16,590
+many workflows to maintain.
+
+262
+00:14:17,558 --> 00:14:20,861
+Configuring start conditions
+in Xcode is easy.
+
+263
+00:14:20,894 --> 00:14:24,431
+From the workflow editor, pick the type
+of start conditions
+
+264
+00:14:24,464 --> 00:14:26,233
+from the + button menu.
+
+265
+00:14:28,969 --> 00:14:31,405
+Xcode Cloud in App Store Connect
+
+266
+00:14:31,438 --> 00:14:34,975
+provides a fully featured
+web-based experience.
+
+267
+00:14:35,008 --> 00:14:39,313
+Everything that I just did
+in Xcode to configure our workflow,
+
+268
+00:14:39,346 --> 00:14:43,884
+from deactivating it and locking it down,
+to setting up multiple start conditions,
+
+269
+00:14:43,917 --> 00:14:46,486
+are also available from AppStoreConnect.
+
+270
+00:14:46,520 --> 00:14:51,258
+Xcode Cloud is a powerful,
+continuous integration & delivery service
+
+271
+00:14:51,291 --> 00:14:55,429
+built right into Xcode that helps
+development teams of any size
+
+272
+00:14:55,462 --> 00:14:59,566
+and can easily be integrated
+with your existing tools and processes
+
+273
+00:14:59,600 --> 00:15:03,237
+to help you deliver high-quality apps
+for your users.
+
+274
+00:15:03,270 --> 00:15:07,307
+To the Xcode Cloud beta participants,
+we really appreciate your feedback
+
+275
+00:15:07,341 --> 00:15:09,610
+and look forward to hearing more.
+
+276
+00:15:09,643 --> 00:15:11,245
+We hope these features
+can help you refine
+
+277
+00:15:11,278 --> 00:15:13,881
+your team's continuous integration
+& delivery practice.
+
+278
+00:15:13,914 --> 00:15:16,650
+Thank you for watching,
+and have a great WWDC!
+
+279
+00:15:16,683 --> 00:15:18,585
+♪ instrumental hip hop music ♪
+

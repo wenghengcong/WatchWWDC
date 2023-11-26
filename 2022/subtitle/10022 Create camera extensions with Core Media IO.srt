@@ -1,0 +1,2205 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,676 --> 00:00:11,211
+Hello and welcome.
+
+3
+00:00:11,245 --> 00:00:15,382
+I'm Brad Ford from
+the Camera Software Engineering team.
+
+4
+00:00:15,415 --> 00:00:18,452
+In this session, I'll be introducing you
+to camera extensions
+
+5
+00:00:18,485 --> 00:00:22,022
+with CoreMedia IO, which is
+a modern camera driver architecture
+
+6
+00:00:22,055 --> 00:00:25,626
+for macOS
+and a replacement for DAL plug-ins.
+
+7
+00:00:27,094 --> 00:00:30,731
+DAL plug-ins are a technology
+that allows you to create camera drivers
+
+8
+00:00:30,764 --> 00:00:35,335
+for hardware that plugs into a Mac,
+or virtual cameras.
+
+9
+00:00:35,369 --> 00:00:39,540
+They've been around for a very long time–
+since macOS 10.7.
+
+10
+00:00:40,707 --> 00:00:45,712
+DAL plug-ins provide the power
+to extend macOS as a rich media platform,
+
+11
+00:00:45,746 --> 00:00:50,284
+bringing support for great third party
+camera products to pros and consumers.
+
+12
+00:00:51,518 --> 00:00:54,254
+It's part of what makes the Mac, the Mac.
+
+13
+00:00:56,123 --> 00:00:58,859
+But DAL plug-ins have some problems.
+
+14
+00:00:58,892 --> 00:01:02,196
+They load untrusted code
+directly into an app's process,
+
+15
+00:01:02,229 --> 00:01:05,933
+making it vulnerable to crashes
+if the plug-in has bugs
+
+16
+00:01:05,966 --> 00:01:08,869
+or to malware attack.
+
+17
+00:01:08,902 --> 00:01:11,872
+For this reason,
+they don't work with Apple apps
+
+18
+00:01:11,905 --> 00:01:16,176
+such as FaceTime,
+QuickTime Player, and PhotoBooth.
+
+19
+00:01:16,210 --> 00:01:19,213
+They also don't work
+with many third party camera apps,
+
+20
+00:01:19,246 --> 00:01:23,283
+unless those apps intentionally
+disable library validation,
+
+21
+00:01:23,317 --> 00:01:26,787
+or the user turns off
+system integrity protection.
+
+22
+00:01:26,820 --> 00:01:29,022
+Neither of these are practices recommended
+
+23
+00:01:29,056 --> 00:01:33,360
+as they make the system
+less secure and less stable.
+
+24
+00:01:33,393 --> 00:01:35,562
+They're difficult to develop too.
+
+25
+00:01:35,596 --> 00:01:38,732
+They carry a C API circa 2011
+
+26
+00:01:38,765 --> 00:01:43,537
+and a thick SDK of C++ helper classes
+for you to learn.
+
+27
+00:01:43,570 --> 00:01:46,607
+And on top of all that,
+they're sparsely documented.
+
+28
+00:01:47,875 --> 00:01:50,043
+It's time for an upgrade.
+
+29
+00:01:50,077 --> 00:01:54,147
+macOS 12.3 introduces
+a thoroughly modern replacement
+
+30
+00:01:54,181 --> 00:01:57,851
+for DAL plug-ins called Camera Extensions…
+
+31
+00:01:59,553 --> 00:02:03,524
+An architecture that places
+user security first.
+
+32
+00:02:03,557 --> 00:02:05,492
+Let's learn how it works.
+
+33
+00:02:05,526 --> 00:02:09,096
+First, I'll provide a technology overview.
+
+34
+00:02:09,129 --> 00:02:13,734
+Next, I'll show you how to build
+a camera extension from scratch.
+
+35
+00:02:13,767 --> 00:02:18,739
+Next, I'll introduce the main classes
+and functions of the API.
+
+36
+00:02:18,772 --> 00:02:23,977
+I'll explain how CoreMedia IO Extensions
+can be used as output devices.
+
+37
+00:02:24,011 --> 00:02:28,882
+And finally, I'll cover
+our DAL plug-in deprecation plan.
+
+38
+00:02:28,916 --> 00:02:31,652
+Let's get started.
+
+39
+00:02:31,685 --> 00:02:35,856
+Camera extensions, otherwise known
+as CoreMedia IO extensions,
+
+40
+00:02:35,889 --> 00:02:40,060
+are a new way to package and deliver
+camera drivers to Mac applications.
+
+41
+00:02:41,061 --> 00:02:42,462
+They're secure.
+
+42
+00:02:42,496 --> 00:02:46,300
+Your extension code is cordoned off
+into its own daemon process
+
+43
+00:02:46,333 --> 00:02:50,037
+that's sandboxed and run as a role user.
+
+44
+00:02:50,070 --> 00:02:53,240
+All the buffers your extension provides
+are validated
+
+45
+00:02:53,273 --> 00:02:56,443
+before being delivered to an app.
+
+46
+00:02:56,476 --> 00:02:57,911
+They're fast.
+
+47
+00:02:57,945 --> 00:02:59,947
+The framework handles the IPC layers
+
+48
+00:02:59,980 --> 00:03:02,749
+between your extension process
+and the app,
+
+49
+00:03:02,783 --> 00:03:05,552
+with an emphasis on performance.
+
+50
+00:03:05,586 --> 00:03:08,155
+The framework can also take care
+of delivering buffers
+
+51
+00:03:08,188 --> 00:03:11,525
+to multiple simultaneous clients.
+
+52
+00:03:11,558 --> 00:03:12,960
+They're modern.
+
+53
+00:03:12,993 --> 00:03:17,064
+Your extension can be written
+in either Swift or Objective-c.
+
+54
+00:03:18,532 --> 00:03:19,900
+They're simple.
+
+55
+00:03:19,933 --> 00:03:22,002
+There are just a few classes to learn,
+
+56
+00:03:22,035 --> 00:03:25,305
+a few protocols to implement
+in order to get up and running.
+
+57
+00:03:25,339 --> 00:03:27,774
+The framework takes care
+of the boilerplate code.
+
+58
+00:03:29,476 --> 00:03:31,278
+They're easy to deploy.
+
+59
+00:03:31,311 --> 00:03:34,014
+You can ship them as apps
+in the App Store.
+
+60
+00:03:36,149 --> 00:03:40,320
+And camera extensions are
+100% backward compatible
+
+61
+00:03:40,354 --> 00:03:43,390
+with existing AVFoundation capture APIs.
+
+62
+00:03:45,492 --> 00:03:50,364
+Camera extensions shows up just like
+the built-in camera in all camera apps,
+
+63
+00:03:50,397 --> 00:03:52,733
+including Apple apps.
+
+64
+00:03:52,766 --> 00:03:55,903
+Here's how an example
+of how a camera extension might appear
+
+65
+00:03:55,936 --> 00:03:58,205
+in the FaceTime camera picker.
+
+66
+00:03:58,238 --> 00:04:02,342
+What kind of experiences can you build
+with a camera extension?
+
+67
+00:04:02,376 --> 00:04:05,812
+Let's study three common uses.
+
+68
+00:04:05,846 --> 00:04:08,615
+The simplest use
+is a software-only camera,
+
+69
+00:04:08,649 --> 00:04:12,452
+such as a camera that displays color bars,
+
+70
+00:04:12,486 --> 00:04:15,923
+a unique test pattern,
+
+71
+00:04:15,956 --> 00:04:22,062
+programmatically generated images
+at various frame rates or resolutions,
+
+72
+00:04:22,095 --> 00:04:25,232
+or a camera that streams
+pre-rendered content,
+
+73
+00:04:25,265 --> 00:04:29,236
+such as frames in a movie,
+to test A/V synchronization.
+
+74
+00:04:30,871 --> 00:04:34,808
+The second use case is a driver
+for a camera that you intend
+
+75
+00:04:34,842 --> 00:04:39,379
+to physically plug into a Mac
+or discover wirelessly.
+
+76
+00:04:39,413 --> 00:04:44,017
+Camera extensions fully support
+hot plugging and unplugging.
+
+77
+00:04:44,051 --> 00:04:47,421
+To address your hardware,
+you have a few choices.
+
+78
+00:04:47,454 --> 00:04:52,259
+The preferred method is to use
+a DriverKit Extension, or DEXT,
+
+79
+00:04:52,292 --> 00:04:55,863
+which runs entirely in user space.
+
+80
+00:04:55,896 --> 00:04:58,932
+If your hardware must be addressed
+at the kernel level,
+
+81
+00:04:58,966 --> 00:05:03,136
+you can use
+the legacy IOVideoFamily kext path.
+
+82
+00:05:03,170 --> 00:05:05,806
+Development of new kext code
+is discouraged
+
+83
+00:05:05,839 --> 00:05:11,278
+as kexts are inherently less secure
+and can contribute to system instability.
+
+84
+00:05:14,047 --> 00:05:16,783
+Apple provides a class compliant extension
+
+85
+00:05:16,817 --> 00:05:21,588
+for USB video class, or UVC, cameras.
+
+86
+00:05:21,622 --> 00:05:25,058
+It works great for cameras
+that conform to the UVC spec.
+
+87
+00:05:26,193 --> 00:05:29,263
+If, however, you need to support
+a USB camera
+
+88
+00:05:29,296 --> 00:05:31,765
+that uses nonstandard protocol,
+
+89
+00:05:31,798 --> 00:05:35,035
+has additional features
+outside the UVC spec,
+
+90
+00:05:35,068 --> 00:05:40,107
+you can create a camera extension
+that overrides Apple's UVC extension,
+
+91
+00:05:40,140 --> 00:05:44,678
+allowing you to claim
+a particular product and vendor ID.
+
+92
+00:05:44,711 --> 00:05:48,382
+If you're interested in learning more
+about it, please refer to the article
+
+93
+00:05:48,415 --> 00:05:51,585
+at developer.apple.com entitled
+
+94
+00:05:51,618 --> 00:05:55,489
+"Overriding the default
+USB video class extension."
+
+95
+00:05:55,522 --> 00:05:58,926
+It explains how to create
+a minimal DEXT bundle
+
+96
+00:05:58,959 --> 00:06:04,398
+and which IOKitPersonalities keys
+you need to override in your Info.plist.
+
+97
+00:06:05,432 --> 00:06:08,535
+A third common use is a creative camera,
+
+98
+00:06:08,569 --> 00:06:11,471
+a hybrid between software and hardware.
+
+99
+00:06:12,673 --> 00:06:16,376
+Your extension accesses a video stream
+from another physical camera
+
+100
+00:06:16,410 --> 00:06:18,178
+attached to the Mac,
+
+101
+00:06:18,212 --> 00:06:20,547
+applies an effect to those buffers,
+
+102
+00:06:20,581 --> 00:06:24,318
+and sends them along to clients
+as a new camera stream.
+
+103
+00:06:26,353 --> 00:06:31,592
+Or a creative camera that accesses
+video streams from several cameras,
+
+104
+00:06:31,625 --> 00:06:35,128
+composites them,
+and sends them along to the app.
+
+105
+00:06:37,164 --> 00:06:40,534
+A creative camera like this
+might use a configuration app
+
+106
+00:06:40,567 --> 00:06:44,438
+to control the compositing
+or parameterize filters.
+
+107
+00:06:44,471 --> 00:06:48,075
+The possibilities for creative camera
+are really endless.
+
+108
+00:06:49,243 --> 00:06:51,879
+Now that we've explored
+the primary use cases,
+
+109
+00:06:51,912 --> 00:06:56,183
+let's look at the anatomy
+of a CoreMedia IO Extension.
+
+110
+00:06:56,216 --> 00:06:59,119
+First the "CoreMedia IO" part.
+
+111
+00:07:00,721 --> 00:07:03,824
+CoreMedia IO is a low level framework
+
+112
+00:07:03,857 --> 00:07:07,794
+for publishing
+or discovering camera drivers.
+
+113
+00:07:07,828 --> 00:07:11,431
+You already know
+that it contains the legacy DAL API
+
+114
+00:07:11,465 --> 00:07:15,736
+and the new camera extension API
+that replaces it.
+
+115
+00:07:15,769 --> 00:07:19,673
+But it also contains a powerful set
+of low level C APIs
+
+116
+00:07:19,706 --> 00:07:24,244
+for app developers to find
+and inspect cameras on the system.
+
+117
+00:07:25,612 --> 00:07:28,282
+Now, how about that "Extension" part?
+
+118
+00:07:29,783 --> 00:07:35,088
+CoreMedia IO Extensions are built
+on top of the SystemExtensions framework
+
+119
+00:07:35,122 --> 00:07:38,525
+which first appeared in macOS Catalina.
+
+120
+00:07:38,559 --> 00:07:41,728
+It obviates the need
+for a throw-away installer.
+
+121
+00:07:41,762 --> 00:07:45,799
+Instead, you ship your extension
+inside an app.
+
+122
+00:07:45,832 --> 00:07:49,803
+The extension executable
+lives within the app bundle.
+
+123
+00:07:49,837 --> 00:07:52,973
+By making calls
+into the SystemExtensions framework,
+
+124
+00:07:53,006 --> 00:07:58,078
+your app can install, upgrade,
+or downgrade your extension
+
+125
+00:07:58,111 --> 00:08:01,048
+for all users on the system.
+
+126
+00:08:01,081 --> 00:08:03,717
+And uninstalling is a snap.
+
+127
+00:08:03,750 --> 00:08:06,553
+Delete the app
+and the SystemExtensions framework
+
+128
+00:08:06,587 --> 00:08:10,357
+uninstalls your camera extension
+for all users.
+
+129
+00:08:10,390 --> 00:08:13,627
+This delivery mechanism is
+approved for App Store use,
+
+130
+00:08:13,660 --> 00:08:18,098
+making it easy to deploy
+your camera extension to a wide audience.
+
+131
+00:08:19,900 --> 00:08:22,636
+To learn more about
+the system extensions framework,
+
+132
+00:08:22,669 --> 00:08:26,840
+you can read the documentation
+at developer.apple.com/
+
+133
+00:08:26,874 --> 00:08:29,877
+documentation/systemextensions.
+
+134
+00:08:31,745 --> 00:08:36,817
+And be sure to check out
+the WWDC 2019 video entitled
+
+135
+00:08:36,850 --> 00:08:39,520
+"System Extensions and DriverKit."
+
+136
+00:08:40,654 --> 00:08:44,224
+That's it for our technology overview
+of camera extensions.
+
+137
+00:08:44,258 --> 00:08:46,527
+Now, let's actually build one.
+
+138
+00:08:46,560 --> 00:08:50,397
+Here's a quick demo of how to get
+a camera extension up and running
+
+139
+00:08:50,430 --> 00:08:52,099
+in a matter of minutes.
+
+140
+00:08:53,634 --> 00:08:58,906
+I've created a single window macOS
+application in Xcode, called ExampleCam.
+
+141
+00:08:58,939 --> 00:09:02,042
+At this point,
+I've only added a few lines of code.
+
+142
+00:09:03,844 --> 00:09:07,247
+The App Delegate is unchanged.
+
+143
+00:09:07,281 --> 00:09:11,518
+In the main storyboard,
+I've added two buttons,
+
+144
+00:09:11,552 --> 00:09:15,055
+one to install
+and one to uninstall the extension,
+
+145
+00:09:15,088 --> 00:09:17,991
+plus a text field to display status.
+
+146
+00:09:19,293 --> 00:09:23,130
+In the ViewController class,
+I've added IBActions
+
+147
+00:09:23,163 --> 00:09:27,100
+to hook up the install
+and uninstall buttons.
+
+148
+00:09:28,635 --> 00:09:31,939
+These functions create
+OSSystemExtensionRequests
+
+149
+00:09:31,972 --> 00:09:34,975
+to either activate
+
+150
+00:09:35,008 --> 00:09:39,980
+or deactivate the extension
+found within the app's bundle.
+
+151
+00:09:40,013 --> 00:09:43,650
+At the bottom,
+I've added skeletal implementations
+
+152
+00:09:43,684 --> 00:09:48,956
+of the OSSystemExtensionRequestDelegate
+functions that log status.
+
+153
+00:09:50,591 --> 00:09:56,063
+The app's entitlements file
+has the usual App Sandbox=YES
+
+154
+00:09:56,096 --> 00:09:58,699
+and it defines an AppGroup.
+
+155
+00:10:00,734 --> 00:10:05,038
+I've only added one new key here,
+the "System Extension" key,
+
+156
+00:10:05,072 --> 00:10:09,176
+which is required if your app
+installs system extensions.
+
+157
+00:10:09,209 --> 00:10:13,714
+At this point, if I run the app
+
+158
+00:10:13,747 --> 00:10:17,417
+and click on the Install Extension button,
+
+159
+00:10:17,451 --> 00:10:20,287
+I'll just get a fatal error,
+since the app is looking
+
+160
+00:10:20,320 --> 00:10:23,724
+for an extension in the bundle
+that doesn't exist yet.
+
+161
+00:10:27,394 --> 00:10:33,567
+To create and embed a system extension,
+I go to File,
+
+162
+00:10:33,600 --> 00:10:37,571
+New, Target,
+
+163
+00:10:37,604 --> 00:10:41,074
+and under macOS,
+I scroll all the way down to the bottom
+
+164
+00:10:41,108 --> 00:10:44,211
+where the System Extensions are located.
+
+165
+00:10:44,244 --> 00:10:48,982
+Then I pick "Camera Extension," hit next,
+
+166
+00:10:49,016 --> 00:10:53,987
+give it a name–I'll choose "Extension"–
+
+167
+00:10:54,021 --> 00:10:58,559
+I'll make sure that
+"Embedded in Application" is set,
+
+168
+00:10:58,592 --> 00:11:01,528
+and then I click finish.
+
+169
+00:11:01,562 --> 00:11:06,366
+Inside the new extension folder,
+I get four new files.
+
+170
+00:11:06,400 --> 00:11:10,737
+The Info.plist identifies it
+as a CMIOExtension
+
+171
+00:11:10,771 --> 00:11:13,640
+by defining its MachServiceName.
+
+172
+00:11:15,008 --> 00:11:17,177
+This is a critical piece of information.
+
+173
+00:11:17,211 --> 00:11:22,549
+CoreMedia IO's registerassistant will not
+launch your extension unless it's present.
+
+174
+00:11:25,285 --> 00:11:29,590
+While we're here,
+let's give it a usage description
+
+175
+00:11:29,623 --> 00:11:32,292
+for the system extension.
+
+176
+00:11:32,326 --> 00:11:36,997
+The entitlements file shows
+that it's app sandboxed.
+
+177
+00:11:37,030 --> 00:11:41,635
+And I need to ensure here
+that my extension's app group is prefixed
+
+178
+00:11:41,668 --> 00:11:45,739
+by the MachServiceName
+in order for it to pass validation.
+
+179
+00:11:47,140 --> 00:11:51,478
+So I'll copy and paste that over
+from the app extension
+
+180
+00:11:51,512 --> 00:11:56,283
+to the extensions entitlements file.
+
+181
+00:11:56,316 --> 00:11:57,651
+And that's it.
+
+182
+00:11:59,152 --> 00:12:03,590
+The main.swift file serves
+as your extension's entry point
+
+183
+00:12:03,624 --> 00:12:05,893
+and starts the service.
+
+184
+00:12:05,926 --> 00:12:09,563
+And the ExtensionProvider.swift file
+
+185
+00:12:09,596 --> 00:12:12,032
+gives us a fully functional camera.
+
+186
+00:12:12,065 --> 00:12:15,936
+It contains a DeviceSource,
+
+187
+00:12:15,969 --> 00:12:19,806
+a StreamSource, and a ProviderSource,
+
+188
+00:12:19,840 --> 00:12:22,943
+all that you need to create
+a pure software camera.
+
+189
+00:12:22,976 --> 00:12:25,012
+Not a bad little template.
+
+190
+00:12:26,280 --> 00:12:29,683
+In this file, I'll search
+
+191
+00:12:29,716 --> 00:12:32,953
+for "SampleCapture"
+
+192
+00:12:32,986 --> 00:12:38,392
+and I'll replace with "ExampleCam,"
+
+193
+00:12:38,425 --> 00:12:42,229
+so that my camera's name, model,
+
+194
+00:12:42,262 --> 00:12:45,566
+and manufacturer all have the proper name.
+
+195
+00:12:48,535 --> 00:12:51,538
+That's it. Let's compile and run it.
+
+196
+00:12:57,211 --> 00:13:00,881
+When I hit the Install button,
+
+197
+00:13:00,914 --> 00:13:04,051
+uh-oh, it fails.
+
+198
+00:13:04,084 --> 00:13:07,387
+That's because system extensions
+can only be installed by apps
+
+199
+00:13:07,421 --> 00:13:09,923
+residing in /Applications.
+
+200
+00:13:09,957 --> 00:13:12,159
+Let's move it and try again.
+
+201
+00:13:26,507 --> 00:13:30,410
+This time, it succeeds.
+
+202
+00:13:30,444 --> 00:13:33,847
+I'm prompted to Allow
+the blocked extension to install
+
+203
+00:13:33,881 --> 00:13:38,385
+by authenticating in System Settings,
+
+204
+00:13:38,418 --> 00:13:41,788
+where I find Privacy & Security,
+
+205
+00:13:41,822 --> 00:13:43,757
+and click the Allow button.
+
+206
+00:13:45,459 --> 00:13:48,462
+I authenticate with my password,
+
+207
+00:13:48,495 --> 00:13:53,033
+and then I see that my result has changed
+to 0 for "no error."
+
+208
+00:13:53,066 --> 00:13:58,539
+If I use the systemextensionsctl
+list tool,
+
+209
+00:13:58,572 --> 00:14:03,544
+I confirm that I've succeeded,
+and now I have one extension active
+
+210
+00:14:03,577 --> 00:14:05,379
+on my system.
+
+211
+00:14:05,412 --> 00:14:09,249
+Now I can open any camera app
+and find and admire my work.
+
+212
+00:14:10,918 --> 00:14:13,654
+Let's launch FaceTime.
+
+213
+00:14:13,687 --> 00:14:16,924
+ExampleCam shows up in the camera picker.
+
+214
+00:14:16,957 --> 00:14:20,127
+It sort of looks like the old Pong game
+from the '70s,
+
+215
+00:14:20,160 --> 00:14:23,664
+drawing a horizontal white line that moves
+up and down the frame
+
+216
+00:14:23,697 --> 00:14:25,265
+at 60 frames per second.
+
+217
+00:14:28,836 --> 00:14:32,840
+To get rid of the camera,
+all I have to do is delete the app.
+
+218
+00:14:37,244 --> 00:14:41,648
+The system prompts me to confirm
+that I'm also uninstalling the extension
+
+219
+00:14:41,682 --> 00:14:43,517
+by deleting the app.
+
+220
+00:14:49,122 --> 00:14:54,228
+The ExampleCam demo shows just how easy
+it is make a software camera from scratch.
+
+221
+00:14:54,261 --> 00:14:58,298
+Now let's take it up a notch
+by turning that software camera
+
+222
+00:14:58,332 --> 00:15:00,133
+into a creative camera.
+
+223
+00:15:02,736 --> 00:15:06,139
+I call this second example CIFilterCam.
+
+224
+00:15:06,173 --> 00:15:09,243
+The CI stands for CoreImage,
+
+225
+00:15:09,276 --> 00:15:11,778
+a framework
+with all sorts of effects filters
+
+226
+00:15:11,812 --> 00:15:14,414
+that you can apply to stills or video.
+
+227
+00:15:15,549 --> 00:15:19,553
+To create CIFilterCam,
+I began with the ExampleCam shell,
+
+228
+00:15:19,586 --> 00:15:22,456
+but decided to make the app
+a configuration app
+
+229
+00:15:22,489 --> 00:15:24,925
+as well as an installer.
+
+230
+00:15:24,958 --> 00:15:30,097
+I've added a camera picker button,
+a filter picker button,
+
+231
+00:15:30,130 --> 00:15:32,866
+and an effect bypass button.
+
+232
+00:15:32,900 --> 00:15:36,570
+I've also added a view
+for live video preview.
+
+233
+00:15:36,603 --> 00:15:40,274
+This is a standard view
+backed by an AVCaptureVideoPreviewLayer
+
+234
+00:15:40,307 --> 00:15:43,610
+to show you
+what the Filter Camera is doing.
+
+235
+00:15:43,644 --> 00:15:46,847
+By unchecking the bypass button,
+
+236
+00:15:46,880 --> 00:15:50,951
+I can see various filters
+applied to the video,
+
+237
+00:15:50,984 --> 00:15:56,123
+from color effects
+
+238
+00:15:56,156 --> 00:15:58,325
+to distortion filters.
+
+239
+00:16:02,563 --> 00:16:05,165
+I'm kind of partial
+to the bump distortion.
+
+240
+00:16:06,533 --> 00:16:09,703
+I can apply these
+to the built-in FaceTime camera
+
+241
+00:16:09,736 --> 00:16:13,273
+or to any physical camera
+attached to my Mac.
+
+242
+00:16:15,309 --> 00:16:19,446
+I've got my iPhone nearby
+set up as a Continuity Camera.
+
+243
+00:16:22,950 --> 00:16:24,618
+Let's use that.
+
+244
+00:16:29,223 --> 00:16:32,726
+The CIFilterCam app is nothing special
+in and of itself.
+
+245
+00:16:32,759 --> 00:16:34,761
+Just an effects camera app.
+
+246
+00:16:34,795 --> 00:16:38,065
+Where it really gets interesting, though,
+is when you realize that the app
+
+247
+00:16:38,098 --> 00:16:43,403
+is a front end to a virtual filter camera
+that all apps can use.
+
+248
+00:16:43,437 --> 00:16:46,406
+I'll launch FaceTime and PhotoBooth
+
+249
+00:16:46,440 --> 00:16:50,811
+and make sure both of them are
+pointed at the CIFilterCam.
+
+250
+00:16:50,844 --> 00:16:55,048
+Now, as I change filters
+in my configuration app,
+
+251
+00:16:55,082 --> 00:16:58,685
+every app using CIFilterCam
+changes in tandem.
+
+252
+00:16:59,887 --> 00:17:04,758
+If I pick a different source camera,
+every camera app picks up the change.
+
+253
+00:17:06,059 --> 00:17:09,997
+Every button click in the app
+translates to a simple property call
+
+254
+00:17:10,030 --> 00:17:15,602
+to the filter cam extension, telling it,
+"Hey, extension, use this camera,"
+
+255
+00:17:15,636 --> 00:17:18,872
+or, "Hey, extension,
+use this other filter."
+
+256
+00:17:20,307 --> 00:17:22,342
+Or this other filter.
+
+257
+00:17:25,779 --> 00:17:27,281
+Or this other filter.
+
+258
+00:17:31,118 --> 00:17:34,321
+Support for running a hardware camera
+inside your extension
+
+259
+00:17:34,354 --> 00:17:37,357
+requires macOS Ventura.
+
+260
+00:17:37,391 --> 00:17:42,863
+You also need to add
+the com.apple.security.device.camera key
+
+261
+00:17:42,896 --> 00:17:45,132
+to your extension's entitlements file,
+
+262
+00:17:45,165 --> 00:17:49,203
+indicating that you will be using
+another camera.
+
+263
+00:17:49,236 --> 00:17:52,639
+And since you'll be using a camera,
+the user will be prompted
+
+264
+00:17:52,673 --> 00:17:56,343
+to grant permission to your extension,
+so you must provide
+
+265
+00:17:56,376 --> 00:18:00,380
+an NSCameraUsageDescription
+in your Info.plist.
+
+266
+00:18:01,715 --> 00:18:05,118
+That wraps up the basics
+of building a camera extension.
+
+267
+00:18:05,152 --> 00:18:07,855
+Now let's move on to the APIs.
+
+268
+00:18:10,157 --> 00:18:13,493
+At the bottom of the stack
+are daemon processes,
+
+269
+00:18:13,527 --> 00:18:17,264
+one for each first
+or third party camera extension.
+
+270
+00:18:18,498 --> 00:18:22,870
+Within a camera app process,
+there are several layers at play,
+
+271
+00:18:22,903 --> 00:18:25,372
+beginning with the private framework code
+
+272
+00:18:25,405 --> 00:18:29,343
+that talks to your camera extension
+over IPC.
+
+273
+00:18:29,376 --> 00:18:31,845
+One level up is another private layer
+
+274
+00:18:31,879 --> 00:18:35,082
+that translates
+CoreMedia IO Extension calls
+
+275
+00:18:35,115 --> 00:18:37,518
+to legacy DAL plug-in calls.
+
+276
+00:18:38,819 --> 00:18:40,187
+Up again,
+
+277
+00:18:40,220 --> 00:18:45,692
+we find the public CoreMedia IO APIs
+that publish DAL plug-ins.
+
+278
+00:18:45,726 --> 00:18:48,462
+To the client of this interface,
+there's no difference
+
+279
+00:18:48,495 --> 00:18:52,299
+between CoreMedia IO Extensions
+and DAL plug-ins.
+
+280
+00:18:52,332 --> 00:18:55,435
+Everything looks like a DAL plug-in.
+
+281
+00:18:55,469 --> 00:18:58,972
+And finally, at the top is AVFoundation,
+
+282
+00:18:59,006 --> 00:19:01,675
+which is a client of CoreMedia IO.
+
+283
+00:19:01,708 --> 00:19:05,779
+It re-publishes DAL plug-ins
+as AVCaptureDevices.
+
+284
+00:19:07,848 --> 00:19:12,219
+Contrast this with the legacy
+DAL plug-in architecture.
+
+285
+00:19:12,252 --> 00:19:16,290
+DAL plug-ins may or may not include
+a daemon piece,
+
+286
+00:19:16,323 --> 00:19:20,093
+but all of them run code
+loaded by the CoreMedia IO framework
+
+287
+00:19:20,127 --> 00:19:22,596
+directly in the app process.
+
+288
+00:19:22,629 --> 00:19:25,732
+This leaves the app vulnerable to malware.
+
+289
+00:19:25,766 --> 00:19:30,838
+Camera extensions remove
+this attack vector completely.
+
+290
+00:19:30,871 --> 00:19:35,843
+Your extension must be app sandboxed,
+or it won't be allowed to run.
+
+291
+00:19:36,877 --> 00:19:40,147
+Apple's registerassistantservice
+identifies it
+
+292
+00:19:40,180 --> 00:19:44,017
+by its CMIOExtensionMachServiceName
+
+293
+00:19:44,051 --> 00:19:49,156
+and launches it as a role user account
+called _cmiodalassistants.
+
+294
+00:19:50,057 --> 00:19:54,728
+Sandboxd applies
+a custom sandbox profile to your process.
+
+295
+00:19:54,761 --> 00:19:57,431
+It's tailored for camera use cases.
+
+296
+00:19:59,266 --> 00:20:02,669
+The custom sandbox profile
+allows you to communicate
+
+297
+00:20:02,703 --> 00:20:06,006
+over the common hardware interfaces
+you would expect.
+
+298
+00:20:06,039 --> 00:20:10,744
+USB, Bluetooth, WiFi–
+
+299
+00:20:10,777 --> 00:20:15,148
+as a client but not a server
+that opens ports–
+
+300
+00:20:15,182 --> 00:20:17,518
+and even Firewire.
+
+301
+00:20:17,551 --> 00:20:23,056
+It also allows your extension to read
+and write from its own container and tmp.
+
+302
+00:20:24,424 --> 00:20:29,563
+The camera extension sandbox profile
+is more locked down than a regular app.
+
+303
+00:20:29,596 --> 00:20:33,367
+Some examples of things you can't do are
+
+304
+00:20:33,400 --> 00:20:38,505
+forking, exec'ing, or posix spawning
+a child process,
+
+305
+00:20:38,539 --> 00:20:41,308
+accessing the window server,
+
+306
+00:20:41,341 --> 00:20:44,811
+making a connection
+to the foreground user account,
+
+307
+00:20:44,845 --> 00:20:49,349
+or registering your own mach services
+in the global namespace.
+
+308
+00:20:51,118 --> 00:20:54,955
+If, as you develop your extension,
+you find the sandbox too restrictive
+
+309
+00:20:54,988 --> 00:20:57,491
+for a legitimate capture case,
+
+310
+00:20:57,524 --> 00:21:00,727
+please provide us feedback
+through Feedback Assistant
+
+311
+00:21:00,761 --> 00:21:04,064
+and we'll carefully consider
+loosening restrictions.
+
+312
+00:21:04,097 --> 00:21:06,333
+The earlier architecture diagram
+
+313
+00:21:06,366 --> 00:21:08,836
+showed your camera extension's
+daemon process
+
+314
+00:21:08,869 --> 00:21:12,239
+passing buffers directly to the app layer.
+
+315
+00:21:12,272 --> 00:21:15,175
+There's actually one more layer
+of security involved.
+
+316
+00:21:17,044 --> 00:21:20,681
+Between your daemon and the app
+is a proxy service
+
+317
+00:21:20,714 --> 00:21:23,851
+called registerassistantservice.
+
+318
+00:21:23,884 --> 00:21:29,022
+It enforces transparency,
+consent, and control policy.
+
+319
+00:21:29,056 --> 00:21:32,192
+When an app tries to use a camera
+for the first time,
+
+320
+00:21:32,226 --> 00:21:35,062
+the system asks the user if it's okay.
+
+321
+00:21:35,095 --> 00:21:37,865
+That consent needs to be granted
+for all cameras,
+
+322
+00:21:37,898 --> 00:21:40,000
+not just the built-in ones.
+
+323
+00:21:40,033 --> 00:21:43,537
+The proxy service handles
+this consent on your behalf.
+
+324
+00:21:43,570 --> 00:21:46,039
+If the user has denied camera access,
+
+325
+00:21:46,073 --> 00:21:50,043
+the proxy stops buffers
+from going to that app.
+
+326
+00:21:50,077 --> 00:21:53,747
+It also handles attribution–
+it lets the system know
+
+327
+00:21:53,780 --> 00:21:57,551
+that a particular camera is in use
+by a particular app
+
+328
+00:21:57,584 --> 00:22:00,153
+so that power consumed by your daemon
+
+329
+00:22:00,187 --> 00:22:03,190
+can be attributed to the app
+that's using your camera.
+
+330
+00:22:04,691 --> 00:22:08,495
+CoreMedia IO Extensions have
+four main classes:
+
+331
+00:22:08,529 --> 00:22:12,499
+Provider, Device, and Stream.
+
+332
+00:22:13,534 --> 00:22:16,970
+Providers have devices
+and devices have streams,
+
+333
+00:22:17,004 --> 00:22:20,374
+and all three of them can have properties.
+
+334
+00:22:22,843 --> 00:22:25,345
+You create
+each of these three main classes
+
+335
+00:22:25,379 --> 00:22:27,881
+by providing a source,
+
+336
+00:22:27,915 --> 00:22:33,187
+respectively, a ProviderSource,
+DeviceSource, and StreamSource.
+
+337
+00:22:35,155 --> 00:22:39,026
+The ExtensionProvider is
+your lowest level object.
+
+338
+00:22:39,059 --> 00:22:44,097
+It lets you add and remove devices
+as needed, such as for hot plug events.
+
+339
+00:22:45,599 --> 00:22:49,403
+It gets informed of the client processes
+as they try to connect,
+
+340
+00:22:49,436 --> 00:22:53,006
+which gives you an opportunity
+to limit your device publishing
+
+341
+00:22:53,040 --> 00:22:54,875
+to certain apps.
+
+342
+00:22:54,908 --> 00:22:59,580
+It also consults your provider source
+object for property implementations.
+
+343
+00:23:01,882 --> 00:23:05,853
+Here's what your extension's
+main entry point might look like.
+
+344
+00:23:05,886 --> 00:23:08,822
+You create your own
+ExtensionProviderSource,
+
+345
+00:23:08,856 --> 00:23:13,193
+which conforms to
+the CMIOExtensionProviderSource protocol
+
+346
+00:23:13,227 --> 00:23:16,230
+and creates an ExtensionProvider.
+
+347
+00:23:16,263 --> 00:23:19,499
+To start your service,
+you call the provider class method
+
+348
+00:23:19,533 --> 00:23:23,003
+startService
+and pass your provider instance.
+
+349
+00:23:25,038 --> 00:23:29,209
+ExtensionProvider implements
+two read only properties
+
+350
+00:23:29,243 --> 00:23:32,379
+that do not change
+for the life of your extension.
+
+351
+00:23:32,412 --> 00:23:36,283
+The manufacturer
+and the name of your provider.
+
+352
+00:23:36,316 --> 00:23:38,185
+Both of these are strings.
+
+353
+00:23:40,087 --> 00:23:44,191
+Next up is the CMIOExtensionDevice.
+
+354
+00:23:44,224 --> 00:23:48,762
+It manage streams,
+adding or removing them as needed.
+
+355
+00:23:48,795 --> 00:23:51,331
+Your device can present multiple streams,
+
+356
+00:23:51,365 --> 00:23:56,003
+but be aware that AVFoundation ignores
+all but the first input stream.
+
+357
+00:23:57,237 --> 00:24:01,875
+When you create a device,
+you provide a device source,
+
+358
+00:24:01,909 --> 00:24:07,681
+as well as a localized name,
+a deviceID as a UUID,
+
+359
+00:24:07,714 --> 00:24:11,518
+and, optionally, a legacyID string.
+
+360
+00:24:11,552 --> 00:24:14,988
+These properties percolate
+all the way up to AVFoundation.
+
+361
+00:24:16,723 --> 00:24:19,726
+Your device's localizedName becomes
+
+362
+00:24:19,760 --> 00:24:23,730
+the AVCaptureDevice's localizedName.
+
+363
+00:24:23,764 --> 00:24:29,169
+Your specified deviceID becomes
+the AVCaptureDevice's uniqueIdentifier,
+
+364
+00:24:29,203 --> 00:24:34,608
+unless you also provide a legacyDeviceID.
+
+365
+00:24:34,641 --> 00:24:38,278
+You only need to provide this
+if you're modernizing a DAL plug-in
+
+366
+00:24:38,312 --> 00:24:40,647
+and need to maintain
+backward compatibility
+
+367
+00:24:40,681 --> 00:24:43,717
+with the uniqueIdentifier
+you've previously shipped.
+
+368
+00:24:44,751 --> 00:24:47,287
+If you provide a legacyDeviceID,
+
+369
+00:24:47,321 --> 00:24:50,891
+AVCaptureDevice will use it
+as the uniqueIdentifier.
+
+370
+00:24:52,659 --> 00:24:59,066
+You create your CMIOExtensionDevice
+with a CMIOExtensionDeviceSource,
+
+371
+00:24:59,099 --> 00:25:01,969
+which may optionally implement
+other properties,
+
+372
+00:25:02,002 --> 00:25:04,471
+such as deviceModel,
+
+373
+00:25:04,505 --> 00:25:08,775
+which should be the same
+for all cameras of the same model.
+
+374
+00:25:08,809 --> 00:25:12,379
+isSuspended should be implemented
+if your device can enter
+
+375
+00:25:12,412 --> 00:25:16,950
+a suspended state,
+such as if it has a privacy iris.
+
+376
+00:25:16,984 --> 00:25:20,621
+The built-in cameras on Apple laptops
+enter the suspended state
+
+377
+00:25:20,654 --> 00:25:24,157
+when the clamshell is closed.
+
+378
+00:25:24,191 --> 00:25:27,961
+Your device's transport type
+reveals how it's connected,
+
+379
+00:25:27,995 --> 00:25:32,332
+such as via USB, Bluetooth, or Firewire.
+
+380
+00:25:33,967 --> 00:25:37,838
+Lastly, if you have a microphone
+physically paired with your camera,
+
+381
+00:25:37,871 --> 00:25:40,908
+you can expose it as a linked device.
+
+382
+00:25:40,941 --> 00:25:44,278
+All of these properties are read only.
+
+383
+00:25:44,311 --> 00:25:48,715
+Next up is the all-important
+CMIOExtensionStream,
+
+384
+00:25:48,749 --> 00:25:52,819
+which does the heavy lifting
+in the CMIOExtension.
+
+385
+00:25:52,853 --> 00:25:58,058
+It publishes video formats
+and defines their valid frame rates
+
+386
+00:25:58,091 --> 00:26:01,461
+and configures the active format.
+
+387
+00:26:01,495 --> 00:26:04,965
+It uses a standard clock,
+such as the host time clock,
+
+388
+00:26:04,998 --> 00:26:07,534
+or provides its own custom clock
+
+389
+00:26:07,568 --> 00:26:11,438
+to drive the timing
+of each buffer it produces.
+
+390
+00:26:11,471 --> 00:26:16,043
+And most importantly,
+it sends sample buffers to clients.
+
+391
+00:26:18,445 --> 00:26:21,381
+Your extension stream source publishes
+
+392
+00:26:21,415 --> 00:26:24,051
+CMIOExtensionStreamFormats.
+
+393
+00:26:24,084 --> 00:26:28,488
+Those become AVCaptureDeviceFormats.
+
+394
+00:26:28,522 --> 00:26:31,758
+Clients can read and write
+the active format index
+
+395
+00:26:31,792 --> 00:26:33,827
+to change the active format.
+
+396
+00:26:35,329 --> 00:26:39,633
+The frame duration, which is equivalent
+to max frame rate.
+
+397
+00:26:39,666 --> 00:26:44,338
+And max frame duration,
+which is the same as min frame rate.
+
+398
+00:26:46,273 --> 00:26:51,912
+The DAL plug-in world exposes
+a fourth interface called DAL controls.
+
+399
+00:26:51,945 --> 00:26:55,949
+Plug-in developers use these to expose
+features such as auto exposure,
+
+400
+00:26:55,983 --> 00:27:00,687
+brightness, sharpness, pan and zoom,
+et cetera.
+
+401
+00:27:00,721 --> 00:27:04,591
+While powerful,
+they've been implemented inconsistently,
+
+402
+00:27:04,625 --> 00:27:08,195
+so it's difficult for app developers
+to use them.
+
+403
+00:27:08,228 --> 00:27:13,233
+In the CMIOExtension architecture,
+we don't offer a DAL control replacement.
+
+404
+00:27:13,267 --> 00:27:15,936
+Instead, everything is a property.
+
+405
+00:27:17,471 --> 00:27:21,074
+You've already learned about
+many standard properties at the provider,
+
+406
+00:27:21,108 --> 00:27:23,577
+device, and stream level.
+
+407
+00:27:23,610 --> 00:27:25,746
+You can also make
+your own custom properties
+
+408
+00:27:25,779 --> 00:27:30,784
+and propagate them to the app layer,
+just as I did in the CIFilterCam demo.
+
+409
+00:27:32,019 --> 00:27:36,423
+CoreMedia IO's C property interface
+uses a C struct
+
+410
+00:27:36,456 --> 00:27:41,595
+to identify a property's selector,
+scope, and element.
+
+411
+00:27:41,628 --> 00:27:43,630
+These are considered its address.
+
+412
+00:27:45,132 --> 00:27:49,169
+The selector is the name of the property
+as a four-character code,
+
+413
+00:27:49,203 --> 00:27:53,040
+such as cust for custom.
+
+414
+00:27:53,073 --> 00:27:56,944
+The scope can be global, input, or output,
+
+415
+00:27:56,977 --> 00:28:00,047
+and the element can be
+any number you want.
+
+416
+00:28:00,080 --> 00:28:03,383
+The main element is always zero.
+
+417
+00:28:03,417 --> 00:28:07,621
+CMIOExtensions let you bridge
+your properties to the old world
+
+418
+00:28:07,654 --> 00:28:12,559
+by coding property address elements
+into a custom property name.
+
+419
+00:28:12,593 --> 00:28:17,397
+First, the characters 4cc_,
+
+420
+00:28:17,431 --> 00:28:20,234
+then the selector, scope, and element
+
+421
+00:28:20,267 --> 00:28:24,037
+as four character codes
+separated by underscores.
+
+422
+00:28:24,071 --> 00:28:29,576
+Using this method, you can communicate
+any string or data value to the app layer.
+
+423
+00:28:30,644 --> 00:28:33,547
+AVFoundation doesn't work
+with custom properties,
+
+424
+00:28:33,580 --> 00:28:37,684
+so you must stick
+to the CoreMedia IO C API
+
+425
+00:28:37,718 --> 00:28:41,722
+if your configuration app needs
+to work with custom properties.
+
+426
+00:28:41,755 --> 00:28:44,691
+That's our high-level look at the API.
+
+427
+00:28:44,725 --> 00:28:47,761
+Now let's talk about output devices.
+
+428
+00:28:49,329 --> 00:28:53,267
+A lesser known feature of DAL plug-ins
+is their ability to present
+
+429
+00:28:53,300 --> 00:28:56,737
+the opposite of a camera–an output device–
+
+430
+00:28:56,770 --> 00:29:01,675
+which consumes video from an app
+in real time rather than provides it.
+
+431
+00:29:01,708 --> 00:29:04,611
+This is the "O" part of CoreMedia IO.
+
+432
+00:29:04,645 --> 00:29:07,648
+Input and Output.
+
+433
+00:29:07,681 --> 00:29:11,451
+Output devices
+are common in the pro video world.
+
+434
+00:29:11,485 --> 00:29:16,023
+Some common uses are print-to-tape,
+where a video signal is sent
+
+435
+00:29:16,056 --> 00:29:20,427
+to an external recorder,
+or real-time preview monitoring,
+
+436
+00:29:20,460 --> 00:29:23,730
+such as on a pro deck with SDI inputs.
+
+437
+00:29:25,232 --> 00:29:28,502
+One important thing to note
+is that output devices have
+
+438
+00:29:28,535 --> 00:29:31,672
+no AVFoundation API equivalent.
+
+439
+00:29:31,705 --> 00:29:33,674
+To send frames to an output device,
+
+440
+00:29:33,707 --> 00:29:38,011
+you must use the CoreMedia IO C API
+directly.
+
+441
+00:29:39,313 --> 00:29:43,283
+CMIOExtension streams are created
+with a direction
+
+442
+00:29:43,317 --> 00:29:47,254
+of either source or sink.
+
+443
+00:29:47,287 --> 00:29:50,624
+Sink streams consume data from an app.
+
+444
+00:29:50,657 --> 00:29:56,296
+Clients feed your sink stream by inserting
+sample buffers into a simple queue.
+
+445
+00:29:56,330 --> 00:30:01,235
+That translates to a consumeSampleBuffer
+call in your extension,
+
+446
+00:30:01,268 --> 00:30:04,404
+and once you've consumed that buffer,
+you notify them
+
+447
+00:30:04,438 --> 00:30:07,741
+with notifyScheduledOutputChanged.
+
+448
+00:30:09,576 --> 00:30:13,847
+There are a number of stream properties
+specific to output devices.
+
+449
+00:30:13,881 --> 00:30:18,952
+They mainly deal with the queue sizing,
+how many frames to buffer before starting,
+
+450
+00:30:18,986 --> 00:30:22,055
+and signaling
+when all data has been consumed.
+
+451
+00:30:23,557 --> 00:30:27,261
+Now on to our fifth
+and final topic of the day.
+
+452
+00:30:28,929 --> 00:30:31,932
+Earlier in the presentation,
+I showed this diagram
+
+453
+00:30:31,965 --> 00:30:33,867
+of the DAL plug-in architecture
+
+454
+00:30:33,901 --> 00:30:36,937
+and I highlighted
+its many security problems.
+
+455
+00:30:36,970 --> 00:30:40,140
+We've addressed these shortcomings
+with Camera Extensions
+
+456
+00:30:40,174 --> 00:30:43,243
+and are fully committed
+to their continued development.
+
+457
+00:30:43,277 --> 00:30:46,280
+They are the path forward.
+
+458
+00:30:46,313 --> 00:30:49,316
+So what does that mean for DAL plug-ins?
+
+459
+00:30:49,349 --> 00:30:51,552
+It means the end is near.
+
+460
+00:30:53,253 --> 00:30:58,358
+As of macOS 12.3,
+DAL plug-ins are already deprecated,
+
+461
+00:30:58,392 --> 00:31:01,395
+so you get a compilation warning
+when building.
+
+462
+00:31:01,428 --> 00:31:04,498
+That's a good start, but it's not enough.
+
+463
+00:31:04,531 --> 00:31:07,367
+As long as legacy DAL plug-ins
+are allowed to load,
+
+464
+00:31:07,401 --> 00:31:09,937
+camera apps will still be at risk.
+
+465
+00:31:11,872 --> 00:31:15,175
+To fully address security vulnerabilities
+and make the system
+
+466
+00:31:15,209 --> 00:31:20,581
+more robust for all users,
+we plan to disable DAL plug-ins entirely
+
+467
+00:31:20,614 --> 00:31:24,117
+in the next major release
+after macOS Ventura.
+
+468
+00:31:26,320 --> 00:31:28,388
+What does this mean for you?
+
+469
+00:31:28,422 --> 00:31:30,824
+Well, we hope the message is clear.
+
+470
+00:31:30,858 --> 00:31:33,060
+If you currently maintain a DAL plug-in,
+
+471
+00:31:33,093 --> 00:31:37,297
+now is the time to begin
+porting your code to a Camera Extension.
+
+472
+00:31:38,398 --> 00:31:41,602
+And please,
+let us know what friction you encounter.
+
+473
+00:31:41,635 --> 00:31:45,939
+We are eager to address these issues
+and provide a rich feature set.
+
+474
+00:31:45,973 --> 00:31:48,509
+We really look forward
+to working with you.
+
+475
+00:31:48,542 --> 00:31:53,013
+This concludes today's presentation
+on camera extensions for macOS.
+
+476
+00:31:53,046 --> 00:31:56,617
+We can't wait to see what fresh
+and creative camera experiences
+
+477
+00:31:56,650 --> 00:31:58,085
+you'll bring to the Mac.
+
+478
+00:31:58,118 --> 00:32:00,954
+And hope you have fun doing it.
+

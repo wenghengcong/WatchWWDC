@@ -1,0 +1,1397 @@
+1
+00:00:00,334 --> 00:00:06,340
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,309 --> 00:00:14,548
+Hello, I'm Neil Foley,
+an engineer on the ShazamKit team.
+
+3
+00:00:14,581 --> 00:00:19,253
+In 2021, we introduced ShazamKit,
+allowing you to match audio
+
+4
+00:00:19,286 --> 00:00:22,623
+against Shazam's
+vast catalog of recorded music.
+
+5
+00:00:22,656 --> 00:00:25,759
+We also introduced custom catalog
+matching,
+
+6
+00:00:25,792 --> 00:00:28,595
+giving developers the ability
+to match their own audio
+
+7
+00:00:28,629 --> 00:00:31,532
+and provide synced experiences.
+
+8
+00:00:31,565 --> 00:00:34,134
+Now we have some important
+updates that streamline
+
+9
+00:00:34,168 --> 00:00:37,304
+working with custom catalogs at scale.
+
+10
+00:00:37,337 --> 00:00:42,376
+In this session, I'm going to use
+some of the existing ShazamKit concepts
+
+11
+00:00:42,409 --> 00:00:46,713
+such as signatures,
+catalogs, and media items.
+
+12
+00:00:46,747 --> 00:00:48,715
+If you're not already familiar with those,
+
+13
+00:00:48,749 --> 00:00:50,951
+check out the "Explore ShazamKit”
+
+14
+00:00:50,984 --> 00:00:54,421
+and "Create custom audio experiences
+with ShazamKit" talks
+
+15
+00:00:54,454 --> 00:00:57,357
+from WWDC21.
+
+16
+00:00:57,391 --> 00:01:01,929
+But as quick overview,
+ShazamKit lets you convert audio
+
+17
+00:01:01,962 --> 00:01:04,198
+into a special format that can be matched.
+
+18
+00:01:04,231 --> 00:01:07,067
+We call these signatures.
+
+19
+00:01:07,100 --> 00:01:10,971
+Signatures can be combined
+with media items containing metadata
+
+20
+00:01:11,004 --> 00:01:13,607
+to form a reference signature.
+
+21
+00:01:13,640 --> 00:01:16,743
+And reference signatures can
+be stored together in a file
+
+22
+00:01:16,777 --> 00:01:19,279
+that we call a custom catalog.
+
+23
+00:01:19,313 --> 00:01:21,248
+Now that we are all caught up,
+
+24
+00:01:21,281 --> 00:01:24,384
+I'll take you through building
+custom catalogs at scale,
+
+25
+00:01:24,418 --> 00:01:29,356
+and then I'll talk about some tips
+and tricks to make great catalogs.
+
+26
+00:01:29,389 --> 00:01:32,025
+In today's custom catalog workflow,
+
+27
+00:01:32,059 --> 00:01:35,629
+if you have a small amount
+of content you want to be matched,
+
+28
+00:01:35,662 --> 00:01:39,099
+working with custom catalogs
+can be a simple task.
+
+29
+00:01:39,132 --> 00:01:42,236
+You just need to follow these steps.
+
+30
+00:01:42,269 --> 00:01:45,772
+Record your audio in a format
+that ShazamKit accepts.
+
+31
+00:01:47,441 --> 00:01:50,811
+Use the signature generator
+to transform it into a signature.
+
+32
+00:01:52,279 --> 00:01:54,381
+Annotate it with your metadata,
+
+33
+00:01:54,414 --> 00:01:57,117
+and then store it in a custom catalog.
+
+34
+00:01:57,150 --> 00:02:00,387
+And that's it,
+you can provide a Shazam experience.
+
+35
+00:02:00,420 --> 00:02:02,890
+But some of those steps can be daunting,
+
+36
+00:02:02,923 --> 00:02:06,260
+especially if you're not familiar
+with audio programming.
+
+37
+00:02:06,293 --> 00:02:09,997
+Dealing with sample rates and buffers
+can be tricky
+
+38
+00:02:10,030 --> 00:02:12,399
+even for the most experienced developer.
+
+39
+00:02:12,432 --> 00:02:15,836
+And what happens when you have
+a vast amount of content
+
+40
+00:02:15,869 --> 00:02:19,940
+you'd like to make Shazamable,
+like 10 seasons of a TV show?
+
+41
+00:02:21,808 --> 00:02:24,144
+This workflow can become painful.
+
+42
+00:02:25,379 --> 00:02:29,616
+And if you have large amounts of content,
+it can quickly become unmanageable.
+
+43
+00:02:30,150 --> 00:02:33,120
+If you're thinking of improving
+this workflow for yourself,
+
+44
+00:02:33,153 --> 00:02:37,291
+you'll probably need to write code to
+transform audio into signatures,
+
+45
+00:02:37,324 --> 00:02:40,961
+more code to load
+and associate media items,
+
+46
+00:02:40,994 --> 00:02:44,865
+and each time you change your content,
+you'll have to repeat the work.
+
+47
+00:02:44,898 --> 00:02:48,502
+This is a big investment
+when you just want to match some audio.
+
+48
+00:02:48,902 --> 00:02:51,972
+And then if you want to sync content
+with ShazamKit,
+
+49
+00:02:52,005 --> 00:02:56,143
+you need complicated logic to figure
+out what should be shown and when.
+
+50
+00:02:56,176 --> 00:03:01,181
+I'll introduce some great enhancements to
+ShazamKit that streamline this workflow.
+
+51
+00:03:01,215 --> 00:03:03,650
+But first a quick demo.
+
+52
+00:03:03,684 --> 00:03:08,722
+Here I have the FoodMath app that
+Alex demonstrated in 2021
+
+53
+00:03:08,755 --> 00:03:11,725
+that syncs a maths quiz
+with an on screen lesson.
+
+54
+00:03:11,758 --> 00:03:14,628
+I've updated it with
+the latest ShazamKit features,
+
+55
+00:03:14,661 --> 00:03:19,199
+and I'm going play back the FoodMath
+video to see how it syncs.
+
+56
+00:03:21,502 --> 00:03:23,937
+Skip to 26 seconds.
+
+57
+00:03:24,872 --> 00:03:29,109
+2, 3 green apples.
+
+58
+00:03:29,142 --> 00:03:31,044
+How many apples do I have in total?
+
+59
+00:03:31,078 --> 00:03:34,281
+Your timer starts…now.
+
+60
+00:03:34,314 --> 00:03:38,685
+[light music]
+
+61
+00:03:38,719 --> 00:03:41,488
+Okay, time's up.
+Let's see how you did.
+
+62
+00:03:41,522 --> 00:03:44,992
+Skip to 56 seconds.
+
+63
+00:03:45,025 --> 00:03:47,394
+Today, to spice it up a bit,
+
+64
+00:03:47,427 --> 00:03:51,164
+when I went to the shop,
+started with 2 red apples...
+
+65
+00:03:51,198 --> 00:03:55,002
+and I bought 2 green apples.
+
+66
+00:03:55,035 --> 00:03:58,572
+How many apples did I have
+in total this time?
+
+67
+00:03:58,605 --> 00:04:01,208
+Your timer starts…now.
+
+68
+00:04:07,214 --> 00:04:09,449
+Okay, time's up.
+
+69
+00:04:09,483 --> 00:04:10,417
+Seems to be working great.
+
+70
+00:04:11,351 --> 00:04:14,354
+There's rich content synced with the
+video and when I said "now,"
+
+71
+00:04:14,388 --> 00:04:17,658
+the menu appeared
+at exactly the right time.
+
+72
+00:04:17,691 --> 00:04:22,496
+Also, when content was no longer
+relevant, it disappeared right on cue.
+
+73
+00:04:22,529 --> 00:04:23,730
+But how does it work?
+
+74
+00:04:23,764 --> 00:04:26,333
+Let's have a look at the code.
+
+75
+00:04:26,366 --> 00:04:27,768
+There's just a simple loop.
+
+76
+00:04:27,801 --> 00:04:31,772
+It uses an AsyncSequence on the session
+instead of the delegate callbacks
+
+77
+00:04:31,805 --> 00:04:33,774
+that we used before.
+
+78
+00:04:33,807 --> 00:04:38,679
+The sequence returns an enum
+representing match, no match, or error.
+
+79
+00:04:38,712 --> 00:04:44,585
+I'm only interested in matches, so I've
+restricted the loop to just that case.
+
+80
+00:04:44,618 --> 00:04:46,720
+And to build the result for display,
+
+81
+00:04:46,753 --> 00:04:49,857
+I reduce the media items
+to the content that I need.
+
+82
+00:04:52,226 --> 00:04:54,595
+There's actually
+not much more to see in the app,
+
+83
+00:04:54,628 --> 00:04:58,232
+just SwiftUI views that are driven by
+the matchResult that we create.
+
+84
+00:04:58,265 --> 00:05:03,604
+There's no complicated logic or
+timing code and it syncs perfectly.
+
+85
+00:05:03,637 --> 00:05:08,242
+So the question remains,
+how does it sync so well?
+
+86
+00:05:08,275 --> 00:05:13,480
+FoodMaths' secret is the rich
+custom catalog that drives the experience.
+
+87
+00:05:13,514 --> 00:05:19,052
+I created the catalog with a simple tool
+that we've built to complement ShazamKit,
+
+88
+00:05:19,086 --> 00:05:24,091
+and you can use it too to create
+rich experiences in your own apps.
+
+89
+00:05:24,124 --> 00:05:28,495
+The Shazam CLI ships as part of
+macOS 13
+
+90
+00:05:28,529 --> 00:05:32,065
+and provides an easy way to sync content.
+
+91
+00:05:32,099 --> 00:05:34,935
+It can help to automate
+some of the repetitive tasks
+
+92
+00:05:34,968 --> 00:05:37,738
+associated with creating custom catalogs.
+
+93
+00:05:37,771 --> 00:05:41,308
+Let's update the custom catalog
+that I just showed you.
+
+94
+00:05:41,341 --> 00:05:43,177
+Time for another demo.
+
+95
+00:05:45,812 --> 00:05:49,983
+Here's a folder containing
+the FoodMath video file,
+
+96
+00:05:50,017 --> 00:05:52,719
+and here's my terminal in the same folder.
+
+97
+00:05:52,753 --> 00:05:56,256
+I'll use the CLI to convert
+the video into a signature
+
+98
+00:05:56,290 --> 00:05:58,258
+using the signature command.
+
+99
+00:06:02,663 --> 00:06:07,701
+I just pass the video file as input
+and specify our signature output.
+
+100
+00:06:11,104 --> 00:06:11,939
+Okay. There's our signature.
+
+101
+00:06:13,073 --> 00:06:16,176
+Now I want combine this signature
+with media items
+
+102
+00:06:16,210 --> 00:06:18,612
+to make a custom catalog.
+
+103
+00:06:18,645 --> 00:06:21,715
+The CLI accepts a simple
+comma separated file
+
+104
+00:06:21,748 --> 00:06:24,484
+for describing media items
+that I'll copy here.
+
+105
+00:06:33,493 --> 00:06:36,496
+It describes everything
+that I need to sync my content.
+
+106
+00:06:38,999 --> 00:06:43,237
+Here's where I've specified my titles,
+
+107
+00:06:43,270 --> 00:06:47,508
+and here's a custom JSON field
+I've defined for the equation.
+
+108
+00:06:47,541 --> 00:06:50,644
+The headers map to media item
+properties.
+
+109
+00:06:50,677 --> 00:06:55,249
+For details on the mapping,
+run the custom catalog create command
+
+110
+00:06:55,282 --> 00:06:57,150
+with the help flag.
+
+111
+00:07:02,222 --> 00:07:07,928
+It describes the relationship between
+the csv headers and media item properties.
+
+112
+00:07:07,961 --> 00:07:12,199
+Now I want to combine them
+together into a custom catalog.
+
+113
+00:07:12,232 --> 00:07:14,701
+So I'll run the create command.
+
+114
+00:07:19,573 --> 00:07:24,745
+I pass in the signature file and the csv
+file and it outputs a catalog.
+
+115
+00:07:28,282 --> 00:07:30,217
+Okay, now we have our catalog.
+
+116
+00:07:30,250 --> 00:07:34,788
+Excitingly, I have early access to
+the latest FoodMath episode,
+
+117
+00:07:34,821 --> 00:07:37,691
+so I want to add that to our catalog file.
+
+118
+00:07:37,724 --> 00:07:39,793
+Let me copy the files here.
+
+119
+00:07:44,932 --> 00:07:47,501
+Here's our media items
+for our new episode.
+
+120
+00:07:51,004 --> 00:07:54,107
+I'll run the update command
+passing in the video,
+
+121
+00:07:54,141 --> 00:07:58,912
+the new media, and the catalog to update.
+
+122
+00:08:02,015 --> 00:08:05,052
+Okay, we've updated our catalog.
+
+123
+00:08:05,085 --> 00:08:08,255
+That's a quick overview
+of how to create catalogs,
+
+124
+00:08:08,288 --> 00:08:12,659
+but if you're like me,
+you'll really you'll want to script this.
+
+125
+00:08:20,701 --> 00:08:24,338
+The FoodMath app
+actually has quite a few new episodes,
+
+126
+00:08:24,371 --> 00:08:27,174
+and I want to
+add them all to this catalog.
+
+127
+00:08:27,207 --> 00:08:31,245
+I've written a really simple script
+that loops through all the episode folders
+
+128
+00:08:31,278 --> 00:08:33,847
+and combines them into a custom catalog.
+
+129
+00:08:33,881 --> 00:08:35,582
+I'll run it now.
+
+130
+00:08:49,162 --> 00:08:50,931
+There we go.
+
+131
+00:08:50,964 --> 00:08:54,535
+We now have one catalog representing
+every FoodMath episode
+
+132
+00:08:54,568 --> 00:09:00,507
+and the script used the display command
+to detail what's inside the catalog.
+
+133
+00:09:00,541 --> 00:09:02,276
+I think we have everything.
+
+134
+00:09:02,309 --> 00:09:05,078
+The foodmath project is already
+referencing our new catalog.
+
+135
+00:09:05,112 --> 00:09:08,549
+So let's build and run
+so that we can enjoy doing some maths.
+
+136
+00:09:11,852 --> 00:09:14,655
+Skip to 30 seconds.
+
+137
+00:09:14,688 --> 00:09:16,723
+How many apples do I have in total?
+
+138
+00:09:16,757 --> 00:09:19,927
+Your timer starts…now.
+
+139
+00:09:19,960 --> 00:09:24,698
+[upbeat music]
+
+140
+00:09:24,731 --> 00:09:28,202
+Okay, time's up.
+Let's see how you did.
+
+141
+00:09:28,235 --> 00:09:30,938
+I like that guy.
+That's a great episode.
+
+142
+00:09:30,971 --> 00:09:34,107
+What about a new episode?
+Let's try that.
+
+143
+00:09:37,311 --> 00:09:41,048
+Skip to 15 seconds.
+
+144
+00:09:41,081 --> 00:09:45,419
+Over the years, I explored what makes
+a guacamole truly delicious,
+
+145
+00:09:45,452 --> 00:09:49,223
+and I wrote down my favorite
+guacamole recipe.
+
+146
+00:09:49,256 --> 00:09:51,825
+It calls for 4 avocados.
+
+147
+00:09:51,859 --> 00:09:53,527
+Tomorrow
+my friend is visiting.
+
+148
+00:09:53,560 --> 00:09:57,364
+So for the two of us, I only need
+to make half of the portion.
+
+149
+00:09:57,397 --> 00:09:59,466
+How many avocados do I need?
+
+150
+00:09:59,499 --> 00:10:02,769
+The timer starts…now.
+
+151
+00:10:02,803 --> 00:10:07,541
+[rapid beeping]
+
+152
+00:10:10,077 --> 00:10:12,913
+That's correct.
+You need two avocados.
+
+153
+00:10:12,946 --> 00:10:16,049
+Let's make this guacamole together.
+
+154
+00:10:16,083 --> 00:10:22,256
+[upbeat music]
+
+155
+00:10:24,358 --> 00:10:26,260
+Let's give this a try.
+
+156
+00:10:30,631 --> 00:10:33,734
+Mmm. That turned out to be great.
+I hope you had some fun
+
+157
+00:10:33,767 --> 00:10:36,236
+and see you next time.
+
+158
+00:10:40,140 --> 00:10:41,341
+Oh!
+
+159
+00:10:41,375 --> 00:10:43,644
+They have a new host.
+Interesting.
+
+160
+00:10:43,677 --> 00:10:48,415
+Anyway, I've created a rich synced
+experience in no time at all.
+
+161
+00:10:48,448 --> 00:10:51,451
+The Shazam CLI supports
+a rich set of commands.
+
+162
+00:10:51,485 --> 00:10:52,819
+Let's go over them.
+
+163
+00:10:54,021 --> 00:10:56,657
+You can create a signature
+from any media file
+
+164
+00:10:56,690 --> 00:10:58,759
+that has an audio track.
+
+165
+00:10:58,792 --> 00:11:00,294
+You can create custom catalogs
+
+166
+00:11:00,327 --> 00:11:03,564
+by combining signatures and media items.
+
+167
+00:11:03,597 --> 00:11:06,700
+You can display a catalog's content.
+
+168
+00:11:06,733 --> 00:11:09,503
+Add, remove, and export both signatures
+
+169
+00:11:09,536 --> 00:11:11,939
+and media items.
+
+170
+00:11:11,972 --> 00:11:14,107
+Next, on to how the CLI created
+
+171
+00:11:14,141 --> 00:11:16,476
+the signatures from the FoodMath videos.
+
+172
+00:11:18,745 --> 00:11:23,984
+SHSignatureGenerator now has
+a method signatureFromAsset
+
+173
+00:11:24,017 --> 00:11:26,954
+that's available on all platforms.
+
+174
+00:11:26,987 --> 00:11:31,592
+With this method, there's no more manually
+pulling audio buffers from media.
+
+175
+00:11:31,625 --> 00:11:37,531
+Simply pass an AVAsset with an
+audio track to turn it into a signature.
+
+176
+00:11:37,564 --> 00:11:40,801
+If you have multiple tracks in
+your asset, they'll be mixed together
+
+177
+00:11:40,834 --> 00:11:44,037
+ensuring the signature
+captures everything.
+
+178
+00:11:44,071 --> 00:11:48,075
+Okay, now that I have a signature
+that represents the media,
+
+179
+00:11:48,108 --> 00:11:51,545
+how did I accurately sync content?
+
+180
+00:11:51,578 --> 00:11:54,414
+I used the Timed MediaItem API.
+
+181
+00:11:54,448 --> 00:11:58,752
+Attaching a time range to the media
+item makes it easy to specify
+
+182
+00:11:58,785 --> 00:12:01,321
+when it starts and when it ends.
+
+183
+00:12:01,355 --> 00:12:04,491
+Media items can also have
+multiple time ranges
+
+184
+00:12:04,525 --> 00:12:08,862
+to target more than
+one portion of a signature.
+
+185
+00:12:08,896 --> 00:12:12,966
+Imagine that you have a media item
+that targets the chorus of a song.
+
+186
+00:12:13,000 --> 00:12:15,802
+You can add a time range
+for each place it's sung.
+
+187
+00:12:16,970 --> 00:12:19,840
+Specifying the time ranges is only useful
+
+188
+00:12:19,873 --> 00:12:23,610
+if you're notified when they start
+and when they end.
+
+189
+00:12:23,644 --> 00:12:27,481
+ShazamKit will deliver a match
+callback synced with the time range,
+
+190
+00:12:27,514 --> 00:12:30,784
+one when it starts and one when it ends.
+
+191
+00:12:30,817 --> 00:12:35,689
+Signatures can contain many media items,
+so this callback will contain only
+
+192
+00:12:35,722 --> 00:12:40,661
+the media items that are in range
+at that specific point in time.
+
+193
+00:12:40,694 --> 00:12:44,398
+There's a few simple rules for which
+media items will be returned
+
+194
+00:12:44,431 --> 00:12:47,901
+in a callback and their order,
+so let's go over them.
+
+195
+00:12:49,269 --> 00:12:54,174
+Media items outside of their time range
+will not be returned.
+
+196
+00:12:54,208 --> 00:12:57,444
+Media items within their
+time range will be returned,
+
+197
+00:12:57,477 --> 00:13:00,013
+with the most recent events
+coming first.
+
+198
+00:13:01,348 --> 00:13:06,420
+And finally, media items with no time
+ranges will always be returned last,
+
+199
+00:13:06,453 --> 00:13:09,056
+but they will be unordered.
+
+200
+00:13:09,089 --> 00:13:11,592
+Media items that have no time range
+can be a great place
+
+201
+00:13:11,625 --> 00:13:15,963
+to store global information that applies
+to the whole reference signature.
+
+202
+00:13:15,996 --> 00:13:20,501
+In my FoodMath example, I used it
+to store the name of the episode.
+
+203
+00:13:20,534 --> 00:13:23,904
+It appears when no other
+media items are in range.
+
+204
+00:13:25,939 --> 00:13:30,577
+One final point, if all your media items
+have time ranges
+
+205
+00:13:30,611 --> 00:13:32,212
+and none of them are in scope,
+
+206
+00:13:32,246 --> 00:13:37,351
+ShazamKit will always return a
+media item with basic match information.
+
+207
+00:13:37,384 --> 00:13:40,254
+This way, you will always
+get important properties,
+
+208
+00:13:40,287 --> 00:13:45,259
+such as the predictedCurrentMatch offset
+and the frequencySkew.
+
+209
+00:13:46,026 --> 00:13:49,062
+And in code, it's easy too.
+
+210
+00:13:49,096 --> 00:13:52,099
+Timed media items
+are created by specifying
+
+211
+00:13:52,132 --> 00:13:55,035
+the timeRanges media item property.
+
+212
+00:13:55,068 --> 00:13:58,405
+It's an array of Swift ranges.
+
+213
+00:13:58,438 --> 00:14:02,409
+It can also be read back
+using the timeRanges property.
+
+214
+00:14:02,442 --> 00:14:05,946
+And for Objective-C programmers,
+there's a new SHRange class
+
+215
+00:14:05,979 --> 00:14:08,482
+as a drop in replacement.
+
+216
+00:14:08,515 --> 00:14:10,717
+Now that you've
+seen how to build them,
+
+217
+00:14:10,751 --> 00:14:15,989
+let's explore some tips and tricks
+to make great custom catalogs.
+
+218
+00:14:16,023 --> 00:14:21,028
+Avoid creating many small signatures
+for one piece of media.
+
+219
+00:14:21,061 --> 00:14:25,399
+A signature is a one to one
+mapping to the media that it represents,
+
+220
+00:14:25,432 --> 00:14:30,737
+so for each piece of audio you have,
+be it from a song or video,
+
+221
+00:14:30,771 --> 00:14:33,774
+create one signature
+for the entire duration.
+
+222
+00:14:34,975 --> 00:14:38,445
+A longer signature provides more
+opportunities for ShazamKit to match
+
+223
+00:14:38,478 --> 00:14:41,615
+audio peaks, resulting in better
+accuracy.
+
+224
+00:14:42,149 --> 00:14:45,052
+It also avoids issues
+with query signatures
+
+225
+00:14:45,085 --> 00:14:48,488
+overlapping multiple reference signatures.
+
+226
+00:14:50,023 --> 00:14:52,593
+Using the new Timed MediaItem API,
+
+227
+00:14:52,626 --> 00:14:55,529
+you can target synced content
+to individual areas.
+
+228
+00:14:55,562 --> 00:15:01,101
+There's no need to divide a piece
+of audio into multiple signatures.
+
+229
+00:15:01,134 --> 00:15:04,204
+I showed an example where we
+had one piece of media,
+
+230
+00:15:04,238 --> 00:15:06,373
+but with multiple media items.
+
+231
+00:15:06,406 --> 00:15:09,443
+But what should we do if we have
+a huge amount of content
+
+232
+00:15:09,476 --> 00:15:11,979
+that we want to make Shazamable?
+
+233
+00:15:12,012 --> 00:15:14,414
+How should we split it up?
+
+234
+00:15:14,448 --> 00:15:18,285
+There's a trade-off you need
+to make when splitting your content
+
+235
+00:15:18,318 --> 00:15:20,621
+across custom catalogs.
+
+236
+00:15:20,654 --> 00:15:23,924
+If you create individual catalogs
+for each media asset,
+
+237
+00:15:23,957 --> 00:15:27,060
+you'll need to know
+which piece of audio is being played
+
+238
+00:15:27,094 --> 00:15:30,197
+so that you can load the correct catalog.
+
+239
+00:15:30,230 --> 00:15:32,833
+And if you put them all together
+in one catalog,
+
+240
+00:15:32,866 --> 00:15:35,869
+you'll have a larger download
+and use more memory,
+
+241
+00:15:35,903 --> 00:15:39,239
+but you can match
+many more pieces of audio.
+
+242
+00:15:39,273 --> 00:15:44,244
+Our advice is to keep the catalog
+files you create tightly focused.
+
+243
+00:15:44,278 --> 00:15:48,615
+For example, a catalog per music
+track or the whole album,
+
+244
+00:15:48,649 --> 00:15:51,485
+but not the artist's whole discography.
+
+245
+00:15:51,518 --> 00:15:56,757
+Keeping things separate means that you
+can decide what to load at runtime.
+
+246
+00:15:56,790 --> 00:16:00,627
+You can do that with the custom
+catalog add API.
+
+247
+00:16:02,062 --> 00:16:06,867
+Try it out
+and see if helps with your use case.
+
+248
+00:16:06,900 --> 00:16:11,572
+If you have multiple audio
+assets that sound the same,
+
+249
+00:16:11,605 --> 00:16:15,709
+maybe a show that always starts with
+the same intro music, and you want to
+
+250
+00:16:15,742 --> 00:16:18,312
+provide a custom experience
+for each episode,
+
+251
+00:16:18,345 --> 00:16:21,648
+or a song that's sampled in another track,
+
+252
+00:16:21,682 --> 00:16:25,285
+maybe consider using
+frequency skew as a differentiator.
+
+253
+00:16:25,319 --> 00:16:30,190
+Skewing audio is raising or
+lowing the frequencies in the recording.
+
+254
+00:16:30,224 --> 00:16:33,427
+When you do this,
+you affect how the audio sounds,
+
+255
+00:16:33,460 --> 00:16:37,965
+but if you do it by a small enough amount,
+it can be noticed by ShazamKit
+
+256
+00:16:37,998 --> 00:16:39,833
+but not by the average human ear.
+
+257
+00:16:40,801 --> 00:16:42,503
+So if we take an audio recording,
+
+258
+00:16:42,536 --> 00:16:45,672
+make a custom catalog from it,
+and then play it back
+
+259
+00:16:45,706 --> 00:16:50,143
+with the frequencies slightly shifted:
+ShazamKit will still match the audio,
+
+260
+00:16:50,177 --> 00:16:54,681
+and it will also report the skew amount
+through the frequencySkew property.
+
+261
+00:16:54,715 --> 00:16:56,817
+Here's how to do that in code.
+
+262
+00:16:58,452 --> 00:17:01,088
+There are limits to how much
+you can skew audio
+
+263
+00:17:01,121 --> 00:17:05,025
+without the change becoming
+either noticeable to the human ear
+
+264
+00:17:05,058 --> 00:17:05,893
+or unrecognizable to ShazamKit.
+
+265
+00:17:08,595 --> 00:17:11,899
+Keeping the skew
+to less than 5 percent should be safe
+
+266
+00:17:11,932 --> 00:17:16,970
+and provide enough room to
+differentiate multiple skewed recordings.
+
+267
+00:17:17,004 --> 00:17:21,608
+To really take advantage of this,
+use the frequencySkew ranges.
+
+268
+00:17:21,642 --> 00:17:25,012
+Media items will only be
+returned if they fall inside
+
+269
+00:17:25,045 --> 00:17:26,446
+the specified skew ranges.
+
+270
+00:17:27,781 --> 00:17:29,883
+The range specifies as a percentage
+
+271
+00:17:29,917 --> 00:17:33,153
+how much the audio
+differs from the original.
+
+272
+00:17:33,187 --> 00:17:38,425
+A value of 0 indicates the
+audio is unskewed and a value of .01
+
+273
+00:17:38,458 --> 00:17:40,928
+indicates a 1 percent skew.
+
+274
+00:17:41,528 --> 00:17:46,300
+You can access the property on media items
+using the frequencySkewRanges property.
+
+275
+00:17:48,268 --> 00:17:51,471
+I'll go over the steps to
+get this working in your app:
+
+276
+00:17:51,505 --> 00:17:56,376
+First create a reference signature
+of your original audio recording.
+
+277
+00:17:56,410 --> 00:18:03,183
+Then take a media item and restrict it
+by frequency skew to 3 to 4 percent.
+
+278
+00:18:03,217 --> 00:18:04,618
+Place this inside your custom catalog.
+
+279
+00:18:05,986 --> 00:18:10,390
+Now play back the audio skewed
+by 3 to 4 percent,
+
+280
+00:18:10,424 --> 00:18:13,260
+and your media item will be returned.
+
+281
+00:18:13,293 --> 00:18:16,463
+Playing back the audio unskewed
+or skewed outside of the range
+
+282
+00:18:16,496 --> 00:18:18,665
+will not return your media item.
+
+283
+00:18:18,699 --> 00:18:20,667
+That's frequency skewing.
+
+284
+00:18:22,002 --> 00:18:25,439
+Now that you've seen the exciting updates
+to ShazamKit this year,
+
+285
+00:18:25,472 --> 00:18:29,009
+you're ready to make
+some amazing synced experiences.
+
+286
+00:18:29,042 --> 00:18:31,311
+So remember these best practices:
+
+287
+00:18:31,345 --> 00:18:35,182
+First, create one signature
+per media asset.
+
+288
+00:18:35,215 --> 00:18:41,054
+You'll get better accuracy from
+ShazamKit and simpler creation pipeline.
+
+289
+00:18:41,088 --> 00:18:44,191
+Create your signatures
+with SHSignatureGenerators
+
+290
+00:18:44,224 --> 00:18:46,560
+signatureFromAsset.
+
+291
+00:18:46,593 --> 00:18:48,929
+It accepts a wide variety of media,
+
+292
+00:18:48,962 --> 00:18:52,566
+meaning you no longer have
+to deal with low level audio details.
+
+293
+00:18:54,568 --> 00:19:00,507
+Target synced content to areas of interest
+with the new Timed MediaItem API.
+
+294
+00:19:00,541 --> 00:19:05,179
+It combines a simple API
+with excellent accuracy.
+
+295
+00:19:05,212 --> 00:19:10,851
+And finally let the Shazam CLI streamline
+the way you create custom catalogs.
+
+296
+00:19:10,884 --> 00:19:15,622
+It's been designed take away the hassle
+of dealing with vast amounts of media
+
+297
+00:19:15,656 --> 00:19:20,694
+and let you focus on the great
+experiences you want to make instead.
+
+298
+00:19:20,727 --> 00:19:23,664
+I hope you enjoyed the latest updates
+to ShazamKit,
+
+299
+00:19:23,697 --> 00:19:27,034
+and I'm excited to see you
+make everything Shazamable.
+
+300
+00:19:27,067 --> 00:19:30,771
+All of the information we discussed
+and links to documentation
+
+301
+00:19:30,804 --> 00:19:32,639
+are attached to this session.
+
+302
+00:19:32,673 --> 00:19:37,211
+Thanks for joining.
+Enjoy the rest of WWDC22.  ♪ ♪
+

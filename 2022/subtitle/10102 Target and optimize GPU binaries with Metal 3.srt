@@ -1,0 +1,1207 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:10,744
+Hello and welcome.
+
+3
+00:00:10,777 --> 00:00:13,747
+I'm Galo Avila,
+engineering manager in GPU Software.
+
+4
+00:00:13,780 --> 00:00:15,782
+In this session,
+Eylon and I are excited to share
+
+5
+00:00:15,816 --> 00:00:19,353
+how you can improve your app's GPU
+binary generation with Metal 3.
+
+6
+00:00:19,386 --> 00:00:22,222
+First, I'll describe
+how offline compilation can help you
+
+7
+00:00:22,256 --> 00:00:26,660
+reduce in app stutters,
+first launch, and new level load times.
+
+8
+00:00:26,693 --> 00:00:30,364
+Then Eylon will explain how you can use
+the optimize for size compiler option,
+
+9
+00:00:30,397 --> 00:00:34,067
+to tune code expanding transformations
+and improve your compile times.
+
+10
+00:00:35,636 --> 00:00:39,873
+Offline compilation lets you move GPU
+binary generation to project build time.
+
+11
+00:00:39,907 --> 00:00:43,443
+To fully understand the benefits adoption
+can bring to your Metal application,
+
+12
+00:00:43,477 --> 00:00:47,948
+I'll start by reviewing the ways in which
+you can already generate a GPU binary.
+
+13
+00:00:47,981 --> 00:00:52,920
+In your Metal app, GPU binary generation
+happens both at build time and runtime.
+
+14
+00:00:52,953 --> 00:00:56,924
+For example, suppose you instantiate
+a metal library from source.
+
+15
+00:00:56,957 --> 00:01:00,127
+This generates at app runtime
+Apple's Intermediate Representation,
+
+16
+00:01:00,160 --> 00:01:02,129
+also known as AIR.
+
+17
+00:01:02,162 --> 00:01:04,298
+This can be a CPU intensive operation,
+
+18
+00:01:04,331 --> 00:01:05,699
+which you can move to app build time
+
+19
+00:01:05,732 --> 00:01:08,202
+by pre-compiling your source
+to a Metal library,
+
+20
+00:01:08,235 --> 00:01:11,171
+and instantiating from a file instead.
+
+21
+00:01:11,205 --> 00:01:14,575
+Once your Metal library is in memory,
+creating a Pipeline State Descriptor
+
+22
+00:01:14,608 --> 00:01:18,278
+containing state and functions
+is a lightweight operation.
+
+23
+00:01:18,312 --> 00:01:20,280
+Until you create
+your pipeline state object,
+
+24
+00:01:20,314 --> 00:01:22,850
+which can be another
+CPU intensive operation,
+
+25
+00:01:22,883 --> 00:01:26,220
+where just-in-time
+GPU binary generation takes place.
+
+26
+00:01:28,522 --> 00:01:32,759
+Since GPU binary generation at runtime
+can be a CPU intensive operation,
+
+27
+00:01:32,793 --> 00:01:36,063
+Metal helps you speed up
+pipeline state object creation.
+
+28
+00:01:36,096 --> 00:01:37,431
+When you instantiate a PSO,
+
+29
+00:01:37,464 --> 00:01:41,235
+Metal stores your GPU binaries
+in its file system cache.
+
+30
+00:01:41,268 --> 00:01:43,337
+And every time a new PSO is created,
+
+31
+00:01:43,370 --> 00:01:46,373
+any newly generated functions are added.
+
+32
+00:01:46,406 --> 00:01:48,976
+So any previously generated binaries
+that are referenced
+
+33
+00:01:49,009 --> 00:01:50,577
+will be loaded from the cache.
+
+34
+00:01:52,546 --> 00:01:56,316
+Metal also lets you explicitly control
+when and where GPU binaries are cached
+
+35
+00:01:56,350 --> 00:01:58,519
+using Binary Archives.
+
+36
+00:01:58,552 --> 00:02:03,156
+Simply use a PSO descriptor
+to cache a GPU binary in an archive,
+
+37
+00:02:03,190 --> 00:02:05,526
+as many times as you need.
+
+38
+00:02:05,559 --> 00:02:09,630
+Then your PSO creation becomes
+a lightweight operation.
+
+39
+00:02:09,663 --> 00:02:11,965
+Binary archives enable
+more flexible caching,
+
+40
+00:02:11,999 --> 00:02:14,668
+but they still have to be
+generated at runtime.
+
+41
+00:02:14,701 --> 00:02:16,236
+In many cases,
+what you really want
+
+42
+00:02:16,270 --> 00:02:18,438
+is to generate those archives
+at build time,
+
+43
+00:02:18,472 --> 00:02:20,474
+and now you finally can.
+
+44
+00:02:20,507 --> 00:02:23,610
+With offline binary generation,
+you specify a new artifact
+
+45
+00:02:23,644 --> 00:02:26,280
+at project build time
+called Metal pipelines script,
+
+46
+00:02:26,313 --> 00:02:29,550
+along with Metal source
+or a Metal library.
+
+47
+00:02:29,583 --> 00:02:32,152
+A pipelines script
+is your compiler toolchain equivalent
+
+48
+00:02:32,186 --> 00:02:35,222
+to a collection of pipeline descriptors
+in the API.
+
+49
+00:02:35,255 --> 00:02:38,659
+The output of your compilation process
+is a binary archive.
+
+50
+00:02:38,692 --> 00:02:42,029
+No further GPU code generation
+takes place at app runtime.
+
+51
+00:02:42,062 --> 00:02:46,600
+Merely load your binary archive built
+offline to accelerate your PSO creation.
+
+52
+00:02:48,435 --> 00:02:52,339
+Offline compilation benefits your app
+by reducing runtime CPU overhead,
+
+53
+00:02:52,372 --> 00:02:55,876
+which is at the core
+of what makes Metal a low level API.
+
+54
+00:02:55,909 --> 00:03:00,681
+Further, adoption can improve your app's
+experience in two noticeable ways.
+
+55
+00:03:00,714 --> 00:03:03,951
+First launch and new level load times
+can become dramatically faster,
+
+56
+00:03:03,984 --> 00:03:07,454
+potentially resulting in greater
+engagement and interaction.
+
+57
+00:03:07,487 --> 00:03:10,123
+Stutters or frame rate drops,
+due to runtime compilation
+
+58
+00:03:10,157 --> 00:03:11,592
+can be removed at last,
+
+59
+00:03:11,625 --> 00:03:15,429
+without the memory
+or CPU cost of pre-warming frames.
+
+60
+00:03:15,462 --> 00:03:18,465
+I'll explore these benefits
+in more detail next.
+
+61
+00:03:19,499 --> 00:03:22,803
+Here you have your traditional
+app runtime binary generation.
+
+62
+00:03:22,836 --> 00:03:25,706
+In this example, your app spends
+roughly 2/3 of its time
+
+63
+00:03:25,739 --> 00:03:28,275
+compiling GPU binaries
+behind a loading screen,
+
+64
+00:03:28,308 --> 00:03:31,011
+before you can begin interacting with it.
+
+65
+00:03:31,044 --> 00:03:35,616
+But with offline compilation your runtime
+shader generation moves to app build time,
+
+66
+00:03:35,649 --> 00:03:38,018
+PSO creation happens
+in a fraction of the time,
+
+67
+00:03:38,051 --> 00:03:40,187
+and you are able to interact
+with your app sooner
+
+68
+00:03:40,220 --> 00:03:42,890
+instead of idling away at a load screen.
+
+69
+00:03:43,924 --> 00:03:47,694
+Offline compilation
+also helps to reduce stutters.
+
+70
+00:03:47,728 --> 00:03:49,930
+With traditional
+runtime binary generation,
+
+71
+00:03:49,963 --> 00:03:52,900
+you may have too many pipeline states
+to create at load time,
+
+72
+00:03:52,933 --> 00:03:56,470
+so you might instead be creating
+some just-in-time.
+
+73
+00:03:56,503 --> 00:03:59,139
+And when that happens,
+you may experience frame drops
+
+74
+00:03:59,173 --> 00:04:02,476
+caused by compilation temporarily
+interrupting your command encoding.
+
+75
+00:04:03,343 --> 00:04:05,979
+Offline compilation
+removes those pesky bubbles,
+
+76
+00:04:06,013 --> 00:04:10,217
+because you can compile many more shaders
+at app build time.
+
+77
+00:04:10,250 --> 00:04:12,352
+Next, I will share
+a new developer workflow
+
+78
+00:04:12,386 --> 00:04:15,389
+to help you harness the benefits
+of offline compilation.
+
+79
+00:04:16,590 --> 00:04:19,693
+In the following workflow you'll learn
+how to use new toolchain features
+
+80
+00:04:19,726 --> 00:04:21,962
+to build GPU binaries offline.
+
+81
+00:04:21,995 --> 00:04:25,732
+I'll show you how to generate
+your new pipelines script input artifact.
+
+82
+00:04:25,766 --> 00:04:29,703
+Then, how to invoke the toolchain
+to generate a GPU binary.
+
+83
+00:04:29,736 --> 00:04:32,940
+A pipelines script artifact is
+a JSON formatted description
+
+84
+00:04:32,973 --> 00:04:35,976
+of one or more API pipeline
+state descriptors
+
+85
+00:04:36,009 --> 00:04:38,145
+and can be generated in many ways.
+
+86
+00:04:38,178 --> 00:04:41,181
+For example,
+author them in your favorite JSON editor,
+
+87
+00:04:41,215 --> 00:04:46,520
+or Harvest them from binary archives
+serialized during development and testing.
+
+88
+00:04:46,553 --> 00:04:50,324
+Here you have a snippet of Metal code that
+generates a render pipeline descriptor
+
+89
+00:04:50,357 --> 00:04:54,528
+with state and functions
+and its equivalent JSON representation.
+
+90
+00:04:54,561 --> 00:04:59,633
+First, your API metal library file
+is specified as a libraries path property.
+
+91
+00:04:59,666 --> 00:05:04,471
+Then your API render descriptor function
+names as render pipelines properties.
+
+92
+00:05:04,505 --> 00:05:07,241
+Lastly, other pipeline state,
+like raster_sample_count
+
+93
+00:05:07,274 --> 00:05:11,111
+or pixel formats,
+are also captured as script properties.
+
+94
+00:05:11,144 --> 00:05:15,082
+Look for further JSON schema details
+in Metal's developer documentation.
+
+95
+00:05:16,917 --> 00:05:19,753
+You also may want to kickstart
+JSON script generation,
+
+96
+00:05:19,786 --> 00:05:22,289
+and using the Metal runtime can help.
+
+97
+00:05:22,322 --> 00:05:24,525
+Simply generate
+your binary archives at runtime,
+
+98
+00:05:24,558 --> 00:05:27,728
+and serialize them during your development
+and testing process.
+
+99
+00:05:27,761 --> 00:05:31,098
+Now I'll show you how you can accomplish
+this with the Metal API.
+
+100
+00:05:32,933 --> 00:05:34,968
+You begin the runtime harvesting process
+
+101
+00:05:35,002 --> 00:05:38,939
+by creating your pipeline descriptor
+with state and functions,
+
+102
+00:05:38,972 --> 00:05:43,076
+adding it to an archive,
+which generates GPU binary,
+
+103
+00:05:43,110 --> 00:05:45,779
+and serializing it
+to the file system to import into
+
+104
+00:05:45,812 --> 00:05:47,981
+and load from your app's bundle.
+
+105
+00:05:48,015 --> 00:05:52,419
+The Metal 3 runtime stores your pipeline
+descriptor alongside the GPU binary.
+
+106
+00:05:52,452 --> 00:05:55,622
+Now I'll show you how to extract them.
+
+107
+00:05:55,656 --> 00:05:58,292
+metal-source allows you
+to extract your JSON pipelines script
+
+108
+00:05:58,325 --> 00:06:00,494
+from an existing archive.
+
+109
+00:06:00,527 --> 00:06:05,599
+This is handy for migrating your binary
+generation from runtime to app build time.
+
+110
+00:06:05,632 --> 00:06:07,801
+Just invoke metal-source
+with the flatbuffers
+
+111
+00:06:07,835 --> 00:06:10,137
+and output directory options.
+
+112
+00:06:10,170 --> 00:06:11,805
+The result is a pipelines script file,
+
+113
+00:06:11,839 --> 00:06:14,942
+which you can edit
+to generate additional binaries.
+
+114
+00:06:14,975 --> 00:06:18,912
+Now, I'll show you
+how to invoke the toolchain.
+
+115
+00:06:18,946 --> 00:06:22,983
+Generating a GPU binary from
+an Xcode project build phase is easy.
+
+116
+00:06:23,016 --> 00:06:26,553
+Simply invoke metal as you would
+from the terminal with your source,
+
+117
+00:06:26,587 --> 00:06:29,523
+pipelines script, and output file.
+
+118
+00:06:29,556 --> 00:06:32,326
+Your output metal library
+now contains GPU binary,
+
+119
+00:06:32,359 --> 00:06:36,330
+and can be deployed across
+any toolchain supported device.
+
+120
+00:06:36,363 --> 00:06:38,866
+And if instead of source,
+you have a Metal library,
+
+121
+00:06:38,899 --> 00:06:42,569
+you can pass that to the toolchain too.
+
+122
+00:06:42,603 --> 00:06:45,072
+Generating a binary from
+a pre-existing Metal library
+
+123
+00:06:45,105 --> 00:06:48,141
+is just as easy
+with Metal translator tool.
+
+124
+00:06:48,175 --> 00:06:51,512
+Just call metal-tt as you would
+in a terminal with your source,
+
+125
+00:06:51,545 --> 00:06:53,947
+pipelines script, and output file.
+
+126
+00:06:53,981 --> 00:06:56,550
+Your resulting Metal library
+now contains GPU binary
+
+127
+00:06:56,583 --> 00:07:00,787
+for all toolchain supported devices.
+
+128
+00:07:00,821 --> 00:07:03,056
+Now that you know
+how to create binaries offline,
+
+129
+00:07:03,090 --> 00:07:05,459
+I'll review how to load them.
+
+130
+00:07:05,492 --> 00:07:09,162
+Simply provide the binary URL
+when creating an archive descriptor
+
+131
+00:07:09,196 --> 00:07:10,964
+and use it to instantiate an archive.
+
+132
+00:07:10,998 --> 00:07:12,299
+That's it!
+
+133
+00:07:12,332 --> 00:07:14,935
+For more information about
+Metal's binary archive API,
+
+134
+00:07:14,968 --> 00:07:18,071
+please refer to our previous years' talks.
+
+135
+00:07:18,105 --> 00:07:21,275
+Finally, a note on how Metal handles
+GPU binary compatibility
+
+136
+00:07:21,308 --> 00:07:25,145
+for offline generated artifacts.
+
+137
+00:07:25,179 --> 00:07:27,681
+To ensure your offline generated binaries
+are forward compatible
+
+138
+00:07:27,714 --> 00:07:30,317
+with future OS versions and products.
+
+139
+00:07:30,350 --> 00:07:33,420
+Metal gracefully upgrades
+your binary archives during OS updates
+
+140
+00:07:33,453 --> 00:07:34,688
+or at app install time.
+
+141
+00:07:34,721 --> 00:07:38,392
+It does so asynchronously,
+and in the background.
+
+142
+00:07:38,425 --> 00:07:41,495
+I can't wait for you to harness
+the benefits of offline compilation
+
+143
+00:07:41,528 --> 00:07:45,632
+to remove runtime stutters and reduce
+first launch and new level load times.
+
+144
+00:07:45,666 --> 00:07:47,701
+Such improvements can be tangible
+to others
+
+145
+00:07:47,734 --> 00:07:49,837
+and enhance their overall app experience.
+
+146
+00:07:49,870 --> 00:07:51,538
+Now, over to Eylon.
+
+147
+00:07:51,572 --> 00:07:53,507
+Eylon: Thanks, Galo.
+
+148
+00:07:53,540 --> 00:07:55,976
+Next, I'll introduce
+the new compile option,
+
+149
+00:07:56,009 --> 00:07:58,278
+optimize for size.
+
+150
+00:07:58,312 --> 00:08:02,549
+The Metal compiler optimizes code
+aggressively for runtime performance.
+
+151
+00:08:02,583 --> 00:08:05,919
+Some optimizations
+expand the GPU program size,
+
+152
+00:08:05,953 --> 00:08:09,223
+which may introduce unexpected costs.
+
+153
+00:08:09,256 --> 00:08:12,292
+For example,
+function inlining is an optimization
+
+154
+00:08:12,326 --> 00:08:14,828
+to avoid the overhead of a function call.
+
+155
+00:08:14,862 --> 00:08:19,099
+It works by inlining the body
+of the called function into the call site.
+
+156
+00:08:19,132 --> 00:08:22,035
+This example kernel
+doesn't look like a lot of code,
+
+157
+00:08:22,069 --> 00:08:23,670
+but after inlining,
+
+158
+00:08:23,704 --> 00:08:26,206
+it would contain a copy
+of functions 'f' and 'g',
+
+159
+00:08:26,240 --> 00:08:29,176
+and potentially also of functions
+called from 'f' and 'g',
+
+160
+00:08:29,209 --> 00:08:32,412
+such as helpers
+and non-primitive library functions.
+
+161
+00:08:34,114 --> 00:08:36,817
+Another optimization is loop unrolling,
+
+162
+00:08:36,850 --> 00:08:39,052
+which inlines additional copies
+of a loop body,
+
+163
+00:08:39,086 --> 00:08:41,388
+to expose parallelism across iterations
+
+164
+00:08:41,421 --> 00:08:44,591
+and to avoid branching overhead.
+
+165
+00:08:44,625 --> 00:08:48,562
+The compiler may unroll as few
+as two iterations of the loop
+
+166
+00:08:48,595 --> 00:08:53,734
+or as many as all the iterations of a loop
+that has fixed bounds.
+
+167
+00:08:53,767 --> 00:08:56,937
+When optimizations like these
+create a very large program,
+
+168
+00:08:56,970 --> 00:09:00,073
+the compiler also has to spend
+a lot more time compiling it,
+
+169
+00:09:00,107 --> 00:09:04,511
+and in some situations,
+you may prefer to avoid those costs.
+
+170
+00:09:04,545 --> 00:09:10,684
+Xcode 14 introduces a new Metal
+optimization mode: optimize for size.
+
+171
+00:09:10,717 --> 00:09:13,287
+This mode limits size-expanding
+transformations,
+
+172
+00:09:13,320 --> 00:09:15,389
+such as inlining and loop unrolling,
+
+173
+00:09:15,422 --> 00:09:18,592
+when the compiler applies
+performance optimizations.
+
+174
+00:09:18,625 --> 00:09:21,895
+The intended benefit
+is to keep the GPU binary smaller,
+
+175
+00:09:21,929 --> 00:09:25,399
+and the compile time shorter,
+in cases when default optimization
+
+176
+00:09:25,432 --> 00:09:27,534
+proves to be too expensive.
+
+177
+00:09:27,568 --> 00:09:29,203
+When optimizing for size,
+
+178
+00:09:29,236 --> 00:09:32,606
+it is possible for the result
+to have lower runtime performance.
+
+179
+00:09:32,639 --> 00:09:35,275
+Whether that actually happens
+depends on the program,
+
+180
+00:09:35,309 --> 00:09:39,713
+so you will need to try both
+optimization modes and compare.
+
+181
+00:09:39,746 --> 00:09:43,650
+Optimize for size may not improve size
+and compile time for all shaders.
+
+182
+00:09:43,684 --> 00:09:46,553
+It is most likely to have benefit
+for large programs
+
+183
+00:09:46,587 --> 00:09:48,488
+with deep call paths and loops,
+
+184
+00:09:48,522 --> 00:09:50,958
+where inlining and unrolling are common.
+
+185
+00:09:50,991 --> 00:09:52,926
+The option is worth trying
+whenever you encounter
+
+186
+00:09:52,960 --> 00:09:57,064
+an unexpectedly long compile time
+from default optimization.
+
+187
+00:09:57,097 --> 00:10:02,236
+The option is available whether compiling
+at project build time or at app runtime.
+
+188
+00:10:02,269 --> 00:10:06,206
+Here's a case where optimize for size
+can make a difference.
+
+189
+00:10:06,240 --> 00:10:09,843
+Cycles is a an open source project
+implementing a production renderer
+
+190
+00:10:09,877 --> 00:10:12,112
+for the Blender 3D design environment,
+
+191
+00:10:12,145 --> 00:10:15,148
+and was recently updated to support Metal.
+
+192
+00:10:15,182 --> 00:10:17,918
+Apple recently joined
+the Blender Development Fund,
+
+193
+00:10:17,951 --> 00:10:21,688
+and one of the things we learned
+was that Blender's path tracing algorithms
+
+194
+00:10:21,722 --> 00:10:25,425
+use large compute shaders,
+with many helper functions and loops,
+
+195
+00:10:25,459 --> 00:10:28,328
+and its compile times
+can add up to minutes.
+
+196
+00:10:28,362 --> 00:10:31,365
+It turns out those are exactly
+the kind of shaders that can benefit
+
+197
+00:10:31,398 --> 00:10:34,334
+from Metal 3's
+new optimize for size option.
+
+198
+00:10:36,136 --> 00:10:39,439
+When rendering these scenes
+on an Apple Silicon GPU,
+
+199
+00:10:39,473 --> 00:10:42,776
+enabling optimize for size
+improved Blender's Setup Time,
+
+200
+00:10:42,809 --> 00:10:48,215
+which includes compiling shader pipelines,
+by up to 1.4x.
+
+201
+00:10:48,248 --> 00:10:52,953
+And it provided that speedup with
+little or no degradation in Render Time.
+
+202
+00:10:52,986 --> 00:10:55,022
+Some renders slowed up to 4%,
+
+203
+00:10:55,055 --> 00:10:57,457
+and some did not slow at all.
+
+204
+00:10:57,491 --> 00:11:00,227
+So lower runtime performance is possible.
+
+205
+00:11:00,260 --> 00:11:04,531
+But in some cases, optimize for size
+can also improve runtime performance.
+
+206
+00:11:04,565 --> 00:11:07,334
+Here's an example.
+
+207
+00:11:07,367 --> 00:11:10,204
+These are Render Time speedups
+for the same scenes
+
+208
+00:11:10,237 --> 00:11:14,174
+from enabling optimize for size
+on Intel GPUs.
+
+209
+00:11:14,208 --> 00:11:16,610
+The benefit was not just faster compiles,
+
+210
+00:11:16,643 --> 00:11:20,480
+but also some faster renders,
+by up to 1.6x.
+
+211
+00:11:20,514 --> 00:11:21,481
+How?
+
+212
+00:11:21,515 --> 00:11:25,018
+Because a smaller GPU program
+can avoid some of the runtime penalties
+
+213
+00:11:25,052 --> 00:11:26,620
+that come with large size:
+
+214
+00:11:26,653 --> 00:11:28,922
+it may enjoy
+fewer instruction cache misses,
+
+215
+00:11:28,956 --> 00:11:30,757
+or need fewer registers,
+
+216
+00:11:30,791 --> 00:11:32,659
+which translates to fewer spills to memory
+
+217
+00:11:32,693 --> 00:11:35,295
+or even more threads in parallel.
+
+218
+00:11:35,329 --> 00:11:38,932
+Keep in mind, these results
+are not typical of all shaders and scenes,
+
+219
+00:11:38,966 --> 00:11:40,868
+and a performance drop is possible.
+
+220
+00:11:40,901 --> 00:11:44,104
+For your project, you will need
+to evaluate the actual impact
+
+221
+00:11:44,137 --> 00:11:47,107
+to both compile time
+and runtime performance.
+
+222
+00:11:47,140 --> 00:11:50,677
+You can enable optimize for size
+when compiling from Metal source,
+
+223
+00:11:50,711 --> 00:11:53,046
+in three different environments.
+
+224
+00:11:53,080 --> 00:11:55,349
+In the Xcode 14 user interface,
+
+225
+00:11:55,382 --> 00:11:58,352
+specify optimize for size
+as a build setting.
+
+226
+00:11:58,385 --> 00:12:00,888
+Under "Metal Compiler - Build Options"
+
+227
+00:12:00,921 --> 00:12:03,290
+find the setting "Optimization Level".
+
+228
+00:12:03,323 --> 00:12:07,528
+Level "Default" optimizes for performance,
+as Metal has done in the past.
+
+229
+00:12:07,561 --> 00:12:10,397
+Level "Size" enables optimize for size.
+
+230
+00:12:11,899 --> 00:12:14,268
+When compiling Metal source
+by command line,
+
+231
+00:12:14,301 --> 00:12:18,238
+specify optimize for size
+using option'-Os'.
+
+232
+00:12:18,272 --> 00:12:23,343
+The first example specifies the option
+to a single compile-and-link command.
+
+233
+00:12:23,377 --> 00:12:25,946
+The second example
+has two compile commands
+
+234
+00:12:25,979 --> 00:12:28,115
+and specifies the option
+to just one of them
+
+235
+00:12:28,148 --> 00:12:30,551
+to enable it for only some shaders.
+
+236
+00:12:30,584 --> 00:12:32,920
+The option does not need to be passed
+to the link command
+
+237
+00:12:32,953 --> 00:12:34,721
+or to any subsequent commands.
+
+238
+00:12:34,755 --> 00:12:38,125
+And you can use optimize for size
+either with, or without,
+
+239
+00:12:38,158 --> 00:12:42,529
+generating a GPU binary using the commands
+presented earlier in this talk.
+
+240
+00:12:44,398 --> 00:12:49,069
+Finally, when compiling Metal source
+at app runtime with a Metal Framework API
+
+241
+00:12:49,102 --> 00:12:51,138
+such as 'newLibraryWithSource',
+
+242
+00:12:51,171 --> 00:12:54,942
+specify optimize for size
+in a 'MTLCompileOptions' object
+
+243
+00:12:54,975 --> 00:12:57,811
+using property 'optimizationLevel'.
+
+244
+00:12:57,845 --> 00:13:02,316
+The optimization level
+may be 'default' or 'size'.
+
+245
+00:13:02,349 --> 00:13:05,719
+I hope your project will benefit
+from this new optimization mode
+
+246
+00:13:05,752 --> 00:13:07,988
+in the Metal compiler.
+
+247
+00:13:08,021 --> 00:13:10,657
+Galo: To wrap up,
+I presented offline compilation,
+
+248
+00:13:10,691 --> 00:13:14,328
+a new workflow for generating GPU binaries
+entirely at app build time,
+
+249
+00:13:14,361 --> 00:13:18,298
+to reduce in-app stutters,
+first launch, and new level load times.
+
+250
+00:13:18,332 --> 00:13:20,934
+Eylon: Then I presented optimize for size,
+
+251
+00:13:20,968 --> 00:13:23,871
+a new Metal optimization mode
+when compiling from source,
+
+252
+00:13:23,904 --> 00:13:27,541
+to reduce program size and compile time.
+
+253
+00:13:27,574 --> 00:13:29,710
+Galo: We hope these improvements
+help your app or game
+
+254
+00:13:29,743 --> 00:13:31,578
+deliver an improved user experience.
+
+255
+00:13:31,612 --> 00:13:34,648
+Eylon: With shorter setup and load times,
+fewer stutters,
+
+256
+00:13:34,681 --> 00:13:39,253
+and new workflows,
+thanks to lower compile costs at runtime.
+
+257
+00:13:39,286 --> 00:13:41,221
+Thank you for watching.  ♪ ♪
+

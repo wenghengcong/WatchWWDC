@@ -1,0 +1,1064 @@
+1
+00:00:00,334 --> 00:00:06,340
+[upbeat music]
+
+2
+00:00:09,810 --> 00:00:11,078
+Qiaoyu Deng: Hello.
+
+3
+00:00:11,111 --> 00:00:17,384
+Welcome to “Improve DNS security
+for apps and servers.”
+
+4
+00:00:17,417 --> 00:00:20,687
+My name is Qiaoyu Deng.
+
+5
+00:00:20,721 --> 00:00:27,694
+In this video, we are going to talk about
+why DNS is often not secure
+
+6
+00:00:27,728 --> 00:00:32,332
+and how to protect it using DNSSEC
+
+7
+00:00:32,366 --> 00:00:37,171
+and encrypted DNS with DDR.
+
+8
+00:00:37,204 --> 00:00:43,210
+First, let’s talk about
+why DNS is not secure.
+
+9
+00:00:44,912 --> 00:00:49,917
+DNS is the phone book of the internet.
+
+10
+00:00:49,950 --> 00:00:53,120
+It translates domain names,
+
+11
+00:00:53,153 --> 00:00:57,124
+which are human readable and easy to
+remember,
+
+12
+00:00:57,157 --> 00:01:02,262
+to IP addresses,
+which are made for machines.
+
+13
+00:01:02,296 --> 00:01:04,798
+Other internet protocols,
+
+14
+00:01:04,831 --> 00:01:09,469
+such as TCP, TLS, and QUIC,
+
+15
+00:01:09,503 --> 00:01:12,973
+rely on having an IP address,
+
+16
+00:01:13,006 --> 00:01:17,110
+so everything starts with DNS.
+
+17
+00:01:17,144 --> 00:01:20,948
+Today, TLS is widely used
+
+18
+00:01:20,981 --> 00:01:24,551
+to secure internet communication.
+
+19
+00:01:24,585 --> 00:01:29,556
+That’s great,
+but DNS, the foundational layer,
+
+20
+00:01:29,590 --> 00:01:31,592
+has some security issues.
+
+21
+00:01:31,625 --> 00:01:35,696
+DNS is historically not secure.
+
+22
+00:01:35,729 --> 00:01:41,902
+It was designed back in 1983
+with few security considerations.
+
+23
+00:01:41,935 --> 00:01:46,840
+In the years since,
+many DNS attacks have been created.
+
+24
+00:01:46,874 --> 00:01:52,112
+One example is DNS cache poisoning,
+
+25
+00:01:52,145 --> 00:01:57,117
+where the attacker
+exploits flaws of DNS resolvers
+
+26
+00:01:57,150 --> 00:02:01,488
+and make them cache
+incorrect IP addresses,
+
+27
+00:02:01,522 --> 00:02:05,526
+causing clients
+to connect to malicious hosts.
+
+28
+00:02:05,559 --> 00:02:09,963
+This reveals one vulnerability of DNS:
+
+29
+00:02:09,997 --> 00:02:12,866
+it is unauthenticated.
+
+30
+00:02:12,900 --> 00:02:17,971
+Traditional DNS clients today
+have no way to validate answers,
+
+31
+00:02:18,005 --> 00:02:21,375
+so they can easily be spoofed.
+
+32
+00:02:21,408 --> 00:02:25,479
+Another common attack is DNS sniffing,
+
+33
+00:02:25,512 --> 00:02:32,252
+where the attacker watches DNS traffic
+between a client and a DNS server,
+
+34
+00:02:32,286 --> 00:02:35,455
+collecting the client's history.
+
+35
+00:02:35,489 --> 00:02:39,860
+This is a serious problem
+for user privacy.
+
+36
+00:02:39,893 --> 00:02:43,230
+The reason this attack is possible is that
+
+37
+00:02:43,263 --> 00:02:49,336
+DNS traffic was originally unencrypted.
+
+38
+00:02:49,369 --> 00:02:55,909
+In order to be a secure starting point
+for the protocols that build on top of it,
+
+39
+00:02:55,943 --> 00:03:01,882
+DNS needs to be both
+authenticated and encrypted.
+
+40
+00:03:01,915 --> 00:03:05,886
+When we use DNSSEC to sign DNS response,
+
+41
+00:03:05,919 --> 00:03:09,289
+it provides authentication.
+
+42
+00:03:09,323 --> 00:03:15,395
+When we use TLS and HTTPS
+to encrypt DNS resolution,
+
+43
+00:03:15,429 --> 00:03:18,365
+it ensures privacy.
+
+44
+00:03:18,398 --> 00:03:23,203
+Next, let’s talk about DNSSEC.
+
+45
+00:03:23,237 --> 00:03:27,608
+DNSSEC is a suite
+of extension specifications
+
+46
+00:03:27,641 --> 00:03:30,577
+created by IETF.
+
+47
+00:03:30,611 --> 00:03:35,082
+Many DNS service providers
+already support it,
+
+48
+00:03:35,115 --> 00:03:38,986
+but client support is still ramping up.
+
+49
+00:03:39,019 --> 00:03:42,422
+iOS 16 and macOS Ventura
+
+50
+00:03:42,456 --> 00:03:47,828
+now support client side DNSSEC validation.
+
+51
+00:03:47,861 --> 00:03:53,967
+DNSSEC ensures the authentication of data
+by adding digital signatures.
+
+52
+00:03:54,001 --> 00:03:57,337
+It protects data integrity.
+
+53
+00:03:57,371 --> 00:04:00,541
+It authenticates denial of existence
+
+54
+00:04:00,574 --> 00:04:03,977
+when answers do not exist.
+
+55
+00:04:04,011 --> 00:04:09,316
+It also provides cryptographic
+authentication.
+
+56
+00:04:09,349 --> 00:04:12,920
+DNSSEC protects data integrity
+
+57
+00:04:12,953 --> 00:04:17,024
+by attaching signatures in responses.
+
+58
+00:04:17,057 --> 00:04:20,294
+If a response is altered by an attacker,
+
+59
+00:04:20,327 --> 00:04:26,567
+the signature of the altered data
+will not match the original one.
+
+60
+00:04:26,600 --> 00:04:33,507
+In that case, the client can detect
+the altered response and discard it.
+
+61
+00:04:33,540 --> 00:04:37,277
+DNSSEC also asserts the existence
+
+62
+00:04:37,311 --> 00:04:40,848
+and nonexistence of records in a zone,
+
+63
+00:04:40,881 --> 00:04:44,051
+by using special types of DNS records
+
+64
+00:04:44,084 --> 00:04:47,921
+such as the NSEC record.
+
+65
+00:04:47,955 --> 00:04:52,826
+The NSEC record tells you
+what the next record name is,
+
+66
+00:04:52,860 --> 00:04:56,663
+securely, in alphabetical order.
+
+67
+00:04:56,697 --> 00:05:01,401
+The names listed by it
+are the ones that exist,
+
+68
+00:05:01,435 --> 00:05:06,273
+and any name not listed does not exist.
+
+69
+00:05:06,306 --> 00:05:10,777
+For example,
+we have three NSEC records here.
+
+70
+00:05:10,811 --> 00:05:17,184
+The record set reveals that zone org
+only has three record names,
+
+71
+00:05:17,217 --> 00:05:20,687
+A.org, C.org, and E.org.
+
+72
+00:05:20,721 --> 00:05:27,728
+Now, if there is an attacker
+that says A.org does not exist,
+
+73
+00:05:27,761 --> 00:05:31,164
+the client can detect this attack.
+
+74
+00:05:31,198 --> 00:05:33,834
+A.org does exist
+
+75
+00:05:33,867 --> 00:05:39,873
+because it is listed
+in the first NSEC record.
+
+76
+00:05:39,907 --> 00:05:45,946
+Likewise, if an attacker says
+that D.org exists,
+
+77
+00:05:45,979 --> 00:05:49,449
+the client can also detect that,
+
+78
+00:05:49,483 --> 00:05:53,220
+because according to
+the second NSEC record,
+
+79
+00:05:53,253 --> 00:05:57,824
+D.org is in between C.org and E.org
+
+80
+00:05:57,858 --> 00:06:03,030
+and no name should exist
+in between the two names.
+
+81
+00:06:03,063 --> 00:06:09,369
+DNSSEC authenticates records
+by establishing a chain of trust.
+
+82
+00:06:09,403 --> 00:06:12,339
+Here is an example.
+
+83
+00:06:12,372 --> 00:06:17,344
+A device wants to resolve www.example.org
+
+84
+00:06:17,377 --> 00:06:21,515
+with DNSSEC validation enabled.
+
+85
+00:06:21,548 --> 00:06:25,085
+It sends queries
+asking for the IP addresses,
+
+86
+00:06:25,118 --> 00:06:28,288
+signatures, and keys.
+
+87
+00:06:28,322 --> 00:06:32,893
+With the responses,
+the trust relationship can be built
+
+88
+00:06:32,926 --> 00:06:37,197
+from the IP addresses to key number 1.
+
+89
+00:06:37,231 --> 00:06:42,436
+Then the client sends queries
+to the parent zone, org,
+
+90
+00:06:42,469 --> 00:06:47,774
+asking for the records that can be used
+to authenticate key number 1,
+
+91
+00:06:47,808 --> 00:06:53,680
+so it can build the trust relationship
+from key number 1 to key number 2.
+
+92
+00:06:53,714 --> 00:06:58,418
+So the device repeats
+this process recursively,
+
+93
+00:06:58,452 --> 00:07:01,355
+until it has reached the root.
+
+94
+00:07:01,388 --> 00:07:06,627
+Now, if the root key,
+which is key number 3 in the diagram,
+
+95
+00:07:06,660 --> 00:07:12,466
+can be trusted, the trust relationship
+from the IP addresses
+
+96
+00:07:12,499 --> 00:07:16,370
+to key number 3 can be authenticated.
+
+97
+00:07:16,403 --> 00:07:21,875
+The hash of the root key is always
+stored in the device securely.
+
+98
+00:07:21,909 --> 00:07:26,380
+In DNSSEC,
+it is called the root trust anchor.
+
+99
+00:07:26,413 --> 00:07:31,952
+If the hash of key number 3
+matches the pre-installed anchor,
+
+100
+00:07:31,985 --> 00:07:35,822
+a trust chain can be established securely.
+
+101
+00:07:35,856 --> 00:07:37,658
+With the trust chain,
+
+102
+00:07:37,691 --> 00:07:44,698
+the IP addresses of www.example.org
+are now authenticated.
+
+103
+00:07:45,432 --> 00:07:50,504
+If you want to require DNSSEC validation
+in your apps,
+
+104
+00:07:50,537 --> 00:07:54,274
+here are the things you need to do.
+
+105
+00:07:54,308 --> 00:07:58,245
+Support IPv6 for your domains.
+
+106
+00:07:58,278 --> 00:08:04,618
+In an IPv6-only environment,
+IPv4-only addresses are translated
+
+107
+00:08:04,651 --> 00:08:08,455
+into synthetic IPv6 addresses.
+
+108
+00:08:08,488 --> 00:08:12,326
+If domains are signed,
+synthesized addresses
+
+109
+00:08:12,359 --> 00:08:16,330
+cannot pass DNSSEC validation;
+
+110
+00:08:16,363 --> 00:08:20,934
+they are unreachable with DNSSEC enabled.
+
+111
+00:08:20,968 --> 00:08:26,373
+So make sure that
+your domains support IPv6.
+
+112
+00:08:26,406 --> 00:08:33,180
+Make sure your DNS service provider
+signs your domain with DNSSEC.
+
+113
+00:08:33,213 --> 00:08:38,385
+If you enable DNSSEC in your app
+without signing your domain,
+
+114
+00:08:38,418 --> 00:08:40,587
+you will get no benefit,
+
+115
+00:08:40,621 --> 00:08:46,627
+but you will get additional DNS traffic
+and extended resolution time
+
+116
+00:08:46,660 --> 00:08:51,632
+to attempt authentication
+for your unsigned domain.
+
+117
+00:08:51,665 --> 00:08:55,035
+Once you have
+the corresponding infrastructure support,
+
+118
+00:08:55,068 --> 00:09:01,341
+here is the code needed to adopt
+DNSSEC for your apps.
+
+119
+00:09:01,375 --> 00:09:04,845
+If you are an NSURLSession client,
+
+120
+00:09:04,878 --> 00:09:10,551
+you can require DNSSEC validation
+for your URL request.
+
+121
+00:09:10,584 --> 00:09:13,420
+Here is an example.
+
+122
+00:09:13,453 --> 00:09:17,858
+You will first create a default session
+configuration.
+
+123
+00:09:17,891 --> 00:09:23,263
+Then you will require DNSSEC validation.
+
+124
+00:09:23,297 --> 00:09:28,969
+Next, you will create the session
+with the modified configuration.
+
+125
+00:09:29,002 --> 00:09:33,841
+It enables DNSSEC for all URL requests
+
+126
+00:09:33,874 --> 00:09:37,544
+created from this session.
+
+127
+00:09:37,578 --> 00:09:42,716
+If you do not want to enable DNSSEC
+for the entire session,
+
+128
+00:09:42,749 --> 00:09:46,653
+you can also do this at the request level.
+
+129
+00:09:46,687 --> 00:09:50,557
+First, create a session with
+the default configuration
+
+130
+00:09:50,591 --> 00:09:54,728
+where DNSSEC validation is disabled.
+
+131
+00:09:54,761 --> 00:09:57,297
+Then enable it in the request.
+
+132
+00:09:57,331 --> 00:10:01,401
+Now, this session task
+will only be started
+
+133
+00:10:01,435 --> 00:10:06,640
+when DNSSEC validation is completed.
+
+134
+00:10:06,673 --> 00:10:10,010
+If you are a Network.framework client,
+
+135
+00:10:10,043 --> 00:10:15,816
+you can also require DNSSEC validation
+for your connections.
+
+136
+00:10:15,849 --> 00:10:20,287
+First, when you create
+a parameters object,
+
+137
+00:10:20,320 --> 00:10:24,291
+require DNSSEC validation.
+
+138
+00:10:24,324 --> 00:10:30,364
+Then create the NWConnection
+with the parameters object.
+
+139
+00:10:30,397 --> 00:10:36,003
+Now, when you start your connection,
+it will only move into the ready state
+
+140
+00:10:36,036 --> 00:10:39,540
+when the DNSSEC validation has completed
+
+141
+00:10:39,573 --> 00:10:46,113
+and a connection to the validated
+IP address has been established.
+
+142
+00:10:46,146 --> 00:10:48,916
+When DNSSEC is enabled,
+
+143
+00:10:48,949 --> 00:10:55,222
+only the validated addresses
+will be used to establish a connection.
+
+144
+00:10:55,255 --> 00:11:01,195
+In HTTPS,
+errors are reported through the APIs.
+
+145
+00:11:01,228 --> 00:11:06,700
+In DNSSEC, no error is returned
+for the validation failure.
+
+146
+00:11:06,733 --> 00:11:13,540
+Receiving a response that fails validation
+is equal to not receiving any response.
+
+147
+00:11:13,574 --> 00:11:18,245
+If there is a DNS provider
+that tampers with the response,
+
+148
+00:11:18,278 --> 00:11:22,616
+the addresses will not pass
+the authentication check,
+
+149
+00:11:22,649 --> 00:11:25,652
+so they will be discarded directly.
+
+150
+00:11:25,686 --> 00:11:30,324
+When the device joins a new network
+where the DNS provider
+
+151
+00:11:30,357 --> 00:11:33,026
+is not tampering with responses,
+
+152
+00:11:33,060 --> 00:11:36,230
+the validation will make progress again
+
+153
+00:11:36,263 --> 00:11:40,534
+and the resolution will be back
+to normal automatically.
+
+154
+00:11:41,602 --> 00:11:47,841
+Here are a few cases
+that can cause DNSSEC failure.
+
+155
+00:11:47,875 --> 00:11:51,411
+When the original DNS response is altered,
+
+156
+00:11:51,445 --> 00:11:57,184
+the mismatched signature
+will not pass the DNSSEC check,
+
+157
+00:11:57,217 --> 00:12:00,254
+causing a validation failure.
+
+158
+00:12:00,287 --> 00:12:05,626
+When the device is unable to reach
+any pre-installed trust anchor
+
+159
+00:12:05,659 --> 00:12:11,098
+and unable to establish
+a trust chain from it.
+
+160
+00:12:11,131 --> 00:12:13,934
+When the network does not support
+
+161
+00:12:13,967 --> 00:12:18,739
+the necessary protocols
+required by DNSSEC,
+
+162
+00:12:18,772 --> 00:12:24,811
+such as DNS over TCP and EDNS0 option,
+
+163
+00:12:24,845 --> 00:12:30,284
+that carries the DNSSEC enablement bit.
+
+164
+00:12:30,317 --> 00:12:35,389
+When the signed domain
+does not support IPv6,
+
+165
+00:12:35,422 --> 00:12:38,759
+the synthesized IPv6 addresses
+
+166
+00:12:38,792 --> 00:12:45,098
+provided by the internet service provider
+will fail the validation.
+
+167
+00:12:45,132 --> 00:12:52,139
+So that’s how to authenticate
+DNS responses with DNSSEC,
+
+168
+00:12:52,172 --> 00:12:55,576
+but if they are still unencrypted,
+
+169
+00:12:55,609 --> 00:12:59,413
+anyone on the network can see them.
+
+170
+00:12:59,446 --> 00:13:02,416
+Next, we will talk about
+
+171
+00:13:02,449 --> 00:13:07,788
+how to enable DNS encryption
+automatically with DDR.
+
+172
+00:13:09,122 --> 00:13:12,926
+In iOS 14 and macOS Big Sur,
+
+173
+00:13:12,960 --> 00:13:19,533
+we introduced encrypted DNS
+to help preserve privacy.
+
+174
+00:13:19,566 --> 00:13:24,137
+You can use NEDNSSettingsManager in an app
+
+175
+00:13:24,171 --> 00:13:27,708
+or DNSSettings in a profile
+
+176
+00:13:27,741 --> 00:13:32,779
+to manually configure encrypted DNS
+system-wide.
+
+177
+00:13:32,813 --> 00:13:36,250
+You can also opt into
+encrypted DNS for your app
+
+178
+00:13:36,283 --> 00:13:41,455
+using the PrivacyContext on NWParameters.
+
+179
+00:13:41,488 --> 00:13:47,661
+For more information, please watch
+"Enable encrypted DNS."
+
+180
+00:13:47,694 --> 00:13:51,932
+New in iOS 16 and macOS Ventura,
+
+181
+00:13:51,965 --> 00:13:56,103
+encrypted DNS can be used automatically.
+
+182
+00:13:56,136 --> 00:14:03,143
+If your network supports Discovery of
+Designated Resolvers, also called DDR,
+
+183
+00:14:03,177 --> 00:14:09,983
+DNS queries will automatically
+use TLS or HTTPS.
+
+184
+00:14:10,017 --> 00:14:12,819
+To use encrypted DNS,
+
+185
+00:14:12,853 --> 00:14:15,289
+your device needs to know that
+
+186
+00:14:15,322 --> 00:14:21,662
+a resolver supports TLS or HTTPS,
+
+187
+00:14:21,695 --> 00:14:28,669
+and it may need to learn
+a port or URL path as well.
+
+188
+00:14:28,702 --> 00:14:35,409
+Common mechanisms such as DHCP
+or Router Advertisements
+
+189
+00:14:35,442 --> 00:14:40,180
+only provide a plain IP address.
+
+190
+00:14:40,214 --> 00:14:46,053
+DDR is a new protocol
+developed in the IETF by Apple
+
+191
+00:14:46,086 --> 00:14:49,556
+working with other industry partners.
+
+192
+00:14:49,590 --> 00:14:55,662
+It provides a way for DNS clients
+to learn this necessary information
+
+193
+00:14:55,696 --> 00:14:59,399
+by using a special DNS query.
+
+194
+00:14:59,433 --> 00:15:02,970
+When your device joins a new network,
+
+195
+00:15:03,003 --> 00:15:05,839
+it will issue a Service Binding query
+
+196
+00:15:05,873 --> 00:15:10,777
+for “_dns.resolver.arpa”.
+
+197
+00:15:10,811 --> 00:15:13,914
+If the DNS server supports DDR,
+
+198
+00:15:13,947 --> 00:15:18,218
+it will reply with
+one or more configurations.
+
+199
+00:15:18,252 --> 00:15:22,122
+Then, the device uses this information
+
+200
+00:15:22,155 --> 00:15:28,028
+to set up an encrypted connection
+to the designated resolver.
+
+201
+00:15:28,061 --> 00:15:33,300
+It verifies that the IP address
+of the unencrypted resolver
+
+202
+00:15:33,333 --> 00:15:38,639
+is included in the TLS certificate
+of the designated resolver.
+
+203
+00:15:38,672 --> 00:15:43,410
+This is done to ensure that
+the unencrypted resolver
+
+204
+00:15:43,443 --> 00:15:47,581
+and the encrypted one
+belong to the same entity.
+
+205
+00:15:47,614 --> 00:15:54,087
+If everything looks good, the device now
+uses encrypted DNS by default.
+
+206
+00:15:55,088 --> 00:15:59,693
+DDR applies to a single network at a time.
+
+207
+00:15:59,726 --> 00:16:04,665
+Your device will use
+encrypted DNS automatically
+
+208
+00:16:04,698 --> 00:16:09,369
+only if the current network supports it.
+
+209
+00:16:09,403 --> 00:16:14,441
+It's also important to note that
+DDR does not work
+
+210
+00:16:14,474 --> 00:16:20,013
+if your DNS server's IP address
+is a private IP address.
+
+211
+00:16:20,047 --> 00:16:23,383
+This is because such IP addresses
+
+212
+00:16:23,417 --> 00:16:27,521
+are not allowed in TLS certificates,
+
+213
+00:16:27,554 --> 00:16:32,125
+since their ownership cannot be verified.
+
+214
+00:16:32,159 --> 00:16:36,330
+In iOS 16 and macOS Ventura,
+
+215
+00:16:36,363 --> 00:16:41,869
+we also support the ability
+to specify client authentication
+
+216
+00:16:41,902 --> 00:16:45,939
+when using encrypted DNS
+for a configuration setup,
+
+217
+00:16:45,973 --> 00:16:52,179
+using NEDNSSettingsManager
+or the DNSSettings profile.
+
+218
+00:16:53,180 --> 00:16:58,085
+Client authentication allows
+encrypted DNS servers to be used
+
+219
+00:16:58,118 --> 00:17:00,587
+in enterprise environments
+
+220
+00:17:00,621 --> 00:17:06,960
+where servers need to validate clients
+before allowing access.
+
+221
+00:17:06,994 --> 00:17:10,430
+You can now configure a client certificate
+
+222
+00:17:10,464 --> 00:17:16,003
+using the identityReference property
+of NEDNSSettings.
+
+223
+00:17:16,036 --> 00:17:22,676
+This behaves just like client certificates
+for VPNs.
+
+224
+00:17:22,709 --> 00:17:26,647
+These can apply to both DNS over TLS
+
+225
+00:17:26,680 --> 00:17:30,617
+and DNS over HTTPS.
+
+226
+00:17:30,651 --> 00:17:35,489
+This is the path to securing DNS.
+
+227
+00:17:35,522 --> 00:17:38,859
+Sign your domain with DNSSEC
+
+228
+00:17:38,892 --> 00:17:43,297
+and require DNSSEC validation in your apps
+
+229
+00:17:43,330 --> 00:17:47,234
+to authenticate your IP addresses.
+
+230
+00:17:47,267 --> 00:17:50,237
+Enable DDR on your network
+
+231
+00:17:50,270 --> 00:17:55,876
+so that the clients can switch
+to encrypted DNS automatically
+
+232
+00:17:55,909 --> 00:17:58,879
+for better user privacy.
+
+233
+00:17:58,912 --> 00:18:02,749
+Adopt client authentication in enterprises
+
+234
+00:18:02,783 --> 00:18:06,687
+where better access control is needed.
+
+235
+00:18:06,720 --> 00:18:10,824
+I am looking forward to
+a more secure DNS foundation
+
+236
+00:18:10,858 --> 00:18:14,828
+that you help to build in the future.
+
+237
+00:18:14,862 --> 00:18:16,263
+Thanks for watching!
+
+238
+00:18:16,296 --> 00:18:20,300
+[upbeat music]
+

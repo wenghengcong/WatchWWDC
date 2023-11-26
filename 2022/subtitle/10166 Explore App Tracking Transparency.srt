@@ -1,0 +1,1368 @@
+1
+00:00:00,167 --> 00:00:03,704
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,704 --> 00:00:09,676
+♪
+
+3
+00:00:09,676 --> 00:00:12,279
+Hi, I'm Julia
+from Privacy Engineering,
+
+4
+00:00:12,279 --> 00:00:16,516
+and welcome to "Explore
+App Tracking Transparency."
+
+5
+00:00:16,516 --> 00:00:20,787
+At Apple, we believe privacy
+is a fundamental human right.
+
+6
+00:00:20,787 --> 00:00:22,823
+Part of engineering
+great privacy
+
+7
+00:00:22,823 --> 00:00:25,259
+is giving people
+choices and control
+
+8
+00:00:25,259 --> 00:00:27,427
+over how their data is used.
+
+9
+00:00:27,427 --> 00:00:28,929
+When people have these choices
+
+10
+00:00:28,929 --> 00:00:32,165
+and understand how their data
+will be linked or shared,
+
+11
+00:00:32,165 --> 00:00:36,803
+they are more likely to trust
+and engage with your app.
+
+12
+00:00:36,803 --> 00:00:38,705
+That's why,
+beginning last year,
+
+13
+00:00:38,705 --> 00:00:42,809
+App Store policy requires apps
+to receive users' permission
+
+14
+00:00:42,809 --> 00:00:45,779
+before tracking users
+across apps and websites
+
+15
+00:00:45,779 --> 00:00:48,115
+owned by other companies
+by adopting
+
+16
+00:00:48,115 --> 00:00:51,551
+the AppTrackingTransparency
+framework.
+
+17
+00:00:51,551 --> 00:00:54,554
+Today, I'm going to talk to you
+about when and how to adopt
+
+18
+00:00:54,554 --> 00:00:57,090
+App Tracking Transparency.
+
+19
+00:00:57,090 --> 00:00:59,526
+First, I'll start with some
+background on tracking
+
+20
+00:00:59,526 --> 00:01:02,496
+to help you understand if
+and when your app needs to adopt
+
+21
+00:01:02,496 --> 00:01:05,866
+the AppTrackingTransparency
+framework.
+
+22
+00:01:05,866 --> 00:01:08,335
+Then, I'll highlight some
+key things to keep in mind
+
+23
+00:01:08,335 --> 00:01:11,338
+when adopting the framework
+in practice.
+
+24
+00:01:11,338 --> 00:01:14,441
+Let's get started with some
+background on tracking.
+
+25
+00:01:14,441 --> 00:01:18,512
+So, how is tracking defined
+for App Tracking Transparency?
+
+26
+00:01:18,512 --> 00:01:21,815
+Tracking refers to linking
+user or device data
+
+27
+00:01:21,815 --> 00:01:24,718
+collected from your app
+with user or device data
+
+28
+00:01:24,718 --> 00:01:27,421
+collected from other
+companies' apps, websites,
+
+29
+00:01:27,421 --> 00:01:29,990
+or offline properties
+for targeted advertising
+
+30
+00:01:29,990 --> 00:01:32,993
+or advertising-measurement
+purposes.
+
+31
+00:01:32,993 --> 00:01:35,996
+Tracking also refers
+to sharing user or device data
+
+32
+00:01:35,996 --> 00:01:39,132
+with data brokers.
+
+33
+00:01:39,132 --> 00:01:41,001
+Let's talk through
+some example scenarios
+
+34
+00:01:41,001 --> 00:01:44,271
+to better understand
+how tracking is defined.
+
+35
+00:01:44,271 --> 00:01:46,540
+First, let's look
+at an advertising scenario
+
+36
+00:01:46,540 --> 00:01:49,910
+that doesn't involve tracking.
+
+37
+00:01:49,910 --> 00:01:52,646
+Suppose I download
+an app called Pal About,
+
+38
+00:01:52,646 --> 00:01:54,881
+and the Pal About app
+has a feature
+
+39
+00:01:54,881 --> 00:01:57,150
+that lets me search
+for places and events
+
+40
+00:01:57,150 --> 00:01:59,152
+that are happening nearby.
+
+41
+00:01:59,152 --> 00:02:02,022
+Now suppose I use Pal About
+to search for places
+
+42
+00:02:02,022 --> 00:02:05,225
+that serve waffles near me,
+which results in Pal About
+
+43
+00:02:05,225 --> 00:02:08,228
+storing waffles
+as an interest of mine.
+
+44
+00:02:08,228 --> 00:02:11,531
+Pal About later wants to show
+an ad for breakfast places
+
+45
+00:02:11,531 --> 00:02:14,534
+targeting people
+who like breakfast foods.
+
+46
+00:02:14,534 --> 00:02:17,971
+Using the data Pal About stores
+about me from my searches,
+
+47
+00:02:17,971 --> 00:02:21,041
+Pal About shows me
+the breakfast ad.
+
+48
+00:02:21,041 --> 00:02:24,378
+In this example,
+Pal About doesn't link my data
+
+49
+00:02:24,378 --> 00:02:26,446
+with any data
+from an app or website
+
+50
+00:02:26,446 --> 00:02:29,549
+owned by another company
+to show me the breakfast ad,
+
+51
+00:02:29,549 --> 00:02:34,354
+so this scenario would
+not be considered tracking.
+
+52
+00:02:34,354 --> 00:02:37,524
+For another example that
+wouldn't be considered tracking,
+
+53
+00:02:37,524 --> 00:02:40,961
+suppose the company that owns
+Pal About -- Pal About Inc. --
+
+54
+00:02:40,961 --> 00:02:44,398
+has another app that I use
+called Pal About Plus.
+
+55
+00:02:44,398 --> 00:02:48,101
+And Pal About's server links
+together data collected about me
+
+56
+00:02:48,101 --> 00:02:51,471
+in Pal About Plus,
+like my interest in tacos,
+
+57
+00:02:51,471 --> 00:02:55,008
+with data collected about me
+in Pal About.
+
+58
+00:02:55,008 --> 00:02:58,545
+After linking this data,
+Pal About shows me an ad
+
+59
+00:02:58,545 --> 00:03:01,882
+for a taco truck using
+the fact I like tacos
+
+60
+00:03:01,882 --> 00:03:04,484
+collected from Pal About Plus.
+
+61
+00:03:04,484 --> 00:03:07,220
+In this example,
+the Pal About app doesn't need
+
+62
+00:03:07,220 --> 00:03:10,690
+to get my permission to track
+because it isn't tracking.
+
+63
+00:03:10,690 --> 00:03:13,460
+Pal About doesn't link
+my data from Pal About
+
+64
+00:03:13,460 --> 00:03:15,495
+with any data
+from an app or website
+
+65
+00:03:15,495 --> 00:03:17,831
+owned by another company.
+
+66
+00:03:17,831 --> 00:03:20,934
+Let's now consider a scenario
+that would require Pal About
+
+67
+00:03:20,934 --> 00:03:23,170
+to get permission to track.
+
+68
+00:03:23,170 --> 00:03:25,238
+Suppose there's
+a food delivery app I use
+
+69
+00:03:25,238 --> 00:03:28,809
+that's owned by a different
+company than Pal About.
+
+70
+00:03:28,809 --> 00:03:30,343
+And I've used
+the food delivery app
+
+71
+00:03:30,343 --> 00:03:32,646
+to place orders late at night.
+
+72
+00:03:32,646 --> 00:03:34,681
+When I signed up for
+the food delivery app,
+
+73
+00:03:34,681 --> 00:03:37,851
+I gave the app
+my email address --
+
+74
+00:03:37,851 --> 00:03:41,321
+the same email address I used
+to sign up for Pal About
+
+75
+00:03:41,321 --> 00:03:45,425
+and that Pal About stores
+for my account.
+
+76
+00:03:45,425 --> 00:03:47,527
+The food delivery app
+includes code
+
+77
+00:03:47,527 --> 00:03:49,229
+that shares my email address
+
+78
+00:03:49,229 --> 00:03:53,633
+and the fact I often order
+at night with Pal About.
+
+79
+00:03:53,633 --> 00:03:57,237
+The Pal About server uses my
+email address to link together
+
+80
+00:03:57,237 --> 00:04:00,540
+my interest in waffles,
+collected by the Pal About app,
+
+81
+00:04:00,540 --> 00:04:02,142
+to the fact I order at night,
+
+82
+00:04:02,142 --> 00:04:05,345
+collected in
+the food delivery app.
+
+83
+00:04:05,345 --> 00:04:08,048
+Finally, Pal About
+uses the combination
+
+84
+00:04:08,048 --> 00:04:10,917
+of my ordering habits
+and my interest in waffles
+
+85
+00:04:10,917 --> 00:04:12,552
+to show me
+an ad for a restaurant
+
+86
+00:04:12,552 --> 00:04:15,322
+that serves all-day breakfast.
+
+87
+00:04:15,322 --> 00:04:17,491
+This scenario
+would require Pal About
+
+88
+00:04:17,491 --> 00:04:19,459
+to request permission to track
+
+89
+00:04:19,459 --> 00:04:22,129
+because it linked user data
+from Pal About --
+
+90
+00:04:22,129 --> 00:04:23,363
+my email address --
+
+91
+00:04:23,363 --> 00:04:25,532
+with another company's
+user data --
+
+92
+00:04:25,532 --> 00:04:27,868
+my email and habit
+of ordering at night --
+
+93
+00:04:27,868 --> 00:04:30,170
+for advertising purposes.
+
+94
+00:04:30,170 --> 00:04:33,473
+In this example, data is
+linked together across apps
+
+95
+00:04:33,473 --> 00:04:36,042
+with an email address.
+
+96
+00:04:36,042 --> 00:04:39,012
+Even if the email address
+or another user identifier
+
+97
+00:04:39,012 --> 00:04:42,182
+is hashed before it is used
+to link data,
+
+98
+00:04:42,182 --> 00:04:45,318
+it would still require
+permission to track
+
+99
+00:04:45,318 --> 00:04:48,421
+because it would still be
+linking data about a user
+
+100
+00:04:48,421 --> 00:04:52,859
+from the app with another
+company's data about that user.
+
+101
+00:04:52,859 --> 00:04:56,329
+The type of identifier
+and whether or not it is hashed
+
+102
+00:04:56,329 --> 00:04:59,432
+doesn't change the fact
+it is being used for tracking,
+
+103
+00:04:59,432 --> 00:05:03,303
+which is what
+requires permission.
+
+104
+00:05:03,303 --> 00:05:04,838
+Another thing
+you'll need to consider
+
+105
+00:05:04,838 --> 00:05:08,141
+to determine if your app needs
+to request permission to track
+
+106
+00:05:08,141 --> 00:05:12,812
+is how third-party SDKs use
+and share data from your app.
+
+107
+00:05:12,812 --> 00:05:13,980
+As a developer,
+
+108
+00:05:13,980 --> 00:05:17,417
+you're responsible for
+the behavior of your whole app.
+
+109
+00:05:17,417 --> 00:05:20,887
+Returning to our example,
+suppose the Pal About developer
+
+110
+00:05:20,887 --> 00:05:23,056
+hasn't written
+any code themselves
+
+111
+00:05:23,056 --> 00:05:25,358
+that would require
+permission to track,
+
+112
+00:05:25,358 --> 00:05:28,361
+but would like to include
+a third-party SDK in their app
+
+113
+00:05:28,361 --> 00:05:31,398
+for advertising-measurement
+purposes.
+
+114
+00:05:31,398 --> 00:05:33,867
+Whether Pal About
+needs permission to track
+
+115
+00:05:33,867 --> 00:05:37,571
+in order to include the SDK
+depends on whether or not
+
+116
+00:05:37,571 --> 00:05:40,640
+the SDK combines
+user data from Pal About
+
+117
+00:05:40,640 --> 00:05:45,145
+with user data from other
+companies' apps or websites.
+
+118
+00:05:45,145 --> 00:05:49,449
+For example, if the SDK
+shares user data from Pal About
+
+119
+00:05:49,449 --> 00:05:52,519
+to provide analytics
+about ads in Pal About,
+
+120
+00:05:52,519 --> 00:05:55,789
+but doesn't link the user data
+it collects from Pal About
+
+121
+00:05:55,789 --> 00:05:57,991
+with user data
+from other companies,
+
+122
+00:05:57,991 --> 00:06:02,762
+it doesn't require
+permission to track.
+
+123
+00:06:02,762 --> 00:06:04,531
+Now suppose instead,
+
+124
+00:06:04,531 --> 00:06:09,035
+the SDK shares user data from
+Pal About with an ad network,
+
+125
+00:06:09,035 --> 00:06:12,072
+and the ad network
+links the data it receives
+
+126
+00:06:12,072 --> 00:06:13,974
+about how I use Pal About
+
+127
+00:06:13,974 --> 00:06:16,810
+with data about ads I saw
+in other companies' apps
+
+128
+00:06:16,810 --> 00:06:20,547
+to compare the impact
+of ad campaigns in those apps.
+
+129
+00:06:20,547 --> 00:06:23,483
+This requires Pal About
+to request users' permission
+
+130
+00:06:23,483 --> 00:06:26,920
+to track because this SDK
+is tracking.
+
+131
+00:06:26,920 --> 00:06:30,123
+This is considered tracking
+regardless of whether Pal About
+
+132
+00:06:30,123 --> 00:06:32,859
+uses the SDK
+for those purposes,
+
+133
+00:06:32,859 --> 00:06:36,429
+or even if Pal About
+only gets aggregate reporting
+
+134
+00:06:36,429 --> 00:06:39,132
+after Pal About
+users' data is linked
+
+135
+00:06:39,132 --> 00:06:42,202
+with other companies'
+users' data.
+
+136
+00:06:42,202 --> 00:06:45,238
+If you're unsure about
+whether an SDK you want to use
+
+137
+00:06:45,238 --> 00:06:46,906
+would contain code
+that would require
+
+138
+00:06:46,906 --> 00:06:48,842
+App Tracking Transparency,
+
+139
+00:06:48,842 --> 00:06:52,345
+you should ask the developer
+of that SDK.
+
+140
+00:06:52,345 --> 00:06:55,382
+This responsibility applies
+not just to SDKs,
+
+141
+00:06:55,382 --> 00:06:59,519
+but to any libraries or
+third-party code your app uses.
+
+142
+00:06:59,519 --> 00:07:03,623
+So far, we've looked at examples
+that involve linking user data.
+
+143
+00:07:03,623 --> 00:07:05,158
+Now let's look
+at another scenario
+
+144
+00:07:05,158 --> 00:07:06,860
+that's considered tracking:
+
+145
+00:07:06,860 --> 00:07:09,863
+sharing user or device data
+with data brokers.
+
+146
+00:07:09,863 --> 00:07:13,166
+First, how are data brokers
+defined?
+
+147
+00:07:13,166 --> 00:07:16,569
+Data brokers are defined by law
+in some jurisdictions.
+
+148
+00:07:16,569 --> 00:07:19,539
+But in general,
+a data broker is a company
+
+149
+00:07:19,539 --> 00:07:22,575
+that regularly collects
+and sells, licenses,
+
+150
+00:07:22,575 --> 00:07:25,111
+or otherwise discloses
+to third parties
+
+151
+00:07:25,111 --> 00:07:27,981
+the personal information
+of particular end users
+
+152
+00:07:27,981 --> 00:07:31,451
+with whom the business does
+not have a direct relationship.
+
+153
+00:07:31,451 --> 00:07:35,622
+Let's look at sharing data with
+a data broker in an example.
+
+154
+00:07:35,622 --> 00:07:38,858
+Suppose the Pal About app
+includes client code
+
+155
+00:07:38,858 --> 00:07:40,794
+that sends my interest
+in waffles
+
+156
+00:07:40,794 --> 00:07:44,097
+and an account identifier
+to a data broker.
+
+157
+00:07:44,097 --> 00:07:46,132
+This scenario counts as tracking
+
+158
+00:07:46,132 --> 00:07:48,101
+whether or not
+the data that is shared
+
+159
+00:07:48,101 --> 00:07:50,370
+is linked with data
+from other companies
+
+160
+00:07:50,370 --> 00:07:53,239
+for advertising
+or advertising measurement.
+
+161
+00:07:53,239 --> 00:07:55,575
+Sharing of user data
+with a data broker
+
+162
+00:07:55,575 --> 00:07:59,379
+requires permission to track.
+
+163
+00:07:59,379 --> 00:08:01,648
+And even if
+Pal About client code
+
+164
+00:08:01,648 --> 00:08:04,250
+doesn't directly send
+my account identifier
+
+165
+00:08:04,250 --> 00:08:06,986
+and my interest in waffles
+to the data broker,
+
+166
+00:08:06,986 --> 00:08:10,357
+but instead this interest
+is sent to Pal About's server
+
+167
+00:08:10,357 --> 00:08:12,525
+and the server
+later shares accounts
+
+168
+00:08:12,525 --> 00:08:15,295
+interested in waffles
+with the data broker,
+
+169
+00:08:15,295 --> 00:08:17,864
+this would require
+getting permission to track
+
+170
+00:08:17,864 --> 00:08:20,066
+even though my device
+isn't communicating
+
+171
+00:08:20,066 --> 00:08:22,836
+with the data broker directly.
+
+172
+00:08:22,836 --> 00:08:25,105
+We've now talked through
+how the definition of tracking
+
+173
+00:08:25,105 --> 00:08:27,507
+applies to some
+example scenarios.
+
+174
+00:08:27,507 --> 00:08:30,477
+For more information about
+how App Tracking Transparency
+
+175
+00:08:30,477 --> 00:08:32,312
+defines tracking,
+you can visit
+
+176
+00:08:32,312 --> 00:08:35,448
+the User Privacy
+and Data Use page.
+
+177
+00:08:35,448 --> 00:08:37,584
+Now, if you've determined
+that your app
+
+178
+00:08:37,584 --> 00:08:39,352
+would like to track users,
+
+179
+00:08:39,352 --> 00:08:42,288
+you'll need to ask for
+and obtain the user's permission
+
+180
+00:08:42,288 --> 00:08:43,957
+before you do so.
+
+181
+00:08:43,957 --> 00:08:45,658
+Here's how.
+
+182
+00:08:45,658 --> 00:08:48,762
+To ask for permission
+for your app to track,
+
+183
+00:08:48,762 --> 00:08:51,598
+you'll need to present
+the app tracking authorization
+
+184
+00:08:51,598 --> 00:08:53,800
+request prompt by calling
+
+185
+00:08:53,800 --> 00:08:57,504
+the requestTrackingAuthorization
+method.
+
+186
+00:08:57,504 --> 00:09:00,707
+Calling this method will cause
+a system permission alert --
+
+187
+00:09:00,707 --> 00:09:05,211
+like this one for Pal About --
+to appear over your app.
+
+188
+00:09:05,211 --> 00:09:07,046
+This is a one-time prompt.
+
+189
+00:09:07,046 --> 00:09:09,449
+The system will remember
+the user's choice
+
+190
+00:09:09,449 --> 00:09:10,650
+and won't prompt again
+
+191
+00:09:10,650 --> 00:09:14,421
+unless the app is uninstalled
+and reinstalled.
+
+192
+00:09:14,421 --> 00:09:17,123
+The next thing you'll
+need to do is provide
+
+193
+00:09:17,123 --> 00:09:23,363
+a NSUserTrackingUsageDescription
+key in your app's info.plist.
+
+194
+00:09:23,363 --> 00:09:26,866
+The string provided here will
+be shown in the system prompt
+
+195
+00:09:26,866 --> 00:09:30,470
+and informs the user why
+the app is requesting permission
+
+196
+00:09:30,470 --> 00:09:34,207
+to use data for tracking
+the user or the device.
+
+197
+00:09:34,207 --> 00:09:37,877
+A great purpose string is clear,
+concise, and helps users
+
+198
+00:09:37,877 --> 00:09:41,281
+understand why they are
+being asked to allow tracking.
+
+199
+00:09:41,281 --> 00:09:44,217
+This string doesn't need
+to include the app's name,
+
+200
+00:09:44,217 --> 00:09:46,719
+because the system
+will automatically identify
+
+201
+00:09:46,719 --> 00:09:49,055
+the requesting app
+and display the app name
+
+202
+00:09:49,055 --> 00:09:51,391
+in the system prompt.
+
+203
+00:09:51,391 --> 00:09:54,327
+If you don't include
+a usage-description string,
+
+204
+00:09:54,327 --> 00:09:57,864
+your app will crash
+when the system prompt is shown.
+
+205
+00:09:57,864 --> 00:10:01,634
+Finally, use
+trackingAuthorizationStatus
+
+206
+00:10:01,634 --> 00:10:04,404
+to determine the user's
+app-tracking permission status
+
+207
+00:10:04,404 --> 00:10:06,639
+for your app.
+
+208
+00:10:06,639 --> 00:10:09,242
+If a user has selected
+Allow for this app,
+
+209
+00:10:09,242 --> 00:10:11,678
+then you have their permission
+to link their activity
+
+210
+00:10:11,678 --> 00:10:14,614
+in that app across
+other apps and websites
+
+211
+00:10:14,614 --> 00:10:17,250
+as long as their
+tracking authorization status
+
+212
+00:10:17,250 --> 00:10:19,652
+remains authorized.
+
+213
+00:10:19,652 --> 00:10:22,021
+Users can change
+and grant or revoke
+
+214
+00:10:22,021 --> 00:10:25,291
+their tracking authorization
+at any time,
+
+215
+00:10:25,291 --> 00:10:29,329
+so make sure your app checks the
+tracking authorization status
+
+216
+00:10:29,329 --> 00:10:32,932
+each time it is launched
+and only continues to track
+
+217
+00:10:32,932 --> 00:10:35,602
+when the value of the
+tracking authorization status
+
+218
+00:10:35,602 --> 00:10:37,804
+is authorized.
+
+219
+00:10:37,804 --> 00:10:41,341
+Users can control whether apps
+have their permission to track
+
+220
+00:10:41,341 --> 00:10:43,877
+on a per-app basis.
+
+221
+00:10:43,877 --> 00:10:46,312
+Just because a user
+has given one of your apps
+
+222
+00:10:46,312 --> 00:10:49,282
+permission to track doesn't mean
+you have their permission
+
+223
+00:10:49,282 --> 00:10:52,986
+to track in another app
+owned by the same company.
+
+224
+00:10:52,986 --> 00:10:56,689
+Different apps must each
+individually request permission
+
+225
+00:10:56,689 --> 00:10:59,526
+from the user
+for that particular app
+
+226
+00:10:59,526 --> 00:11:01,961
+before data from
+that app can be linked
+
+227
+00:11:01,961 --> 00:11:04,097
+to apps or websites
+owned by other companies
+
+228
+00:11:04,097 --> 00:11:07,634
+for marketing or advertising.
+
+229
+00:11:07,634 --> 00:11:09,102
+If your app doesn't have
+
+230
+00:11:09,102 --> 00:11:11,371
+tracking authorization
+for a user,
+
+231
+00:11:11,371 --> 00:11:14,307
+there are a couple things
+to keep in mind.
+
+232
+00:11:14,307 --> 00:11:17,210
+First, per the App Store
+review guidelines,
+
+233
+00:11:17,210 --> 00:11:19,979
+your app must not gate
+any of its functionality
+
+234
+00:11:19,979 --> 00:11:23,716
+on whether the user agrees
+to allow tracking.
+
+235
+00:11:23,716 --> 00:11:27,554
+Second, the IDFA API
+will return all zeros
+
+236
+00:11:27,554 --> 00:11:31,190
+if the user has asked your app
+not to track.
+
+237
+00:11:31,190 --> 00:11:33,226
+If a user has opted
+out of tracking,
+
+238
+00:11:33,226 --> 00:11:35,962
+there are nontracking
+alternatives for advertising
+
+239
+00:11:35,962 --> 00:11:38,498
+or advertising measurement
+for your app.
+
+240
+00:11:38,498 --> 00:11:42,035
+For example, your app could
+choose to serve first-party ads
+
+241
+00:11:42,035 --> 00:11:43,836
+or contextual ads.
+
+242
+00:11:43,836 --> 00:11:47,140
+And for advertising measurement,
+we continue to build and improve
+
+243
+00:11:47,140 --> 00:11:50,276
+privacy preserving
+ad-attribution technologies
+
+244
+00:11:50,276 --> 00:11:52,512
+that ad networks can adopt.
+
+245
+00:11:52,512 --> 00:11:54,814
+For more information
+about recent improvements
+
+246
+00:11:54,814 --> 00:11:58,718
+to SKAdNetwork and private click
+measurement, you can refer to
+
+247
+00:11:58,718 --> 00:12:01,287
+"Meet privacy preserving
+ad attribution"
+
+248
+00:12:01,287 --> 00:12:04,824
+and "What's new in SKAdNetwork."
+
+249
+00:12:04,824 --> 00:12:07,760
+You'll also need to declare
+what data your app uses
+
+250
+00:12:07,760 --> 00:12:11,931
+to track for display in your
+app's privacy nutrition label.
+
+251
+00:12:11,931 --> 00:12:13,933
+Filling out your
+privacy nutrition label
+
+252
+00:12:13,933 --> 00:12:16,202
+when submitting your app
+to the App Store
+
+253
+00:12:16,202 --> 00:12:18,404
+and getting permission
+to track using
+
+254
+00:12:18,404 --> 00:12:20,773
+the AppTrackingTransparency
+framework
+
+255
+00:12:20,773 --> 00:12:23,443
+are two separate steps
+that are both required
+
+256
+00:12:23,443 --> 00:12:26,746
+if your app would like to use
+data for tracking.
+
+257
+00:12:26,746 --> 00:12:29,115
+For more information
+about nutrition labels
+
+258
+00:12:29,115 --> 00:12:30,883
+and how to fill them out
+for your app,
+
+259
+00:12:30,883 --> 00:12:34,220
+see "Create your
+Privacy Nutrition Label."
+
+260
+00:12:34,220 --> 00:12:37,523
+Finally, let's talk
+about fingerprinting.
+
+261
+00:12:37,523 --> 00:12:40,560
+With permission,
+tracking is allowed.
+
+262
+00:12:40,560 --> 00:12:43,496
+But fingerprinting
+is never allowed.
+
+263
+00:12:43,496 --> 00:12:45,698
+Regardless of whether
+a user gives your app
+
+264
+00:12:45,698 --> 00:12:48,201
+permission to track,
+fingerprinting --
+
+265
+00:12:48,201 --> 00:12:49,902
+or using signals
+from the device
+
+266
+00:12:49,902 --> 00:12:52,405
+to try to identify
+the device or user --
+
+267
+00:12:52,405 --> 00:12:53,539
+is not allowed
+
+268
+00:12:53,539 --> 00:12:57,677
+per the Apple Developer Program
+License Agreement.
+
+269
+00:12:57,677 --> 00:13:01,114
+Some examples of user or device
+data used for fingerprinting
+
+270
+00:13:01,114 --> 00:13:03,549
+include properties
+of a user's web browser
+
+271
+00:13:03,549 --> 00:13:05,018
+and its configuration,
+
+272
+00:13:05,018 --> 00:13:07,253
+the user's device
+and its configuration,
+
+273
+00:13:07,253 --> 00:13:11,557
+the user's location, or
+the user's network connection.
+
+274
+00:13:11,557 --> 00:13:14,060
+Collecting any data
+solely for the purpose
+
+275
+00:13:14,060 --> 00:13:18,197
+of generating a fingerprint
+is also not allowed.
+
+276
+00:13:18,197 --> 00:13:20,800
+It's important people
+have transparency and control
+
+277
+00:13:20,800 --> 00:13:23,870
+over how their data
+is used for tracking.
+
+278
+00:13:23,870 --> 00:13:26,005
+We hope that by tuning in
+to this session,
+
+279
+00:13:26,005 --> 00:13:28,174
+you now have the tools
+you need to determine
+
+280
+00:13:28,174 --> 00:13:31,277
+when and how to give people
+that control by adopting
+
+281
+00:13:31,277 --> 00:13:33,713
+the AppTrackingTransparency
+framework.
+
+282
+00:13:33,713 --> 00:13:35,148
+Thanks for watching.
+
+283
+00:13:35,148 --> 00:13:39,352
+♪
+

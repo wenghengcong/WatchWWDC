@@ -1,0 +1,1197 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,745
+Drew Haas: Hi there.
+My name is Drew Haas,
+
+3
+00:00:11,778 --> 00:00:14,681
+and I'm an engineer
+on the Accessibility team.
+
+4
+00:00:14,715 --> 00:00:19,086
+I'm here to talk about how to create
+accessible Single App Mode experiences.
+
+5
+00:00:19,119 --> 00:00:22,523
+Single App Modes let you
+as a developer serve your users
+
+6
+00:00:22,556 --> 00:00:25,993
+in really unique ways
+by restricting certain behaviors
+
+7
+00:00:26,026 --> 00:00:28,829
+on iOS and iPadOS devices.
+
+8
+00:00:28,862 --> 00:00:33,400
+Namely, these modes let you
+lock the device to a single app.
+
+9
+00:00:33,433 --> 00:00:34,601
+Depending on the mode,
+
+10
+00:00:34,635 --> 00:00:37,838
+the restrictions are either initiated
+by the system
+
+11
+00:00:37,871 --> 00:00:39,740
+or by your app.
+
+12
+00:00:39,773 --> 00:00:43,677
+This is great because you get to control
+the timing between a restricted state
+
+13
+00:00:43,710 --> 00:00:46,046
+and an unrestricted state.
+
+14
+00:00:46,079 --> 00:00:50,150
+You're also able to apply additional
+restrictions on top of single app mode,
+
+15
+00:00:50,184 --> 00:00:52,753
+like whether auto-lock is enabled or not.
+
+16
+00:00:54,121 --> 00:00:57,357
+Let's remember to consider
+accessibility use cases.
+
+17
+00:00:57,391 --> 00:01:01,028
+You should make sure people
+who rely using on accessibility features
+
+18
+00:01:01,061 --> 00:01:03,063
+have the ability to turn them on
+
+19
+00:01:03,096 --> 00:01:06,934
+so they can use them,
+even if the device is restricted.
+
+20
+00:01:06,967 --> 00:01:11,071
+This ensures your app is inclusive
+to people using assistive technologies.
+
+21
+00:01:11,104 --> 00:01:15,609
+I want to talk about some examples
+of when to use Single App Mode.
+
+22
+00:01:15,642 --> 00:01:19,546
+Let's say you're developing an app
+where customers order food or drinks
+
+23
+00:01:19,580 --> 00:01:21,181
+at a restaurant or event.
+
+24
+00:01:21,215 --> 00:01:24,051
+Or an app that will be used
+in a medical office,
+
+25
+00:01:24,084 --> 00:01:27,221
+where patients are handling a device
+shared by the medical staff
+
+26
+00:01:27,254 --> 00:01:29,223
+to fill out their information.
+
+27
+00:01:29,256 --> 00:01:33,560
+Or even an app that helps facilitate
+a test for students in a classroom.
+
+28
+00:01:33,594 --> 00:01:36,697
+These are all scenarios
+where Single App Mode restrictions
+
+29
+00:01:36,730 --> 00:01:40,200
+help create a focused environment
+for the user.
+
+30
+00:01:40,234 --> 00:01:43,270
+And did you know your app
+might be used in Single App Mode
+
+31
+00:01:43,303 --> 00:01:45,806
+even if you didn't write code for it?
+
+32
+00:01:45,839 --> 00:01:49,309
+That's right,
+Guided Access is an accessibility feature
+
+33
+00:01:49,343 --> 00:01:53,113
+that lets users put any app
+in Single App Mode.
+
+34
+00:01:53,146 --> 00:01:55,282
+First, I'll talk about Guided Access
+
+35
+00:01:55,315 --> 00:01:57,784
+and go over some considerations
+you should have
+
+36
+00:01:57,818 --> 00:02:01,054
+for when people use your app
+during this mode.
+
+37
+00:02:01,088 --> 00:02:04,525
+Next, I'll talk about single app modes
+that you initiate programmatically
+
+38
+00:02:04,558 --> 00:02:08,929
+from within your app,
+by adopting certain APIs and frameworks.
+
+39
+00:02:08,962 --> 00:02:11,765
+And finally, we provide accessibility API
+
+40
+00:02:11,798 --> 00:02:15,202
+designed for use
+specifically during Single App Mode.
+
+41
+00:02:15,235 --> 00:02:19,006
+Use this API to turn on or off
+certain accessibility features
+
+42
+00:02:19,039 --> 00:02:22,509
+to create a seamless
+and accessible experience.
+
+43
+00:02:22,543 --> 00:02:24,978
+Let's dive in first with Guided Access.
+
+44
+00:02:25,012 --> 00:02:28,081
+To start Guided Access,
+first make sure it's turned on
+
+45
+00:02:28,115 --> 00:02:32,653
+in accessibility settings,
+then open the app you want to lock on to.
+
+46
+00:02:32,686 --> 00:02:37,024
+Triple click the side button
+to perform the accessibility shortcut.
+
+47
+00:02:37,057 --> 00:02:42,262
+This shows the guided access workspace,
+where you configure system restrictions.
+
+48
+00:02:42,296 --> 00:02:43,931
+Then tap Start to begin.
+
+49
+00:02:45,432 --> 00:02:48,101
+Now the device is in a restricted state.
+
+50
+00:02:48,135 --> 00:02:49,970
+It's locked to the frontmost app,
+
+51
+00:02:50,003 --> 00:02:53,841
+and the restrictions I configured
+in the options menu are applied.
+
+52
+00:02:53,874 --> 00:02:59,379
+This helps creates a guided experience
+for people with cognitive disabilities.
+
+53
+00:02:59,413 --> 00:03:01,682
+To exit Guided Access,
+all you need to do
+
+54
+00:03:01,715 --> 00:03:04,484
+is perform the accessibility shortcut
+again.
+
+55
+00:03:04,518 --> 00:03:09,056
+The options menu lets you restrict
+touch interaction, display motion,
+
+56
+00:03:09,089 --> 00:03:12,759
+and the software keyboard,
+as well as hardware button events,
+
+57
+00:03:12,793 --> 00:03:16,697
+like the volume buttons,
+and the sleep/wake button.
+
+58
+00:03:16,730 --> 00:03:20,000
+Having a controlled environment in
+this way is especially helpful
+
+59
+00:03:20,033 --> 00:03:21,935
+for people with cognitive disabilities,
+
+60
+00:03:21,969 --> 00:03:24,938
+but this feature is also enjoyed
+by a range of users,
+
+61
+00:03:24,972 --> 00:03:28,008
+from accessibility users
+to parents of young kids
+
+62
+00:03:28,041 --> 00:03:32,446
+who could all benefit from having
+easy access to these device restrictions.
+
+63
+00:03:32,479 --> 00:03:33,981
+This is where you come in!
+
+64
+00:03:34,014 --> 00:03:37,551
+UIAccessibility API lets you
+create custom restrictions
+
+65
+00:03:37,584 --> 00:03:41,722
+to tailor the experience
+of your app during Guided Access.
+
+66
+00:03:41,755 --> 00:03:46,059
+Use this an opportunity
+to restrict or adjust areas of your app
+
+67
+00:03:46,093 --> 00:03:48,495
+where someone with a cognitive disability
+might feel lost
+
+68
+00:03:48,529 --> 00:03:50,264
+or overwhelmed with options.
+
+69
+00:03:50,297 --> 00:03:54,735
+I want to share some design considerations
+for cognitive accessibility.
+
+70
+00:03:54,768 --> 00:03:57,871
+These are principles you should follow
+all the time if possible,
+
+71
+00:03:57,905 --> 00:04:02,242
+but you should especially follow them
+in your app during Guided Access.
+
+72
+00:04:02,276 --> 00:04:04,878
+First is to be forgiving of errors.
+
+73
+00:04:04,912 --> 00:04:07,014
+Try to mitigate errors before they happen,
+
+74
+00:04:07,047 --> 00:04:11,552
+by warning users before they perform
+significant or irreversible actions,
+
+75
+00:04:11,585 --> 00:04:16,156
+like deleting or modifying account
+information or payment information.
+
+76
+00:04:16,190 --> 00:04:18,392
+You should aim to reduce
+dependence on timing
+
+77
+00:04:18,425 --> 00:04:20,561
+to act on certain things in your app,
+
+78
+00:04:20,594 --> 00:04:24,831
+because not everybody
+processes information at the same speed.
+
+79
+00:04:24,865 --> 00:04:28,101
+Using timed alerts
+or automatically performing actions
+
+80
+00:04:28,135 --> 00:04:31,338
+after a short time-out
+makes your app harder to use.
+
+81
+00:04:31,371 --> 00:04:35,175
+And you should always, always,
+give the user a chance to confirm
+
+82
+00:04:35,209 --> 00:04:36,944
+before making a payment,
+
+83
+00:04:36,977 --> 00:04:40,781
+this includes apps
+that have one-tap purchases.
+
+84
+00:04:40,814 --> 00:04:44,218
+Designing your app with these
+considerations promotes independence
+
+85
+00:04:44,251 --> 00:04:46,520
+for accessibility users.
+
+86
+00:04:46,553 --> 00:04:48,689
+I want to show you an example.
+
+87
+00:04:48,722 --> 00:04:51,191
+I'm working on an app
+called Reading Observatory
+
+88
+00:04:51,225 --> 00:04:54,928
+which helps people keep track of how much
+they've read during the week.
+
+89
+00:04:54,962 --> 00:04:58,599
+The home page of my app shows
+reading progress and has two buttons:
+
+90
+00:04:58,632 --> 00:05:02,035
+account settings,
+and a continue reading button.
+
+91
+00:05:02,069 --> 00:05:06,173
+I've added a custom restriction for my app
+that will lock the Account Settings button
+
+92
+00:05:06,206 --> 00:05:08,876
+while Guided Access is active.
+
+93
+00:05:08,909 --> 00:05:12,546
+This gives my app a unique experience
+under this restriction,
+
+94
+00:05:12,579 --> 00:05:14,915
+to help prevent users from getting lost
+somewhere else,
+
+95
+00:05:14,948 --> 00:05:19,620
+like buried in account settings,
+where they may make unintended changes.
+
+96
+00:05:19,653 --> 00:05:22,189
+This will also reduce the amount of times
+someone may get stuck
+
+97
+00:05:22,222 --> 00:05:25,692
+and need help getting back on track
+with the primary purpose of my app,
+
+98
+00:05:25,726 --> 00:05:27,294
+which is reading.
+
+99
+00:05:27,327 --> 00:05:30,397
+To do this, first conform your AppDelegate
+
+100
+00:05:30,430 --> 00:05:33,634
+to the UIGuidedAccessRestrictionDelegate
+protocol.
+
+101
+00:05:33,667 --> 00:05:36,637
+You need to let Guided Access know
+about each restriction
+
+102
+00:05:36,670 --> 00:05:39,139
+by providing an array of identifiers.
+
+103
+00:05:39,173 --> 00:05:41,375
+I've got just one.
+
+104
+00:05:41,408 --> 00:05:44,745
+You're also required to give
+a user-facing title for each,
+
+105
+00:05:44,778 --> 00:05:49,116
+as well as an optional description
+if you need to provide additional detail.
+
+106
+00:05:49,149 --> 00:05:52,085
+These strings will show up
+in the options menu.
+
+107
+00:05:52,119 --> 00:05:53,520
+Finally, implement the
+
+108
+00:05:53,554 --> 00:05:56,890
+guidedAccessRestriction
+(withIdentifier:didChange:) method
+
+109
+00:05:56,924 --> 00:06:00,961
+to receive a callback
+when a restriction is toggled.
+
+110
+00:06:00,994 --> 00:06:04,431
+This is where your app could post
+a notification to perform logic
+
+111
+00:06:04,464 --> 00:06:06,300
+which would accommodate
+the restriction,
+
+112
+00:06:06,333 --> 00:06:09,069
+like turning off user interaction
+for certain buttons
+
+113
+00:06:09,102 --> 00:06:12,706
+or introducing some of those
+design principles from earlier.
+
+114
+00:06:13,440 --> 00:06:16,844
+Check if a custom restriction
+is enabled at any time by calling
+
+115
+00:06:16,877 --> 00:06:21,381
+guidedAccessRestrictionState
+(forIdentifier:) on UIAccessibility.
+
+116
+00:06:21,415 --> 00:06:25,652
+All of the system provided restrictions
+and your custom app-based restrictions
+
+117
+00:06:25,686 --> 00:06:28,455
+make Guided Access extremely configurable,
+
+118
+00:06:28,488 --> 00:06:32,359
+which is why it is a fantastic
+accessibility feature.
+
+119
+00:06:32,392 --> 00:06:35,996
+Guided Access can be found
+in Accessibility Settings.
+
+120
+00:06:36,029 --> 00:06:39,566
+Other Single App Modes are available
+for you to programmatically enter
+
+121
+00:06:39,600 --> 00:06:41,802
+a restricted session on device.
+
+122
+00:06:41,835 --> 00:06:44,838
+They share similarities with
+Guided Access, but the key difference
+
+123
+00:06:44,872 --> 00:06:48,809
+is just that: you're programmatically
+entering this mode.
+
+124
+00:06:48,842 --> 00:06:51,378
+This means there's plenty to talk about
+for setting up,
+
+125
+00:06:51,411 --> 00:06:54,748
+starting, and customizing
+your Single App Mode session.
+
+126
+00:06:54,781 --> 00:06:57,417
+Remember each of those scenarios
+from earlier?
+
+127
+00:06:57,451 --> 00:07:00,220
+An iPad being used as a restaurant kiosk,
+
+128
+00:07:00,254 --> 00:07:03,357
+at a medical office, in a testing
+environment–
+
+129
+00:07:03,390 --> 00:07:07,594
+single App Modes are the right solution
+for all of these situations.
+
+130
+00:07:07,628 --> 00:07:10,330
+Even though each may have
+slightly different needs,
+
+131
+00:07:10,364 --> 00:07:14,101
+they all benefit from locking the device
+to a single app.
+
+132
+00:07:14,134 --> 00:07:16,737
+This prevents people from swiping
+to go home,
+
+133
+00:07:16,770 --> 00:07:21,842
+modifying things in Settings,
+or even looking something up in Safari.
+
+134
+00:07:21,875 --> 00:07:25,212
+Let's go through each of these
+and I'll recommend a Single App Mode
+
+135
+00:07:25,245 --> 00:07:27,214
+based on the restrictions we'll need.
+
+136
+00:07:28,448 --> 00:07:32,252
+The first mode is the most basic,
+and it's the easiest to deploy.
+
+137
+00:07:32,286 --> 00:07:35,055
+It's simply called Single App Mode.
+
+138
+00:07:35,088 --> 00:07:37,391
+This is the right solution
+for when you have a device
+
+139
+00:07:37,424 --> 00:07:41,995
+that you intend to stay in a single app
+pretty much in perpetuity.
+
+140
+00:07:42,029 --> 00:07:44,798
+It remains locked in-app after reboot,
+
+141
+00:07:44,831 --> 00:07:48,202
+and there is no manual intervention
+needed for upkeep.
+
+142
+00:07:48,235 --> 00:07:51,004
+Great for a low-involvement approach.
+
+143
+00:07:51,038 --> 00:07:52,773
+A few considerations, though!
+
+144
+00:07:52,806 --> 00:07:54,975
+The device must be supervised.
+
+145
+00:07:55,008 --> 00:07:58,078
+Supervision tools
+let you lock a high volume of devices
+
+146
+00:07:58,111 --> 00:08:00,047
+into Single App Mode at once,
+
+147
+00:08:00,080 --> 00:08:04,484
+so this is a very scalable solution
+if you're working with a lot of devices.
+
+148
+00:08:04,518 --> 00:08:08,355
+Apple Configurator lets you manage
+supervised devices in many ways,
+
+149
+00:08:08,388 --> 00:08:11,825
+including putting them in Single App Mode.
+
+150
+00:08:11,859 --> 00:08:17,231
+Select a supervised device, then under
+Advanced, select Start Single App Mode.
+
+151
+00:08:19,466 --> 00:08:22,736
+The last thing you need to do
+is select an app.
+
+152
+00:08:22,769 --> 00:08:25,005
+Once you do, it will launch automatically,
+
+153
+00:08:25,038 --> 00:08:26,707
+and lock into the foreground.
+
+154
+00:08:28,675 --> 00:08:30,844
+There is no other way to exit this mode.
+
+155
+00:08:30,878 --> 00:08:34,181
+As I mentioned, it will stay locked
+to this app even upon reboot
+
+156
+00:08:34,214 --> 00:08:37,618
+unless you end Single App Mode
+through your management software.
+
+157
+00:08:38,452 --> 00:08:41,588
+Autonomous Single App Mode
+is better suited for situations
+
+158
+00:08:41,622 --> 00:08:45,058
+where a restricted state
+is entered and exited often.
+
+159
+00:08:45,092 --> 00:08:48,395
+For example, at a medical office
+where a new patient fills in
+
+160
+00:08:48,428 --> 00:08:52,299
+their information on an iPad,
+and then hands it back to the staff.
+
+161
+00:08:52,332 --> 00:08:55,702
+This means there is manual intervention
+between restrictions.
+
+162
+00:08:55,736 --> 00:08:57,905
+Your app gets to do this by itself,
+
+163
+00:08:57,938 --> 00:09:01,708
+by using a single API method call
+to get in and out.
+
+164
+00:09:01,742 --> 00:09:05,279
+Again, considerations–
+the device must be supervised,
+
+165
+00:09:05,312 --> 00:09:08,916
+and the app that wants to use this API
+must be allow listed
+
+166
+00:09:08,949 --> 00:09:11,185
+on the device's configuration profile,
+
+167
+00:09:11,218 --> 00:09:14,588
+or the request to lock will fail
+because it's not privileged.
+
+168
+00:09:14,621 --> 00:09:16,557
+The all-powerful method is
+
+169
+00:09:16,590 --> 00:09:21,828
+requestGuidedAccessSession(enabled:complet
+ionHandler:) on UIAccessibility.
+
+170
+00:09:21,862 --> 00:09:23,931
+Hey, that looks familiar! Right?
+
+171
+00:09:23,964 --> 00:09:27,134
+This API taps right into the roots
+of Guided Access.
+
+172
+00:09:27,167 --> 00:09:30,904
+You're essentially programmatically
+entering and exiting this feature
+
+173
+00:09:30,938 --> 00:09:32,005
+with this code.
+
+174
+00:09:32,039 --> 00:09:33,674
+Isn't that cool?
+
+175
+00:09:33,707 --> 00:09:36,710
+That's because Guided Access
+serves as the foundation
+
+176
+00:09:36,743 --> 00:09:38,679
+for other single app modes to exist.
+
+177
+00:09:38,712 --> 00:09:40,581
+Bet you didn't know that!
+
+178
+00:09:40,614 --> 00:09:43,617
+Let's see how this code might work
+in action.
+
+179
+00:09:43,650 --> 00:09:46,453
+I have a method each for entering
+and exiting this mode
+
+180
+00:09:46,486 --> 00:09:48,055
+that I'll call when I'm ready.
+
+181
+00:09:48,088 --> 00:09:51,525
+They're performing different actions
+like starting a new patient sign-up sheet
+
+182
+00:09:51,558 --> 00:09:53,660
+when we enter a restricted state
+
+183
+00:09:53,694 --> 00:09:57,164
+and then bookkeep their information
+upon exiting.
+
+184
+00:09:57,197 --> 00:10:00,467
+Of course, you'll want to properly address
+the result of the completion handler
+
+185
+00:10:00,501 --> 00:10:02,035
+to know if something goes wrong.
+
+186
+00:10:02,069 --> 00:10:04,705
+If so, you may want to give
+an alert to the user
+
+187
+00:10:04,738 --> 00:10:08,375
+and hold off on continuing the experience
+forward, so they can try again.
+
+188
+00:10:08,408 --> 00:10:11,678
+Check if Autonomous Single App Mode
+is enabled at any time
+
+189
+00:10:11,712 --> 00:10:16,250
+by calling isGuidedAccessEnabled
+on UIAccessibility.
+
+190
+00:10:16,283 --> 00:10:19,753
+Also observe the
+guidedAccessStatusDidChangeNotification
+
+191
+00:10:19,786 --> 00:10:23,524
+to trigger any additional code
+when entering or exiting this mode.
+
+192
+00:10:23,557 --> 00:10:26,560
+And remember that the app which wants
+to use this API must
+
+193
+00:10:26,593 --> 00:10:29,229
+have the proper supervision and
+management,
+
+194
+00:10:29,263 --> 00:10:33,433
+including allowlisting the app's bundle ID
+as an allowed application
+
+195
+00:10:33,467 --> 00:10:36,270
+for Autonomous Single App Mode.
+
+196
+00:10:36,303 --> 00:10:38,906
+And finally, assessment mode.
+
+197
+00:10:38,939 --> 00:10:42,576
+This is the right mode when your app aims
+to prevent unfair advantages,
+
+198
+00:10:42,609 --> 00:10:45,846
+by restricting certain features
+during testing.
+
+199
+00:10:45,879 --> 00:10:48,048
+Turn off autocorrect, spellcheck,
+
+200
+00:10:48,081 --> 00:10:50,217
+and single app mode locks to the app
+
+201
+00:10:50,250 --> 00:10:54,454
+so the test taker can't access
+outside notes or resources.
+
+202
+00:10:54,488 --> 00:10:58,525
+Recently these frameworks
+have been unified for iOS and macOS,
+
+203
+00:10:58,559 --> 00:11:02,129
+when we introduced the Automatic
+Assessment Configuration framework!
+
+204
+00:11:02,162 --> 00:11:06,166
+To use this, the device does not need
+to be supervised like the previous modes,
+
+205
+00:11:06,200 --> 00:11:10,337
+but you do need to apply to Apple for
+an assessment entitlement for your app.
+
+206
+00:11:10,370 --> 00:11:13,240
+More information about applying
+for the entitlement can be found
+
+207
+00:11:13,273 --> 00:11:15,042
+in the developer documentation.
+
+208
+00:11:15,075 --> 00:11:18,278
+My colleague Josh has
+a fantastic WWDC session
+
+209
+00:11:18,312 --> 00:11:22,149
+that explains how to use the Automatic
+Assessment Configuration framework,
+
+210
+00:11:22,182 --> 00:11:25,752
+including tons of code examples
+and documentation resources.
+
+211
+00:11:25,786 --> 00:11:27,487
+Please go check it out.
+
+212
+00:11:27,521 --> 00:11:30,657
+Once you know which single app
+mode solution is right for you,
+
+213
+00:11:30,691 --> 00:11:33,327
+or if you already have a solution working,
+
+214
+00:11:33,360 --> 00:11:37,931
+remember to keep in mind that people using
+assistive technologies do use your apps.
+
+215
+00:11:37,965 --> 00:11:41,935
+There may be extra steps you need to take
+to make this experience accessible.
+
+216
+00:11:42,736 --> 00:11:46,940
+In our classic example of an iPad
+being used as a restaurant kiosk,
+
+217
+00:11:46,974 --> 00:11:51,144
+Let's consider that a blind customer
+comes by to order.
+
+218
+00:11:51,178 --> 00:11:55,949
+If the device is plainly locked into
+Single App Mode, then we have a problem.
+
+219
+00:11:55,983 --> 00:11:58,719
+You wouldn't be able to open Settings,
+head to Accessibility,
+
+220
+00:11:58,752 --> 00:12:00,854
+and turn on VoiceOver for this customer.
+
+221
+00:12:00,888 --> 00:12:02,489
+So what can you do?
+
+222
+00:12:03,657 --> 00:12:06,493
+Apple Configurator and other
+device management software
+
+223
+00:12:06,527 --> 00:12:10,464
+help you configure options
+for Single App Mode.
+
+224
+00:12:10,497 --> 00:12:15,769
+A handful of accessibility features are
+available for you to have always enabled,
+
+225
+00:12:15,802 --> 00:12:19,840
+and the Accessibility Shortcut,
+also known as "triple-click" menu,
+
+226
+00:12:19,873 --> 00:12:23,610
+is configurable to let users
+quickly toggle accessibility features
+
+227
+00:12:23,644 --> 00:12:25,546
+like VoiceOver, Zoom,
+
+228
+00:12:25,579 --> 00:12:29,283
+Invert Colors,
+AssistiveTouch, and Voice Control.
+
+229
+00:12:29,316 --> 00:12:31,185
+When these features are always on,
+
+230
+00:12:31,218 --> 00:12:34,087
+or when they're assigned
+to the accessibility shortcut,
+
+231
+00:12:34,121 --> 00:12:36,523
+you enable people who rely on these
+technologies
+
+232
+00:12:36,557 --> 00:12:39,159
+to use them while they navigate your app.
+
+233
+00:12:39,193 --> 00:12:43,063
+It's pretty easy to set this up,
+so don't miss your chance to do so.
+
+234
+00:12:44,965 --> 00:12:48,735
+But those options have to be configured
+before entering Single App Mode.
+
+235
+00:12:48,769 --> 00:12:51,572
+So what about during Single App Mode?
+
+236
+00:12:51,605 --> 00:12:55,843
+Use API on UIAccessibility
+to toggle certain accessibility features
+
+237
+00:12:55,876 --> 00:12:57,511
+directly with code.
+
+238
+00:12:57,544 --> 00:13:01,682
+It's a great alternative to toggling
+a feature with the accessibility shortcut,
+
+239
+00:13:01,715 --> 00:13:05,152
+which is helpful when device is encased
+in a kiosk enclosure
+
+240
+00:13:05,185 --> 00:13:07,588
+that blocks off hardware buttons.
+
+241
+00:13:07,621 --> 00:13:11,925
+We made this API so it's easy for you
+to turn off accessibility features,
+
+242
+00:13:11,959 --> 00:13:16,230
+so you can do some housekeeping
+and reset state between users.
+
+243
+00:13:16,263 --> 00:13:20,501
+To do this, call configureForGuidedAccess
+on UIAccessibility.
+
+244
+00:13:20,534 --> 00:13:23,270
+You must pass in
+a compatible accessibility feature,
+
+245
+00:13:23,303 --> 00:13:25,539
+and whether you want it enabled or not.
+
+246
+00:13:25,572 --> 00:13:29,510
+This works for Zoom,
+VoiceOver, Invert Colors,
+
+247
+00:13:29,543 --> 00:13:32,713
+AssistiveTouch, and Grayscale.
+
+248
+00:13:32,746 --> 00:13:36,283
+So whether your app has custom
+restrictions for Guided Access
+
+249
+00:13:36,316 --> 00:13:39,953
+or you build your entire experience
+around Single App Modes,
+
+250
+00:13:39,987 --> 00:13:43,457
+it's important to know how to make sure
+it's accessible.
+
+251
+00:13:43,490 --> 00:13:47,394
+The wrong kind of restrictions
+make something less accessible to use,
+
+252
+00:13:47,427 --> 00:13:52,232
+so always consider the experience of
+someone with a disability using your app.
+
+253
+00:13:52,266 --> 00:13:57,337
+I've shown you the APIs you need to create
+an accessible Single App Mode experience.
+
+254
+00:13:57,371 --> 00:14:01,308
+Now go make something great,
+and accessible!
+

@@ -1,0 +1,864 @@
+1
+00:00:00,000 --> 00:00:03,170
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,170 --> 00:00:10,043
+♪
+
+3
+00:00:10,043 --> 00:00:12,312
+Hello, my name is Johnathan.
+
+4
+00:00:12,312 --> 00:00:15,215
+macOS developers submit
+software to the notary service
+
+5
+00:00:15,215 --> 00:00:16,850
+in order to help protect
+their customers
+
+6
+00:00:16,850 --> 00:00:18,852
+from malicious software.
+
+7
+00:00:18,852 --> 00:00:21,622
+Last year we introduced
+a faster and simpler way
+
+8
+00:00:21,622 --> 00:00:25,025
+to submit apps for notarization
+with the notarytool CLI
+
+9
+00:00:25,025 --> 00:00:27,160
+or command-line interface.
+
+10
+00:00:27,160 --> 00:00:30,264
+This year we are excited to
+continue championing performance
+
+11
+00:00:30,264 --> 00:00:32,833
+and flexibility with
+some major improvements
+
+12
+00:00:32,833 --> 00:00:36,403
+for your interactions
+with the notary service.
+
+13
+00:00:36,403 --> 00:00:39,907
+In this session, we'll be
+talking about three main topics.
+
+14
+00:00:39,907 --> 00:00:41,909
+First, we'll go through
+important deadlines
+
+15
+00:00:41,909 --> 00:00:45,078
+for the migration from
+using altool for notarization
+
+16
+00:00:45,078 --> 00:00:47,814
+to using notarytool.
+
+17
+00:00:47,814 --> 00:00:51,118
+Next, we'll discuss improvements
+to the Xcode integration
+
+18
+00:00:51,118 --> 00:00:53,520
+with the upcoming Xcode 14,
+
+19
+00:00:53,520 --> 00:00:57,457
+bringing the submission speed
+of notarytool to Xcode.
+
+20
+00:00:57,457 --> 00:00:59,927
+And finally, we'll talk about
+a flexible new way
+
+21
+00:00:59,927 --> 00:01:01,995
+to interact with
+the notary service,
+
+22
+00:01:01,995 --> 00:01:05,933
+a REST API, letting you expand
+the places you can upload,
+
+23
+00:01:05,933 --> 00:01:09,703
+check the status of,
+and review submissions.
+
+24
+00:01:11,705 --> 00:01:14,775
+Last year we introduced
+notarytool,
+
+25
+00:01:14,775 --> 00:01:18,211
+a replacement for altool
+for notarization.
+
+26
+00:01:18,211 --> 00:01:20,847
+Later in this talk,
+I'll be discussing Xcode
+
+27
+00:01:20,847 --> 00:01:25,218
+moving to our updated backend
+with Xcode 14.
+
+28
+00:01:25,218 --> 00:01:27,921
+With migration paths in place
+for notarization
+
+29
+00:01:27,921 --> 00:01:30,457
+via altool and Xcode 13,
+
+30
+00:01:30,457 --> 00:01:32,826
+we're announcing the sunset date
+for notarization
+
+31
+00:01:32,826 --> 00:01:37,431
+with these older methods
+to be fall of 2023.
+
+32
+00:01:37,431 --> 00:01:40,334
+For help moving
+from altool to notarytool,
+
+33
+00:01:40,334 --> 00:01:42,703
+please refer
+to last year’s presentation
+
+34
+00:01:42,703 --> 00:01:47,140
+"Faster and simpler notarization
+for Mac apps."
+
+35
+00:01:47,140 --> 00:01:50,277
+To highlight some specifics,
+the notarytool CLI
+
+36
+00:01:50,277 --> 00:01:53,847
+will continue to work
+past the fall 2023 deadline,
+
+37
+00:01:53,847 --> 00:01:57,184
+including the one
+bundled in Xcode 13.
+
+38
+00:01:57,184 --> 00:01:59,086
+As always, however,
+we do encourage you
+
+39
+00:01:59,086 --> 00:02:02,990
+to update to receive the latest
+improvements and fixes.
+
+40
+00:02:02,990 --> 00:02:06,393
+Uploads to the notary service
+using the Xcode 13 UI
+
+41
+00:02:06,393 --> 00:02:09,062
+will stop working
+after that deadline.
+
+42
+00:02:09,062 --> 00:02:11,298
+Stay tuned to hear about
+some performance improvements
+
+43
+00:02:11,298 --> 00:02:14,368
+in Xcode 14,
+but largely you can expect
+
+44
+00:02:14,368 --> 00:02:17,337
+your workflow
+to remain unchanged.
+
+45
+00:02:17,337 --> 00:02:20,507
+Finally, notarization
+with all forms of altool
+
+46
+00:02:20,507 --> 00:02:23,443
+will stop working in fall 2023.
+
+47
+00:02:23,443 --> 00:02:27,214
+Again, please refer
+to last year's WWDC presentation
+
+48
+00:02:27,214 --> 00:02:30,417
+for details on migrating
+to notarytool.
+
+49
+00:02:30,417 --> 00:02:34,888
+Next, we'll touch on changes
+to notarization in Xcode 14.
+
+50
+00:02:34,888 --> 00:02:37,190
+We've migrated
+the notarization support
+
+51
+00:02:37,190 --> 00:02:40,160
+built into Xcode to use
+the same reliable backend
+
+52
+00:02:40,160 --> 00:02:44,464
+as the notarytool CLI
+we introduced last year.
+
+53
+00:02:44,464 --> 00:02:46,700
+Because of this,
+we're happy to bring the same
+
+54
+00:02:46,700 --> 00:02:49,970
+roughly 4x performance increase
+we announced last year
+
+55
+00:02:49,970 --> 00:02:53,240
+for notarytool to Xcode 14.
+
+56
+00:02:53,240 --> 00:02:55,809
+The best part is that,
+besides updating,
+
+57
+00:02:55,809 --> 00:02:58,412
+you don't need to change your
+project settings or workflows
+
+58
+00:02:58,412 --> 00:03:01,481
+to receive this
+performance boost.
+
+59
+00:03:01,481 --> 00:03:03,683
+For the final topic
+of this presentation,
+
+60
+00:03:03,683 --> 00:03:05,952
+we're excited to announce
+a new service,
+
+61
+00:03:05,952 --> 00:03:08,121
+a REST API for notary.
+
+62
+00:03:08,121 --> 00:03:10,457
+This new service allows you
+to interact more flexibly
+
+63
+00:03:10,457 --> 00:03:14,361
+with the notary service
+in even more places.
+
+64
+00:03:14,361 --> 00:03:16,630
+To go over some
+important concepts,
+
+65
+00:03:16,630 --> 00:03:18,465
+this new API
+is intended to allow
+
+66
+00:03:18,465 --> 00:03:21,735
+for a more flexible interface
+to the notary service.
+
+67
+00:03:21,735 --> 00:03:23,770
+As a JSON-based web service,
+
+68
+00:03:23,770 --> 00:03:27,140
+integration should be
+fairly simple in most languages.
+
+69
+00:03:27,140 --> 00:03:29,576
+This API allows you
+to upload submissions
+
+70
+00:03:29,576 --> 00:03:32,379
+from any place
+with an internet connection,
+
+71
+00:03:32,379 --> 00:03:34,614
+including continuous
+integration servers --
+
+72
+00:03:34,614 --> 00:03:38,452
+places where you might not
+be running macOS today.
+
+73
+00:03:38,452 --> 00:03:41,188
+Additionally, other interactions
+with the notary service
+
+74
+00:03:41,188 --> 00:03:43,557
+are also supported in this API,
+
+75
+00:03:43,557 --> 00:03:45,392
+such as retrieving
+your submission history
+
+76
+00:03:45,392 --> 00:03:48,295
+or past submission details.
+
+77
+00:03:48,295 --> 00:03:50,197
+Our goal with introducing
+the REST API
+
+78
+00:03:50,197 --> 00:03:52,799
+is to support submitting
+software for notarization
+
+79
+00:03:52,799 --> 00:03:55,836
+from more platforms and to allow
+for easier interactions
+
+80
+00:03:55,836 --> 00:03:58,672
+with notary
+in automated systems.
+
+81
+00:03:58,672 --> 00:04:00,907
+This complements the current
+methods of submission,
+
+82
+00:04:00,907 --> 00:04:04,010
+Xcode and notarytool,
+where those can't be run today,
+
+83
+00:04:04,010 --> 00:04:07,147
+such as a Linux-based
+continuous integration.
+
+84
+00:04:07,147 --> 00:04:09,749
+For example, imagine you want
+your deployment pipeline
+
+85
+00:04:09,749 --> 00:04:11,485
+to submit your application
+to notary
+
+86
+00:04:11,485 --> 00:04:13,453
+prior to distribution.
+
+87
+00:04:13,453 --> 00:04:15,689
+With this new API
+and some basic scripts,
+
+88
+00:04:15,689 --> 00:04:18,925
+you can easily
+automate the process.
+
+89
+00:04:18,925 --> 00:04:20,227
+Before I dive in,
+
+90
+00:04:20,227 --> 00:04:22,896
+one important topic
+is authentication.
+
+91
+00:04:22,896 --> 00:04:26,366
+You can authenticate with
+the API using JSON Web Tokens,
+
+92
+00:04:26,366 --> 00:04:30,604
+or JWTs, just like other
+App Store Connect APIs.
+
+93
+00:04:30,604 --> 00:04:32,339
+For more details
+on authentication
+
+94
+00:04:32,339 --> 00:04:34,307
+or the code I'm about to show,
+
+95
+00:04:34,307 --> 00:04:38,211
+please visit the REST API
+documentation linked below.
+
+96
+00:04:38,211 --> 00:04:41,248
+In these snippets,
+I'll assume you have a valid JWT
+
+97
+00:04:41,248 --> 00:04:44,284
+passed into the functions
+as the token variable.
+
+98
+00:04:44,284 --> 00:04:46,953
+Let's walk through an example
+of submitting files
+
+99
+00:04:46,953 --> 00:04:49,022
+to notary in Python.
+
+100
+00:04:49,022 --> 00:04:50,690
+This same basic flow
+is applicable
+
+101
+00:04:50,690 --> 00:04:53,360
+in other programming languages.
+
+102
+00:04:53,360 --> 00:04:57,130
+There are two major steps
+for uploading files to notary.
+
+103
+00:04:57,130 --> 00:04:58,932
+The first step
+is to inform notary
+
+104
+00:04:58,932 --> 00:05:01,301
+that you wish to upload a file.
+
+105
+00:05:01,301 --> 00:05:04,671
+Included in this is some
+basic information about the file
+
+106
+00:05:04,671 --> 00:05:07,674
+like name and SHA-256.
+
+107
+00:05:07,674 --> 00:05:09,776
+The response contains
+information necessary
+
+108
+00:05:09,776 --> 00:05:13,079
+to upload the file and an ID
+to track your submission
+
+109
+00:05:13,079 --> 00:05:15,415
+through our pipeline.
+
+110
+00:05:15,415 --> 00:05:18,251
+The second step actually uploads
+the file for notarization
+
+111
+00:05:18,251 --> 00:05:21,054
+via Amazon S3.
+
+112
+00:05:21,054 --> 00:05:23,657
+You'll need to grab
+your favorite S3 SDK.
+
+113
+00:05:23,657 --> 00:05:24,724
+For this example,
+
+114
+00:05:24,724 --> 00:05:27,727
+I'm going to be using
+the boto3 library.
+
+115
+00:05:27,727 --> 00:05:29,496
+Here we use
+the temporary credentials
+
+116
+00:05:29,496 --> 00:05:31,498
+returned in the previous call
+
+117
+00:05:31,498 --> 00:05:34,167
+to authenticate
+and create a client.
+
+118
+00:05:34,167 --> 00:05:37,037
+We then use the client to upload
+the file to the bucket
+
+119
+00:05:37,037 --> 00:05:40,807
+and object specified
+in the first step's response.
+
+120
+00:05:40,807 --> 00:05:43,043
+Once uploaded,
+the submission will proceed
+
+121
+00:05:43,043 --> 00:05:45,412
+though the
+notarization pipeline.
+
+122
+00:05:45,412 --> 00:05:47,981
+This process should complete
+in under 15 minutes
+
+123
+00:05:47,981 --> 00:05:50,417
+for most submissions.
+
+124
+00:05:50,417 --> 00:05:52,752
+After upload, you should confirm
+the notary service
+
+125
+00:05:52,752 --> 00:05:54,621
+has successfully processed
+your submission
+
+126
+00:05:54,621 --> 00:05:56,756
+prior to distribution.
+
+127
+00:05:56,756 --> 00:05:59,993
+There are, broadly speaking,
+two approaches to this.
+
+128
+00:05:59,993 --> 00:06:01,661
+The first, and the simplest,
+
+129
+00:06:01,661 --> 00:06:04,598
+is checking the result
+through the same API.
+
+130
+00:06:04,598 --> 00:06:06,600
+The other option is via
+the webhook support
+
+131
+00:06:06,600 --> 00:06:08,969
+introduced with notarytool.
+
+132
+00:06:08,969 --> 00:06:12,505
+First, let's look at
+the API approach.
+
+133
+00:06:12,505 --> 00:06:14,674
+Checking the status
+of a submission to notary
+
+134
+00:06:14,674 --> 00:06:17,010
+is pretty straightforward,
+
+135
+00:06:17,010 --> 00:06:19,079
+You can make a request
+with the submission ID
+
+136
+00:06:19,079 --> 00:06:22,315
+received during
+the upload process
+
+137
+00:06:22,315 --> 00:06:24,417
+Part of the response
+is the current status
+
+138
+00:06:24,417 --> 00:06:27,153
+of the submission,
+which will remain "In Progress"
+
+139
+00:06:27,153 --> 00:06:29,956
+until notary is finished
+processing it.
+
+140
+00:06:29,956 --> 00:06:32,225
+The status will then transition
+to the final state
+
+141
+00:06:32,225 --> 00:06:36,896
+of your submission,
+such as Accepted or Invalid.
+
+142
+00:06:36,896 --> 00:06:38,565
+Once the submission
+is complete,
+
+143
+00:06:38,565 --> 00:06:39,933
+you can then use the API
+
+144
+00:06:39,933 --> 00:06:43,236
+to retrieve the notarization log
+for this upload.
+
+145
+00:06:43,236 --> 00:06:46,072
+Please refer to the
+Notary REST API documentation
+
+146
+00:06:46,072 --> 00:06:49,409
+for more details
+on these endpoints.
+
+147
+00:06:49,409 --> 00:06:51,511
+Next, we'll talk about
+the second approach
+
+148
+00:06:51,511 --> 00:06:53,913
+to getting your status:
+a webhook.
+
+149
+00:06:53,913 --> 00:06:57,350
+In the webhook workflow,
+the process is largely the same,
+
+150
+00:06:57,350 --> 00:06:59,886
+but this time you'll provide
+a webhook URL
+
+151
+00:06:59,886 --> 00:07:02,422
+in the initial request
+to upload.
+
+152
+00:07:02,422 --> 00:07:04,991
+Details on the format can be
+found in the documentation
+
+153
+00:07:04,991 --> 00:07:07,961
+for the notary REST API.
+
+154
+00:07:07,961 --> 00:07:10,363
+As before, this will trigger
+the notary service
+
+155
+00:07:10,363 --> 00:07:12,966
+to analyze your submission.
+
+156
+00:07:12,966 --> 00:07:16,403
+As the automated analysis
+concludes, tickets are created,
+
+157
+00:07:16,403 --> 00:07:19,039
+and the final status is saved.
+
+158
+00:07:19,039 --> 00:07:21,641
+Once complete,
+the notary service will call out
+
+159
+00:07:21,641 --> 00:07:23,843
+to the webhook URL provided.
+
+160
+00:07:23,843 --> 00:07:26,546
+The contents of this call
+include the submission ID,
+
+161
+00:07:26,546 --> 00:07:32,085
+the team ID, and a signature
+to verify it came from us.
+
+162
+00:07:32,085 --> 00:07:35,955
+On receiving that notification,
+you can choose what to do next.
+
+163
+00:07:35,955 --> 00:07:39,025
+For example, you might notify
+the original submitter
+
+164
+00:07:39,025 --> 00:07:42,495
+or begin an automated
+distribution pipeline.
+
+165
+00:07:42,495 --> 00:07:44,197
+Compared to waiting
+with notarytool,
+
+166
+00:07:44,197 --> 00:07:47,200
+this allows you to decouple
+the system that uploads the file
+
+167
+00:07:47,200 --> 00:07:51,905
+from the system that automates
+actions after notarization.
+
+168
+00:07:51,905 --> 00:07:54,774
+We're excited to see this new
+REST API open the doors
+
+169
+00:07:54,774 --> 00:07:57,944
+to more integrations with
+continuous integration systems
+
+170
+00:07:57,944 --> 00:08:01,281
+and other tools
+to build software for macOS.
+
+171
+00:08:01,281 --> 00:08:03,750
+To wrap up,
+as one more reminder,
+
+172
+00:08:03,750 --> 00:08:07,487
+the deadline to migrate
+to using Xcode 14, notarytool,
+
+173
+00:08:07,487 --> 00:08:11,458
+or the REST API
+directly is fall of 2023.
+
+174
+00:08:11,458 --> 00:08:14,194
+Finally, if you haven't yet
+been able to use notarytool
+
+175
+00:08:14,194 --> 00:08:15,929
+in your deployment pipelines,
+
+176
+00:08:15,929 --> 00:08:18,031
+this is your chance
+to jumpstart your automation
+
+177
+00:08:18,031 --> 00:08:20,734
+by trying the notary
+REST API today.
+
+178
+00:08:20,734 --> 00:08:23,336
+You can find a link
+to the documentation below.
+
+179
+00:08:23,336 --> 00:08:26,973
+Thank you, and I hope you enjoy
+the rest of WWDC22
+
+180
+00:08:26,973 --> 00:08:30,844
+♪
+

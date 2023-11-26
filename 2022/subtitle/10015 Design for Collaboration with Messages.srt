@@ -1,0 +1,936 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,044
+Hello. My name is Jaewoo.
+
+3
+00:00:11,078 --> 00:00:13,213
+I'm a designer on the Apple Design team.
+
+4
+00:00:13,247 --> 00:00:16,116
+Whether preparing Keynote presentations
+with colleagues
+
+5
+00:00:16,149 --> 00:00:18,485
+or collecting ideas with friends,
+
+6
+00:00:18,519 --> 00:00:22,289
+people collaborate
+on all types of things everyday.
+
+7
+00:00:22,322 --> 00:00:25,092
+To create a first-class
+collaboration experience,
+
+8
+00:00:25,125 --> 00:00:29,530
+we made a handful of changes
+to iOS 16 and macOS Ventura.
+
+9
+00:00:29,563 --> 00:00:32,266
+Today, I'm going to talk about
+why we put Messages
+
+10
+00:00:32,299 --> 00:00:35,235
+in the center of our
+collaboration experience
+
+11
+00:00:35,269 --> 00:00:37,771
+and walk you through an end-to-end
+collaboration flow,
+
+12
+00:00:37,804 --> 00:00:40,974
+showcasing all the new changes we've made.
+
+13
+00:00:41,008 --> 00:00:43,443
+I'll also share a few considerations
+
+14
+00:00:43,477 --> 00:00:46,246
+to help you design a great
+collaboration experience in your app
+
+15
+00:00:46,280 --> 00:00:48,048
+using Messages.
+
+16
+00:00:48,081 --> 00:00:51,318
+Without further ado, let's get started.
+
+17
+00:00:51,351 --> 00:00:55,556
+Email is one of the great communication
+tools that people use every day.
+
+18
+00:00:55,589 --> 00:01:00,294
+Many collaborative apps use email
+as a primary way of connecting people.
+
+19
+00:01:00,327 --> 00:01:05,566
+However, chatting over email during
+collaboration doesn't feel responsive.
+
+20
+00:01:05,599 --> 00:01:10,037
+That's because email was designed
+as an asynchronous communication tool.
+
+21
+00:01:10,070 --> 00:01:14,274
+So, we brought Messages
+into collaboration to supplement email.
+
+22
+00:01:14,308 --> 00:01:17,377
+Messages allows people
+to send collaboration invitations
+
+23
+00:01:17,411 --> 00:01:19,780
+using existing conversations.
+
+24
+00:01:19,813 --> 00:01:23,016
+No need to ask for email addresses.
+
+25
+00:01:23,050 --> 00:01:26,887
+Effective communication is a key
+to successful collaboration.
+
+26
+00:01:26,920 --> 00:01:31,491
+Messages already has many
+great features to facilitate that.
+
+27
+00:01:31,525 --> 00:01:36,363
+Messages conversations can
+also easily turn into FaceTime calls.
+
+28
+00:01:36,396 --> 00:01:40,267
+Talking over FaceTime and using
+screen sharing can make collaboration
+
+29
+00:01:40,300 --> 00:01:42,002
+far more productive.
+
+30
+00:01:42,035 --> 00:01:46,073
+Let's take a look at how Messages
+and collaborative apps work together.
+
+31
+00:01:46,106 --> 00:01:47,941
+My friends and I love baking,
+
+32
+00:01:47,975 --> 00:01:51,278
+and we often share recipes
+with each other.
+
+33
+00:01:51,311 --> 00:01:54,214
+I'm working on a Pages document
+with some recipes,
+
+34
+00:01:54,248 --> 00:01:57,451
+and I'd like to share it with my friends.
+
+35
+00:01:57,484 --> 00:02:01,154
+I'll start by tapping
+on the share button in the toolbar.
+
+36
+00:02:01,188 --> 00:02:04,324
+The new system share popover allows me
+to share this document
+
+37
+00:02:04,358 --> 00:02:06,927
+in two different ways.
+
+38
+00:02:06,960 --> 00:02:11,598
+I can either start a new collaboration
+or send a copy.
+
+39
+00:02:11,632 --> 00:02:15,636
+With the collaboration option,
+I can send invitations using Messages,
+
+40
+00:02:15,669 --> 00:02:18,939
+Mail, or other communication apps.
+
+41
+00:02:18,972 --> 00:02:23,010
+My baking friends and I have
+a chat group called Cupcake Designers.
+
+42
+00:02:23,043 --> 00:02:26,914
+The system share popover knows
+I talk to them quite often
+
+43
+00:02:26,947 --> 00:02:30,317
+and show them as a conversation suggestion
+in here.
+
+44
+00:02:30,350 --> 00:02:33,487
+I'll select the group
+to start a collaboration.
+
+45
+00:02:33,520 --> 00:02:36,790
+The collaboration invitation is
+now in the Messages input field
+
+46
+00:02:36,823 --> 00:02:39,259
+and is ready to be sent.
+
+47
+00:02:39,293 --> 00:02:42,329
+Send button kicks off
+collaboration immediately.
+
+48
+00:02:42,362 --> 00:02:46,800
+If you look at the toolbar, you can see
+the Cupcake Designers photo appeared.
+
+49
+00:02:46,834 --> 00:02:50,771
+The conversation is now linked
+with this document.
+
+50
+00:02:50,804 --> 00:02:54,107
+Looks like my friends
+Lauren and Chris just joined.
+
+51
+00:02:55,342 --> 00:02:59,880
+Tapping on the group conversation photo
+brings up the collaboration popover.
+
+52
+00:02:59,913 --> 00:03:04,885
+This collaboration popover was added
+for easy access to communication tools
+
+53
+00:03:04,918 --> 00:03:08,255
+and is also
+a quick collaboration overview.
+
+54
+00:03:08,288 --> 00:03:11,592
+Pages displays
+who's currently in the document.
+
+55
+00:03:11,625 --> 00:03:14,261
+Tapping on the Messages button
+in the popover
+
+56
+00:03:14,294 --> 00:03:18,365
+brings the Messages conversation
+over the shared document.
+
+57
+00:03:18,398 --> 00:03:21,034
+I can quickly go back
+to the group conversation
+
+58
+00:03:21,068 --> 00:03:23,504
+and talk about this document.
+
+59
+00:03:23,537 --> 00:03:26,306
+If I need to talk to people over FaceTime,
+
+60
+00:03:26,340 --> 00:03:30,043
+I can simply tap on the audio
+or video button in this popover.
+
+61
+00:03:31,211 --> 00:03:35,115
+Now, my friends and I can
+make edits in real-time.
+
+62
+00:03:35,148 --> 00:03:38,852
+Tight integration with Messages
+unlocks more superpowers.
+
+63
+00:03:38,886 --> 00:03:42,589
+Now Messages can display notifications
+from collaborative apps.
+
+64
+00:03:43,790 --> 00:03:47,461
+Looks like Chris just made edits
+to the Baking Recipes document.
+
+65
+00:03:48,495 --> 00:03:53,300
+This Messages banner allows me to directly
+open the document and see the new updates.
+
+66
+00:03:54,434 --> 00:03:57,337
+Collaborative apps and Messages
+now have a strong connection
+
+67
+00:03:57,371 --> 00:04:00,874
+to make collaboration workflows
+more streamlined.
+
+68
+00:04:00,908 --> 00:04:05,078
+Okay, we looked at an example
+of the new collaboration experience.
+
+69
+00:04:05,112 --> 00:04:07,915
+Starting a collaboration is simple
+using the share button
+
+70
+00:04:07,948 --> 00:04:10,517
+and the system share popover.
+
+71
+00:04:10,551 --> 00:04:14,655
+People can easily drop invitations
+in existing conversations.
+
+72
+00:04:14,688 --> 00:04:17,691
+And the collaboration popover
+allows people to easily go back
+
+73
+00:04:17,724 --> 00:04:21,562
+to Messages conversations
+or start FaceTime calls.
+
+74
+00:04:22,930 --> 00:04:26,967
+Edit notifications from collaborative apps
+let people stay up-to-date.
+
+75
+00:04:28,435 --> 00:04:32,005
+Now that we've seen how Messages
+and collaborative apps work together,
+
+76
+00:04:32,039 --> 00:04:34,775
+let's switch gears
+and look at some practical tips
+
+77
+00:04:34,808 --> 00:04:38,912
+for how to design collaboration
+into your app.
+
+78
+00:04:38,946 --> 00:04:41,949
+Starting with the system share sheet.
+
+79
+00:04:41,982 --> 00:04:46,486
+The people who use your app are
+very familiar with the system share sheet.
+
+80
+00:04:46,520 --> 00:04:51,458
+They use it for all kinds of things,
+including sharing websites,
+
+81
+00:04:51,491 --> 00:04:56,296
+songs and albums, photos,
+and other types of content.
+
+82
+00:04:56,330 --> 00:04:58,966
+And conversation suggestions help people
+
+83
+00:04:58,999 --> 00:05:02,769
+quickly find destinations
+of the content they are sharing.
+
+84
+00:05:02,803 --> 00:05:07,407
+The system share sheet gives people
+an easy way to begin a collaboration.
+
+85
+00:05:07,441 --> 00:05:12,346
+It will help make collaboration
+in your app more consistent and familiar.
+
+86
+00:05:12,379 --> 00:05:15,716
+If you do decide to take advantage
+of the system share sheet,
+
+87
+00:05:15,749 --> 00:05:19,887
+the next step is to place
+a share button in your app.
+
+88
+00:05:19,920 --> 00:05:23,190
+Put the button in a place
+where people can easily access.
+
+89
+00:05:23,223 --> 00:05:26,326
+Toolbars are a good candidate.
+
+90
+00:05:26,360 --> 00:05:29,296
+Now let's look more closely
+at how you can customize
+
+91
+00:05:29,329 --> 00:05:32,533
+the share sheet for your needs.
+
+92
+00:05:32,566 --> 00:05:37,237
+The popup button in the header allows
+people to choose how they share files.
+
+93
+00:05:37,271 --> 00:05:40,007
+If your app
+doesn't support sending a copy,
+
+94
+00:05:40,040 --> 00:05:42,743
+then the popup button will be hidden.
+
+95
+00:05:42,776 --> 00:05:45,646
+"Everyone can make changes"
+text below the popup button
+
+96
+00:05:45,679 --> 00:05:49,383
+is an entry point
+to the collaboration permission settings.
+
+97
+00:05:49,416 --> 00:05:54,288
+You need to provide a descriptive copy
+of default settings your app supports.
+
+98
+00:05:54,321 --> 00:05:58,926
+To avoid truncation,
+be as concise as possible.
+
+99
+00:05:58,959 --> 00:06:01,261
+The permission settings screen
+will be presented
+
+100
+00:06:01,295 --> 00:06:04,464
+when tapping on
+"Everyone can make changes" text.
+
+101
+00:06:04,498 --> 00:06:08,368
+When customizing the screen,
+keep the structure of choices simple
+
+102
+00:06:08,402 --> 00:06:13,106
+so people can easily skim the options
+and make quick decisions.
+
+103
+00:06:13,140 --> 00:06:16,443
+The share popover
+in macOS has been redesigned
+
+104
+00:06:16,476 --> 00:06:22,282
+to reflect the changes in iOS and iPadOS,
+including the conversation suggestions.
+
+105
+00:06:22,316 --> 00:06:27,054
+The dropdown menu lets people choose
+how they wish to share their files.
+
+106
+00:06:27,087 --> 00:06:30,357
+Permission settings are also
+accessible within this popover.
+
+107
+00:06:30,390 --> 00:06:32,993
+Again, use a concise
+permission summary string
+
+108
+00:06:33,026 --> 00:06:35,429
+and keep the settings simple.
+
+109
+00:06:35,462 --> 00:06:38,932
+Next, let's talk about
+how to optimize the experience
+
+110
+00:06:38,966 --> 00:06:41,935
+of initiating collaboration in Messages.
+
+111
+00:06:41,969 --> 00:06:44,404
+People can choose not only how they share,
+
+112
+00:06:44,438 --> 00:06:48,675
+but also customize collaboration settings
+from the Messages input field.
+
+113
+00:06:48,709 --> 00:06:53,247
+People don't need to go back to
+the share sheet to change those options.
+
+114
+00:06:53,280 --> 00:06:57,084
+Using drag and drop to add a file
+into a Messages conversation
+
+115
+00:06:57,117 --> 00:07:00,654
+is another convenient way
+of starting a collaboration.
+
+116
+00:07:00,687 --> 00:07:04,658
+So help people easily set the permissions
+from the Messages input field
+
+117
+00:07:04,691 --> 00:07:07,895
+and let them start a collaboration
+with the send button.
+
+118
+00:07:07,928 --> 00:07:11,164
+And it's really important
+to put the collaboration button
+
+119
+00:07:11,198 --> 00:07:13,467
+where people can easily find it.
+
+120
+00:07:13,500 --> 00:07:15,569
+Once people have begun collaborating,
+
+121
+00:07:15,602 --> 00:07:19,273
+the collaboration button
+will appear in your app.
+
+122
+00:07:19,306 --> 00:07:22,643
+This collaboration button is one
+of the most important UI elements
+
+123
+00:07:22,676 --> 00:07:25,179
+of the entire collaboration experience.
+
+124
+00:07:25,212 --> 00:07:29,850
+Find a place where it can stand out
+and draw people's attention.
+
+125
+00:07:29,883 --> 00:07:33,987
+It's best to place the collaboration
+button right next to the share button.
+
+126
+00:07:34,021 --> 00:07:36,857
+The appearance of the collaboration
+button will be slightly different
+
+127
+00:07:36,890 --> 00:07:40,460
+depending on
+how people started collaboration.
+
+128
+00:07:40,494 --> 00:07:43,931
+If people sent an invitation
+to a one-on-one Messages conversation,
+
+129
+00:07:43,964 --> 00:07:46,667
+the recipient's picture
+will appear as the button.
+
+130
+00:07:46,700 --> 00:07:49,436
+If collaboration started
+with a group conversation,
+
+131
+00:07:49,469 --> 00:07:51,338
+and the conversation has a photo,
+
+132
+00:07:51,371 --> 00:07:53,874
+the system will show
+the photo in your app.
+
+133
+00:07:53,907 --> 00:07:56,577
+If a group conversation photo
+is not available,
+
+134
+00:07:56,610 --> 00:08:00,314
+a system provided symbol
+will be used instead.
+
+135
+00:08:00,347 --> 00:08:03,016
+Once you decide where to put
+the collaboration button,
+
+136
+00:08:03,050 --> 00:08:07,087
+it's time to customize
+the collaboration popover for your app.
+
+137
+00:08:07,120 --> 00:08:11,291
+The collaboration popover
+consists of three separate sections.
+
+138
+00:08:11,325 --> 00:08:14,595
+The top section shows
+who you are collaborating with.
+
+139
+00:08:14,628 --> 00:08:18,799
+The system will find corresponding
+profile pictures from the Contacts app
+
+140
+00:08:18,832 --> 00:08:21,201
+and display them here.
+
+141
+00:08:21,235 --> 00:08:23,904
+There are also buttons for communication.
+
+142
+00:08:23,937 --> 00:08:27,474
+If there is no Messages conversation
+linked with the document,
+
+143
+00:08:27,508 --> 00:08:30,344
+the message button
+will let you connect one.
+
+144
+00:08:30,377 --> 00:08:34,181
+The middle section is for you,
+and it's fully customizable.
+
+145
+00:08:34,214 --> 00:08:37,417
+Think about what information
+or functions will be essential
+
+146
+00:08:37,451 --> 00:08:39,620
+for people using your app.
+
+147
+00:08:39,653 --> 00:08:43,590
+Pages shows the active participant list
+with a display setting.
+
+148
+00:08:43,624 --> 00:08:47,828
+In contrast,
+the Notes app shows the latest activities
+
+149
+00:08:47,861 --> 00:08:49,730
+along with two action buttons.
+
+150
+00:08:49,763 --> 00:08:52,199
+Try not to overload
+this collaboration popover
+
+151
+00:08:52,232 --> 00:08:54,902
+with too much information
+or too many buttons.
+
+152
+00:08:54,935 --> 00:08:57,004
+Keep it glanceable.
+
+153
+00:08:57,037 --> 00:09:00,574
+Also make sure everything
+you are adding here is visually consistent
+
+154
+00:09:00,607 --> 00:09:03,143
+with other elements in the popover.
+
+155
+00:09:03,177 --> 00:09:06,380
+If your app doesn't have
+anything to show in this popover,
+
+156
+00:09:06,413 --> 00:09:08,715
+it's okay to leave
+the middle section empty,
+
+157
+00:09:08,749 --> 00:09:11,852
+like Reminders and Files.
+
+158
+00:09:11,885 --> 00:09:16,223
+At the bottom of the popover,
+there is the "Manage Shared File" button.
+
+159
+00:09:16,256 --> 00:09:19,493
+You can customize
+the button label if needed.
+
+160
+00:09:19,526 --> 00:09:23,230
+This button opens
+the collaboration management screen.
+
+161
+00:09:23,263 --> 00:09:25,332
+People can add and remove participants
+
+162
+00:09:25,365 --> 00:09:28,268
+and also change other settings
+from this screen.
+
+163
+00:09:28,302 --> 00:09:30,737
+If your app is using CloudKit sharing,
+
+164
+00:09:30,771 --> 00:09:34,074
+the management screen will be
+provided by the system.
+
+165
+00:09:34,107 --> 00:09:36,076
+If you're not using CloudKit sharing,
+
+166
+00:09:36,109 --> 00:09:39,213
+you can have your own
+management screen for your app.
+
+167
+00:09:40,781 --> 00:09:45,018
+The collaboration popover on macOS
+has the same structure as iOS.
+
+168
+00:09:45,052 --> 00:09:48,255
+Use macOS UI components
+and design patterns
+
+169
+00:09:48,288 --> 00:09:51,158
+when customizing the middle section.
+
+170
+00:09:51,191 --> 00:09:54,027
+Lastly, you will want to give
+special consideration
+
+171
+00:09:54,061 --> 00:09:57,397
+to the appearance of the banners
+in Messages.
+
+172
+00:09:57,431 --> 00:10:01,134
+The banners in Messages are
+how your app can notify collaborators
+
+173
+00:10:01,168 --> 00:10:03,437
+of important changes.
+
+174
+00:10:03,470 --> 00:10:07,508
+These banners allow people
+to stay informed about new updates
+
+175
+00:10:07,541 --> 00:10:09,843
+without having to open the document.
+
+176
+00:10:09,877 --> 00:10:14,081
+Messages offers banner templates
+for you to choose from.
+
+177
+00:10:14,114 --> 00:10:18,218
+Edits made, comments added,
+you were mentioned,
+
+178
+00:10:18,252 --> 00:10:21,121
+and also files modified.
+
+179
+00:10:21,154 --> 00:10:24,157
+Tell Messages what type of updates
+you want to display.
+
+180
+00:10:24,191 --> 00:10:28,095
+Those updates will end up
+in the right conversations.
+
+181
+00:10:28,128 --> 00:10:30,697
+You might ask,
+what if multiple people made
+
+182
+00:10:30,731 --> 00:10:33,767
+multiple edits
+in many different documents?
+
+183
+00:10:33,800 --> 00:10:36,870
+How will Messages handle multiple banners?
+
+184
+00:10:36,904 --> 00:10:39,973
+To not clutter conversation
+with too many banners,
+
+185
+00:10:40,007 --> 00:10:43,544
+Messages will consolidate
+those banners into one.
+
+186
+00:10:43,577 --> 00:10:46,980
+When people tap
+on the view button in this banner,
+
+187
+00:10:47,014 --> 00:10:50,083
+Messages will show all the updates
+in one place
+
+188
+00:10:50,117 --> 00:10:53,153
+and let people choose
+which one they want to open.
+
+189
+00:10:53,187 --> 00:10:55,822
+Okay, we've taken a look
+at all the details
+
+190
+00:10:55,856 --> 00:10:59,293
+to design the best collaboration
+experience using Messages.
+
+191
+00:10:59,326 --> 00:11:03,463
+Adopt the new system share sheet
+for better collaboration initiation,
+
+192
+00:11:03,497 --> 00:11:05,732
+and customize the collaboration popover
+
+193
+00:11:05,766 --> 00:11:10,204
+to provide communication tools
+and a good collaboration overview.
+
+194
+00:11:10,237 --> 00:11:13,340
+Let people enjoy a productive
+and successful collaboration
+
+195
+00:11:13,373 --> 00:11:15,609
+with the Messages integration.
+
+196
+00:11:15,642 --> 00:11:19,780
+I hope all these updates help you
+design a better experience for your app.
+
+197
+00:11:19,813 --> 00:11:21,515
+Thank you for watching.  ♪ ♪
+

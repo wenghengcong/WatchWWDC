@@ -1,0 +1,2601 @@
+1
+00:00:00,334 --> 00:00:06,340
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,743 --> 00:00:10,911
+Hello and welcome.
+
+3
+00:00:10,944 --> 00:00:15,048
+My name is Alè Segovia Azapian
+from the GPU Software team here at Apple.
+
+4
+00:00:15,082 --> 00:00:18,385
+And I’m Mayur,
+also from the GPU Software team.
+
+5
+00:00:18,418 --> 00:00:21,755
+Alè: In this session we are going
+to talk about bindless rendering.
+
+6
+00:00:21,788 --> 00:00:25,692
+The bindless binding model is a modern
+way to provide resources to your shaders,
+
+7
+00:00:25,726 --> 00:00:29,096
+unlocking advanced rendering techniques,
+such as ray tracing.
+
+8
+00:00:29,129 --> 00:00:34,201
+For today, I'll start with a brief recap
+of how the bindless binding model works,
+
+9
+00:00:34,234 --> 00:00:39,339
+and how you can easily adopt bindless
+in your games and apps with Metal 3.
+
+10
+00:00:40,440 --> 00:00:44,111
+Bindless rendering aggregates data,
+which opens up new opportunities
+
+11
+00:00:44,144 --> 00:00:47,247
+to improve performance on the CPU and GPU.
+
+12
+00:00:47,281 --> 00:00:52,519
+I'll give you two specific tips today
+to improve your CPU and GPU times.
+
+13
+00:00:53,387 --> 00:00:54,755
+Then I'll hand it over to Mayur,
+
+14
+00:00:54,788 --> 00:00:58,859
+and he’ll show you how the tools
+can help you adopt a bindless model.
+
+15
+00:00:59,760 --> 00:01:02,129
+In the bindless model,
+resources are aggregated
+
+16
+00:01:02,162 --> 00:01:04,998
+and linked together with argument buffers.
+
+17
+00:01:05,032 --> 00:01:07,501
+Conceptually,
+this is what this looks like.
+
+18
+00:01:07,534 --> 00:01:12,005
+In this example, an array
+aggregates all the meshes in a scene.
+
+19
+00:01:12,039 --> 00:01:15,676
+Unlike the traditional binding model,
+where you bind each resource independently
+
+20
+00:01:15,709 --> 00:01:17,644
+to a specific slot in a pipeline,
+
+21
+00:01:17,678 --> 00:01:22,082
+in the bindless model, resources
+are first linked together in memory.
+
+22
+00:01:22,115 --> 00:01:25,786
+This lets you bind a single buffer
+that your shaders can freely navigate
+
+23
+00:01:25,819 --> 00:01:27,888
+and access the resources they need
+
+24
+00:01:27,921 --> 00:01:32,259
+to calculate elaborate surfaces
+and lighting.
+
+25
+00:01:32,292 --> 00:01:34,261
+After the app goes bindless,
+
+26
+00:01:34,294 --> 00:01:36,997
+the ray tracing shaders can access
+all the data they need
+
+27
+00:01:37,030 --> 00:01:39,800
+to beautifully shade the reflections.
+
+28
+00:01:39,833 --> 00:01:42,069
+The app makes the 3D models and textures,
+
+29
+00:01:42,102 --> 00:01:46,073
+including the floor, the trucks,
+their materials, and even the sky,
+
+30
+00:01:46,106 --> 00:01:48,175
+available to the ray tracing shaders
+
+31
+00:01:48,208 --> 00:01:51,979
+by placing all its data
+into argument buffers.
+
+32
+00:01:52,012 --> 00:01:54,815
+Even better,
+when bindless rendering is paired with
+
+33
+00:01:54,848 --> 00:01:59,319
+other Metal features like Heaps,
+apps and games enjoy better performance,
+
+34
+00:01:59,353 --> 00:02:02,489
+thanks to less pressure on the CPU.
+
+35
+00:02:02,523 --> 00:02:05,792
+I'll talk about four specific enhancements
+in Metal 3
+
+36
+00:02:05,826 --> 00:02:08,929
+that you may find useful
+for bindless rendering.
+
+37
+00:02:09,530 --> 00:02:12,833
+Argument buffers
+are the fundamental Metal construct
+
+38
+00:02:12,866 --> 00:02:15,702
+that allows you to link
+your resources together.
+
+39
+00:02:15,736 --> 00:02:20,007
+They reference resources
+such as textures and other buffers.
+
+40
+00:02:20,040 --> 00:02:24,278
+Metal 3 makes writing
+argument buffers easier than ever
+
+41
+00:02:24,311 --> 00:02:28,315
+because now you no longer need
+an Argument encoder object.
+
+42
+00:02:28,348 --> 00:02:31,785
+And the same is true for unbounded arrays.
+
+43
+00:02:31,818 --> 00:02:34,254
+You can now allocate acceleration
+structures
+
+44
+00:02:34,288 --> 00:02:36,223
+from a Metal Heap
+
+45
+00:02:36,256 --> 00:02:39,092
+and the Shader Validation Layer alerts you
+
+46
+00:02:39,126 --> 00:02:42,496
+when resources aren’t resident
+in GPU memory.
+
+47
+00:02:42,529 --> 00:02:47,467
+Together, these four features
+make it easier than ever to go bindless.
+
+48
+00:02:48,735 --> 00:02:54,107
+In particular, writing argument buffers
+in Metal 3 is a joy.
+
+49
+00:02:54,141 --> 00:02:56,343
+To encode a scene into argument buffers,
+
+50
+00:02:56,376 --> 00:02:58,512
+you write into these buffers
+the scene data,
+
+51
+00:02:58,545 --> 00:03:03,150
+such as instances, meshes,
+materials, and textures.
+
+52
+00:03:03,183 --> 00:03:07,621
+In Metal 2, this is accomplished
+with an argument encoder.
+
+53
+00:03:07,654 --> 00:03:10,858
+So first, I will recap
+how these objects work,
+
+54
+00:03:10,891 --> 00:03:14,928
+and then I will show you
+how Metal 3 helps simplify your code.
+
+55
+00:03:14,962 --> 00:03:19,299
+With argument encoders, the first step
+is to create the encoder instance.
+
+56
+00:03:19,333 --> 00:03:21,568
+You do this via shader function reflection
+
+57
+00:03:21,602 --> 00:03:25,105
+or by describing
+the struct members to Metal.
+
+58
+00:03:25,138 --> 00:03:29,309
+With the encoder instance,
+set its recording destination and offset
+
+59
+00:03:29,343 --> 00:03:32,145
+to the target argument buffer.
+
+60
+00:03:32,179 --> 00:03:36,083
+And use its methods to
+write data into the buffer.
+
+61
+00:03:36,116 --> 00:03:38,151
+Please check out the bindless session
+from last year
+
+62
+00:03:38,185 --> 00:03:42,856
+for a detailed refresher on argument
+buffers and argument encoders.
+
+63
+00:03:42,890 --> 00:03:44,725
+Now this mechanism is great,
+
+64
+00:03:44,758 --> 00:03:48,562
+but the encoder objects
+can sometimes be challenging to manage.
+
+65
+00:03:48,595 --> 00:03:51,798
+Metal provides two mechanisms
+for creating argument encoders.
+
+66
+00:03:51,832 --> 00:03:55,369
+It might not be clear
+which one is appropriate for your app.
+
+67
+00:03:55,402 --> 00:04:00,507
+Additionally, using an argument encoder
+from multiple threads requires care.
+
+68
+00:04:00,541 --> 00:04:04,111
+Developers, intuitively understand
+how to write a C struct,
+
+69
+00:04:04,144 --> 00:04:09,316
+and with Metal 3, you can now do just that
+for your argument buffers.
+
+70
+00:04:09,349 --> 00:04:12,319
+Metal 3 simplifies writing argument
+buffers by allowing you
+
+71
+00:04:12,352 --> 00:04:16,857
+to directly write into them
+like any other CPU-side structure.
+
+72
+00:04:16,890 --> 00:04:20,060
+You now have access
+to the virtual GPU address
+
+73
+00:04:20,093 --> 00:04:23,797
+and Resource IDs of your resources.
+
+74
+00:04:23,830 --> 00:04:26,366
+When you write these directly
+into your argument buffer,
+
+75
+00:04:26,400 --> 00:04:29,937
+Metal now understands
+what resources you are referencing.
+
+76
+00:04:29,970 --> 00:04:32,873
+It is functionally the same
+as previously encoding the reference
+
+77
+00:04:32,906 --> 00:04:37,678
+using an argument encoder,
+except an encoder isn't needed anymore.
+
+78
+00:04:37,711 --> 00:04:41,915
+This capability is supported all devices
+with argument buffers tier 2 support.
+
+79
+00:04:41,949 --> 00:04:45,452
+That is, any Mac from 2016 or newer,
+
+80
+00:04:45,485 --> 00:04:50,123
+and any iOS device with
+the A13 bionic chip or newer.
+
+81
+00:04:51,892 --> 00:04:54,962
+If you are unsure whether
+a device supports argument buffers tier 2,
+
+82
+00:04:54,995 --> 00:05:00,267
+there is a convenient feature query
+in the MTLDevice object that you can use.
+
+83
+00:05:00,300 --> 00:05:03,904
+This is what the process
+now looks like in Metal 3.
+
+84
+00:05:03,937 --> 00:05:09,376
+First, define your CPU-visible structs,
+using a 64-bit type for buffer addresses,
+
+85
+00:05:09,409 --> 00:05:13,680
+and MTLResourceID for textures.
+
+86
+00:05:13,714 --> 00:05:16,550
+Then, allocate the argument buffer.
+
+87
+00:05:16,583 --> 00:05:23,056
+You allocate buffers either directly
+from the MTLDevice, or from a MTLHeap.
+
+88
+00:05:23,090 --> 00:05:29,062
+You get the buffer's contents and cast it
+to the argument buffer struct type.
+
+89
+00:05:29,096 --> 00:05:34,001
+And finally, write the addresses
+and resource IDs to the struct members.
+
+90
+00:05:34,034 --> 00:05:37,938
+Take a look at how this is done
+in the hybrid rendering demo.
+
+91
+00:05:37,971 --> 00:05:41,542
+Here is the code.
+Notice how simple it is.
+
+92
+00:05:41,575 --> 00:05:46,880
+The host-side struct directly stores
+the GPU address of the normals buffer.
+
+93
+00:05:46,914 --> 00:05:52,653
+This is a 64-bit unsigned integer
+so I used uint64_t.
+
+94
+00:05:52,686 --> 00:05:54,488
+Now that there is no encoder object,
+
+95
+00:05:54,521 --> 00:05:59,459
+you simply use the size of the struct
+for your argument buffer.
+
+96
+00:05:59,493 --> 00:06:03,697
+Metal guarantees that the size
+and alignment of the GPU and CPU structs
+
+97
+00:06:03,730 --> 00:06:07,100
+match across clang
+and the Metal shader compiler.
+
+98
+00:06:08,769 --> 00:06:13,273
+Next, allocate the buffer as usual.
+
+99
+00:06:13,307 --> 00:06:16,143
+And if a buffer’s storage mode
+is Managed or Shared,
+
+100
+00:06:16,176 --> 00:06:21,648
+get a direct pointer to the buffer
+and cast it to the struct type.
+
+101
+00:06:21,682 --> 00:06:25,185
+And finally, set the normals member
+to the gpuAddress,
+
+102
+00:06:25,219 --> 00:06:29,623
+and optionally, an offset that you must
+align to the GPU’s memory requirements.
+
+103
+00:06:32,359 --> 00:06:35,963
+One thing I want to highlight
+is how the structure declaration changes
+
+104
+00:06:35,996 --> 00:06:39,833
+between the Metal Shading Language
+and the C declaration.
+
+105
+00:06:39,867 --> 00:06:42,135
+In this example, these are kept separate,
+
+106
+00:06:42,169 --> 00:06:46,573
+but if you prefer, you can have a single
+struct declaration in a shared header
+
+107
+00:06:46,607 --> 00:06:49,243
+and use conditional compilation
+to distinguish between
+
+108
+00:06:49,276 --> 00:06:52,412
+the shader compiler types and the C types.
+
+109
+00:06:53,146 --> 00:06:56,149
+Here’s a unified declaration in C.
+
+110
+00:06:56,183 --> 00:07:00,254
+The __METAL_VERSION__ macro is only
+defined when compiling shader code.
+
+111
+00:07:00,287 --> 00:07:05,692
+Use it to separate GPU and CPU code
+in header declarations.
+
+112
+00:07:05,726 --> 00:07:09,062
+If your app targets C++,
+you can take this further
+
+113
+00:07:09,096 --> 00:07:12,866
+and use templates to make
+the declarations even more uniform.
+
+114
+00:07:13,867 --> 00:07:18,005
+Check out the argument buffer
+sample code for the best practices.
+
+115
+00:07:18,038 --> 00:07:20,374
+Now that's how you write one struct,
+
+116
+00:07:20,407 --> 00:07:24,378
+but you can also write many structs
+using unbounded arrays.
+
+117
+00:07:24,411 --> 00:07:28,315
+You could already implement unbounded
+arrays in Metal using argument encoders,
+
+118
+00:07:28,348 --> 00:07:31,251
+but Metal 3 simplifies the process
+even further
+
+119
+00:07:31,285 --> 00:07:35,122
+by bringing it closer to just filling out
+an array of structs.
+
+120
+00:07:36,223 --> 00:07:40,160
+Here's what's different compared
+to just writing one struct.
+
+121
+00:07:40,194 --> 00:07:46,400
+You now need to allocate enough storage
+for all structs you want to store.
+
+122
+00:07:46,433 --> 00:07:52,539
+And then, iterate over the array,
+writing the data for each struct.
+
+123
+00:07:53,540 --> 00:07:57,244
+Back to the code sample,
+first, expand the size of the buffer
+
+124
+00:07:57,277 --> 00:08:01,615
+to store as many structs
+as meshes in the scene.
+
+125
+00:08:01,648 --> 00:08:05,385
+Notice how this is exactly the same
+you do for a CPU buffer:
+
+126
+00:08:05,419 --> 00:08:10,524
+multiply the size of the struct
+times the mesh count.
+
+127
+00:08:10,557 --> 00:08:13,827
+I want to take a moment to note
+how powerful this is.
+
+128
+00:08:13,861 --> 00:08:17,631
+This single variable completely controls
+the size of the array.
+
+129
+00:08:17,664 --> 00:08:19,600
+The shader does not need
+to declare this size
+
+130
+00:08:19,633 --> 00:08:21,835
+to the Metal shader compiler at any point
+
+131
+00:08:21,869 --> 00:08:24,771
+and it's free to index into any position.
+
+132
+00:08:24,805 --> 00:08:28,475
+This is part of the reason the bindless
+model is so flexible in Metal,
+
+133
+00:08:28,509 --> 00:08:32,579
+because you write shaders that access
+arrays of any size with no constraints.
+
+134
+00:08:32,613 --> 00:08:34,448
+It just works!
+
+135
+00:08:36,416 --> 00:08:40,187
+Next, allocate the buffer of this size
+
+136
+00:08:40,220 --> 00:08:44,892
+and cast the pointer to the contents
+to the correct mesh struct type.
+
+137
+00:08:46,860 --> 00:08:50,397
+Now that the buffer is large enough,
+walk it with a simple for loop,
+
+138
+00:08:50,430 --> 00:08:55,102
+straddling the size of the mesh struct.
+
+139
+00:08:55,135 --> 00:08:59,706
+And finally, directly set the GPUAddress
+of each struct in the array,
+
+140
+00:08:59,740 --> 00:09:02,309
+and optionally, an aligned offset.
+
+141
+00:09:04,144 --> 00:09:06,613
+From the GPU side in the shader,
+
+142
+00:09:06,647 --> 00:09:09,650
+this is one way
+to represent the unbounded array.
+
+143
+00:09:09,683 --> 00:09:14,955
+Here, I declare it as a mesh pointer
+parameter that I pass to the shader.
+
+144
+00:09:16,657 --> 00:09:19,893
+This makes it possible to freely access
+the contents directly,
+
+145
+00:09:19,927 --> 00:09:22,529
+just as you would for any C array.
+
+146
+00:09:25,365 --> 00:09:30,370
+Another option is to pull
+all the unbounded arrays into a struct.
+
+147
+00:09:30,404 --> 00:09:35,275
+This helps keep shaders neat
+by aggregating data in a single place.
+
+148
+00:09:35,309 --> 00:09:37,377
+In this example,
+all the meshes and materials
+
+149
+00:09:37,411 --> 00:09:40,347
+are brought together in a scene struct.
+
+150
+00:09:42,549 --> 00:09:45,719
+Using the scene struct,
+the scene is passed directly to the shader
+
+151
+00:09:45,752 --> 00:09:47,421
+by binding a single buffer,
+
+152
+00:09:47,454 --> 00:09:50,691
+instead of passing every unbounded array
+separately.
+
+153
+00:09:52,459 --> 00:09:54,394
+And access is just like before,
+
+154
+00:09:54,428 --> 00:09:58,832
+but now, the mesh array is reached
+through the scene struct.
+
+155
+00:09:59,666 --> 00:10:04,371
+And that’s how to write argument buffers
+and unbounded arrays in Metal 3.
+
+156
+00:10:04,404 --> 00:10:07,241
+The completely revamped API
+now makes it more intuitive
+
+157
+00:10:07,274 --> 00:10:12,212
+and matches what you do for CPU structs,
+or arrays of structs.
+
+158
+00:10:12,246 --> 00:10:14,114
+With this year's ray tracing update,
+
+159
+00:10:14,147 --> 00:10:17,284
+ray tracing acceleration structures
+can be allocated from Metal Heaps,
+
+160
+00:10:17,317 --> 00:10:19,786
+along with your buffers and textures.
+
+161
+00:10:21,722 --> 00:10:24,491
+This means they can be aggregated
+together amongst themselves
+
+162
+00:10:24,525 --> 00:10:26,960
+and with other resource types.
+
+163
+00:10:26,994 --> 00:10:30,864
+This is great, because when you aggregate
+all acceleration structures into heaps,
+
+164
+00:10:30,898 --> 00:10:35,269
+you can flag them all resident
+in a single call to useHeap.
+
+165
+00:10:35,302 --> 00:10:38,438
+This is a huge opportunity
+for significant CPU savings
+
+166
+00:10:38,472 --> 00:10:41,041
+in your application's render thread.
+
+167
+00:10:42,476 --> 00:10:46,113
+Here are some tips for working with
+acceleration structures in heaps.
+
+168
+00:10:46,146 --> 00:10:49,349
+First, when allocated from heaps,
+acceleration structures have
+
+169
+00:10:49,383 --> 00:10:53,787
+alignment and size requirements
+that vary per device.
+
+170
+00:10:53,820 --> 00:10:56,790
+There is a new query to check
+for the size and alignment
+
+171
+00:10:56,823 --> 00:11:00,227
+of an acceleration structure
+for heap allocation.
+
+172
+00:11:00,260 --> 00:11:03,864
+Use the heapAccelerationStructureSize
+andAlignWithDescriptor method
+
+173
+00:11:03,897 --> 00:11:06,834
+of the MTLDevice to determine
+the SizeAndAlignment
+
+174
+00:11:06,867 --> 00:11:09,803
+for structure descriptors.
+
+175
+00:11:09,837 --> 00:11:11,705
+Keep in mind, this is different
+
+176
+00:11:11,738 --> 00:11:14,408
+from the accelerationStructureSizes
+WithDescriptor method
+
+177
+00:11:14,441 --> 00:11:16,443
+in MTLDevice.
+
+178
+00:11:18,612 --> 00:11:22,015
+Now that acceleration structures
+are in a MTLHeap object,
+
+179
+00:11:22,049 --> 00:11:25,652
+call useHeap: to make them
+all resident in a single call.
+
+180
+00:11:25,686 --> 00:11:31,758
+This is faster than calling
+useResource on each individual resource.
+
+181
+00:11:31,792 --> 00:11:35,095
+And keep in mind that unless
+you opt your heap into hazard tracking,
+
+182
+00:11:35,128 --> 00:11:38,999
+Metal does not prevent race conditions
+for resources allocated from them,
+
+183
+00:11:39,032 --> 00:11:41,768
+so you will need to synchronize
+the acceleration structure builds
+
+184
+00:11:41,802 --> 00:11:44,938
+between one another
+and with ray tracing work.
+
+185
+00:11:44,972 --> 00:11:47,441
+Don't worry though,
+I will talk more about this in a moment.
+
+186
+00:11:48,942 --> 00:11:50,310
+For more details on this
+
+187
+00:11:50,344 --> 00:11:53,180
+and other ray tracing performance
+advances in Metal 3,
+
+188
+00:11:53,213 --> 00:11:54,081
+make sure to check out
+
+189
+00:11:54,114 --> 00:11:58,118
+the "Maximize your Metal ray tracing
+performance" talk this year.
+
+190
+00:11:58,151 --> 00:12:02,122
+Using heap-allocated acceleration
+structures provides an opportunity
+
+191
+00:12:02,155 --> 00:12:06,059
+to reduce your app's CPU usage
+when it matters the most.
+
+192
+00:12:06,093 --> 00:12:09,763
+Last but not least, here's one of my
+favorite features this year:
+
+193
+00:12:09,796 --> 00:12:12,866
+Shader validation enhancements.
+
+194
+00:12:13,867 --> 00:12:16,436
+On the topic of useResource and useHeap,
+
+195
+00:12:16,470 --> 00:12:18,972
+it is very important that
+apps flag residency to Metal
+
+196
+00:12:19,006 --> 00:12:22,075
+for all indirectly accessed resources.
+
+197
+00:12:22,109 --> 00:12:25,712
+Forgetting to do it means that the memory
+pages backing those resources
+
+198
+00:12:25,746 --> 00:12:28,582
+may not be present at rendering time.
+
+199
+00:12:28,615 --> 00:12:34,188
+This can cause command buffer failures,
+GPU restarts, or even image corruption.
+
+200
+00:12:34,221 --> 00:12:37,457
+Unfortunately, it is very common
+to run into these problems
+
+201
+00:12:37,491 --> 00:12:40,494
+when starting the bindless journey,
+because in bindless,
+
+202
+00:12:40,527 --> 00:12:43,864
+the majority of scene resources
+are accessed indirectly,
+
+203
+00:12:43,897 --> 00:12:48,769
+and shaders make pointer navigation
+decisions at runtime.
+
+204
+00:12:48,802 --> 00:12:51,705
+This year, Metal 3 introduces
+new functionality
+
+205
+00:12:51,738 --> 00:12:54,908
+in the shader validation layer
+that will help you track down
+
+206
+00:12:54,942 --> 00:12:58,712
+missing residency of resources
+during command buffer execution.
+
+207
+00:12:58,745 --> 00:13:01,181
+I'll show you a concrete example.
+
+208
+00:13:01,215 --> 00:13:03,951
+During the update process
+of the Hybrid Rendering app,
+
+209
+00:13:03,984 --> 00:13:09,356
+we encountered a real problem where
+reflections sometimes looked incorrect.
+
+210
+00:13:09,389 --> 00:13:14,127
+I'll show you how the validation layer
+helped diagnose and fix this problem.
+
+211
+00:13:15,362 --> 00:13:19,533
+To flag residency to Metal, the app stores
+all individual resources
+
+212
+00:13:19,566 --> 00:13:24,538
+not backed by heaps
+into a mutable set at load time.
+
+213
+00:13:24,571 --> 00:13:28,809
+The app adds buffers and it adds textures.
+
+214
+00:13:28,842 --> 00:13:32,779
+At rendering time, before the app
+dispatches the ray tracing kernel,
+
+215
+00:13:32,813 --> 00:13:37,050
+it indicates to Metal that it uses
+all resources in the set.
+
+216
+00:13:37,084 --> 00:13:39,953
+This is a simple process where
+the app iterates over the set
+
+217
+00:13:39,987 --> 00:13:43,190
+and calls useResource on each element.
+
+218
+00:13:43,223 --> 00:13:46,026
+Metal then makes
+all these resources resident
+
+219
+00:13:46,059 --> 00:13:49,263
+before starting the ray tracing work.
+
+220
+00:13:49,296 --> 00:13:53,800
+Here's part of the code where the app
+collects the resources into this set.
+
+221
+00:13:53,834 --> 00:13:58,772
+The app does this as part of
+its argument buffer writing process.
+
+222
+00:13:58,805 --> 00:14:03,810
+The app's loading function
+iterates over each submesh.
+
+223
+00:14:03,844 --> 00:14:06,346
+It nabs the data it needs
+to write to the argument buffer--
+
+224
+00:14:06,380 --> 00:14:11,151
+that is, index data and
+texture data for materials--
+
+225
+00:14:11,185 --> 00:14:16,123
+then it stores the index buffer's
+address in the argument buffer.
+
+226
+00:14:16,156 --> 00:14:18,959
+For materials,
+it then loops over the texture array,
+
+227
+00:14:18,992 --> 00:14:24,865
+writing the texture GPU resource IDs
+into the argument buffer.
+
+228
+00:14:24,898 --> 00:14:27,935
+And at the end,
+it adds all individual textures
+
+229
+00:14:27,968 --> 00:14:31,138
+from the submesh materials
+to the sceneResources set,
+
+230
+00:14:31,171 --> 00:14:34,174
+so it can flag them resident
+at dispatch time.
+
+231
+00:14:35,976 --> 00:14:39,713
+Unfortunately, there is a subtle bug here.
+
+232
+00:14:39,746 --> 00:14:41,648
+The app would run the command buffer,
+
+233
+00:14:41,682 --> 00:14:45,285
+and in some cases,
+reflections would be missing.
+
+234
+00:14:45,319 --> 00:14:49,556
+Previously,
+it was hard to track this down.
+
+235
+00:14:49,590 --> 00:14:53,827
+Now in Metal 3, the shader
+validation layer comes to the rescue.
+
+236
+00:14:53,861 --> 00:14:57,865
+These kinds of problems now produce
+an error during command buffer execution,
+
+237
+00:14:57,898 --> 00:15:01,768
+indicating what the problem is.
+
+238
+00:15:01,802 --> 00:15:03,604
+The error message indicates
+
+239
+00:15:03,637 --> 00:15:07,007
+the name of the shader function
+that triggered the problem,
+
+240
+00:15:07,040 --> 00:15:09,409
+the name of the pass,
+
+241
+00:15:09,443 --> 00:15:14,181
+the metal file and line of code where it
+detected the access,
+
+242
+00:15:14,214 --> 00:15:17,317
+and even the label
+of the buffer, its size,
+
+243
+00:15:17,351 --> 00:15:20,554
+and the fact that it was not resident.
+
+244
+00:15:20,587 --> 00:15:24,825
+As a pro tip, this is why it's always
+a good practice to label Metal objects.
+
+245
+00:15:24,858 --> 00:15:27,694
+The tools use the labels, which is helpful
+when trying to identify
+
+246
+00:15:27,728 --> 00:15:30,831
+which object is which
+while debugging your app.
+
+247
+00:15:30,864 --> 00:15:32,799
+With all this
+detailed information in hand,
+
+248
+00:15:32,833 --> 00:15:36,770
+it's now easy to find the missing resource
+in the shader code.
+
+249
+00:15:36,803 --> 00:15:40,340
+What's even better is that
+when the debug breakpoint is enabled,
+
+250
+00:15:40,374 --> 00:15:44,011
+Xcode conveniently shows
+the exact line in the shader code
+
+251
+00:15:44,044 --> 00:15:47,447
+where shader validation
+detects the problem.
+
+252
+00:15:47,481 --> 00:15:51,852
+In the case of the demo app, it is
+the indices buffer that is not resident.
+
+253
+00:15:51,885 --> 00:15:55,422
+The fix is now straightforward.
+
+254
+00:15:55,455 --> 00:15:57,658
+Going back to the code,
+
+255
+00:15:57,691 --> 00:15:59,960
+the app now stores
+the missing index buffer
+
+256
+00:15:59,993 --> 00:16:02,829
+into the resident resource set.
+
+257
+00:16:02,863 --> 00:16:05,532
+With these changes,
+later at ray tracing time,
+
+258
+00:16:05,566 --> 00:16:10,838
+Metal knows to make the index buffers
+available to the GPU, solving the issue.
+
+259
+00:16:10,871 --> 00:16:13,841
+This is an essential tool,
+and a complete game changer,
+
+260
+00:16:13,874 --> 00:16:19,079
+that will potentially save you hours of
+debugging time in your bindless journey.
+
+261
+00:16:19,112 --> 00:16:22,349
+So those are the enhancements
+Metal 3 brings to help you organize
+
+262
+00:16:22,382 --> 00:16:24,685
+and refer to bindless resources.
+
+263
+00:16:24,718 --> 00:16:27,321
+Now I'm going to switch gears
+and talk about how to maximize
+
+264
+00:16:27,354 --> 00:16:30,190
+your game's performance
+when going bindless.
+
+265
+00:16:30,224 --> 00:16:32,793
+In this section, I will cover two topics:
+
+266
+00:16:32,826 --> 00:16:36,597
+unretained resources,
+and untracked resources.
+
+267
+00:16:36,630 --> 00:16:40,133
+These tips will help you get
+more performance out of both your CPU
+
+268
+00:16:40,167 --> 00:16:44,638
+and your GPU when you have
+long-lived and aggregate resources.
+
+269
+00:16:44,671 --> 00:16:48,509
+Now, to talk about how to improve
+CPU performance with long-lived resources,
+
+270
+00:16:48,542 --> 00:16:51,678
+I will first recap
+the Metal resource lifecycle.
+
+271
+00:16:51,712 --> 00:16:56,884
+Objective-C and Swift handle
+object lifecycles via reference counting.
+
+272
+00:16:56,917 --> 00:16:59,319
+Metal resources follow this model.
+
+273
+00:16:59,353 --> 00:17:02,222
+Resources start with a retainCount of 1
+
+274
+00:17:02,256 --> 00:17:07,461
+and the runtime deallocates them
+when all strong references disappear.
+
+275
+00:17:07,494 --> 00:17:10,998
+Because the CPU
+and GPU operate in parallel,
+
+276
+00:17:11,031 --> 00:17:14,401
+it would be a problem if
+the CPU deallocated a resource
+
+277
+00:17:14,434 --> 00:17:18,672
+by allowing its retainCount to reach 0
+while the GPU is still using it.
+
+278
+00:17:19,706 --> 00:17:23,377
+To prevent this, Metal command buffers
+create strong references
+
+279
+00:17:23,410 --> 00:17:25,179
+to all resources they use,
+
+280
+00:17:25,212 --> 00:17:30,284
+ensuring their retainCount
+is always at least 1.
+
+281
+00:17:30,317 --> 00:17:33,120
+Metal creates strong references for
+
+282
+00:17:33,153 --> 00:17:35,222
+resources you directly bind to a pipeline
+
+283
+00:17:35,255 --> 00:17:39,693
+with functions such as
+setVertexBuffer or setFragmentTexture--
+
+284
+00:17:39,726 --> 00:17:42,896
+and this also includes render
+attachments--
+
+285
+00:17:42,930 --> 00:17:48,168
+Metal heap objects you flag resident
+via the useHeap API,
+
+286
+00:17:48,202 --> 00:17:50,637
+and indirect resources
+that you make resident
+
+287
+00:17:50,671 --> 00:17:55,475
+via the useResource API,
+even if they are part of a heap.
+
+288
+00:17:55,509 --> 00:17:58,078
+For more details
+on Metal object lifecycles,
+
+289
+00:17:58,111 --> 00:18:03,317
+please check out the "Program Metal
+in C++ with metal-cpp" talk this year.
+
+290
+00:18:03,350 --> 00:18:06,486
+Now, it's very useful that
+Metal creates these references,
+
+291
+00:18:06,520 --> 00:18:08,722
+because as a programmer,
+you never have to worry
+
+292
+00:18:08,755 --> 00:18:13,393
+that you might be deallocating an object
+while the GPU is still using it.
+
+293
+00:18:13,427 --> 00:18:17,264
+This safety guarantee Metal gives you
+is very fast to execute,
+
+294
+00:18:17,297 --> 00:18:20,534
+but it does comes with a small CPU cost.
+
+295
+00:18:20,567 --> 00:18:25,305
+Now, in the bindless model,
+apps aggregate resources into heaps
+
+296
+00:18:25,339 --> 00:18:28,842
+and these tend to be long lived,
+matching the application's domain.
+
+297
+00:18:28,876 --> 00:18:34,214
+For example, in a game, resources are
+alive for the duration of a whole level.
+
+298
+00:18:34,248 --> 00:18:36,917
+When this is the case, it becomes
+unnecessary for Metal
+
+299
+00:18:36,950 --> 00:18:40,587
+to provide additional guarantees
+about resource lifecycles.
+
+300
+00:18:41,288 --> 00:18:44,324
+What you can do then
+is recoup this CPU cost
+
+301
+00:18:44,358 --> 00:18:49,329
+by asking Metal command buffers
+not to retain resources they reference.
+
+302
+00:18:50,564 --> 00:18:53,133
+To turn off Metal's
+automatic resource retaining,
+
+303
+00:18:53,166 --> 00:18:57,271
+simply create a command buffer
+with unretained references.
+
+304
+00:18:57,304 --> 00:19:00,040
+You do this directly
+from the MTLCommandQueue,
+
+305
+00:19:00,073 --> 00:19:03,143
+just like you create
+any regular command buffer.
+
+306
+00:19:03,177 --> 00:19:05,479
+You don't need to make
+any other changes to your app,
+
+307
+00:19:05,512 --> 00:19:08,815
+as long as you are already guaranteeing
+your resource lifecycles.
+
+308
+00:19:09,783 --> 00:19:12,519
+Keep in mind that
+the granularity level for this setting
+
+309
+00:19:12,553 --> 00:19:14,454
+is the entire command buffer.
+
+310
+00:19:14,488 --> 00:19:18,825
+It will either retain all referenced
+resources or none of them.
+
+311
+00:19:19,826 --> 00:19:21,361
+In a small microbenchmark,
+
+312
+00:19:21,395 --> 00:19:26,099
+we measured a CPU usage reduction of 2% in
+the command buffer's lifecycle
+
+313
+00:19:26,133 --> 00:19:29,403
+just by switching to command buffers
+with unretained references.
+
+314
+00:19:29,436 --> 00:19:32,172
+but this time was spent entirely
+
+315
+00:19:32,206 --> 00:19:36,043
+creating and destroying
+unnecessary strong references.
+
+316
+00:19:37,044 --> 00:19:42,216
+In summary, unretained resources provides
+an opportunity for some extra CPU savings
+
+317
+00:19:42,249 --> 00:19:46,220
+when you are already guaranteeing
+resource lifecycles.
+
+318
+00:19:46,253 --> 00:19:49,456
+Similar to unretained resources,
+untracked resources
+
+319
+00:19:49,489 --> 00:19:52,359
+provides an opportunity to disable
+a safety feature
+
+320
+00:19:52,392 --> 00:19:55,095
+to obtain more performance.
+
+321
+00:19:55,128 --> 00:19:58,599
+Many visual techniques consist in
+rendering to intermediate textures
+
+322
+00:19:58,632 --> 00:20:02,803
+and writing into buffers and then
+consuming them in later passes.
+
+323
+00:20:02,836 --> 00:20:07,674
+Shadow mapping, skinning, and
+post-processing are good examples of this.
+
+324
+00:20:07,708 --> 00:20:11,378
+Now, producing
+and immediately consuming resources
+
+325
+00:20:11,411 --> 00:20:15,115
+introduces read-after-write hazards.
+
+326
+00:20:15,148 --> 00:20:18,318
+Additionally, when several passes
+write to the same resource,
+
+327
+00:20:18,352 --> 00:20:19,520
+such as two render passes
+
+328
+00:20:19,553 --> 00:20:22,956
+drawing into the same attachment,
+one after the other,
+
+329
+00:20:22,990 --> 00:20:26,226
+or two blit encoders
+write into the same resource,
+
+330
+00:20:26,260 --> 00:20:28,662
+it produces write-after-write hazards
+
+331
+00:20:28,695 --> 00:20:33,133
+because of the way Metal schedules work
+on the GPU.
+
+332
+00:20:33,166 --> 00:20:36,436
+When you use tracked resources,
+Metal automatically uses
+
+333
+00:20:36,470 --> 00:20:41,375
+synchronization primitives to
+avoid hazards on the GPU timeline.
+
+334
+00:20:41,408 --> 00:20:43,810
+For example, Metal makes the GPU wait
+
+335
+00:20:43,844 --> 00:20:46,547
+for a compute skinning pass
+to finish writing into a buffer
+
+336
+00:20:46,580 --> 00:20:50,617
+before starting a scene rendering pass
+that reads from the same buffer.
+
+337
+00:20:51,652 --> 00:20:52,819
+This is great,
+
+338
+00:20:52,853 --> 00:20:57,090
+and it's a big part of why Metal is
+such an approachable graphics API,
+
+339
+00:20:57,124 --> 00:20:59,193
+but there are some performance
+considerations for apps
+
+340
+00:20:59,226 --> 00:21:02,229
+that aggregate resources into heaps.
+
+341
+00:21:03,230 --> 00:21:05,265
+Consider this example.
+
+342
+00:21:05,299 --> 00:21:06,867
+Here, the GPU is busy,
+
+343
+00:21:06,900 --> 00:21:09,036
+drawing two frames
+that do vertex skinning,
+
+344
+00:21:09,069 --> 00:21:13,640
+render the scene, and apply tone mapping,
+one after the other.
+
+345
+00:21:13,674 --> 00:21:17,578
+As the app keeps the GPU busy,
+Metal identifies opportunities
+
+346
+00:21:17,611 --> 00:21:22,850
+where render and compute work can overlap,
+based on resource dependencies.
+
+347
+00:21:22,883 --> 00:21:26,019
+When there are no dependencies,
+and the conditions are right,
+
+348
+00:21:26,053 --> 00:21:29,756
+Metal schedules work to overlap
+and run in parallel.
+
+349
+00:21:29,790 --> 00:21:33,293
+This saturates the GPU and allows it
+to get more work done
+
+350
+00:21:33,327 --> 00:21:36,296
+in the same amount of wall-clock time.
+
+351
+00:21:38,298 --> 00:21:41,568
+Now, when the app aggregates
+resources together in a heap,
+
+352
+00:21:41,602 --> 00:21:45,606
+all of its subresources appear
+as a single one to Metal.
+
+353
+00:21:45,639 --> 00:21:48,642
+This is what makes heaps
+so efficient to work with.
+
+354
+00:21:48,675 --> 00:21:52,779
+But this means that Metal sees
+read and write work on the same resource
+
+355
+00:21:52,813 --> 00:21:56,950
+and must conservatively schedule work
+to avoid any race conditions,
+
+356
+00:21:56,984 --> 00:22:00,087
+even when no actual hazard exists.
+
+357
+00:22:02,823 --> 00:22:06,393
+This situation is called "false sharing"
+and, as you might expect,
+
+358
+00:22:06,426 --> 00:22:10,464
+it increases the execution
+wall-clock time of the GPU work.
+
+359
+00:22:10,497 --> 00:22:12,232
+So here's the performance tip.
+
+360
+00:22:12,266 --> 00:22:15,969
+If you know there are no dependencies
+between the resources in the heap,
+
+361
+00:22:16,003 --> 00:22:17,938
+then you can avoid this behavior.
+
+362
+00:22:18,939 --> 00:22:23,310
+To avoid false sharing, you can opt
+resources out of hazard tracking
+
+363
+00:22:23,343 --> 00:22:27,681
+and directly signal
+fine-grained dependencies to Metal.
+
+364
+00:22:27,714 --> 00:22:29,383
+You opt out of resource tracking
+
+365
+00:22:29,416 --> 00:22:34,121
+by setting a resource descriptor's
+hazardTracking property to Untracked.
+
+366
+00:22:34,154 --> 00:22:37,591
+Because this is so important,
+it is the default behavior for heaps,
+
+367
+00:22:37,624 --> 00:22:40,494
+as it allows you to unlock more
+opportunities for the GPU
+
+368
+00:22:40,527 --> 00:22:43,397
+to run your work in parallel
+right out of the gate.
+
+369
+00:22:43,430 --> 00:22:45,499
+Once you start using untracked resources,
+
+370
+00:22:45,532 --> 00:22:48,969
+you express dependencies
+using the following primitives.
+
+371
+00:22:49,002 --> 00:22:54,675
+Depending on the situation,
+use Fences, Events,
+
+372
+00:22:54,708 --> 00:22:58,946
+Shared events, or Memory barriers.
+
+373
+00:22:58,979 --> 00:23:02,282
+Metal Fences synchronize access
+to one or more resources
+
+374
+00:23:02,316 --> 00:23:04,585
+across different render
+and compute passes,
+
+375
+00:23:04,618 --> 00:23:07,921
+within the context
+of a single command queue.
+
+376
+00:23:07,955 --> 00:23:10,290
+This is a split barrier kind-of primitive,
+
+377
+00:23:10,324 --> 00:23:15,195
+so the consumer pass waits
+until the producer signals the Fence.
+
+378
+00:23:18,966 --> 00:23:22,202
+The only requirement you need to
+keep in mind when using Fences
+
+379
+00:23:22,236 --> 00:23:26,006
+is to commit or enqueue
+your producer command buffers
+
+380
+00:23:26,039 --> 00:23:29,643
+before your consuming command buffers.
+
+381
+00:23:29,676 --> 00:23:31,378
+When you can't guarantee this order,
+
+382
+00:23:31,411 --> 00:23:34,615
+or need to synchronize across
+multiple queues on the same device,
+
+383
+00:23:34,648 --> 00:23:37,150
+use MTL Events.
+
+384
+00:23:37,184 --> 00:23:41,622
+Using Events, the consumer command buffer
+waits for the producer command buffer
+
+385
+00:23:41,655 --> 00:23:44,992
+to signal the Event with a given value.
+
+386
+00:23:45,025 --> 00:23:48,829
+After it signals the value,
+it is safe to read the resource.
+
+387
+00:23:48,862 --> 00:23:54,568
+Use Events to tell a GPU to pause work
+until a command signals an Event.
+
+388
+00:23:54,601 --> 00:23:58,372
+MTLSharedEvents behave very similarly
+to regular Events,
+
+389
+00:23:58,405 --> 00:24:02,743
+but work at larger scope
+that goes beyond a single GPU.
+
+390
+00:24:02,776 --> 00:24:04,945
+Use these to synchronize
+access to resources
+
+391
+00:24:04,978 --> 00:24:08,815
+across different Metal devices
+and even with the CPU.
+
+392
+00:24:08,849 --> 00:24:11,185
+For example, use Shared Events
+to process the results
+
+393
+00:24:11,218 --> 00:24:14,188
+of a GPU calculation from the CPU.
+
+394
+00:24:14,221 --> 00:24:16,123
+Here is an example.
+
+395
+00:24:16,156 --> 00:24:19,526
+The GPU in this case
+skins a mesh in a compute pass
+
+396
+00:24:19,560 --> 00:24:23,530
+and the CPU stores the pose to disk.
+
+397
+00:24:23,564 --> 00:24:25,899
+Because these two are independent devices,
+
+398
+00:24:25,933 --> 00:24:31,471
+use a Shared Event to have the CPU wait
+until the GPU produces the resource.
+
+399
+00:24:31,505 --> 00:24:34,107
+In the beginning,
+the CPU unconditionally starts to wait
+
+400
+00:24:34,141 --> 00:24:38,846
+for the GPU to signal the Shared Event.
+
+401
+00:24:38,879 --> 00:24:42,482
+When the GPU produces the resource
+and places it into unified memory,
+
+402
+00:24:42,516 --> 00:24:44,518
+it signals the Shared Event.
+
+403
+00:24:44,551 --> 00:24:47,921
+At this point, the waiting thread
+on the CPU wakes up
+
+404
+00:24:47,955 --> 00:24:50,424
+and safely consumes the resource.
+
+405
+00:24:52,426 --> 00:24:55,462
+The last primitive type
+is Memory Barriers.
+
+406
+00:24:55,495 --> 00:24:58,765
+A Memory Barrier forces all subsequent
+commands within a single render
+
+407
+00:24:58,799 --> 00:25:02,936
+or compute pass to wait
+until all the previous commands finish.
+
+408
+00:25:02,970 --> 00:25:08,208
+The cost of a barrier is similar to the
+cost of a Fence in almost all cases.
+
+409
+00:25:08,242 --> 00:25:10,944
+There is, however, one exception.
+
+410
+00:25:14,348 --> 00:25:19,186
+That exception is barriers after
+the fragment stage in a render pass.
+
+411
+00:25:19,219 --> 00:25:21,622
+These barriers have a very high cost
+
+412
+00:25:21,655 --> 00:25:24,525
+that’s similar to splitting
+the render pass.
+
+413
+00:25:24,558 --> 00:25:28,462
+Metal disables barriers after
+the fragment stage on Apple GPUs
+
+414
+00:25:28,495 --> 00:25:32,199
+to help your apps
+stay on the fastest driver path.
+
+415
+00:25:32,232 --> 00:25:35,469
+The Metal debug layer even
+generates a validation error
+
+416
+00:25:35,502 --> 00:25:39,940
+if you add an after-fragment barrier
+on Apple GPUs.
+
+417
+00:25:39,973 --> 00:25:43,110
+It is recommended to use a Fence
+to synchronize resources
+
+418
+00:25:43,143 --> 00:25:45,345
+after the fragment stage.
+
+419
+00:25:46,413 --> 00:25:48,916
+Here's a short summary
+of the synchronization primitives
+
+420
+00:25:48,949 --> 00:25:51,185
+and when to use them.
+
+421
+00:25:51,218 --> 00:25:53,987
+Prefer using Fences
+for the lowest overhead
+
+422
+00:25:54,021 --> 00:25:55,789
+when committing or enqueueing work
+
+423
+00:25:55,822 --> 00:25:59,793
+to a single command queue
+in producer, then consumer order.
+
+424
+00:25:59,826 --> 00:26:04,298
+Fences are great
+for the majority of common cases.
+
+425
+00:26:04,331 --> 00:26:06,500
+When the submission order
+can't be guaranteed,
+
+426
+00:26:06,533 --> 00:26:11,138
+or there are multiple command queues,
+use Metal Events.
+
+427
+00:26:11,171 --> 00:26:14,107
+Shared Events allows synchronization
+of multiple GPUs
+
+428
+00:26:14,141 --> 00:26:16,243
+between themselves and with the CPU.
+
+429
+00:26:16,276 --> 00:26:20,948
+Use them only in these specific
+multi-device cases.
+
+430
+00:26:20,981 --> 00:26:25,586
+Use Memory Barriers for cases where
+it's desired to synchronize within a pass.
+
+431
+00:26:25,619 --> 00:26:28,255
+Barriers are a fast primitive
+in most cases,
+
+432
+00:26:28,288 --> 00:26:32,226
+such as concurrent compute passes,
+and vertex stages between draw calls.
+
+433
+00:26:32,259 --> 00:26:36,230
+But friendly reminder, use a Fence
+between passes instead of a barrier
+
+434
+00:26:36,263 --> 00:26:38,765
+for synchronizing
+after the fragment stages,
+
+435
+00:26:38,799 --> 00:26:42,936
+because these barriers are very expensive
+and Apple GPUs don't allow it.
+
+436
+00:26:44,071 --> 00:26:47,741
+Using untracked resources
+and manual fine-grained tracking,
+
+437
+00:26:47,774 --> 00:26:51,712
+you can now have
+all the advantages of data aggregation,
+
+438
+00:26:51,745 --> 00:26:55,782
+while maximizing GPU parallelism.
+
+439
+00:26:55,816 --> 00:26:59,186
+And those are the performance tips
+to get the most out of the CPU
+
+440
+00:26:59,219 --> 00:27:02,923
+and GPU when going bindless.
+
+441
+00:27:02,956 --> 00:27:05,359
+I've talked a lot about how Metal 3
+unlocks simplified
+
+442
+00:27:05,392 --> 00:27:07,194
+and efficient bindless workflows.
+
+443
+00:27:07,227 --> 00:27:09,429
+But writing code is only half
+the equation.
+
+444
+00:27:09,463 --> 00:27:12,266
+The other half is how the available tools
+can help you verify
+
+445
+00:27:12,299 --> 00:27:15,002
+how the GPU sees and executes work.
+
+446
+00:27:15,035 --> 00:27:16,570
+I am now going to hand it over to Mayur
+
+447
+00:27:16,603 --> 00:27:19,806
+to talk about what's new
+with Metal 3 tooling for bindless.
+
+448
+00:27:19,840 --> 00:27:22,576
+Mayur: Thank you Alè.
+
+449
+00:27:22,609 --> 00:27:26,046
+Today, I'm excited to show you
+some of the great new features
+
+450
+00:27:26,079 --> 00:27:31,752
+in the Metal Debugger that will help you
+debug and optimize your bindless Apps.
+
+451
+00:27:31,785 --> 00:27:34,788
+I just took a frame capture
+of the HybridRendering app
+
+452
+00:27:34,821 --> 00:27:37,191
+that Alè just showed you.
+
+453
+00:27:37,224 --> 00:27:39,660
+When you capture a frame in
+the Metal Debugger,
+
+454
+00:27:39,693 --> 00:27:41,795
+you'll arrive to the Summary page,
+
+455
+00:27:41,828 --> 00:27:44,698
+which provides you
+with an overview of your frame
+
+456
+00:27:44,731 --> 00:27:50,037
+alongside helpful insights on how
+to improve your app's performance.
+
+457
+00:27:50,070 --> 00:27:54,308
+But today, I’m excited to show you
+the new dependency viewer.
+
+458
+00:27:54,341 --> 00:28:00,347
+To open it, just click on
+Dependencies here on the left.
+
+459
+00:28:00,380 --> 00:28:02,683
+Here is the new dependency viewer
+
+460
+00:28:02,716 --> 00:28:08,088
+and it features a brand new design
+that’s packed with powerful new features.
+
+461
+00:28:08,121 --> 00:28:12,593
+The dependency viewer shows you
+a graph-based representation
+
+462
+00:28:12,626 --> 00:28:14,928
+of your workload.
+
+463
+00:28:14,962 --> 00:28:18,866
+Each node in the graph represents a pass,
+
+464
+00:28:18,899 --> 00:28:25,439
+which is encoded by a command encoder,
+and its output resources.
+
+465
+00:28:25,472 --> 00:28:31,245
+The edges represent resource dependencies
+between passes.
+
+466
+00:28:31,278 --> 00:28:34,381
+New this year,
+you can analyze your workload
+
+467
+00:28:34,414 --> 00:28:37,751
+by focusing on two types of dependencies.
+
+468
+00:28:37,784 --> 00:28:40,387
+data flow and synchronization.
+
+469
+00:28:40,420 --> 00:28:43,690
+The solid lines represent data flow
+
+470
+00:28:43,724 --> 00:28:47,294
+and they show you
+how data flows in your app.
+
+471
+00:28:47,327 --> 00:28:52,199
+The dotted lines represent synchronization
+and they show you dependencies
+
+472
+00:28:52,232 --> 00:28:57,738
+that introduce GPU synchronization
+between passes.
+
+473
+00:28:57,771 --> 00:29:03,343
+To learn more, you can click on
+any encoder, resource, or edge,
+
+474
+00:29:03,377 --> 00:29:09,283
+and the debugger will show you a lot of
+detailed information in the new sidebar.
+
+475
+00:29:09,316 --> 00:29:12,886
+For example,
+this edge adds synchronization
+
+476
+00:29:12,920 --> 00:29:17,391
+and also has data flow
+between these passes.
+
+477
+00:29:17,424 --> 00:29:21,295
+By default, the dependency viewer
+shows both data flow
+
+478
+00:29:21,328 --> 00:29:23,964
+and synchronization dependencies,
+
+479
+00:29:23,997 --> 00:29:27,501
+but you can use this menu
+down here at the bottom
+
+480
+00:29:27,534 --> 00:29:31,238
+to focus on
+just one of the dependency types.
+
+481
+00:29:31,271 --> 00:29:36,977
+Here, I will focus on just
+synchronization.
+
+482
+00:29:37,010 --> 00:29:41,281
+As Alè said earlier,
+false sharing is a common problem
+
+483
+00:29:41,315 --> 00:29:45,853
+when reading and writing
+different resources from a tracked heap.
+
+484
+00:29:45,886 --> 00:29:50,424
+The dependency viewer makes it easy
+to catch these issues.
+
+485
+00:29:50,457 --> 00:29:54,027
+This demo I captured is from
+an early development version
+
+486
+00:29:54,061 --> 00:29:57,097
+that has this issue.
+
+487
+00:29:57,130 --> 00:30:02,069
+If I click on this heap,
+the dependency viewer shows me
+
+488
+00:30:02,102 --> 00:30:04,438
+that this heap is tracked
+
+489
+00:30:04,471 --> 00:30:09,910
+and therefore adds synchronization
+between these two passes.
+
+490
+00:30:09,943 --> 00:30:16,016
+The dependency viewer also highlights
+the resources allocated inside the heap,
+
+491
+00:30:16,049 --> 00:30:21,054
+such as this render target texture
+that the render encoder stores,
+
+492
+00:30:21,088 --> 00:30:26,593
+and a buffer that the compute encoder
+reads and writes to.
+
+493
+00:30:26,627 --> 00:30:32,633
+The problem is this synchronization
+between these two passes is not needed
+
+494
+00:30:32,666 --> 00:30:39,139
+because the compute encoder is not using
+any resources from previous encoders.
+
+495
+00:30:39,173 --> 00:30:44,545
+To remove this dependency, I can modify
+the app to use an untracked heap
+
+496
+00:30:44,578 --> 00:30:48,615
+and insert Fences
+where synchronization is needed.
+
+497
+00:30:48,649 --> 00:30:55,022
+With that change,
+these two passes can now run in parallel.
+
+498
+00:30:55,055 --> 00:30:58,192
+Another great improvement in Xcode 14
+
+499
+00:30:58,225 --> 00:31:02,729
+to help debug your bindless apps
+is the new resource list.
+
+500
+00:31:02,763 --> 00:31:09,002
+I can navigate to a draw call
+that I want to debug and open it.
+
+501
+00:31:09,036 --> 00:31:13,373
+When using bindless,
+hundreds or even thousands of resources
+
+502
+00:31:13,407 --> 00:31:17,144
+are available to the GPU at any time.
+
+503
+00:31:17,177 --> 00:31:20,714
+This year, the Metal debugger gives you
+the ability
+
+504
+00:31:20,747 --> 00:31:24,585
+to check which of these resources
+a draw call accessed,
+
+505
+00:31:24,618 --> 00:31:29,189
+just by clicking on the
+"Accessed" mode at the top.
+
+506
+00:31:29,223 --> 00:31:33,594
+Now the debugger shows me
+only the handful of resources
+
+507
+00:31:33,627 --> 00:31:40,267
+that this draw call accesses
+and the type of each access.
+
+508
+00:31:40,300 --> 00:31:46,173
+This is really useful for understanding
+what resources your shader has accessed
+
+509
+00:31:46,206 --> 00:31:48,675
+from argument buffers.
+
+510
+00:31:48,709 --> 00:31:53,213
+Knowing what resources
+your draw call uses is great,
+
+511
+00:31:53,247 --> 00:31:56,550
+but if it shows resources
+that you weren’t expecting,
+
+512
+00:31:56,583 --> 00:32:01,321
+you can use the shader debugger
+to figure out what’s going on.
+
+513
+00:32:01,355 --> 00:32:03,223
+To start the shader debugger,
+
+514
+00:32:03,257 --> 00:32:07,694
+just click on the debug button here
+in the bottom bar,
+
+515
+00:32:07,728 --> 00:32:11,465
+select the pixel that you want to debug,
+
+516
+00:32:11,498 --> 00:32:15,102
+and hit the Debug button.
+
+517
+00:32:15,135 --> 00:32:19,072
+And now you are in the shader debugger.
+
+518
+00:32:19,106 --> 00:32:24,912
+The shader debugger shows
+how your code was executed line by line,
+
+519
+00:32:24,945 --> 00:32:29,149
+including which resources were accessed.
+
+520
+00:32:29,183 --> 00:32:35,122
+For these lines, this shader reads
+textures from an argument buffer.
+
+521
+00:32:35,155 --> 00:32:39,026
+I can expand the detailed views
+on the right sidebar
+
+522
+00:32:39,059 --> 00:32:43,730
+to check which resources were read.
+
+523
+00:32:43,764 --> 00:32:47,835
+This can help identify issues
+where your shader accesses
+
+524
+00:32:47,868 --> 00:32:51,605
+the wrong argument buffer element.
+
+525
+00:32:51,638 --> 00:32:56,009
+In this demo, I’ve shown you
+how to use the new dependency viewer
+
+526
+00:32:56,043 --> 00:32:59,446
+to analyze and validate
+resource dependencies,
+
+527
+00:32:59,479 --> 00:33:03,717
+how to use the new resource list
+to understand what resources
+
+528
+00:33:03,750 --> 00:33:05,686
+a draw call accessed,
+
+529
+00:33:05,719 --> 00:33:09,690
+and how to use the shader debugger
+to analyze, line by line,
+
+530
+00:33:09,723 --> 00:33:12,159
+how a shader was executed.
+
+531
+00:33:12,192 --> 00:33:15,262
+I can’t wait to see how you use
+these new features
+
+532
+00:33:15,295 --> 00:33:17,931
+to create great Metal bindless apps.
+
+533
+00:33:17,965 --> 00:33:19,666
+Back to you Alè.
+
+534
+00:33:19,700 --> 00:33:23,003
+Alè: Thank you, Mayur.
+That was an awesome demo.
+
+535
+00:33:23,036 --> 00:33:27,474
+To wrap up, Metal 3 brings a lot
+to the table for going bindless.
+
+536
+00:33:27,508 --> 00:33:29,743
+With simplified argument buffer encoding,
+
+537
+00:33:29,776 --> 00:33:31,812
+acceleration structures from heaps,
+
+538
+00:33:31,845 --> 00:33:34,715
+improvements to the validation layer
+and tools,
+
+539
+00:33:34,748 --> 00:33:36,650
+Metal 3 is an excellent API
+
+540
+00:33:36,683 --> 00:33:40,654
+to bring effective and performant bindless
+to your games and apps.
+
+541
+00:33:40,687 --> 00:33:45,225
+With this year's enhancements, the hybrid
+rendering app is looking better than ever.
+
+542
+00:33:45,259 --> 00:33:47,461
+We are releasing
+this updated version of the app
+
+543
+00:33:47,494 --> 00:33:51,098
+with full source code
+in the Metal sample code gallery.
+
+544
+00:33:51,131 --> 00:33:53,367
+You can download, study, and modify it,
+
+545
+00:33:53,400 --> 00:33:56,103
+and as an exercise, I challenge you to
+take it even further
+
+546
+00:33:56,136 --> 00:33:59,306
+and add recursive reflections
+to the mirror surfaces.
+
+547
+00:33:59,339 --> 00:34:01,074
+I can't wait to see what you do with it.
+
+548
+00:34:01,108 --> 00:34:04,845
+There has never been a better time
+to go bindless with Metal 3.
+
+549
+00:34:04,878 --> 00:34:06,914
+Thank you for watching.
+
+550
+00:34:06,947 --> 00:34:09,950
+♪ instrumental hip hop music ♪
+

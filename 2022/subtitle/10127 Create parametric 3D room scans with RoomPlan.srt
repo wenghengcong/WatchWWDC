@@ -1,0 +1,1430 @@
+1
+00:00:00,167 --> 00:00:03,237
+♪ (Mellow instrumental
+hip-hop music) ♪
+
+2
+00:00:03,237 --> 00:00:09,810
+♪
+
+3
+00:00:09,810 --> 00:00:11,712
+Praveen Sharma: Hi.
+My name is Praveen,
+
+4
+00:00:11,712 --> 00:00:14,181
+and I'm from the Prototyping
+team here at Apple.
+
+5
+00:00:14,181 --> 00:00:15,649
+Kai Kang: Hi. My name is Kai
+
+6
+00:00:15,649 --> 00:00:18,185
+and I'm from
+the Video Engineering team.
+
+7
+00:00:18,185 --> 00:00:20,354
+Praveen: Over the past few years
+Apple has enabled
+
+8
+00:00:20,354 --> 00:00:24,858
+powerful new ways for people to
+bring the world into their apps.
+
+9
+00:00:24,858 --> 00:00:28,462
+Last year,
+we introduced Object Capture,
+
+10
+00:00:28,462 --> 00:00:31,365
+which takes in photos
+of real-world objects,
+
+11
+00:00:31,365 --> 00:00:34,668
+and using the Photogrammetry API
+in RealityKit,
+
+12
+00:00:34,668 --> 00:00:39,873
+turns them into a 3D model
+ready for use in your app.
+
+13
+00:00:39,873 --> 00:00:41,775
+Previous to Object Capture,
+
+14
+00:00:41,775 --> 00:00:44,811
+we released
+the Scene Reconstruction API
+
+15
+00:00:44,811 --> 00:00:46,914
+which gives you
+a coarse understanding
+
+16
+00:00:46,914 --> 00:00:49,149
+of the geometric structure
+of your space
+
+17
+00:00:49,149 --> 00:00:52,252
+and enables brand-new
+augmented reality use cases
+
+18
+00:00:52,252 --> 00:00:54,421
+in your apps.
+
+19
+00:00:54,421 --> 00:00:57,090
+This year, we are
+very excited to announce
+
+20
+00:00:57,090 --> 00:01:01,895
+a brand-new framework called
+RoomPlan.
+
+21
+00:01:01,895 --> 00:01:04,631
+RoomPlan allows you
+to scan your room
+
+22
+00:01:04,631 --> 00:01:07,801
+using your LiDAR-enabled
+iPhone or iPad.
+
+23
+00:01:07,801 --> 00:01:11,371
+It generates a parametric 3D
+model of the room
+
+24
+00:01:11,371 --> 00:01:15,075
+and its room-defining objects
+which you can use in your app.
+
+25
+00:01:15,075 --> 00:01:18,211
+Let's take a look at what
+a RoomPlan scanning experience
+
+26
+00:01:18,211 --> 00:01:21,648
+looks like.
+
+27
+00:01:21,648 --> 00:01:25,218
+RoomPlan uses sophisticated
+machine learning algorithms
+
+28
+00:01:25,218 --> 00:01:31,091
+powered by ARKit to detect
+walls, windows, openings,
+
+29
+00:01:31,091 --> 00:01:34,227
+and doors, as well as
+room-defining objects
+
+30
+00:01:34,227 --> 00:01:40,200
+like fireplaces, couches,
+tables, and cabinets.
+
+31
+00:01:40,200 --> 00:01:42,336
+With our RoomCaptureView API,
+
+32
+00:01:42,336 --> 00:01:47,040
+which uses RealityKit to render
+scanning progress in real time,
+
+33
+00:01:47,040 --> 00:01:49,977
+you can easily integrate
+a scanning experience
+
+34
+00:01:49,977 --> 00:01:52,946
+into your app.
+
+35
+00:01:52,946 --> 00:01:55,015
+And when you are
+finished scanning,
+
+36
+00:01:55,015 --> 00:01:59,186
+RoomCaptureView presents
+the final post-processed results
+
+37
+00:01:59,186 --> 00:02:04,224
+for you to use however
+best fits your use case.
+
+38
+00:02:04,224 --> 00:02:07,694
+For the first time, without
+the complexities of implementing
+
+39
+00:02:07,694 --> 00:02:10,497
+machine learning
+and computer vision algorithms,
+
+40
+00:02:10,497 --> 00:02:14,634
+people can now interact with
+their room in brand new ways.
+
+41
+00:02:14,634 --> 00:02:17,637
+For example, interior design
+apps can preview
+
+42
+00:02:17,637 --> 00:02:20,374
+wall color changes
+and accurately calculate
+
+43
+00:02:20,374 --> 00:02:24,011
+the amount of paint
+required to repaint a room.
+
+44
+00:02:24,011 --> 00:02:27,280
+Architecture apps can now
+easily allow someone to preview
+
+45
+00:02:27,280 --> 00:02:31,752
+and edit changes to their room's
+layout in real time.
+
+46
+00:02:31,752 --> 00:02:34,855
+Real estate apps can now
+seamlessly enable agents
+
+47
+00:02:34,855 --> 00:02:39,059
+to capture floor plans
+and 3D models of a listing.
+
+48
+00:02:39,059 --> 00:02:41,762
+And e-commerce apps
+can engage customers
+
+49
+00:02:41,762 --> 00:02:46,099
+through product visualization
+in their physical spaces.
+
+50
+00:02:46,099 --> 00:02:50,203
+These are just a few examples of
+applications RoomPlan enables,
+
+51
+00:02:50,203 --> 00:02:52,506
+and you'll be surprised
+to see how simple it is
+
+52
+00:02:52,506 --> 00:02:56,009
+to integrate RoomPlan
+into your app.
+
+53
+00:02:56,009 --> 00:02:57,911
+Let's take a look.
+
+54
+00:02:57,911 --> 00:03:01,381
+There are two main ways
+you can use RoomPlan.
+
+55
+00:03:01,381 --> 00:03:04,684
+The first is our out-of-the-box
+scanning experience
+
+56
+00:03:04,684 --> 00:03:06,987
+which allows you to seamlessly
+integrate RoomPlan
+
+57
+00:03:06,987 --> 00:03:08,855
+into your app.
+
+58
+00:03:08,855 --> 00:03:12,492
+The second is our data API
+which enables your app
+
+59
+00:03:12,492 --> 00:03:15,495
+to use the live
+parametric data from a scan
+
+60
+00:03:15,495 --> 00:03:18,498
+however best suits
+your use case.
+
+61
+00:03:18,498 --> 00:03:22,502
+With both of these APIs,
+we recommend some best practices
+
+62
+00:03:22,502 --> 00:03:25,238
+to help you achieve
+the best possible scan results,
+
+63
+00:03:25,238 --> 00:03:30,010
+which we'll go over in the last
+section of this presentation.
+
+64
+00:03:30,010 --> 00:03:33,246
+First, let's talk about
+the scanning experience
+
+65
+00:03:33,246 --> 00:03:34,881
+that you can bring into your app
+
+66
+00:03:34,881 --> 00:03:38,552
+using our new
+RoomCaptureView API.
+
+67
+00:03:38,552 --> 00:03:41,354
+RoomCaptureView
+is a UIView subclass
+
+68
+00:03:41,354 --> 00:03:43,824
+that you can easily place
+in your app.
+
+69
+00:03:43,824 --> 00:03:48,195
+It handles the presentation of
+world space scanning feedback,
+
+70
+00:03:48,195 --> 00:03:50,964
+real-time room model
+generation,
+
+71
+00:03:50,964 --> 00:03:54,134
+as well as coaching
+and user guidance.
+
+72
+00:03:54,134 --> 00:03:56,403
+Let's take a closer look
+at the design elements
+
+73
+00:03:56,403 --> 00:04:01,241
+presented during
+a RoomCaptureView-based scan.
+
+74
+00:04:01,241 --> 00:04:04,111
+During an active
+RoomCaptureView session,
+
+75
+00:04:04,111 --> 00:04:08,915
+animated lines outline detected
+walls, windows, openings,
+
+76
+00:04:08,915 --> 00:04:13,620
+doors, and room-defining objects
+in real time.
+
+77
+00:04:13,620 --> 00:04:16,323
+The interactive 3D model
+generated in real time
+
+78
+00:04:16,323 --> 00:04:18,525
+at the bottom
+of the RoomCaptureView,
+
+79
+00:04:18,525 --> 00:04:23,163
+gives you an overview of your
+scanning progress at a glance.
+
+80
+00:04:23,163 --> 00:04:25,899
+Finally, text coaching
+guides you
+
+81
+00:04:25,899 --> 00:04:29,302
+to the best possible
+scanning results.
+
+82
+00:04:29,302 --> 00:04:32,305
+Let's take a look at how you can
+start using RoomCaptureView
+
+83
+00:04:32,305 --> 00:04:35,809
+in just four easy steps.
+
+84
+00:04:35,809 --> 00:04:38,879
+First, we create
+a RoomCaptureView reference
+
+85
+00:04:38,879 --> 00:04:40,814
+in our ViewController.
+
+86
+00:04:40,814 --> 00:04:43,116
+Second, we create a reference
+
+87
+00:04:43,116 --> 00:04:46,753
+to our RoomCaptureSession
+configuration object.
+
+88
+00:04:46,753 --> 00:04:49,489
+Third, we start
+our scan session,
+
+89
+00:04:49,489 --> 00:04:51,191
+passing in our configuration
+
+90
+00:04:51,191 --> 00:04:54,027
+to the capture session's
+run function.
+
+91
+00:04:54,027 --> 00:04:57,464
+And finally, our application
+tells the capture session
+
+92
+00:04:57,464 --> 00:05:00,634
+to stop scanning.
+
+93
+00:05:00,634 --> 00:05:04,137
+Optionally, your app can adhere
+to our RoomCaptureViewDelegate
+
+94
+00:05:04,137 --> 00:05:07,674
+protocol and opt out of
+post-processed results
+
+95
+00:05:07,674 --> 00:05:09,276
+and their presentation
+
+96
+00:05:09,276 --> 00:05:11,878
+or handle the post-processed
+scan results
+
+97
+00:05:11,878 --> 00:05:14,981
+once they have been presented.
+
+98
+00:05:14,981 --> 00:05:18,418
+For example, you can export
+a USDZ of the results
+
+99
+00:05:18,418 --> 00:05:20,754
+by calling
+the export function available
+
+100
+00:05:20,754 --> 00:05:25,392
+on the provided
+CapturedRoom data struct.
+
+101
+00:05:25,392 --> 00:05:27,694
+And that's how simple it is
+to integrate RoomPlan
+
+102
+00:05:27,694 --> 00:05:29,329
+into your app.
+
+103
+00:05:29,329 --> 00:05:32,599
+We are so excited to see
+what you make with this API.
+
+104
+00:05:32,599 --> 00:05:36,503
+Now my colleague Kai will talk
+about RoomCaptureSession
+
+105
+00:05:36,503 --> 00:05:39,506
+and RoomPlan's Data API.
+
+106
+00:05:39,506 --> 00:05:40,707
+Kai: Thanks, Praveen.
+
+107
+00:05:40,707 --> 00:05:43,743
+In this section, we will
+walk you through the Data APIs
+
+108
+00:05:43,743 --> 00:05:46,947
+that provide you the access to
+the underlying data structures
+
+109
+00:05:46,947 --> 00:05:51,117
+during scanning and can help
+you build a custom visualization
+
+110
+00:05:51,117 --> 00:05:55,589
+of the scanning experience
+from ground up.
+
+111
+00:05:55,589 --> 00:05:58,658
+The basic workflow
+consists of three parts:
+
+112
+00:05:58,658 --> 00:06:03,296
+scan, process, and export.
+
+113
+00:06:03,296 --> 00:06:06,533
+For scanning, we will cover
+the basics of how to set up
+
+114
+00:06:06,533 --> 00:06:08,401
+and start the capture session,
+
+115
+00:06:08,401 --> 00:06:13,340
+as well as display and monitor
+the capture process.
+
+116
+00:06:13,340 --> 00:06:16,943
+Then we'll look at how
+your scanned data is processed
+
+117
+00:06:16,943 --> 00:06:21,982
+and the final model is received
+for presentation.
+
+118
+00:06:21,982 --> 00:06:25,819
+Finally, we'll discuss
+how you can generate and export
+
+119
+00:06:25,819 --> 00:06:29,022
+the output USD file
+which can also be used
+
+120
+00:06:29,022 --> 00:06:32,993
+in your USD workflows.
+
+121
+00:06:32,993 --> 00:06:36,930
+Now, let's look into
+the Scan step in detail.
+
+122
+00:06:36,930 --> 00:06:39,132
+We will use
+the RoomCaptureSession API
+
+123
+00:06:39,132 --> 00:06:41,901
+to set up the session
+and display the progress
+
+124
+00:06:41,901 --> 00:06:43,970
+as we continue scanning.
+
+125
+00:06:43,970 --> 00:06:47,040
+Let me show you in code.
+
+126
+00:06:47,040 --> 00:06:50,744
+Here's a simple RealityKit app
+as an example.
+
+127
+00:06:50,744 --> 00:06:56,583
+To start, simply import RoomPlan
+into your Swift project.
+
+128
+00:06:56,583 --> 00:06:58,451
+In the ViewController
+of your app,
+
+129
+00:06:58,451 --> 00:07:01,788
+you can have a custom type
+to visualize the results
+
+130
+00:07:01,788 --> 00:07:05,859
+and to initiate
+a RoomCaptureSession instance.
+
+131
+00:07:05,859 --> 00:07:09,129
+Additionally, RoomCaptureSession
+provides a handle
+
+132
+00:07:09,129 --> 00:07:12,966
+to the underlying AR session so
+that your apps can draw planes
+
+133
+00:07:12,966 --> 00:07:17,237
+and object bounding boxes
+in the AR view.
+
+134
+00:07:17,237 --> 00:07:20,240
+RoomCaptureSession
+adopts the delegate pattern.
+
+135
+00:07:20,240 --> 00:07:21,875
+In your ViewController class,
+
+136
+00:07:21,875 --> 00:07:24,144
+you can assign
+the ViewController itself
+
+137
+00:07:24,144 --> 00:07:26,780
+as the captureSession's
+delegate.
+
+138
+00:07:26,780 --> 00:07:28,548
+This would allow
+the ViewController
+
+139
+00:07:28,548 --> 00:07:33,553
+to get real-time updates
+from the RoomCaptureSession.
+
+140
+00:07:33,553 --> 00:07:36,690
+Theses updates include
+3D models and instructions
+
+141
+00:07:36,690 --> 00:07:39,659
+in order to guide people
+during the capture.
+
+142
+00:07:39,659 --> 00:07:42,195
+To get these updates,
+your ViewController
+
+143
+00:07:42,195 --> 00:07:45,198
+needs to conform to the
+RoomCaptureSessionDelegate
+
+144
+00:07:45,198 --> 00:07:48,968
+protocol and implement
+two methods.
+
+145
+00:07:48,968 --> 00:07:50,303
+The first one is
+
+146
+00:07:50,303 --> 00:07:52,906
+captureSession(_ session:
+didUpdate room:) method
+
+147
+00:07:52,906 --> 00:07:57,277
+in order to get the real-time
+CapturedRoom data structure.
+
+148
+00:07:57,277 --> 00:08:01,281
+Your visualizer can use it to
+update AR view of the 3D model,
+
+149
+00:08:01,281 --> 00:08:03,616
+which provides
+real-time feedback to people
+
+150
+00:08:03,616 --> 00:08:05,819
+on the progress.
+
+151
+00:08:05,819 --> 00:08:08,188
+We will dive into
+the CapturedRoom structure
+
+152
+00:08:08,188 --> 00:08:11,191
+more in a later part
+of the talk.
+
+153
+00:08:11,191 --> 00:08:13,893
+This method will be called
+when we detect updates
+
+154
+00:08:13,893 --> 00:08:16,162
+to the captured room.
+
+155
+00:08:16,162 --> 00:08:17,597
+The second method is
+
+156
+00:08:17,597 --> 00:08:21,034
+captureSession(_ session:
+didProvide instruction:).
+
+157
+00:08:21,034 --> 00:08:24,537
+This method provides you
+with an instruction structure
+
+158
+00:08:24,537 --> 00:08:27,374
+which contains real-time
+feedback.
+
+159
+00:08:27,374 --> 00:08:30,143
+Your visualizer can use
+the instruction
+
+160
+00:08:30,143 --> 00:08:33,146
+to guide people during the scan.
+
+161
+00:08:33,146 --> 00:08:34,748
+Let's go through
+the instructions
+
+162
+00:08:34,748 --> 00:08:37,951
+that this API provides.
+
+163
+00:08:37,951 --> 00:08:42,889
+These instructions include
+distance to the objects,
+
+164
+00:08:42,889 --> 00:08:47,527
+scanning speed,
+lighting adjustment to the room,
+
+165
+00:08:47,527 --> 00:08:50,697
+as well as focusing on
+specific areas of the room
+
+166
+00:08:50,697 --> 00:08:53,366
+that have more textures.
+
+167
+00:08:53,366 --> 00:08:56,236
+These instructions will be
+provided during the scan
+
+168
+00:08:56,236 --> 00:09:01,141
+in order to guide people
+with real-time feedback.
+
+169
+00:09:01,141 --> 00:09:04,611
+Next, we will move on
+to the process part.
+
+170
+00:09:04,611 --> 00:09:07,580
+In this section, we will use
+the RoomBuilder class
+
+171
+00:09:07,580 --> 00:09:13,720
+to process the scanned data and
+generate the final 3D models.
+
+172
+00:09:13,720 --> 00:09:17,390
+To process the captured data,
+the first step is to initiate
+
+173
+00:09:17,390 --> 00:09:21,828
+a RoomBuilder instance
+in your ViewController class.
+
+174
+00:09:21,828 --> 00:09:24,397
+Next, in order to receive
+the sensor data
+
+175
+00:09:24,397 --> 00:09:27,634
+after the capture process,
+your app needs to implement
+
+176
+00:09:27,634 --> 00:09:32,305
+the captureSession(_ session:
+didEndWith data: error:) method.
+
+177
+00:09:32,305 --> 00:09:34,908
+When the RoomCaptureSession
+is stopped, by calling
+
+178
+00:09:34,908 --> 00:09:38,278
+the stop() function in your app,
+or due to an error,
+
+179
+00:09:38,278 --> 00:09:42,415
+this function will be called to
+return a CaptureRoomData object
+
+180
+00:09:42,415 --> 00:09:45,585
+and an optional error.
+
+181
+00:09:45,585 --> 00:09:48,288
+Finally, to process
+the captured data,
+
+182
+00:09:48,288 --> 00:09:52,225
+we call the roomBuilder's
+async roomModel(from:) method
+
+183
+00:09:52,225 --> 00:09:55,094
+with the await keyword.
+
+184
+00:09:55,094 --> 00:09:58,998
+The method runs asynchronously
+to process the scanned data
+
+185
+00:09:58,998 --> 00:10:01,601
+and build the final 3D model.
+
+186
+00:10:01,601 --> 00:10:05,004
+It utilizes the Swift
+async/await function
+
+187
+00:10:05,004 --> 00:10:09,175
+that we introduced
+in last year's WWDC.
+
+188
+00:10:09,175 --> 00:10:12,679
+Within just a few seconds,
+the model will be available
+
+189
+00:10:12,679 --> 00:10:17,484
+for the final presentation
+in your app.
+
+190
+00:10:17,484 --> 00:10:19,486
+Now, let's dive into the details
+
+191
+00:10:19,486 --> 00:10:21,521
+of the CapturedRoom
+data structure
+
+192
+00:10:21,521 --> 00:10:26,025
+and how you can export it
+to use in your app.
+
+193
+00:10:26,025 --> 00:10:28,695
+At the top level,
+there is CapturedRoom
+
+194
+00:10:28,695 --> 00:10:32,599
+which consists of
+Surfaces and Objects.
+
+195
+00:10:32,599 --> 00:10:36,736
+Surface contains unique
+attributes to represent curves
+
+196
+00:10:36,736 --> 00:10:40,607
+such as radius;
+starting and ending angles;
+
+197
+00:10:40,607 --> 00:10:43,843
+four different edges
+of the surface;
+
+198
+00:10:43,843 --> 00:10:49,649
+and architecture categories of
+wall, opening, window, door.
+
+199
+00:10:49,649 --> 00:10:52,252
+Object contains
+furniture categories
+
+200
+00:10:52,252 --> 00:10:56,789
+such as table, bed,
+sofa, etc.
+
+201
+00:10:56,789 --> 00:11:00,393
+Surface and Object share
+some common attributes
+
+202
+00:11:00,393 --> 00:11:02,462
+such as dimensions;
+
+203
+00:11:02,462 --> 00:11:05,832
+confidence, which gives you
+three levels of confidence
+
+204
+00:11:05,832 --> 00:11:08,268
+for the scanned surface
+or object;
+
+205
+00:11:08,268 --> 00:11:13,373
+the 3D transform matrix;
+as well as a unique identifier.
+
+206
+00:11:13,373 --> 00:11:17,977
+Let's see how they are
+represented in code.
+
+207
+00:11:17,977 --> 00:11:21,681
+The CapturedRoom structure is a
+fully parametric representation
+
+208
+00:11:21,681 --> 00:11:23,950
+of the elements in the room.
+
+209
+00:11:23,950 --> 00:11:27,520
+It contains five properties
+including walls, openings,
+
+210
+00:11:27,520 --> 00:11:31,558
+doors, windows,
+and objects in the room.
+
+211
+00:11:31,558 --> 00:11:33,593
+For the first four elements,
+
+212
+00:11:33,593 --> 00:11:36,563
+they are represented
+as the Surface structure
+
+213
+00:11:36,563 --> 00:11:41,000
+which represents 2D planar
+architectural structures.
+
+214
+00:11:41,000 --> 00:11:43,436
+On the right, you can see
+the various properties
+
+215
+00:11:43,436 --> 00:11:47,473
+of Surface we covered earlier.
+
+216
+00:11:47,473 --> 00:11:51,444
+The last property is an array
+of 3D objects in the room,
+
+217
+00:11:51,444 --> 00:11:54,247
+and they are represented
+as cuboids.
+
+218
+00:11:54,247 --> 00:11:59,919
+On the right, you can see the
+various properties of Object.
+
+219
+00:11:59,919 --> 00:12:04,190
+Here is the list of object
+types we support in RoomPlan.
+
+220
+00:12:04,190 --> 00:12:07,260
+These include a variety
+of common furniture types
+
+221
+00:12:07,260 --> 00:12:12,899
+such as sofa, table,
+chair, bed, and many more.
+
+222
+00:12:12,899 --> 00:12:16,336
+Finally, the export function
+allows you to export
+
+223
+00:12:16,336 --> 00:12:20,006
+this CapturedRoom
+into a USD or USDZ data
+
+224
+00:12:20,006 --> 00:12:24,310
+for your existing workflows.
+
+225
+00:12:24,310 --> 00:12:27,647
+Here is an example to show
+how you can directly open
+
+226
+00:12:27,647 --> 00:12:30,483
+the USD output in Cinema 4D
+
+227
+00:12:30,483 --> 00:12:33,319
+to browse and edit
+the hierarchical data structure
+
+228
+00:12:33,319 --> 00:12:35,922
+of the room, as well as
+the dimensions and location
+
+229
+00:12:35,922 --> 00:12:40,326
+of each room element or object.
+
+230
+00:12:40,326 --> 00:12:44,230
+You can also leverage your
+existing USD and USDZ workflows
+
+231
+00:12:44,230 --> 00:12:47,200
+to add renders
+of the captured room
+
+232
+00:12:47,200 --> 00:12:52,105
+into a variety of applications
+such as real estate, e-commerce,
+
+233
+00:12:52,105 --> 00:12:57,143
+utilities, and interior design.
+
+234
+00:12:57,143 --> 00:12:59,212
+So far, we covered
+the scanning experience
+
+235
+00:12:59,212 --> 00:13:02,115
+and underlying RoomPlan APIs.
+
+236
+00:13:02,115 --> 00:13:04,550
+We'll now go through
+some best practices
+
+237
+00:13:04,550 --> 00:13:09,022
+to help you get good results
+with RoomPlan.
+
+238
+00:13:09,022 --> 00:13:10,923
+We will cover
+the recommended conditions
+
+239
+00:13:10,923 --> 00:13:12,959
+that allow for a good scan,
+
+240
+00:13:12,959 --> 00:13:16,829
+room features to look out for
+while selecting a room,
+
+241
+00:13:16,829 --> 00:13:19,632
+as well as a few scanning
+and thermal considerations
+
+242
+00:13:19,632 --> 00:13:22,735
+to keep in mind.
+
+243
+00:13:22,735 --> 00:13:26,305
+RoomPlan API supports most
+common architectural structures
+
+244
+00:13:26,305 --> 00:13:29,142
+and objects
+in a typical household.
+
+245
+00:13:29,142 --> 00:13:31,711
+It works best
+for a single residential room
+
+246
+00:13:31,711 --> 00:13:35,248
+with a maximum room size
+of 30 feet by 30 feet
+
+247
+00:13:35,248 --> 00:13:38,284
+or around 9 by 9 meters.
+
+248
+00:13:38,284 --> 00:13:40,787
+Lighting is also important
+for the API
+
+249
+00:13:40,787 --> 00:13:45,658
+to get a clear video stream and
+good AR tracking performance.
+
+250
+00:13:45,658 --> 00:13:50,096
+A minimum 50 lux or higher is
+recommended for using the API,
+
+251
+00:13:50,096 --> 00:13:54,233
+which is typical for
+a family living room at night.
+
+252
+00:13:54,233 --> 00:13:57,403
+For the hardware, RoomPlan API
+is supported on all
+
+253
+00:13:57,403 --> 00:14:02,709
+LiDAR-enabled iPhone
+and iPad Pro models.
+
+254
+00:14:02,709 --> 00:14:04,343
+There are
+some special conditions
+
+255
+00:14:04,343 --> 00:14:07,246
+that can present a challenge
+for the API.
+
+256
+00:14:07,246 --> 00:14:11,184
+For example, full-height mirrors
+and glass pose a challenge
+
+257
+00:14:11,184 --> 00:14:15,188
+for the LiDAR sensor
+to produce the expected output.
+
+258
+00:14:15,188 --> 00:14:18,658
+Even high ceilings could exceed
+the limit of the scanning range
+
+259
+00:14:18,658 --> 00:14:20,493
+of the LiDAR sensor.
+
+260
+00:14:20,493 --> 00:14:27,033
+Also, very dark surfaces could
+be hard for the device to scan.
+
+261
+00:14:27,033 --> 00:14:31,571
+There are some considerations
+to get better scanning results.
+
+262
+00:14:31,571 --> 00:14:36,609
+First, for applications that
+have high accuracy requirements,
+
+263
+00:14:36,609 --> 00:14:38,778
+preparing the room
+before scanning
+
+264
+00:14:38,778 --> 00:14:41,414
+can enhance the quality
+of the scan.
+
+265
+00:14:41,414 --> 00:14:43,549
+For example,
+opening the curtains
+
+266
+00:14:43,549 --> 00:14:47,620
+can let more natural light in
+and reduce window occlusions,
+
+267
+00:14:47,620 --> 00:14:50,690
+which works best
+for daytime scans.
+
+268
+00:14:50,690 --> 00:14:53,159
+Closing the doors
+can reduce the chance
+
+269
+00:14:53,159 --> 00:14:57,196
+of scanning unnecessary area
+outside of the room.
+
+270
+00:14:57,196 --> 00:15:00,700
+Following a good scanning
+motion is also very important
+
+271
+00:15:00,700 --> 00:15:03,770
+to achieving good
+scanning results with the API.
+
+272
+00:15:03,770 --> 00:15:07,440
+And that is why we provide the
+user instruction delegate method
+
+273
+00:15:07,440 --> 00:15:12,044
+in order to provide feedback
+on textures, distance, speed,
+
+274
+00:15:12,044 --> 00:15:16,682
+and lighting conditions
+to people during the scans.
+
+275
+00:15:16,682 --> 00:15:18,284
+Another thing to keep in mind
+
+276
+00:15:18,284 --> 00:15:21,587
+is battery and thermals
+of the device.
+
+277
+00:15:21,587 --> 00:15:24,657
+We have done many optimizations
+on RoomPlan API
+
+278
+00:15:24,657 --> 00:15:27,693
+to ensure a good
+scanning experience.
+
+279
+00:15:27,693 --> 00:15:30,997
+Nevertheless, it's best
+to avoid repeated scans
+
+280
+00:15:30,997 --> 00:15:34,267
+or single long scans
+over 5 minutes.
+
+281
+00:15:34,267 --> 00:15:36,235
+These could
+not only cause fatigue
+
+282
+00:15:36,235 --> 00:15:39,305
+but also drain out the battery
+and create thermal issues
+
+283
+00:15:39,305 --> 00:15:45,278
+which might in turn impact
+the user experience of your app.
+
+284
+00:15:45,278 --> 00:15:47,346
+There is a lot
+that we covered today.
+
+285
+00:15:47,346 --> 00:15:50,349
+We introduced a brand-new API,
+RoomPlan.
+
+286
+00:15:50,349 --> 00:15:52,985
+It provides an intuitive
+scanning experience
+
+287
+00:15:52,985 --> 00:15:54,887
+to capture your rooms,
+
+288
+00:15:54,887 --> 00:15:58,457
+powerful machine learning models
+to understand the environment,
+
+289
+00:15:58,457 --> 00:16:01,861
+as well as a fully parametric
+USD output format
+
+290
+00:16:01,861 --> 00:16:05,064
+for easy integration
+in your apps.
+
+291
+00:16:05,064 --> 00:16:07,767
+For guidance on how to better
+design and implement
+
+292
+00:16:07,767 --> 00:16:10,002
+your new RoomPlan experience,
+
+293
+00:16:10,002 --> 00:16:13,506
+please check out
+the related talks below.
+
+294
+00:16:13,506 --> 00:16:16,342
+Praveen: It's time for you
+to try RoomPlan in your app.
+
+295
+00:16:16,342 --> 00:16:19,779
+We can't wait to see what you
+can create with this new API.
+
+296
+00:16:19,779 --> 00:16:21,581
+Kai: Thanks for watching!
+
+297
+00:16:21,581 --> 00:16:26,018
+♪
+

@@ -1,0 +1,3023 @@
+1
+00:00:00,334 --> 00:00:06,340
+[upbeat music]
+
+2
+00:00:09,776 --> 00:00:13,013
+Rich Gillam: Hi, I'm Rich,
+and I'm here to help you get it right
+
+3
+00:00:13,046 --> 00:00:14,648
+to left.
+
+4
+00:00:14,681 --> 00:00:18,418
+So you’ve already localized
+your application for a bunch of languages,
+
+5
+00:00:18,452 --> 00:00:20,521
+including the most common
+European languages,
+
+6
+00:00:20,554 --> 00:00:22,422
+the most common Asian languages.
+
+7
+00:00:22,456 --> 00:00:25,225
+And now you want to localize it
+for Arabic and Hebrew.
+
+8
+00:00:25,259 --> 00:00:26,793
+This is a good choice;
+
+9
+00:00:26,827 --> 00:00:30,797
+Arabic is one of the ten most used
+languages on our platform,
+
+10
+00:00:30,831 --> 00:00:33,367
+but it brings
+with it some challenges you don’t face
+
+11
+00:00:33,400 --> 00:00:35,569
+when developing for other languages.
+
+12
+00:00:35,602 --> 00:00:38,939
+That’s what this talk is about,
+how to develop your application
+
+13
+00:00:38,972 --> 00:00:44,278
+so that it can be localized into languages
+such as Arabic and Hebrew.
+
+14
+00:00:44,311 --> 00:00:46,980
+Arabic and Hebrew are
+the most commonly used
+
+15
+00:00:47,014 --> 00:00:49,583
+of the so-called
+“right-to-left languages.”
+
+16
+00:00:49,616 --> 00:00:51,285
+Why are they called this?
+
+17
+00:00:51,318 --> 00:00:55,589
+English, French, Chinese, Thai,
+and many other languages are written
+
+18
+00:00:55,622 --> 00:01:00,060
+so that their characters run
+from left to right like this.
+
+19
+00:01:00,093 --> 00:01:04,765
+In Hebrew, the characters run
+from right to left like this.
+
+20
+00:01:04,798 --> 00:01:07,067
+They do the same thing in Arabic,
+
+21
+00:01:07,100 --> 00:01:10,737
+and in Arabic,
+the characters are also cursively joined.
+
+22
+00:01:10,771 --> 00:01:14,808
+The four letters in “salaam” look
+like this when they're written separately.
+
+23
+00:01:15,976 --> 00:01:18,846
+It’s not just Arabic and Hebrew,
+by the way.
+
+24
+00:01:18,879 --> 00:01:21,348
+Apple actually has font
+and keyboard support
+
+25
+00:01:21,381 --> 00:01:24,785
+for 15 right-to-left languages.
+
+26
+00:01:24,818 --> 00:01:26,887
+Here’s a paragraph of Hebrew text.
+
+27
+00:01:26,920 --> 00:01:28,488
+This one is from the Hebrew version
+
+28
+00:01:28,522 --> 00:01:32,125
+of the “Formulas & Functions Help”
+page for Numbers.
+
+29
+00:01:32,159 --> 00:01:35,762
+Notice that the text is aligned
+on the right and ragged on the left,
+
+30
+00:01:35,796 --> 00:01:38,432
+and that many lines,
+including the last one,
+
+31
+00:01:38,465 --> 00:01:41,168
+have punctuation on the left-hand side.
+
+32
+00:01:41,201 --> 00:01:43,403
+There’s also a number in this paragraph.
+
+33
+00:01:43,437 --> 00:01:45,839
+The number still goes from left to right.
+
+34
+00:01:45,873 --> 00:01:50,844
+This one is telling us
+that Numbers supports over 250 functions.
+
+35
+00:01:50,878 --> 00:01:53,881
+If we widen our view
+to include another paragraph,
+
+36
+00:01:53,914 --> 00:01:56,583
+we see that this one
+has some English words,
+
+37
+00:01:56,617 --> 00:01:59,386
+the names of iWork
+and its constituent applications,
+
+38
+00:01:59,419 --> 00:02:01,688
+Pages, Numbers, and Keynote.
+
+39
+00:02:01,722 --> 00:02:03,790
+These are also written from left to right,
+
+40
+00:02:03,824 --> 00:02:05,659
+even in a Hebrew paragraph.
+
+41
+00:02:05,692 --> 00:02:09,329
+So for many paragraphs,
+the text is bidirectional.
+
+42
+00:02:09,363 --> 00:02:12,165
+This is an inherent property
+of Arabic and Hebrew,
+
+43
+00:02:12,199 --> 00:02:16,603
+and it’s why they’re also often referred
+to as the “bidi” languages.
+
+44
+00:02:17,804 --> 00:02:19,740
+If we widen our view even further,
+
+45
+00:02:19,773 --> 00:02:22,709
+we see the entire page is
+laid out from right to left.
+
+46
+00:02:22,743 --> 00:02:25,479
+We have a table here,
+and the text is to the right
+
+47
+00:02:25,512 --> 00:02:28,048
+of the images instead of to their left.
+
+48
+00:02:29,183 --> 00:02:32,719
+And if we widen it even further
+to see Safari’s window frame,
+
+49
+00:02:32,753 --> 00:02:35,389
+we see that it doesn’t stop
+with the content.
+
+50
+00:02:35,422 --> 00:02:39,593
+Lines of Arabic and Hebrew text begin
+on the right and progress to the left,
+
+51
+00:02:39,626 --> 00:02:43,363
+so it’s natural to expect
+other UI elements to do the same.
+
+52
+00:02:43,397 --> 00:02:47,501
+Just as readers expect things to start
+on the left and progress to the right,
+
+53
+00:02:47,534 --> 00:02:50,637
+Arabic and Hebrew readers
+expect the opposite.
+
+54
+00:02:50,671 --> 00:02:54,074
+So here,
+Safari’s toolbar runs from right to left
+
+55
+00:02:54,107 --> 00:02:56,844
+with the traffic light buttons
+in the upper right corner
+
+56
+00:02:56,877 --> 00:02:59,379
+and the buttons progressing to the left.
+
+57
+00:03:00,247 --> 00:03:03,483
+And if we widen our focus
+to include the entire screen,
+
+58
+00:03:03,517 --> 00:03:05,686
+we see that it extends everywhere.
+
+59
+00:03:05,719 --> 00:03:08,355
+This is Numbers’ help screen,
+and we see that all
+
+60
+00:03:08,388 --> 00:03:10,824
+of the elements
+in Numbers have also flipped.
+
+61
+00:03:10,858 --> 00:03:12,526
+The sidebar is on the left.
+
+62
+00:03:12,559 --> 00:03:16,763
+The tab bar runs from right to left.
+Even the document itself is flipped.
+
+63
+00:03:16,797 --> 00:03:21,802
+And the Mac menu bar and dock run
+from right to left as well.
+
+64
+00:03:21,835 --> 00:03:24,471
+Getting all of this right
+can be complicated,
+
+65
+00:03:24,505 --> 00:03:27,708
+but the great news is that we do most
+of the heavy lifting for you.
+
+66
+00:03:27,741 --> 00:03:30,344
+Most support
+for right to left comes for free.
+
+67
+00:03:30,377 --> 00:03:32,646
+But there are things to keep in mind.
+
+68
+00:03:32,679 --> 00:03:36,083
+So that’s what we’re gonna talk about,
+what the system does for you,
+
+69
+00:03:36,116 --> 00:03:37,985
+when you need to opt in or out,
+
+70
+00:03:38,018 --> 00:03:41,188
+and what to think about when implementing
+your own right to left support.
+
+71
+00:03:41,221 --> 00:03:47,227
+We’ll talk about text, images,
+control orientation, and UI layout.
+
+72
+00:03:47,261 --> 00:03:50,697
+We'll also cover
+displaying numbers in Arabic.
+
+73
+00:03:50,731 --> 00:03:54,134
+And finally,
+we’ll talk a little about how to test
+
+74
+00:03:54,168 --> 00:03:57,604
+that your app is
+handling right to left correctly.
+
+75
+00:03:57,638 --> 00:03:59,239
+So let’s dive in.
+
+76
+00:03:59,273 --> 00:04:01,975
+First, we’ll talk a little bit more
+about how text works
+
+77
+00:04:02,009 --> 00:04:04,878
+and introduce some terminology.
+
+78
+00:04:04,912 --> 00:04:07,781
+Let’s start with the concept
+of writing direction.
+
+79
+00:04:07,814 --> 00:04:13,120
+As we’ve already seen,
+English is written from left to right,
+
+80
+00:04:13,153 --> 00:04:16,723
+and Hebrew is written from right to left.
+
+81
+00:04:16,757 --> 00:04:19,393
+But what happens if we mix them?
+
+82
+00:04:21,161 --> 00:04:24,264
+If you’ve got
+a multilingual sentence like these,
+
+83
+00:04:24,298 --> 00:04:27,801
+the individual components
+still keep their writing direction,
+
+84
+00:04:27,835 --> 00:04:30,704
+but this means that each
+of these sentences now consists
+
+85
+00:04:30,737 --> 00:04:32,439
+of three components:
+
+86
+00:04:32,472 --> 00:04:35,409
+Two separate snippets
+of text in the native language
+
+87
+00:04:35,442 --> 00:04:38,545
+sandwiching one snippet
+in a different language.
+
+88
+00:04:38,579 --> 00:04:41,281
+When we talk about the writing direction
+of a paragraph,
+
+89
+00:04:41,315 --> 00:04:44,852
+we’re talking about the order
+of these individual snippets.
+
+90
+00:04:44,885 --> 00:04:48,155
+When we say the English sentence
+has left to right writing direction,
+
+91
+00:04:48,188 --> 00:04:51,592
+it's because these three boxes
+run from left to right,
+
+92
+00:04:51,625 --> 00:04:55,162
+and when we say the Hebrew sentence
+has right to left writing direction,
+
+93
+00:04:55,195 --> 00:04:58,899
+it’s because those three boxes
+run from right to left.
+
+94
+00:05:00,200 --> 00:05:03,504
+A different but related concept
+is text alignment.
+
+95
+00:05:03,537 --> 00:05:05,639
+If you read a left to right language,
+
+96
+00:05:05,672 --> 00:05:09,743
+your eye goes to the left-hand side
+of the page and progresses to the right.
+
+97
+00:05:09,776 --> 00:05:13,247
+If you read a right to left language,
+it’s the opposite.
+
+98
+00:05:13,280 --> 00:05:18,051
+So text gets aligned on the right-hand
+side in right to left languages.
+
+99
+00:05:18,085 --> 00:05:20,521
+The good news is that most of the time,
+
+100
+00:05:20,554 --> 00:05:23,023
+you don’t have to worry
+about either of these things.
+
+101
+00:05:23,056 --> 00:05:25,893
+Not only does CoreText take care
+of arranging all
+
+102
+00:05:25,926 --> 00:05:29,530
+of the characters properly
+on a line or paragraph of text,
+
+103
+00:05:29,563 --> 00:05:33,534
+including when text of different
+directions is mixed on one line,
+
+104
+00:05:33,567 --> 00:05:37,137
+but all of our UI frameworks
+automatically set the writing direction
+
+105
+00:05:37,171 --> 00:05:38,906
+and alignment as well.
+
+106
+00:05:38,939 --> 00:05:42,809
+All UI widgets default to something
+called “natural writing direction"
+
+107
+00:05:42,843 --> 00:05:44,578
+and “natural alignment."
+
+108
+00:05:44,611 --> 00:05:47,314
+The writing direction
+of a text widget defaults to match
+
+109
+00:05:47,347 --> 00:05:50,551
+the normal writing direction
+for the user’s UI language.
+
+110
+00:05:50,584 --> 00:05:53,520
+That is,
+if your UI is in Hebrew or Arabic,
+
+111
+00:05:53,554 --> 00:05:57,691
+the writing direction of your text widgets
+defaults to right to left.
+
+112
+00:05:57,724 --> 00:06:00,794
+Natural alignment
+follows the writing direction.
+
+113
+00:06:00,827 --> 00:06:04,498
+That is, if the writing direction
+of a text widget is right to left,
+
+114
+00:06:04,531 --> 00:06:07,134
+it’ll also be right-aligned.
+
+115
+00:06:07,167 --> 00:06:11,205
+Most of the time, this is what you want,
+but you can override the defaults.
+
+116
+00:06:11,238 --> 00:06:15,576
+We’ll talk more about this
+in the section on control orientation.
+
+117
+00:06:15,609 --> 00:06:19,713
+Now seems like a good time to start
+a little chart of terms you’ll run across.
+
+118
+00:06:19,746 --> 00:06:22,683
+What we’re saying here is
+that natural alignment corresponds
+
+119
+00:06:22,716 --> 00:06:25,285
+to left alignment
+in left to right languages
+
+120
+00:06:25,319 --> 00:06:28,322
+and to right alignment
+in right to left languages.
+
+121
+00:06:28,355 --> 00:06:30,858
+We’ll add to this chart as we go.
+
+122
+00:06:30,891 --> 00:06:33,961
+But of course, it’s not just text
+you have to worry about.
+
+123
+00:06:33,994 --> 00:06:36,463
+Having text that’s read
+in the opposite direction has
+
+124
+00:06:36,496 --> 00:06:40,100
+a profound effect on elements
+of your application other than text.
+
+125
+00:06:40,133 --> 00:06:44,638
+Let’s talk about how it can affect icons
+and other pictorial elements.
+
+126
+00:06:45,506 --> 00:06:49,276
+This is the Pages toolbar
+in English and in Arabic.
+
+127
+00:06:49,309 --> 00:06:52,679
+Let’s take a closer look at some
+of the icons in the toolbar.
+
+128
+00:06:52,713 --> 00:06:55,616
+Many, such as the “Add page”
+and “Media” buttons,
+
+129
+00:06:55,649 --> 00:06:57,818
+look the same in both languages.
+
+130
+00:06:57,851 --> 00:07:02,189
+This is either because they’re symmetrical
+or because their directionality isn't tied
+
+131
+00:07:02,222 --> 00:07:05,425
+to the language,
+and they look fine in both languages.
+
+132
+00:07:05,459 --> 00:07:08,629
+Other buttons,
+such as the “View” and “Document” buttons,
+
+133
+00:07:08,662 --> 00:07:11,231
+flip to their mirror images in Arabic.
+
+134
+00:07:11,265 --> 00:07:14,168
+The “View” button
+brings up the Pages sidebar,
+
+135
+00:07:14,201 --> 00:07:17,104
+which appears on the opposite side
+of the window in Arabic,
+
+136
+00:07:17,137 --> 00:07:19,973
+so the icon has to change to reflect that.
+
+137
+00:07:20,007 --> 00:07:24,044
+The “Document” button changes to show
+that if the user is writing in Arabic,
+
+138
+00:07:24,077 --> 00:07:27,080
+the pages turn in the opposite direction.
+
+139
+00:07:27,114 --> 00:07:30,951
+And you can have situations
+where the icon changes completely.
+
+140
+00:07:30,984 --> 00:07:34,821
+The letter on the “Insert text box” button
+changes to a different letter
+
+141
+00:07:34,855 --> 00:07:36,990
+to reflect the user’s language.
+
+142
+00:07:38,091 --> 00:07:42,129
+Once again, the great news is
+that a lot of this gets handled for you.
+
+143
+00:07:42,162 --> 00:07:45,732
+You have to think about image orientation
+a little more than you generally have
+
+144
+00:07:45,766 --> 00:07:50,337
+to think about text writing direction,
+but getting things right is fairly simple.
+
+145
+00:07:50,370 --> 00:07:54,241
+This is the “View” menu in Mac Pages
+in English and Arabic.
+
+146
+00:07:54,274 --> 00:07:57,477
+Notice that the “Show Ruler” icon
+reverses itself.
+
+147
+00:07:57,511 --> 00:07:59,179
+In right to left languages,
+
+148
+00:07:59,213 --> 00:08:02,482
+the vertical ruler is
+on the right-hand side.
+
+149
+00:08:02,516 --> 00:08:04,952
+For a custom image like the ruler icon,
+
+150
+00:08:04,985 --> 00:08:08,655
+right to left behavior is controlled
+in the Xcode imageset editor.
+
+151
+00:08:08,689 --> 00:08:11,558
+If your image is the same
+in left to right and right to left,
+
+152
+00:08:11,592 --> 00:08:13,560
+you don’t have
+to do anything special.
+
+153
+00:08:13,594 --> 00:08:17,464
+The system can also
+algorithmically mirror your image for you
+
+154
+00:08:17,497 --> 00:08:20,501
+when your app is running in a language
+with the opposite writing direction
+
+155
+00:08:20,534 --> 00:08:22,336
+from your development language.
+
+156
+00:08:22,369 --> 00:08:25,539
+You can ask for this feature
+in Xcode’s imageset editor.
+
+157
+00:08:25,572 --> 00:08:29,009
+In the sidebar,
+you’ll find a control marked “Direction.”
+
+158
+00:08:29,042 --> 00:08:32,246
+If you click on this,
+you get a menu with four choices.
+
+159
+00:08:32,279 --> 00:08:36,717
+If your image is the same regardless
+of the UI language, you pick “Fixed.”
+
+160
+00:08:36,750 --> 00:08:38,785
+If you want algorithmic mirroring,
+
+161
+00:08:38,819 --> 00:08:41,655
+you opt in by picking one
+of the “Mirrors” options.
+
+162
+00:08:41,688 --> 00:08:45,559
+Which one depends on the writing direction
+of your development language.
+
+163
+00:08:45,592 --> 00:08:48,495
+If you have an image
+you can’t mirror algorithmically,
+
+164
+00:08:48,529 --> 00:08:51,064
+either it has multiple elements
+that behave differently
+
+165
+00:08:51,098 --> 00:08:52,799
+when the UI changes direction,
+
+166
+00:08:52,833 --> 00:08:56,436
+or you’ve got shading
+you don’t want to move, you pick “Both,"
+
+167
+00:08:56,470 --> 00:08:59,606
+and three new wells get added
+to the image set editor,
+
+168
+00:08:59,640 --> 00:09:02,009
+allowing you to create separate images
+
+169
+00:09:02,042 --> 00:09:05,479
+to use for left to right
+and right to left contexts.
+
+170
+00:09:06,346 --> 00:09:10,450
+But if you use images from SF Symbols,
+as the Pages toolbar did,
+
+171
+00:09:10,484 --> 00:09:12,085
+things are even easier.
+
+172
+00:09:12,119 --> 00:09:14,688
+Almost all
+of the work has been done for you.
+
+173
+00:09:14,721 --> 00:09:16,290
+The symbols that need to change
+
+174
+00:09:16,323 --> 00:09:19,326
+for right to left languages
+do so automatically.
+
+175
+00:09:19,359 --> 00:09:22,462
+Consider this bulleted list icon
+for example.
+
+176
+00:09:22,496 --> 00:09:25,299
+For many images,
+SF Symbols’ sidebar has
+
+177
+00:09:25,332 --> 00:09:28,569
+a "localization" section
+that shows localized versions
+
+178
+00:09:28,602 --> 00:09:30,204
+of the image you chose.
+
+179
+00:09:30,237 --> 00:09:32,639
+In this case,
+the bulleted-list icon has
+
+180
+00:09:32,673 --> 00:09:35,042
+different left to right
+and right to left versions.
+
+181
+00:09:35,075 --> 00:09:37,077
+It mirrors automatically.
+
+182
+00:09:38,078 --> 00:09:41,081
+The localization feature can
+go beyond just mirroring
+
+183
+00:09:41,114 --> 00:09:42,616
+for right to left languages.
+
+184
+00:09:42,649 --> 00:09:46,253
+Here’s the localization tab
+for the “insert text box” icon.
+
+185
+00:09:46,286 --> 00:09:50,157
+It has localized versions
+not just for the Latin and Arabic scripts,
+
+186
+00:09:50,190 --> 00:09:52,659
+but for a variety of others as well.
+
+187
+00:09:53,861 --> 00:09:58,065
+One case that’s specifically important
+for Arabic support is the question mark,
+
+188
+00:09:58,098 --> 00:10:00,501
+which is often used as a “help” icon.
+
+189
+00:10:00,534 --> 00:10:02,936
+In Arabic,
+the question mark is the reverse
+
+190
+00:10:02,970 --> 00:10:04,538
+of the Latin question mark.
+
+191
+00:10:04,571 --> 00:10:07,708
+Using icons from SF Symbols for help icons
+
+192
+00:10:07,741 --> 00:10:10,944
+gets you this version
+without any extra work.
+
+193
+00:10:11,845 --> 00:10:14,648
+One class of images you have
+to think about carefully
+
+194
+00:10:14,681 --> 00:10:17,651
+is arrows
+and other directional indicators.
+
+195
+00:10:17,684 --> 00:10:20,621
+Here we have four arrow-in-a-circle icons.
+
+196
+00:10:20,654 --> 00:10:22,422
+You’ll notice they’re in two pairs.
+
+197
+00:10:22,456 --> 00:10:25,826
+You have two pointing to the left
+and two pointing to the right.
+
+198
+00:10:25,859 --> 00:10:28,495
+If we look at just the two
+that point to the left,
+
+199
+00:10:28,529 --> 00:10:31,965
+you’ll see that one is called
+“arrow.backward.circle.”
+
+200
+00:10:31,999 --> 00:10:35,402
+This one flips
+to point to the right in right to left.
+
+201
+00:10:35,435 --> 00:10:38,672
+The other one
+is called “arrow.left..circle”
+
+202
+00:10:38,705 --> 00:10:41,008
+and does NOT flip for right to left.
+
+203
+00:10:41,041 --> 00:10:44,511
+SF Symbols follows
+this naming convention throughout
+
+204
+00:10:44,545 --> 00:10:48,282
+with icons that you may or may not want
+to have flip for right to left.
+
+205
+00:10:48,315 --> 00:10:52,586
+The “forward” and “backward” ones flip,
+and the “left” and “right” ones don’t.
+
+206
+00:10:52,619 --> 00:10:54,755
+If you’re using an arrow or other shape
+
+207
+00:10:54,788 --> 00:10:57,024
+to convey the idea
+of “forward” or "backward,"
+
+208
+00:10:57,057 --> 00:10:59,193
+you want to use the flipping versions,
+
+209
+00:10:59,226 --> 00:11:02,262
+and if you’re using the arrow
+to convey an absolute direction,
+
+210
+00:11:02,296 --> 00:11:04,932
+you want to use the non-flipping versions.
+
+211
+00:11:06,333 --> 00:11:08,936
+And let’s add a row
+to our “Terminology” chart.
+
+212
+00:11:08,969 --> 00:11:12,606
+When choosing images in SF Symbols,
+remember that “left” and “right”
+
+213
+00:11:12,639 --> 00:11:15,843
+always point those directions
+and “forward” and "backward" point
+
+214
+00:11:15,876 --> 00:11:19,513
+in different directions
+depending on the UI language.
+
+215
+00:11:19,546 --> 00:11:23,016
+Now let’s talk about how controls
+and other UI widgets
+
+216
+00:11:23,050 --> 00:11:25,419
+are handled in right to left.
+
+217
+00:11:25,452 --> 00:11:28,822
+This is the Mac Keynote sidebar
+in English and Arabic
+
+218
+00:11:28,856 --> 00:11:31,725
+showing the format inspector for a shape.
+
+219
+00:11:31,758 --> 00:11:35,195
+Notice that everything has
+flipped its appearance for right to left.
+
+220
+00:11:35,229 --> 00:11:38,665
+We have lots of pop-up menu buttons
+where the menu indicator moves
+
+221
+00:11:38,699 --> 00:11:41,301
+to the left-hand side for right to left.
+
+222
+00:11:41,335 --> 00:11:43,437
+We have a couple of checkboxes,
+where in Arabic,
+
+223
+00:11:43,470 --> 00:11:45,706
+the checkbox is to the right of the label.
+
+224
+00:11:45,739 --> 00:11:48,375
+The opacity slider has changed for Arabic
+
+225
+00:11:48,408 --> 00:11:52,179
+so that the minimum is on the right
+and the maximum on the left.
+
+226
+00:11:52,212 --> 00:11:56,216
+And so on throughout all
+the other controls in this inspector.
+
+227
+00:11:56,250 --> 00:11:59,186
+The great news
+is that you get this behavior for free.
+
+228
+00:11:59,219 --> 00:12:02,923
+All of the standard UI controls
+in all our UI frameworks
+
+229
+00:12:02,956 --> 00:12:06,393
+automatically reverse their appearance
+for right to left languages.
+
+230
+00:12:06,426 --> 00:12:09,696
+There are, however,
+situations where you may not want this
+
+231
+00:12:09,730 --> 00:12:12,900
+or where you need to have some control
+over how it happens.
+
+232
+00:12:12,933 --> 00:12:15,969
+Let’s take a look at a few
+of the interesting cases.
+
+233
+00:12:16,703 --> 00:12:21,008
+Let’s talk about buttons with both
+a textual label and an icon on them.
+
+234
+00:12:21,041 --> 00:12:24,511
+This is the Keynote animation
+inspector showing the controls
+
+235
+00:12:24,545 --> 00:12:26,480
+for the “Move In” animation.
+
+236
+00:12:26,513 --> 00:12:30,384
+This inspector has two buttons
+with both a label and an icon.
+
+237
+00:12:30,417 --> 00:12:32,953
+Notice that the arrow
+on the Preview button flips
+
+238
+00:12:32,986 --> 00:12:34,655
+with the change in UI direction,
+
+239
+00:12:34,688 --> 00:12:38,158
+but the arrow
+on the animation direction menu doesn’t.
+
+240
+00:12:38,192 --> 00:12:40,794
+Both flip sides with the UI direction,
+
+241
+00:12:40,827 --> 00:12:44,398
+but if the direction control was a group
+of buttons instead of a menu,
+
+242
+00:12:44,431 --> 00:12:47,634
+you can image maybe
+not wanting it to change sides.
+
+243
+00:12:48,802 --> 00:12:52,039
+To show how to control this,
+I've isolated those two examples
+
+244
+00:12:52,072 --> 00:12:54,608
+out into a small toy application.
+
+245
+00:12:55,709 --> 00:12:58,979
+Here’s the code
+to build that UI in SwiftUI.
+
+246
+00:12:59,012 --> 00:13:01,081
+There are a few interesting things
+to note here.
+
+247
+00:13:01,114 --> 00:13:02,749
+We’ll look at them one at a time.
+
+248
+00:13:02,783 --> 00:13:06,220
+Let’s start with the image names.
+
+249
+00:13:06,253 --> 00:13:08,922
+As we saw before,
+for images from SF Symbols,
+
+250
+00:13:08,956 --> 00:13:12,459
+you choose either an icon
+that reverses or one that doesn’t.
+
+251
+00:13:12,492 --> 00:13:15,495
+Here we’ve used
+“arrowtriangle.forward.fill”
+
+252
+00:13:15,529 --> 00:13:16,763
+for the “Preview” button.
+
+253
+00:13:16,797 --> 00:13:20,534
+The “forward” in the name tells you
+that it flips for right to left.
+
+254
+00:13:20,567 --> 00:13:24,404
+We’ve used “arrow.left” and “arrow.right”
+for the direction buttons.
+
+255
+00:13:24,438 --> 00:13:26,240
+The “left” and “right”
+in the name tell you
+
+256
+00:13:26,273 --> 00:13:28,275
+that they don’t flip for right to left.
+
+257
+00:13:29,443 --> 00:13:33,113
+If you’re working in AppKit or UIKit,
+this works the same way.
+
+258
+00:13:33,146 --> 00:13:37,784
+Here’s my app in Xcode’s storyboard editor
+with the “Preview” button selected.
+
+259
+00:13:37,818 --> 00:13:40,487
+You control the button’s icon
+with the “Image” control
+
+260
+00:13:40,521 --> 00:13:42,689
+in the Attributes inspector.
+
+261
+00:13:43,524 --> 00:13:46,860
+And in code, you set this
+with the button’s “image” property,
+
+262
+00:13:46,894 --> 00:13:51,632
+and it works basically the same way
+in both AppKit and UIKit.
+
+263
+00:13:52,566 --> 00:13:56,236
+Coming back to our SwiftUI example,
+the next question is how
+
+264
+00:13:56,270 --> 00:13:59,473
+you control which side
+of the label the icon goes on.
+
+265
+00:13:59,506 --> 00:14:02,276
+You do this by setting a label style.
+
+266
+00:14:02,309 --> 00:14:07,047
+The built-in TitleAndIconLabelStyle
+puts the icon before the label
+
+267
+00:14:07,080 --> 00:14:09,249
+in the user’s reading direction.
+
+268
+00:14:09,283 --> 00:14:11,752
+We can use this for the “Left” button.
+
+269
+00:14:11,785 --> 00:14:15,222
+For the other two buttons,
+we want the icon to go after the label
+
+270
+00:14:15,255 --> 00:14:16,990
+in the user’s reading direction.
+
+271
+00:14:17,024 --> 00:14:22,596
+To do this, you need a custom label style,
+but that’s pretty easy to do.
+
+272
+00:14:22,629 --> 00:14:26,466
+Your label style’s makeBody()
+method just has to make an HStack
+
+273
+00:14:26,500 --> 00:14:28,669
+and add the title and icon into it.
+
+274
+00:14:28,702 --> 00:14:33,207
+As with any HStack, the order you add them
+determines the order they display,
+
+275
+00:14:33,240 --> 00:14:37,477
+and the order automatically reverses
+when appropriate for the UI direction.
+
+276
+00:14:37,511 --> 00:14:42,916
+This technique works on any view
+that can take a Label, not just buttons.
+
+277
+00:14:42,950 --> 00:14:47,154
+Of course, you don’t want the icon
+to change sides on the “Right” button.
+
+278
+00:14:47,187 --> 00:14:51,225
+You want it to always be on the right
+regardless of the UI direction.
+
+279
+00:14:51,258 --> 00:14:55,028
+That brings us to the last
+interesting thing in this code snippet.
+
+280
+00:14:55,062 --> 00:14:57,998
+Views in SwiftUI
+pick up their directionality
+
+281
+00:14:58,031 --> 00:15:01,768
+from the SwiftUI environment,
+which you can modify.
+
+282
+00:15:01,802 --> 00:15:05,472
+You do this by adding
+an “environment” modifier to a view
+
+283
+00:15:05,506 --> 00:15:09,743
+and giving it the key and new value
+for the property you want to change.
+
+284
+00:15:09,776 --> 00:15:13,180
+Here we’re overriding the environment’s
+layoutDirection property
+
+285
+00:15:13,213 --> 00:15:15,182
+to always be left to right
+
+286
+00:15:15,215 --> 00:15:19,086
+regardless of what value
+we might be inheriting from our parent.
+
+287
+00:15:19,119 --> 00:15:22,656
+Changing the environment
+in this way works on all SwiftUI views
+
+288
+00:15:22,689 --> 00:15:25,792
+that respond to the user’s UI direction.
+
+289
+00:15:25,826 --> 00:15:28,629
+Notice we applied the modifier
+to the HStack
+
+290
+00:15:28,662 --> 00:15:31,031
+that contains the “Left”
+and “Right” buttons.
+
+291
+00:15:31,064 --> 00:15:34,401
+Any changes you make
+to a view’s environment are inherited
+
+292
+00:15:34,434 --> 00:15:37,871
+by its child views,
+so putting it here not only
+
+293
+00:15:37,905 --> 00:15:41,208
+keeps the HStack
+from reversing the order of the buttons,
+
+294
+00:15:41,241 --> 00:15:45,979
+but it keeps both buttons
+from reversing the layout of their labels.
+
+295
+00:15:46,013 --> 00:15:49,016
+And of course,
+we didn’t apply our environment modifier
+
+296
+00:15:49,049 --> 00:15:51,718
+modifier to anything in the parent chain
+for the “Preview” button,
+
+297
+00:15:51,752 --> 00:15:56,056
+so it still reverses when appropriate,
+just as we want it to.
+
+298
+00:15:57,090 --> 00:16:00,127
+So to recap,
+the “Left” button has its icon
+
+299
+00:16:00,160 --> 00:16:04,698
+on the left because we used
+the built-in TitleAndIconLabelStyle,
+
+300
+00:16:04,731 --> 00:16:08,235
+and the “Preview” and “Right” buttons
+have their icons on the right
+
+301
+00:16:08,268 --> 00:16:13,640
+because we used a custom label style
+we called IconOnRightLabelStyle.
+
+302
+00:16:13,674 --> 00:16:16,276
+The “Left” and “Right” buttons
+don’t change their order
+
+303
+00:16:16,310 --> 00:16:18,612
+or the internal arrangement
+of their labels
+
+304
+00:16:18,645 --> 00:16:20,714
+because we added
+an environment modifier
+
+305
+00:16:20,747 --> 00:16:22,683
+to the HStack that contains them,
+
+306
+00:16:22,716 --> 00:16:25,419
+setting the layout direction
+to left to right.
+
+307
+00:16:25,452 --> 00:16:29,256
+The “Preview” button reverses
+the internal arrangement of its label
+
+308
+00:16:29,289 --> 00:16:31,959
+because it doesn’t have that modifier.
+
+309
+00:16:32,926 --> 00:16:35,729
+This works differently
+in AppKit and UIKit.
+
+310
+00:16:35,762 --> 00:16:39,032
+In both of those frameworks,
+the position of the icon relative
+
+311
+00:16:39,066 --> 00:16:42,135
+to the label is controlled
+with the “Position” control
+
+312
+00:16:42,169 --> 00:16:44,538
+in Xcode’s Attributes inspector.
+
+313
+00:16:44,571 --> 00:16:46,240
+If you click on this control,
+
+314
+00:16:46,273 --> 00:16:49,176
+you’ll see that the menu has,
+among other options,
+
+315
+00:16:49,209 --> 00:16:53,080
+two pairs of options that align the label
+and icon horizontally.
+
+316
+00:16:53,113 --> 00:16:56,250
+You have “Leading” and “Left,”
+and you have “Trailing” and “Right.”
+
+317
+00:16:56,283 --> 00:17:00,254
+“Leading” and “Trailing” change
+their meanings based on the UI direction,
+
+318
+00:17:00,287 --> 00:17:03,023
+and “Left” and “Right” don’t.
+
+319
+00:17:03,056 --> 00:17:07,227
+In AppKit, you control this
+with the button’s imagePosition property.
+
+320
+00:17:07,261 --> 00:17:11,798
+In UIKit, it’s the imagePlacement property
+on the button’s configuration,
+
+321
+00:17:11,832 --> 00:17:16,403
+which might mean you need
+to set your button’s configuration first.
+
+322
+00:17:16,436 --> 00:17:19,072
+The icon
+on the “Preview” button changes sides
+
+323
+00:17:19,106 --> 00:17:21,341
+because we set its position to “Trailing,"
+
+324
+00:17:21,375 --> 00:17:24,478
+and the icon on the “Right” button
+doesn't change sides
+
+325
+00:17:24,511 --> 00:17:27,881
+because we set its position to “Right.”
+
+326
+00:17:27,915 --> 00:17:31,718
+This also lets us fill in the last row
+in our “terminology” chart.
+
+327
+00:17:31,752 --> 00:17:34,121
+The terms “leading” and “trailing”
+will come up a lot
+
+328
+00:17:34,154 --> 00:17:35,822
+when discussing UI layout.
+
+329
+00:17:35,856 --> 00:17:37,224
+Like “forward” and “backward,”
+
+330
+00:17:37,257 --> 00:17:40,527
+you’ll often see them used
+in contrast to “left” and “right.”
+
+331
+00:17:40,561 --> 00:17:44,464
+The “leading” edge of something is
+the edge closest to beginning of the line
+
+332
+00:17:44,498 --> 00:17:48,402
+or to the side of the screen or window
+where the reader would begin reading,
+
+333
+00:17:48,435 --> 00:17:51,605
+left for left to right
+and right for right to left.
+
+334
+00:17:51,638 --> 00:17:53,907
+The trailing edge is the opposite side,
+
+335
+00:17:53,941 --> 00:17:55,609
+closest to the end of the line,
+
+336
+00:17:55,642 --> 00:17:59,046
+right for left to right
+and left for right to left.
+
+337
+00:17:59,079 --> 00:18:02,649
+Most of the time, you want to use these
+instead of “left” and “right,”
+
+338
+00:18:02,683 --> 00:18:07,120
+saving “left” and “right” only for things
+that are tied to an absolute direction.
+
+339
+00:18:08,455 --> 00:18:10,591
+Let’s look at another interesting case.
+
+340
+00:18:10,624 --> 00:18:14,461
+This is part of the text format inspector
+in Keynote on the iPhone,
+
+341
+00:18:14,494 --> 00:18:16,230
+in English and in Arabic.
+
+342
+00:18:16,263 --> 00:18:20,167
+This particular screenshot
+has four segmented controls.
+
+343
+00:18:20,200 --> 00:18:23,303
+The top two,
+the page selector for the inspector
+
+344
+00:18:23,337 --> 00:18:26,640
+and the standard
+“bold/italic/underline” style buttons,
+
+345
+00:18:26,673 --> 00:18:30,310
+reverse the order of their segments
+depending on the UI language.
+
+346
+00:18:30,344 --> 00:18:34,381
+If you don’t read Arabic, you’ll have
+to trust me on the page selector.
+
+347
+00:18:34,414 --> 00:18:36,517
+As with the other
+controls we’ve looked at,
+
+348
+00:18:36,550 --> 00:18:39,987
+this is the default;
+you get this behavior for free.
+
+349
+00:18:40,020 --> 00:18:43,123
+The other two segmented controls,
+the alignment controls,
+
+350
+00:18:43,156 --> 00:18:45,626
+don’t reverse the order of their segments.
+
+351
+00:18:45,659 --> 00:18:48,762
+This is because they move things
+in absolute directions.
+
+352
+00:18:48,795 --> 00:18:50,964
+Left alignment is left alignment
+
+353
+00:18:50,998 --> 00:18:54,535
+regardless of whether
+that’s the beginning or the end of a line.
+
+354
+00:18:54,568 --> 00:18:58,305
+Let’s look at how we keep
+these controls from reversing.
+
+355
+00:18:58,338 --> 00:19:01,008
+We already know how to do this in SwiftUI.
+
+356
+00:19:01,041 --> 00:19:02,910
+You just apply an “environment” modifier
+
+357
+00:19:02,943 --> 00:19:06,947
+that changes the environment’s
+layoutDirection property to left to right.
+
+358
+00:19:06,980 --> 00:19:09,950
+Here, we’re using this technique
+to keep the alignment control
+
+359
+00:19:09,983 --> 00:19:11,451
+from reversing itself,
+
+360
+00:19:11,485 --> 00:19:16,323
+but letting the style control
+reverse itself as it normally does.
+
+361
+00:19:16,356 --> 00:19:18,792
+In UIKit, this works differently.
+
+362
+00:19:18,825 --> 00:19:22,029
+Here’s a toy application
+in Xcode designed to simulate
+
+363
+00:19:22,062 --> 00:19:24,131
+that segmented control behavior.
+
+364
+00:19:24,164 --> 00:19:26,200
+I have two segmented controls,
+
+365
+00:19:26,233 --> 00:19:29,203
+one that mimics
+the bold/italic/underline behavior
+
+366
+00:19:29,236 --> 00:19:32,172
+and a second one
+that mimics the alignment control.
+
+367
+00:19:32,206 --> 00:19:34,341
+The alignment control is selected.
+
+368
+00:19:34,374 --> 00:19:38,979
+In the attribute inspector,
+you’ll find a menu labeled “Semantic.”
+
+369
+00:19:39,012 --> 00:19:42,382
+If you click on that menu,
+you get five choices.
+
+370
+00:19:42,416 --> 00:19:46,353
+This menu controls something called
+the semantic content attribute.
+
+371
+00:19:46,386 --> 00:19:49,623
+You use this to say what kind
+of control this is,
+
+372
+00:19:49,656 --> 00:19:53,493
+and the system uses that to determine
+if it reverses its appearance
+
+373
+00:19:53,527 --> 00:19:55,529
+based on the UI direction.
+
+374
+00:19:55,562 --> 00:19:57,698
+The default is “Unspecified,"
+
+375
+00:19:57,731 --> 00:20:00,767
+which causes the control
+to reverse its appearance.
+
+376
+00:20:00,801 --> 00:20:04,037
+"Playback" says the control is
+a media playback control
+
+377
+00:20:04,071 --> 00:20:06,406
+or part of a group of playback controls.
+
+378
+00:20:06,440 --> 00:20:11,345
+"Spatial" says the control is a spatial
+control or a part of a group of them.
+
+379
+00:20:11,378 --> 00:20:16,350
+Spatial controls move things around
+in space in absolute directions.
+
+380
+00:20:16,383 --> 00:20:18,752
+And finally, you can force the control
+
+381
+00:20:18,785 --> 00:20:23,290
+to always lay itself out left to right
+or right to left.
+
+382
+00:20:23,323 --> 00:20:27,895
+So the bold/italic/underline control
+reverses its segments for right to left
+
+383
+00:20:27,928 --> 00:20:31,765
+because its semantic content attribute
+is set to “Unspecified,”
+
+384
+00:20:31,798 --> 00:20:35,102
+and the alignment control
+doesn’t reverse its segments
+
+385
+00:20:35,135 --> 00:20:39,306
+because its semantic content attribute
+is set to “Spatial.”
+
+386
+00:20:39,339 --> 00:20:41,808
+The great thing about this
+is that it doesn’t just work
+
+387
+00:20:41,842 --> 00:20:43,644
+for UISegmentedControl.
+
+388
+00:20:43,677 --> 00:20:46,680
+All UIViews have
+a semantic content attribute,
+
+389
+00:20:46,713 --> 00:20:50,117
+and it controls all
+of that control’s right to left behavior.
+
+390
+00:20:50,150 --> 00:20:53,453
+For any standard UIKit view
+that has subcomponents,
+
+391
+00:20:53,487 --> 00:20:56,557
+the semantic content attribute
+will determine whether the positioning
+
+392
+00:20:56,590 --> 00:21:01,061
+of that view’s subcomponents reverses
+based on the UI language.
+
+393
+00:21:02,196 --> 00:21:05,065
+In AppKit,
+you do this kind of thing differently.
+
+394
+00:21:05,098 --> 00:21:08,202
+For all NSControls,
+the Xcode attributes inspector
+
+395
+00:21:08,235 --> 00:21:11,805
+contains two menus
+marked “Layout” and “Mirror.”
+
+396
+00:21:11,839 --> 00:21:13,674
+The “Layout” menu corresponds
+
+397
+00:21:13,707 --> 00:21:17,044
+to the control’s
+userInterfaceLayoutDirection property,
+
+398
+00:21:17,077 --> 00:21:21,181
+which says whether the control should
+use left to right or right to left layout.
+
+399
+00:21:21,215 --> 00:21:24,551
+You don’t normally change this
+when working in Interface Builder.
+
+400
+00:21:24,585 --> 00:21:27,087
+Instead, you use the “Mirror” menu.
+
+401
+00:21:27,120 --> 00:21:31,158
+Setting it to “Always” causes
+the userInterfaceLayoutDirection,
+
+402
+00:21:31,191 --> 00:21:35,295
+and thus the control’s layout,
+to be flipped when the nib is loaded
+
+403
+00:21:35,329 --> 00:21:37,898
+when the user’s UI language
+is right to left,
+
+404
+00:21:37,931 --> 00:21:40,300
+and setting it to “Never”
+defeats this behavior,
+
+405
+00:21:40,334 --> 00:21:42,336
+keeping the layout the same.
+
+406
+00:21:42,369 --> 00:21:45,372
+You keep the layout
+of the alignment control the same
+
+407
+00:21:45,405 --> 00:21:47,975
+by setting this value to “Never”.
+
+408
+00:21:48,008 --> 00:21:49,910
+If you’re not working
+in Interface Builder,
+
+409
+00:21:49,943 --> 00:21:52,112
+you accomplish the same thing in code
+
+410
+00:21:52,145 --> 00:21:54,882
+by setting the control’s
+userInterfaceLayoutDirection
+
+411
+00:21:54,915 --> 00:21:57,484
+back to left to right directly.
+
+412
+00:21:57,518 --> 00:22:01,688
+userInterfaceLayoutDirection,
+by the way, is a property on NSView,
+
+413
+00:22:01,722 --> 00:22:05,492
+but appears in Interface Builder
+only on instances of NSControl,
+
+414
+00:22:05,526 --> 00:22:08,729
+so if you want to reverse something
+that’s not an NSControl,
+
+415
+00:22:08,762 --> 00:22:11,198
+you need code like we’re showing here.
+
+416
+00:22:12,299 --> 00:22:15,335
+Before we move on,
+I want to talk about text a little more.
+
+417
+00:22:15,369 --> 00:22:20,207
+This is the “Set document password” dialog
+in iWork for the Mac.
+
+418
+00:22:20,240 --> 00:22:23,310
+In the Arabic version,
+you’ll see everything has reversed.
+
+419
+00:22:23,343 --> 00:22:25,712
+But notice what’s happened to the labels.
+
+420
+00:22:25,746 --> 00:22:28,482
+In English, they were right-aligned
+so that they’d be close
+
+421
+00:22:28,515 --> 00:22:29,950
+to the edit-text fields.
+
+422
+00:22:29,983 --> 00:22:32,152
+In Arabic, they’re left-aligned.
+
+423
+00:22:32,186 --> 00:22:35,322
+In other words, you have
+the opposite of natural alignment,
+
+424
+00:22:35,355 --> 00:22:38,592
+trailing-edge alignment, if you will.
+
+425
+00:22:38,625 --> 00:22:42,362
+Getting this layout in SwiftUI
+on the Mac is trivially easy.
+
+426
+00:22:42,396 --> 00:22:45,432
+Just use a Form
+to gather the text fields together.
+
+427
+00:22:45,465 --> 00:22:48,669
+But this can get interesting if,
+as in our example,
+
+428
+00:22:48,702 --> 00:22:51,738
+one of the labels is multiple lines.
+
+429
+00:22:51,772 --> 00:22:56,076
+If we expand that last label out
+to be two lines, we get this.
+
+430
+00:22:56,109 --> 00:22:59,079
+The two one-line labels
+are correctly right-aligned,
+
+431
+00:22:59,112 --> 00:23:01,148
+but the two-line label isn’t.
+
+432
+00:23:01,181 --> 00:23:04,785
+The thing is,
+the bottom label really is right-aligned.
+
+433
+00:23:04,818 --> 00:23:07,454
+It’s just that its bounding box
+is right-aligned,
+
+434
+00:23:07,487 --> 00:23:11,258
+not the individual lines of text
+within that bounding box.
+
+435
+00:23:11,291 --> 00:23:15,696
+You fix this by adding
+a multilineTextAlignment modifier
+
+436
+00:23:15,729 --> 00:23:17,397
+to the last label.
+
+437
+00:23:17,431 --> 00:23:21,134
+Text alignment in SwiftUI only comes
+into play on text objects
+
+438
+00:23:21,168 --> 00:23:23,303
+that are more than one line long.
+
+439
+00:23:23,337 --> 00:23:25,138
+For single-line text objects,
+
+440
+00:23:25,172 --> 00:23:28,375
+their bounding box
+tightly encloses the text itself,
+
+441
+00:23:28,408 --> 00:23:32,312
+and you align it
+by aligning the entire text object.
+
+442
+00:23:32,346 --> 00:23:37,017
+Also notice that whether you’re aligning
+the text’s bounding box or multiple lines
+
+443
+00:23:37,050 --> 00:23:39,086
+of text inside the bounding box,
+
+444
+00:23:39,119 --> 00:23:41,822
+you have a choice of leading
+and trailing alignment,
+
+445
+00:23:41,855 --> 00:23:45,359
+which change meaning based
+on the user’s UI direction.
+
+446
+00:23:45,392 --> 00:23:48,629
+To keep the alignment the same
+regardless of UI direction,
+
+447
+00:23:48,662 --> 00:23:50,497
+you use an environment modifier
+
+448
+00:23:50,531 --> 00:23:54,234
+to change the environment’s
+layout direction as we saw earlier.
+
+449
+00:23:55,202 --> 00:23:58,639
+In UIKit,
+text is naturally aligned by default,
+
+450
+00:23:58,672 --> 00:24:02,276
+but you can change it to one
+of the absolute directions when necessary.
+
+451
+00:24:02,309 --> 00:24:05,379
+In Interface Builder,
+the control looks like this
+
+452
+00:24:05,412 --> 00:24:08,148
+and corresponds
+to the textAlignment property
+
+453
+00:24:08,182 --> 00:24:10,517
+on UILabel and UITextView.
+
+454
+00:24:10,551 --> 00:24:13,287
+The button on the far right
+with the dotted line
+
+455
+00:24:13,320 --> 00:24:16,256
+gives you natural,
+or leading-edge, alignment.
+
+456
+00:24:16,290 --> 00:24:17,658
+The alignment of the label
+
+457
+00:24:17,691 --> 00:24:20,360
+will follow
+the label’s semantic content attribute.
+
+458
+00:24:20,394 --> 00:24:24,298
+The other buttons give you fixed left,
+right, or center alignment
+
+459
+00:24:24,331 --> 00:24:28,869
+regardless of the UI direction
+or the label’s semantic content attribute.
+
+460
+00:24:28,902 --> 00:24:31,738
+There’s no built-in setting
+for trailing-edge alignment.
+
+461
+00:24:31,772 --> 00:24:34,274
+You have to do that in code.
+
+462
+00:24:34,308 --> 00:24:36,443
+In AppKit, it’s a little different.
+
+463
+00:24:36,476 --> 00:24:38,345
+You still have the alignment control,
+
+464
+00:24:38,378 --> 00:24:41,081
+and it works
+basically the same as in UIKit,
+
+465
+00:24:41,114 --> 00:24:44,952
+but the way it interacts with
+userInterfaceLayoutDirection is different.
+
+466
+00:24:44,985 --> 00:24:47,254
+If you have “Mirror” set
+to “Automatically,”
+
+467
+00:24:47,287 --> 00:24:49,756
+and the system sets
+userInterfaceLayoutDirection
+
+468
+00:24:49,790 --> 00:24:51,124
+to right to left,
+
+469
+00:24:51,158 --> 00:24:53,994
+the meanings
+of all the alignment settings reverse.
+
+470
+00:24:54,027 --> 00:24:56,196
+So if “Mirror” is set to “Automatically,”
+
+471
+00:24:56,230 --> 00:24:59,132
+left alignment is
+really leading-edge alignment,
+
+472
+00:24:59,166 --> 00:25:03,403
+and right alignment is
+really trailing-edge alignment.
+
+473
+00:25:03,437 --> 00:25:06,406
+So we’ve talked about how all
+of the standard UI widgets
+
+474
+00:25:06,440 --> 00:25:10,143
+automatically reverse their layouts
+to match the user’s writing direction,
+
+475
+00:25:10,177 --> 00:25:13,180
+but it’s fairly easy
+to prevent that when necessary.
+
+476
+00:25:13,213 --> 00:25:18,185
+This extends to arranging
+individual UI widgets on the screen.
+
+477
+00:25:18,218 --> 00:25:21,288
+If you’re using one
+of the standard views or view controllers
+
+478
+00:25:21,321 --> 00:25:23,657
+that handles the positioning
+of their subviews,
+
+479
+00:25:23,690 --> 00:25:26,159
+all of them
+automatically reverse their layouts
+
+480
+00:25:26,193 --> 00:25:29,296
+when necessary
+without you having to do anything.
+
+481
+00:25:29,329 --> 00:25:32,366
+Table views and collection views
+handle scrolling correctly
+
+482
+00:25:32,399 --> 00:25:34,501
+in right to left languages too.
+
+483
+00:25:34,535 --> 00:25:38,105
+UINavigationController
+automatically changes the directions
+
+484
+00:25:38,138 --> 00:25:42,042
+of its segue animations
+to reflect the user’s writing direction,
+
+485
+00:25:42,075 --> 00:25:45,078
+and changes the “back” button
+to match it as well.
+
+486
+00:25:45,112 --> 00:25:49,383
+And UIPageViewController automatically
+reverses the paging direction
+
+487
+00:25:49,416 --> 00:25:53,187
+and the meanings of the swipe gestures
+automatically as well.
+
+488
+00:25:53,220 --> 00:25:55,856
+You generally won’t want
+to override these things,
+
+489
+00:25:55,889 --> 00:25:59,393
+except for when you’re using a stack view
+to position child views,
+
+490
+00:25:59,426 --> 00:26:02,496
+but all of the views honor
+their semantic content attribute
+
+491
+00:26:02,529 --> 00:26:06,166
+and use it to tell them how
+to lay out their subviews.
+
+492
+00:26:06,200 --> 00:26:09,570
+The same goes for the standard
+AppKit views, and again,
+
+493
+00:26:09,603 --> 00:26:13,106
+table and collection views
+handle right to left scrolling as well.
+
+494
+00:26:13,140 --> 00:26:16,844
+The views all honor their
+userInterfaceLayoutDirection property
+
+495
+00:26:16,877 --> 00:26:19,112
+in determining how
+to lay out their subviews,
+
+496
+00:26:19,146 --> 00:26:21,415
+although Interface Builder
+doesn’t let you set it.
+
+497
+00:26:21,448 --> 00:26:24,051
+You have to do that in code.
+
+498
+00:26:24,084 --> 00:26:26,954
+The standard SwiftUI views also reflect
+
+499
+00:26:26,987 --> 00:26:29,890
+the environment’s
+layoutDirection property.
+
+500
+00:26:32,659 --> 00:26:36,063
+If you’re using Auto Layout
+instead of stack and grid views
+
+501
+00:26:36,096 --> 00:26:37,164
+to lay out your view,
+
+502
+00:26:37,197 --> 00:26:39,933
+Auto Layout also
+automatically reverses things
+
+503
+00:26:39,967 --> 00:26:41,668
+to account for the UI direction.
+
+504
+00:26:41,702 --> 00:26:43,971
+If you have horizontal constraints,
+
+505
+00:26:44,004 --> 00:26:46,306
+you’ll see that they
+automatically connect things
+
+506
+00:26:46,340 --> 00:26:49,676
+to the leading and trailing edges,
+and as we’ve seen,
+
+507
+00:26:49,710 --> 00:26:53,614
+"leading" and “trailing” have different
+meanings depending on the UI direction.
+
+508
+00:26:53,647 --> 00:26:57,317
+You can set Auto Layout constraints
+to absolute left and right directions,
+
+509
+00:26:57,351 --> 00:26:58,952
+though, if you need to.
+
+510
+00:26:58,986 --> 00:27:02,823
+You do this by clicking on the direction
+for one side of the constraint
+
+511
+00:27:02,856 --> 00:27:05,325
+and turning off
+“Respect language direction”
+
+512
+00:27:05,359 --> 00:27:06,960
+in the menu that pops up.
+
+513
+00:27:06,994 --> 00:27:09,930
+That’ll change the direction
+of both ends of the constraint
+
+514
+00:27:09,963 --> 00:27:13,867
+from “leading” and “trailing”
+to “left” and “right.”
+
+515
+00:27:13,901 --> 00:27:17,638
+There are a lot of different ways
+to set up Auto Layout constraints in code.
+
+516
+00:27:17,671 --> 00:27:19,039
+Here is one of them.
+
+517
+00:27:19,072 --> 00:27:21,775
+Pretty much however you do it,
+the thing to remember is
+
+518
+00:27:21,808 --> 00:27:24,912
+is to use "leading" and “trailing”
+instead of “left” and “right,”
+
+519
+00:27:24,945 --> 00:27:28,749
+except in the comparatively
+rare situations where you really want
+
+520
+00:27:28,782 --> 00:27:34,087
+the same layout orientation regardless
+of the UI language’s writing direction.
+
+521
+00:27:34,121 --> 00:27:37,691
+Okay, that was a lot to take in,
+so let's take a breath.
+
+522
+00:27:37,724 --> 00:27:40,494
+The main takeaway is
+that we do most of the work
+
+523
+00:27:40,527 --> 00:27:42,829
+of handling
+right to left languages for you
+
+524
+00:27:42,863 --> 00:27:45,899
+and that when you need to override it,
+there are ways to do that.
+
+525
+00:27:45,933 --> 00:27:48,602
+Let's take one more look
+at our terminology slide.
+
+526
+00:27:48,635 --> 00:27:52,339
+Remember that "left" and "right"
+are always left and right
+
+527
+00:27:52,372 --> 00:27:54,775
+and that the other terms
+reverse their meanings
+
+528
+00:27:54,808 --> 00:27:57,411
+depending on the overall UI direction.
+
+529
+00:27:58,745 --> 00:28:02,282
+Before we wrap up, let’s take a look
+at one more important issue,
+
+530
+00:28:02,316 --> 00:28:04,251
+and that’s how to display numbers.
+
+531
+00:28:04,284 --> 00:28:07,888
+It’s not strictly a right to left issue,
+but for many developers,
+
+532
+00:28:07,921 --> 00:28:10,657
+Arabic is the first language
+they’ll localize for
+
+533
+00:28:10,691 --> 00:28:15,429
+that uses different digit characters
+than the ones used in English.
+
+534
+00:28:15,462 --> 00:28:17,631
+Here’s what those digits look like.
+
+535
+00:28:17,664 --> 00:28:20,300
+There are lots of different
+naming conventions for the digits,
+
+536
+00:28:20,334 --> 00:28:24,271
+but I'll call the ones used with most
+European languages “Latin” digits
+
+537
+00:28:24,304 --> 00:28:27,608
+and the ones used
+with Arabic “Arabic-Indic” digits.
+
+538
+00:28:27,641 --> 00:28:30,210
+There are other languages
+that have their own digits.
+
+539
+00:28:30,244 --> 00:28:33,013
+These are the Devanagari digits
+used with Hindi;
+
+540
+00:28:33,046 --> 00:28:36,850
+Hindi is the other common language
+that uses different digits.
+
+541
+00:28:36,884 --> 00:28:40,087
+One important thing to keep
+in mind is that neither Arabic
+
+542
+00:28:40,120 --> 00:28:43,490
+nor Hindi always uses their native digits.
+
+543
+00:28:43,524 --> 00:28:45,726
+For Arabic, it depends on the country,
+
+544
+00:28:45,759 --> 00:28:50,097
+with some, such as Saudi Arabia,
+using native digits and others,
+
+545
+00:28:50,130 --> 00:28:53,634
+such as the United Arab Emirates,
+using Latin digits.
+
+546
+00:28:53,667 --> 00:28:57,538
+Individual users can also
+choose their preferred digits.
+
+547
+00:28:57,571 --> 00:29:00,774
+For Hindi,
+we use Latin digits by default,
+
+548
+00:29:00,807 --> 00:29:04,444
+but users can elect
+to use native digits instead.
+
+549
+00:29:05,546 --> 00:29:09,716
+You already know that constructing
+UI strings like this is a bad idea.
+
+550
+00:29:09,750 --> 00:29:12,419
+The string is hard-coded
+and can’t be translated,
+
+551
+00:29:12,452 --> 00:29:15,856
+the message doesn’t
+change to handle plurals, and so forth.
+
+552
+00:29:15,889 --> 00:29:18,525
+But another reason
+this isn’t good is that the value
+
+553
+00:29:18,559 --> 00:29:23,163
+of “peopleInChat” will always
+get rendered with Latin digits.
+
+554
+00:29:23,197 --> 00:29:26,733
+You probably also already know
+that the solution to that is
+
+555
+00:29:26,767 --> 00:29:29,436
+to use the “localized” init method
+on String,
+
+556
+00:29:29,469 --> 00:29:32,773
+which will look up the actual string
+in your application’s bundle
+
+557
+00:29:32,806 --> 00:29:36,009
+and handle plurals properly
+if you have a stringsdict file.
+
+558
+00:29:36,043 --> 00:29:39,546
+The great news is
+that it also handles numbers correctly.
+
+559
+00:29:39,580 --> 00:29:43,283
+The value of the “peopleInChat”
+interpolation here will be rendered
+
+560
+00:29:43,317 --> 00:29:47,354
+with the correct localized digits
+for the user’s locale and preferences.
+
+561
+00:29:47,387 --> 00:29:50,591
+This also works right
+with text views in SwiftUI.
+
+562
+00:29:50,624 --> 00:29:54,328
+The text views initializer will also
+render any string interpolations
+
+563
+00:29:54,361 --> 00:29:57,431
+with properly localized digits.
+
+564
+00:29:57,464 --> 00:30:01,768
+Always use String(localized:)
+when constructing user-visible strings.
+
+565
+00:30:01,802 --> 00:30:05,372
+Many of the other APIs on String
+that can format numbers,
+
+566
+00:30:05,405 --> 00:30:08,408
+including +stringWithFormat:
+and the String init function
+
+567
+00:30:08,442 --> 00:30:12,613
+that takes a number,
+always use Latin digits.
+
+568
+00:30:12,646 --> 00:30:16,650
+One wrinkle to be aware of is
+static strings that contain numerals,
+
+569
+00:30:16,683 --> 00:30:17,951
+such as this one.
+
+570
+00:30:17,985 --> 00:30:19,253
+What’s the big deal?
+
+571
+00:30:19,286 --> 00:30:22,990
+You send it off to the translators,
+they translate it, and you get this.
+
+572
+00:30:23,023 --> 00:30:25,092
+This is correct in a lot of places,
+
+573
+00:30:25,125 --> 00:30:27,528
+but in Saudi Arabia
+and some other countries,
+
+574
+00:30:27,561 --> 00:30:29,062
+you want to see this
+
+575
+00:30:29,096 --> 00:30:33,233
+. The text is the same except
+for the character used for the 3.
+
+576
+00:30:33,267 --> 00:30:35,536
+You could, of course,
+have separate localizations
+
+577
+00:30:35,569 --> 00:30:38,772
+for the Arabic-speaking locales
+that use Arabic-Indic digits
+
+578
+00:30:38,805 --> 00:30:40,707
+and the ones that use Latin digits,
+
+579
+00:30:40,741 --> 00:30:43,477
+but nobody does that,
+and it’d be wasteful.
+
+580
+00:30:43,510 --> 00:30:45,646
+Worse, in both Arabic and Hindi,
+
+581
+00:30:45,679 --> 00:30:48,415
+the user can choose the digits
+they want to use,
+
+582
+00:30:48,448 --> 00:30:50,684
+so you’d be having
+to choose a localization
+
+583
+00:30:50,717 --> 00:30:55,088
+based on the user’s preferences,
+not just on their locale.
+
+584
+00:30:55,122 --> 00:30:59,793
+The solution is to still just
+have one Arabic or Hindi localization,
+
+585
+00:30:59,826 --> 00:31:02,262
+but to substitute
+the number in at run time,
+
+586
+00:31:02,296 --> 00:31:04,965
+even though you know the value
+at compile time.
+
+587
+00:31:04,998 --> 00:31:09,002
+In Swift, you can just use
+a string interpolation to do this.
+
+588
+00:31:10,170 --> 00:31:12,873
+If you’ve got other elements
+that travel with a number,
+
+589
+00:31:12,906 --> 00:31:16,510
+their placement relative
+to the number can also be challenging.
+
+590
+00:31:16,543 --> 00:31:19,413
+It isn’t even the same
+for all right to left languages.
+
+591
+00:31:19,446 --> 00:31:21,982
+Notice that the minus sign
+and the percent sign are
+
+592
+00:31:22,015 --> 00:31:25,152
+on different sides
+of the number in Arabic and Hebrew.
+
+593
+00:31:25,185 --> 00:31:28,322
+In fact, it doesn’t have to be
+a right to left language at all.
+
+594
+00:31:28,355 --> 00:31:31,358
+Notice that in Turkish,
+which is a left to right language,
+
+595
+00:31:31,391 --> 00:31:34,094
+the percent sign also goes on the left.
+
+596
+00:31:34,127 --> 00:31:37,831
+And, of course, keep in mind
+that if you’re using native Arabic digits,
+
+597
+00:31:37,865 --> 00:31:41,401
+they use
+a completely different percent symbol.
+
+598
+00:31:41,435 --> 00:31:44,938
+In other words, you really don’t want
+to do this kind of thing,
+
+599
+00:31:44,972 --> 00:31:47,875
+where you’re appending the percent sign,
+or currency sign,
+
+600
+00:31:47,908 --> 00:31:51,178
+unit abbreviation, or whatever yourself.
+
+601
+00:31:51,211 --> 00:31:54,748
+Instead, use a number formatter
+to add the percent sign,
+
+602
+00:31:54,781 --> 00:31:56,850
+or currency symbol, or whatever.
+
+603
+00:31:56,884 --> 00:31:59,887
+In Swift, this is easy
+to do with the formatted() method
+
+604
+00:31:59,920 --> 00:32:01,622
+on all the numeric types.
+
+605
+00:32:01,655 --> 00:32:04,791
+If it’s part of a larger string,
+as in this example,
+
+606
+00:32:04,825 --> 00:32:08,095
+String(localized:) will also make sure
+that the formatted number--
+
+607
+00:32:08,128 --> 00:32:11,031
+or anything else substituted
+into the string at runtime,
+
+608
+00:32:11,064 --> 00:32:12,833
+including other strings,
+
+609
+00:32:12,866 --> 00:32:15,836
+is surrounded with markup
+that’ll keep the writing directions
+
+610
+00:32:15,869 --> 00:32:18,539
+of the formatted number
+and the surrounding message
+
+611
+00:32:18,572 --> 00:32:21,141
+from messing each other up.
+
+612
+00:32:21,175 --> 00:32:25,179
+Finally, I want to leave you with one tip
+for testing your app to make sure
+
+613
+00:32:25,212 --> 00:32:27,781
+that you’re doing the right thing
+for right to left.
+
+614
+00:32:28,549 --> 00:32:31,518
+You don’t have to have
+Arabic or Hebrew localizations
+
+615
+00:32:31,552 --> 00:32:34,688
+in your executable
+to test your app in right to left.
+
+616
+00:32:34,721 --> 00:32:36,957
+You can actually test
+right to left behavior
+
+617
+00:32:36,990 --> 00:32:38,926
+in your development language.
+
+618
+00:32:38,959 --> 00:32:42,329
+To do this,
+bring up the scheme editor in Xcode.
+
+619
+00:32:42,362 --> 00:32:46,633
+Now go to the Options tab
+and look for the “App Language” menu.
+
+620
+00:32:46,667 --> 00:32:50,370
+At the bottom of this menu are a bunch
+of “pseudolanguage” options.
+
+621
+00:32:50,404 --> 00:32:54,274
+These are fake languages
+that transform your UI in various ways
+
+622
+00:32:54,308 --> 00:32:56,910
+to allow you to check
+for localization problems
+
+623
+00:32:56,944 --> 00:32:59,112
+without actual localizations.
+
+624
+00:32:59,146 --> 00:33:02,382
+Pick the “Right-to-Left Pseudolanguage”
+option and click Run,
+
+625
+00:33:02,416 --> 00:33:06,286
+and your app will still be in English
+or whatever your development language is,
+
+626
+00:33:06,320 --> 00:33:10,190
+but the UI will
+all have been flipped for right to left.
+
+627
+00:33:10,224 --> 00:33:11,758
+And that’s all I have.
+
+628
+00:33:11,792 --> 00:33:14,728
+Localizing for right-to-left languages
+involves attention
+
+629
+00:33:14,761 --> 00:33:18,031
+to some issues relating
+to the change in writing direction,
+
+630
+00:33:18,065 --> 00:33:21,201
+but the system does most
+of the heavy lifting for you.
+
+631
+00:33:21,235 --> 00:33:24,471
+There are cases,
+usually around absolute directions,
+
+632
+00:33:24,505 --> 00:33:26,640
+where you may want
+to opt of this behavior,
+
+633
+00:33:26,673 --> 00:33:28,408
+and that’s always possible.
+
+634
+00:33:28,442 --> 00:33:33,680
+And remember that not all languages
+use Latin digits to render numbers.
+
+635
+00:33:33,714 --> 00:33:35,449
+Keep these things in mind,
+
+636
+00:33:35,482 --> 00:33:37,584
+and it shouldn’t be hard
+to get things right
+
+637
+00:33:37,618 --> 00:33:38,685
+to left.
+
+638
+00:33:38,719 --> 00:33:42,990
+[upbeat music]
+

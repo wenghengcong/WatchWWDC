@@ -1,0 +1,1586 @@
+1
+00:00:00,033 --> 00:00:03,570
+♪ Mellow instrumental
+hip hop music ♪
+
+2
+00:00:03,570 --> 00:00:09,810
+♪
+
+3
+00:00:09,810 --> 00:00:12,179
+Hello, my name is Anders.
+
+4
+00:00:12,179 --> 00:00:13,213
+In this video,
+
+5
+00:00:13,213 --> 00:00:15,949
+I'll show you how to get started
+with Swift package plugins.
+
+6
+00:00:15,949 --> 00:00:18,418
+Swift Packages were
+introduced in Xcode 11.
+
+7
+00:00:18,418 --> 00:00:20,387
+They provide a great way
+of distributing libraries
+
+8
+00:00:20,387 --> 00:00:21,655
+as source code.
+
+9
+00:00:21,655 --> 00:00:25,058
+Xcode 14 extends this approach
+to your development workflow,
+
+10
+00:00:25,058 --> 00:00:26,793
+letting you use plugins
+to do things
+
+11
+00:00:26,793 --> 00:00:28,829
+like generating source code
+during a build,
+
+12
+00:00:28,829 --> 00:00:31,298
+or automating
+your release tasks.
+
+13
+00:00:31,298 --> 00:00:34,201
+We'll start by taking a look
+at what package plugins are
+
+14
+00:00:34,201 --> 00:00:37,137
+and how they work,
+and then talk in more detail
+
+15
+00:00:37,137 --> 00:00:41,275
+about the two kinds of package
+plugins that Xcode 14 supports:
+
+16
+00:00:41,275 --> 00:00:45,512
+command plugins
+and build tool plugins.
+
+17
+00:00:45,512 --> 00:00:48,048
+So first of all,
+what is a plugin?
+
+18
+00:00:48,048 --> 00:00:50,884
+A package plugin is
+a Swift script that can perform
+
+19
+00:00:50,884 --> 00:00:54,254
+actions on a Swift package
+or an Xcode project.
+
+20
+00:00:54,254 --> 00:00:56,690
+A plugin uses API
+that Xcode provides
+
+21
+00:00:56,690 --> 00:00:58,725
+especially for this purpose.
+
+22
+00:00:58,725 --> 00:01:01,795
+Package plugins are
+implemented as Swift packages.
+
+23
+00:01:01,795 --> 00:01:03,330
+A package can provide plugins
+
+24
+00:01:03,330 --> 00:01:05,565
+together with libraries
+and executables,
+
+25
+00:01:05,565 --> 00:01:09,703
+or a package could focus
+only on providing plugins.
+
+26
+00:01:09,703 --> 00:01:11,438
+A package plugin
+can be implemented
+
+27
+00:01:11,438 --> 00:01:13,473
+using more than one source file,
+
+28
+00:01:13,473 --> 00:01:16,243
+and a Swift package can define
+more than one plugin.
+
+29
+00:01:16,243 --> 00:01:18,045
+A highly specialized plugin
+
+30
+00:01:18,045 --> 00:01:20,580
+can be private to the package
+that provides it,
+
+31
+00:01:20,580 --> 00:01:25,118
+and in that case, it's available
+only within that package.
+
+32
+00:01:25,118 --> 00:01:27,788
+But a general-purpose plugin
+can be made available
+
+33
+00:01:27,788 --> 00:01:32,125
+to other packages by defining it
+as a package product.
+
+34
+00:01:32,125 --> 00:01:34,594
+That lets other packages
+use it too,
+
+35
+00:01:34,594 --> 00:01:36,530
+in a way that's similar
+to how a package
+
+36
+00:01:36,530 --> 00:01:39,900
+can use a library
+from another package.
+
+37
+00:01:39,900 --> 00:01:42,736
+But unlike a library,
+a dependency on a plugin
+
+38
+00:01:42,736 --> 00:01:45,906
+does not bring in runtime
+content into your app.
+
+39
+00:01:45,906 --> 00:01:48,809
+Instead, it lets you
+access development tools
+
+40
+00:01:48,809 --> 00:01:52,846
+that run on your own machine
+or in your build automation.
+
+41
+00:01:52,846 --> 00:01:55,849
+So what can
+a package plugin do?
+
+42
+00:01:55,849 --> 00:01:59,920
+Well, in Xcode 14 there are
+two kinds of package plugins:
+
+43
+00:01:59,920 --> 00:02:03,623
+command plugins
+and build tool plugins.
+
+44
+00:02:03,623 --> 00:02:06,226
+Command plugins
+implement custom actions
+
+45
+00:02:06,226 --> 00:02:08,862
+that you can run
+whenever you want to.
+
+46
+00:02:08,862 --> 00:02:11,631
+They can run source code
+formatters or linters,
+
+47
+00:02:11,631 --> 00:02:13,266
+or they can perform other tasks
+
+48
+00:02:13,266 --> 00:02:15,702
+as part of your
+development workflow.
+
+49
+00:02:15,702 --> 00:02:17,838
+That might include updating
+contributor lists
+
+50
+00:02:17,838 --> 00:02:21,074
+or copyright dates in source
+files based on Git history,
+
+51
+00:02:21,074 --> 00:02:24,678
+or other things you might have
+arbitrary scripts to do today.
+
+52
+00:02:24,678 --> 00:02:26,646
+If it needs to,
+a command plugin
+
+53
+00:02:26,646 --> 00:02:29,883
+can ask for permission to modify
+the files in a package.
+
+54
+00:02:29,883 --> 00:02:32,719
+And that's especially useful
+for code formatting.
+
+55
+00:02:32,719 --> 00:02:35,956
+Not all command plugins
+need write permission.
+
+56
+00:02:35,956 --> 00:02:38,658
+Some commands could create
+reports or calculate metrics
+
+57
+00:02:38,658 --> 00:02:42,195
+about your code, without
+needing to make any changes.
+
+58
+00:02:42,195 --> 00:02:45,899
+Build tool plugins extend the
+build system's dependency graph.
+
+59
+00:02:45,899 --> 00:02:48,368
+They're particularly useful
+for generating source code
+
+60
+00:02:48,368 --> 00:02:51,038
+or resources
+as part of a build.
+
+61
+00:02:51,038 --> 00:02:53,340
+Unlike command plugins,
+which are invoked
+
+62
+00:02:53,340 --> 00:02:56,143
+for a whole package
+or a project at a time,
+
+63
+00:02:56,143 --> 00:03:00,013
+build tool plugins are applied
+to each target that needs them.
+
+64
+00:03:00,013 --> 00:03:04,918
+Let's take a look at using
+a command plugin in Xcode.
+
+65
+00:03:04,918 --> 00:03:06,686
+Here's a little iOS app
+
+66
+00:03:06,686 --> 00:03:09,856
+that shows various kinds
+of geometric shapes.
+
+67
+00:03:09,856 --> 00:03:13,660
+It's composed of an app project
+and a local package.
+
+68
+00:03:13,660 --> 00:03:15,796
+The package implements a library
+
+69
+00:03:15,796 --> 00:03:19,232
+that provides the core data
+types and logic for the app.
+
+70
+00:03:19,232 --> 00:03:21,068
+I'm thinking of splitting out
+the package
+
+71
+00:03:21,068 --> 00:03:24,471
+into its own repository
+so that others can use it,
+
+72
+00:03:24,471 --> 00:03:27,474
+and as part of this, I'd like
+to create a contributor file
+
+73
+00:03:27,474 --> 00:03:31,511
+that lists everyone who has
+committed code of this package.
+
+74
+00:03:31,511 --> 00:03:33,914
+I could write
+a custom script to do this.
+
+75
+00:03:33,914 --> 00:03:35,515
+But I know of a package
+that provides
+
+76
+00:03:35,515 --> 00:03:38,218
+some useful plugins
+for working with code,
+
+77
+00:03:38,218 --> 00:03:41,421
+and I think it has a plugin
+that does exactly what I want.
+
+78
+00:03:41,421 --> 00:03:44,357
+To get access to those plugins,
+I'll do the same thing
+
+79
+00:03:44,357 --> 00:03:47,327
+as if I needed a library
+from another package:
+
+80
+00:03:47,327 --> 00:03:49,296
+I'm going to add
+a package dependency
+
+81
+00:03:49,296 --> 00:03:51,765
+in the manifest
+of my local package.
+
+82
+00:03:51,765 --> 00:03:55,902
+When I save the manifest,
+Xcode fetches the remote package
+
+83
+00:03:55,902 --> 00:03:59,406
+and it appears in the
+Package Dependencies section.
+
+84
+00:03:59,406 --> 00:04:02,676
+I notice that Xcode has
+also fetched SwiftFormat,
+
+85
+00:04:02,676 --> 00:04:05,745
+which is a popular tool
+for formatting code.
+
+86
+00:04:05,745 --> 00:04:07,781
+This is because
+one of the command plugins
+
+87
+00:04:07,781 --> 00:04:12,385
+in the utility package in turn
+has a dependency on SwiftFormat.
+
+88
+00:04:12,385 --> 00:04:14,921
+Now that I've added
+this dependency,
+
+89
+00:04:14,921 --> 00:04:16,556
+I have access
+to any plugin commands
+
+90
+00:04:16,556 --> 00:04:18,825
+that the package provides.
+
+91
+00:04:18,825 --> 00:04:20,694
+I use the context menu
+on the package
+
+92
+00:04:20,694 --> 00:04:25,699
+I want to apply the command to.
+
+93
+00:04:25,699 --> 00:04:28,668
+Now there are three new commands
+in the menu;
+
+94
+00:04:28,668 --> 00:04:32,139
+one is for reformatting
+source code using SwiftFormat,
+
+95
+00:04:32,139 --> 00:04:35,041
+and two others provide
+specialized actions.
+
+96
+00:04:35,041 --> 00:04:37,544
+One of them generates
+or updates contributor lists
+
+97
+00:04:37,544 --> 00:04:40,080
+based on
+the commit history in Git,
+
+98
+00:04:40,080 --> 00:04:41,848
+and another updates
+the copyright dates
+
+99
+00:04:41,848 --> 00:04:43,917
+in my source files.
+
+100
+00:04:43,917 --> 00:04:48,155
+The command in the middle
+there does exactly what I want.
+
+101
+00:04:48,155 --> 00:04:51,291
+When I invoke the plugin
+command on my package,
+
+102
+00:04:51,291 --> 00:04:52,359
+Xcode lets me choose
+
+103
+00:04:52,359 --> 00:04:55,195
+which of its targets
+to pass to the plugin.
+
+104
+00:04:55,195 --> 00:04:58,365
+In this case, I'm going to
+invoke it on the whole package.
+
+105
+00:04:58,365 --> 00:05:00,500
+And if the plugin
+takes custom arguments,
+
+106
+00:05:00,500 --> 00:05:05,238
+I can pass those here as well.
+
+107
+00:05:05,238 --> 00:05:07,607
+I click Run,
+and because the plugin
+
+108
+00:05:07,607 --> 00:05:09,676
+is going to modify
+the file system,
+
+109
+00:05:09,676 --> 00:05:12,145
+Xcode warns me about that.
+
+110
+00:05:12,145 --> 00:05:14,181
+I can see the plugin
+author's stated reason
+
+111
+00:05:14,181 --> 00:05:16,950
+for wanting to modify my code,
+but I want to take a peek
+
+112
+00:05:16,950 --> 00:05:19,653
+at the implementation
+of the plugin as well.
+
+113
+00:05:19,653 --> 00:05:23,523
+So I choose Show Command,
+and Xcode takes me to the code.
+
+114
+00:05:25,358 --> 00:05:27,260
+What this plugin
+is doing is safe,
+
+115
+00:05:27,260 --> 00:05:29,329
+so I'm going to invoke
+the command again
+
+116
+00:05:29,329 --> 00:05:31,331
+and this time,
+I will choose Run.
+
+117
+00:05:35,468 --> 00:05:40,373
+I'll tell Xcode to remember
+my choice for this plugin.
+
+118
+00:05:40,373 --> 00:05:42,842
+This particular plugin uses
+Git history to generate
+
+119
+00:05:42,842 --> 00:05:45,912
+a file listing showing
+the names of contributors,
+
+120
+00:05:45,912 --> 00:05:50,283
+but there's a lot of flexibility
+in what command plugins can do.
+
+121
+00:05:50,283 --> 00:05:53,153
+Now that we've used
+a command plugin in Xcode,
+
+122
+00:05:53,153 --> 00:05:56,523
+let's take a closer look at how
+plugins work under the hood.
+
+123
+00:05:56,523 --> 00:05:58,425
+Package plugins
+are Swift scripts
+
+124
+00:05:58,425 --> 00:06:01,928
+that are compiled and run
+when they are needed.
+
+125
+00:06:01,928 --> 00:06:05,599
+Each plugin runs
+as a separate process.
+
+126
+00:06:05,599 --> 00:06:08,134
+Plugins have access
+to a distilled representation
+
+127
+00:06:08,134 --> 00:06:12,005
+of the input package,
+including its source files.
+
+128
+00:06:12,005 --> 00:06:13,506
+A plugin also gets information
+
+129
+00:06:13,506 --> 00:06:16,409
+about any dependencies
+of the package.
+
+130
+00:06:16,409 --> 00:06:18,078
+Many plugins call
+command-line tools
+
+131
+00:06:18,078 --> 00:06:20,247
+as part of doing their work.
+
+132
+00:06:20,247 --> 00:06:22,782
+Plugins can also create
+files and directories,
+
+133
+00:06:22,782 --> 00:06:25,585
+and can perform other actions
+using standard libraries
+
+134
+00:06:25,585 --> 00:06:28,855
+such as Foundation.
+
+135
+00:06:28,855 --> 00:06:31,625
+A plugin runs in a sandbox
+that prevents network access
+
+136
+00:06:31,625 --> 00:06:34,928
+and that only allows writing to
+a few places in the file system,
+
+137
+00:06:34,928 --> 00:06:37,731
+such as the build outputs
+directory.
+
+138
+00:06:37,731 --> 00:06:39,566
+But command plugins
+can ask for permission
+
+139
+00:06:39,566 --> 00:06:42,902
+to also modify files
+in the package source directory.
+
+140
+00:06:42,902 --> 00:06:45,138
+If the user approves,
+the sandbox is configured
+
+141
+00:06:45,138 --> 00:06:47,807
+to allow writing
+to those locations.
+
+142
+00:06:47,807 --> 00:06:51,378
+The plugin can also send
+results back to Xcode.
+
+143
+00:06:51,378 --> 00:06:53,179
+It can emit
+warnings and errors,
+
+144
+00:06:53,179 --> 00:06:56,049
+and build tool plugins
+can define tool invocations
+
+145
+00:06:56,049 --> 00:06:59,152
+for Xcode to run
+during the build.
+
+146
+00:06:59,152 --> 00:07:02,522
+All package plugins use API
+from the PackagePlugin module
+
+147
+00:07:02,522 --> 00:07:04,724
+provided by Xcode.
+
+148
+00:07:04,724 --> 00:07:07,527
+This API allows the plugin
+to access the input package,
+
+149
+00:07:07,527 --> 00:07:10,964
+and if appropriate,
+to return results to Xcode.
+
+150
+00:07:10,964 --> 00:07:13,233
+The main source file
+that implements the plugin
+
+151
+00:07:13,233 --> 00:07:16,636
+also defines
+the main entry point.
+
+152
+00:07:16,636 --> 00:07:18,905
+This should be a class
+or a struct that conforms
+
+153
+00:07:18,905 --> 00:07:22,575
+to the protocol that matches
+the type of plugin.
+
+154
+00:07:22,575 --> 00:07:25,378
+The specific entry point
+function that Xcode calls
+
+155
+00:07:25,378 --> 00:07:28,014
+depends on what
+kind of plugin it is.
+
+156
+00:07:28,014 --> 00:07:30,550
+You can learn more about
+the PackagePlugin API
+
+157
+00:07:30,550 --> 00:07:33,420
+in the "Create Swift Package
+plugins" video.
+
+158
+00:07:33,420 --> 00:07:35,789
+Earlier,
+we used a command plugin
+
+159
+00:07:35,789 --> 00:07:37,924
+to make changes to our package.
+
+160
+00:07:37,924 --> 00:07:41,661
+Let's look at some more of the
+specifics of command plugins.
+
+161
+00:07:41,661 --> 00:07:44,597
+Command plugins extend
+the development workflow.
+
+162
+00:07:44,597 --> 00:07:47,033
+They are applied directly
+to a package,
+
+163
+00:07:47,033 --> 00:07:48,768
+not during a build.
+
+164
+00:07:48,768 --> 00:07:51,871
+Not all command plugins
+modify the file system --
+
+165
+00:07:51,871 --> 00:07:53,173
+there are useful actions
+
+166
+00:07:53,173 --> 00:07:55,408
+that don't involve
+changing any files.
+
+167
+00:07:55,408 --> 00:07:57,744
+But if a command does want
+to write to the file system,
+
+168
+00:07:57,744 --> 00:07:59,979
+it must declare that
+in the manifest of the package
+
+169
+00:07:59,979 --> 00:08:01,948
+that implements the plugin.
+
+170
+00:08:01,948 --> 00:08:03,383
+This causes Xcode
+to ask the user
+
+171
+00:08:03,383 --> 00:08:06,786
+for permission before
+letting the plugin run.
+
+172
+00:08:06,786 --> 00:08:08,488
+Plugins are usually
+quite small,
+
+173
+00:08:08,488 --> 00:08:12,392
+and often depend on other
+tools to do the actual work.
+
+174
+00:08:12,392 --> 00:08:14,461
+Earlier, we saw
+that one of the plugins
+
+175
+00:08:14,461 --> 00:08:17,964
+uses SwiftFormat
+for all the real work.
+
+176
+00:08:17,964 --> 00:08:19,466
+Dependencies on tool packages
+
+177
+00:08:19,466 --> 00:08:22,302
+can be either binaries
+or source code --
+
+178
+00:08:22,302 --> 00:08:24,504
+Xcode will build
+any required tools from source
+
+179
+00:08:24,504 --> 00:08:26,906
+before the command is invoked.
+
+180
+00:08:26,906 --> 00:08:29,609
+Note that the plugin can be
+provided by a different package
+
+181
+00:08:29,609 --> 00:08:31,745
+than the tool it relies on.
+
+182
+00:08:31,745 --> 00:08:33,980
+In the implementation
+of command plugins,
+
+183
+00:08:33,980 --> 00:08:37,183
+the main type conforms to
+the CommandPlugin protocol,
+
+184
+00:08:37,183 --> 00:08:40,587
+and the plugin implements
+the performCommand entry point.
+
+185
+00:08:40,587 --> 00:08:42,722
+This entry point takes a context
+
+186
+00:08:42,722 --> 00:08:45,725
+and any custom arguments
+provided by the user.
+
+187
+00:08:45,725 --> 00:08:49,095
+Let's look at a different way
+of invoking command plugins.
+
+188
+00:08:49,095 --> 00:08:51,731
+I'm going to use
+the same project as before,
+
+189
+00:08:51,731 --> 00:08:53,500
+and because I added
+the dependency
+
+190
+00:08:53,500 --> 00:08:55,769
+on the SourceCodeUtilities
+package earlier,
+
+191
+00:08:55,769 --> 00:08:58,538
+I can invoke the same plugins
+in Terminal.
+
+192
+00:08:58,538 --> 00:08:59,839
+First I'm going
+to change directory
+
+193
+00:08:59,839 --> 00:09:02,842
+into the CoreLibs package,
+since that's the package
+
+194
+00:09:02,842 --> 00:09:05,578
+that I want to apply
+the command plugin to.
+
+195
+00:09:05,578 --> 00:09:10,216
+Swift Package Manager 5.6 has
+a new subcommand for plugins.
+
+196
+00:09:10,216 --> 00:09:12,485
+I'll type
+"swift package plugin --List"
+
+197
+00:09:12,485 --> 00:09:14,921
+to see what plugins
+are available.
+
+198
+00:09:14,921 --> 00:09:18,625
+This shows the same plugins
+as in the menu in Xcode.
+
+199
+00:09:18,625 --> 00:09:21,127
+Here on the command line,
+each command also shows
+
+200
+00:09:21,127 --> 00:09:23,863
+the verb that should be used
+to run it.
+
+201
+00:09:23,863 --> 00:09:25,665
+I'll use the verb
+for regenerating
+
+202
+00:09:25,665 --> 00:09:30,236
+a contributor list,
+as I did in Xcode.
+
+203
+00:09:30,236 --> 00:09:32,972
+This plugin wants permission
+to write to the file system,
+
+204
+00:09:32,972 --> 00:09:34,908
+since it's going
+to create a file.
+
+205
+00:09:34,908 --> 00:09:36,609
+I type "yes" to allow this,
+
+206
+00:09:36,609 --> 00:09:40,513
+and the plugin can run
+and update the contributor list.
+
+207
+00:09:40,513 --> 00:09:41,548
+I could also have used
+
+208
+00:09:41,548 --> 00:09:43,583
+a package manager option
+that allows the plugin
+
+209
+00:09:43,583 --> 00:09:46,586
+to write to the file system
+without asking.
+
+210
+00:09:46,586 --> 00:09:49,222
+This is particularly useful
+if you're invoking it
+
+211
+00:09:49,222 --> 00:09:52,192
+from a CI system
+or other build automation.
+
+212
+00:09:52,192 --> 00:09:54,394
+But be sure you know
+what the plugin is doing
+
+213
+00:09:54,394 --> 00:09:57,464
+before using that option.
+
+214
+00:09:57,464 --> 00:09:59,098
+Just like in Xcode,
+
+215
+00:09:59,098 --> 00:10:02,135
+I can pass command line
+arguments to the plugin.
+
+216
+00:10:02,135 --> 00:10:04,671
+Any arguments after
+the plugin's action verb
+
+217
+00:10:04,671 --> 00:10:07,240
+will be passed to the plugin.
+
+218
+00:10:07,240 --> 00:10:09,742
+In this case,
+I pass a verbose flag
+
+219
+00:10:09,742 --> 00:10:13,213
+to see more output
+from the plugin as it runs.
+
+220
+00:10:13,213 --> 00:10:17,817
+Each command plugin defines
+what arguments it supports.
+
+221
+00:10:17,817 --> 00:10:22,121
+Until now, we've been talking
+mostly about command plugins.
+
+222
+00:10:22,121 --> 00:10:23,923
+But there are
+a few more things to say
+
+223
+00:10:23,923 --> 00:10:25,992
+about build tool plugins.
+
+224
+00:10:25,992 --> 00:10:27,727
+Unlike a command plugin,
+
+225
+00:10:27,727 --> 00:10:31,097
+a build tool plugin does not
+do its work immediately.
+
+226
+00:10:31,097 --> 00:10:34,467
+Instead, it creates and returns
+build tool invocations
+
+227
+00:10:34,467 --> 00:10:38,471
+for Xcode to run later
+when the package is built.
+
+228
+00:10:38,471 --> 00:10:41,808
+Each of those tool invocations
+has a command line to run,
+
+229
+00:10:41,808 --> 00:10:43,443
+and it also has
+inputs and outputs
+
+230
+00:10:43,443 --> 00:10:46,679
+that tells Xcode when to run it.
+
+231
+00:10:46,679 --> 00:10:48,748
+Build tool plugins
+can define commands
+
+232
+00:10:48,748 --> 00:10:52,051
+that run during the build
+or before the build.
+
+233
+00:10:52,051 --> 00:10:54,554
+We'll take a look at
+the difference in a minute.
+
+234
+00:10:56,155 --> 00:10:59,158
+Commands returned by build tool
+plugins are usually configured
+
+235
+00:10:59,158 --> 00:11:01,361
+to write their outputs
+to the build directory,
+
+236
+00:11:01,361 --> 00:11:04,364
+so they persist between
+incremental builds.
+
+237
+00:11:04,364 --> 00:11:06,266
+And like the plugins
+themselves,
+
+238
+00:11:06,266 --> 00:11:08,201
+the commands defined
+by a build tool plugin
+
+239
+00:11:08,201 --> 00:11:10,670
+run in a sandbox
+that prevents network access
+
+240
+00:11:10,670 --> 00:11:13,940
+and any changes to the package.
+
+241
+00:11:13,940 --> 00:11:16,376
+In the implementation
+of a build tool plugin,
+
+242
+00:11:16,376 --> 00:11:19,846
+the main type conforms to
+the BuildToolPlugin protocol
+
+243
+00:11:19,846 --> 00:11:20,947
+and the plugin implements
+
+244
+00:11:20,947 --> 00:11:24,050
+the createBuildCommands
+entry point.
+
+245
+00:11:24,050 --> 00:11:26,753
+This entry point takes
+a context and the target
+
+246
+00:11:26,753 --> 00:11:30,089
+to create build commands for.
+
+247
+00:11:30,089 --> 00:11:32,225
+It returns any
+custom build commands
+
+248
+00:11:32,225 --> 00:11:35,261
+that should run
+when the package is built.
+
+249
+00:11:35,261 --> 00:11:37,397
+There are two basic kinds
+of build commands
+
+250
+00:11:37,397 --> 00:11:40,333
+that a build tool plugin
+can return.
+
+251
+00:11:40,333 --> 00:11:43,836
+Ordinary build commands
+specify input and output paths,
+
+252
+00:11:43,836 --> 00:11:45,939
+and only run
+when the outputs are missing
+
+253
+00:11:45,939 --> 00:11:48,675
+or the inputs have changed.
+
+254
+00:11:48,675 --> 00:11:51,444
+Prebuild commands
+run before the build starts,
+
+255
+00:11:51,444 --> 00:11:53,413
+and can be used when
+the names of the outputs
+
+256
+00:11:53,413 --> 00:11:56,049
+are unknown ahead of time.
+
+257
+00:11:56,049 --> 00:11:58,384
+Prebuild commands
+run before every build,
+
+258
+00:11:58,384 --> 00:12:00,853
+so they should make sure
+to do as little work as possible
+
+259
+00:12:00,853 --> 00:12:02,855
+when there are no changes.
+
+260
+00:12:02,855 --> 00:12:04,657
+Build commands
+and prebuild commands
+
+261
+00:12:04,657 --> 00:12:07,727
+are great for generating
+source code or resources.
+
+262
+00:12:07,727 --> 00:12:09,996
+So how does Xcode know
+which build tool plugins
+
+263
+00:12:09,996 --> 00:12:12,599
+to apply to a package target?
+
+264
+00:12:12,599 --> 00:12:14,834
+In SwiftPM 5.6 and later,
+
+265
+00:12:14,834 --> 00:12:16,402
+there is a new
+plugins parameter
+
+266
+00:12:16,402 --> 00:12:18,004
+in the package manifest
+
+267
+00:12:18,004 --> 00:12:21,808
+that lists the build tool
+plugins that a target wants.
+
+268
+00:12:21,808 --> 00:12:24,310
+This parameter specifies
+any build tool plugins
+
+269
+00:12:24,310 --> 00:12:25,812
+needed by the target,
+
+270
+00:12:25,812 --> 00:12:28,781
+and just as with any
+runtime libraries it depends on,
+
+271
+00:12:28,781 --> 00:12:30,984
+those plugins can be
+either in the same package
+
+272
+00:12:30,984 --> 00:12:33,353
+or in another package.
+
+273
+00:12:33,353 --> 00:12:34,954
+Let's go back to Xcode.
+
+274
+00:12:34,954 --> 00:12:36,923
+I'm going to configure
+my geometry app
+
+275
+00:12:36,923 --> 00:12:38,858
+to use a build tool plugin.
+
+276
+00:12:38,858 --> 00:12:40,093
+In this particular case,
+
+277
+00:12:40,093 --> 00:12:42,929
+I have a custom command line
+tool that generates Swift code
+
+278
+00:12:42,929 --> 00:12:46,599
+based on some data files
+in my Core Library target.
+
+279
+00:12:46,599 --> 00:12:48,534
+The specific details
+aren't important,
+
+280
+00:12:48,534 --> 00:12:50,103
+but what I want to end up with
+
+281
+00:12:50,103 --> 00:12:52,205
+are generated type-safe
+Swift accessors
+
+282
+00:12:52,205 --> 00:12:54,874
+for each piece of data.
+
+283
+00:12:54,874 --> 00:12:57,944
+In addition to my data files,
+I've been using a custom tool
+
+284
+00:12:57,944 --> 00:13:01,247
+to generate source code that
+I've checked into my repository.
+
+285
+00:13:01,247 --> 00:13:03,416
+I have been manually
+running this tool
+
+286
+00:13:03,416 --> 00:13:06,753
+to regenerate Swift wrapper code
+and committing the changes
+
+287
+00:13:06,753 --> 00:13:09,288
+whenever my data files change.
+
+288
+00:13:09,288 --> 00:13:11,791
+But with the build tool plugin,
+I can do better.
+
+289
+00:13:11,791 --> 00:13:14,293
+I can generate the code
+during the build
+
+290
+00:13:14,293 --> 00:13:17,964
+and avoid having to keep the
+generated code in my repository.
+
+291
+00:13:19,699 --> 00:13:23,703
+To get access to the plugin,
+I go to the package manifest
+
+292
+00:13:23,703 --> 00:13:26,072
+and add a dependency
+on the package that provides
+
+293
+00:13:26,072 --> 00:13:29,509
+the source generator plugin
+I want to use.
+
+294
+00:13:33,980 --> 00:13:36,249
+The targets in my package
+now have access
+
+295
+00:13:36,249 --> 00:13:40,386
+to any build tool plugins
+defined in that package.
+
+296
+00:13:42,388 --> 00:13:45,191
+Now I go to the target
+that needs to use the plugin,
+
+297
+00:13:45,191 --> 00:13:48,961
+and I add a plugins parameter
+to its definition.
+
+298
+00:13:52,899 --> 00:13:56,903
+This tells Xcode that it wants
+to apply a particular build tool
+
+299
+00:13:56,903 --> 00:13:59,806
+from that package to my target.
+
+300
+00:13:59,806 --> 00:14:02,008
+Now I can go and delete
+those generated source files
+
+301
+00:14:02,008 --> 00:14:03,710
+from my repository.
+
+302
+00:14:03,710 --> 00:14:07,847
+They'll be created or updated
+as needed during the build.
+
+303
+00:14:11,517 --> 00:14:14,187
+There, that's much cleaner.
+
+304
+00:14:14,187 --> 00:14:16,322
+And now when I build
+and run my app,
+
+305
+00:14:16,322 --> 00:14:18,057
+my build tool plugin
+
+306
+00:14:18,057 --> 00:14:20,259
+tells Xcode to invoke
+my code-generation tool
+
+307
+00:14:20,259 --> 00:14:22,228
+whenever my data files change.
+
+308
+00:14:22,228 --> 00:14:23,896
+The generated code
+will be stored
+
+309
+00:14:23,896 --> 00:14:26,099
+along with the other build files
+in my build folder,
+
+310
+00:14:26,099 --> 00:14:28,501
+keeping my repository clean.
+
+311
+00:14:28,501 --> 00:14:30,503
+In this video,
+we've talked about
+
+312
+00:14:30,503 --> 00:14:33,940
+what Swift package plugins are
+and how they work.
+
+313
+00:14:33,940 --> 00:14:35,541
+We have discussed some
+of the similarities
+
+314
+00:14:35,541 --> 00:14:37,643
+and differences
+between command plugins
+
+315
+00:14:37,643 --> 00:14:40,012
+and build tool plugins.
+
+316
+00:14:40,012 --> 00:14:41,280
+Both types of plugins
+
+317
+00:14:41,280 --> 00:14:43,583
+let you replace a variety
+of random scripts
+
+318
+00:14:43,583 --> 00:14:47,887
+with a more structured kind of
+extensibility in your packages.
+
+319
+00:14:47,887 --> 00:14:50,490
+Build tool plugins let you
+extend the build system
+
+320
+00:14:50,490 --> 00:14:52,792
+to generate sources
+and resources,
+
+321
+00:14:52,792 --> 00:14:56,562
+or to do other custom work
+as part of your build.
+
+322
+00:14:56,562 --> 00:14:58,431
+Command plugins
+let you automate
+
+323
+00:14:58,431 --> 00:15:01,367
+common development
+tasks with custom actions.
+
+324
+00:15:01,367 --> 00:15:03,636
+They might be tailored
+to a particular workflow
+
+325
+00:15:03,636 --> 00:15:08,307
+or could be written to be useful
+in a wide variety of cases.
+
+326
+00:15:08,307 --> 00:15:10,777
+To learn how to create
+your own package plugins,
+
+327
+00:15:10,777 --> 00:15:11,878
+be sure to check out
+
+328
+00:15:11,878 --> 00:15:15,348
+the "Create Swift
+Package plugins" video.
+
+329
+00:15:15,348 --> 00:15:19,919
+Thanks for watching
+and enjoy the rest of WWDC 2022.
+
+330
+00:15:19,919 --> 00:15:23,923
+♪
+

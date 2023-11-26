@@ -1,0 +1,1720 @@
+1
+00:00:00,033 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,376
+♪
+
+3
+00:00:09,376 --> 00:00:12,079
+Hi everyone,
+my name is John Crowson,
+
+4
+00:00:12,079 --> 00:00:14,414
+and I'm a software engineer
+on the Performance Tools team
+
+5
+00:00:14,414 --> 00:00:15,682
+here at Apple.
+
+6
+00:00:15,682 --> 00:00:17,451
+In this talk,
+I'm excited to introduce you
+
+7
+00:00:17,451 --> 00:00:20,554
+to several new tools
+to track down hangs in your app
+
+8
+00:00:20,554 --> 00:00:24,258
+with Xcode
+and on-device hang detection.
+
+9
+00:00:24,258 --> 00:00:26,360
+I'll be your guide
+as we visit different phases
+
+10
+00:00:26,360 --> 00:00:29,363
+of your app development process,
+and consider which tools
+
+11
+00:00:29,363 --> 00:00:32,266
+are best suited
+to help during each phase.
+
+12
+00:00:32,266 --> 00:00:35,235
+This talk is broken
+into four sections:
+
+13
+00:00:35,235 --> 00:00:38,405
+First, I will cover,
+What are hangs?
+
+14
+00:00:38,405 --> 00:00:40,774
+Then, I will present tooling
+to help you discover
+
+15
+00:00:40,774 --> 00:00:44,912
+and diagnose hangs
+while developing your app,
+
+16
+00:00:44,912 --> 00:00:49,716
+while beta testing your app,
+and after releasing your app.
+
+17
+00:00:49,716 --> 00:00:52,619
+Let's get started!
+
+18
+00:00:52,619 --> 00:00:55,455
+I want to tell you about
+a new app my team is developing:
+
+19
+00:00:55,455 --> 00:00:58,025
+Food Truck, which will help
+manage food trucks
+
+20
+00:00:58,025 --> 00:01:00,694
+that specifically sell donuts.
+
+21
+00:01:00,694 --> 00:01:04,398
+Let me introduce you to some of
+the donut types I've created.
+
+22
+00:01:07,868 --> 00:01:09,836
+Huh, that took
+a really long time
+
+23
+00:01:09,836 --> 00:01:11,838
+to scroll through
+my list of donuts.
+
+24
+00:01:11,838 --> 00:01:15,809
+The app was laggy and would not
+respond to any of my touches.
+
+25
+00:01:15,809 --> 00:01:20,047
+At Apple, we call this period
+of unresponsiveness a "hang."
+
+26
+00:01:20,047 --> 00:01:22,616
+An app's main thread is
+responsible for processing
+
+27
+00:01:22,616 --> 00:01:26,119
+user interactions
+and updating the view content.
+
+28
+00:01:26,119 --> 00:01:29,556
+A hang is reported when the main
+thread is busy doing work
+
+29
+00:01:29,556 --> 00:01:32,759
+or waiting on another
+thread or system resource,
+
+30
+00:01:32,759 --> 00:01:35,295
+causing a delay
+in updating the view content
+
+31
+00:01:35,295 --> 00:01:39,232
+by at least 250 milliseconds.
+
+32
+00:01:39,232 --> 00:01:41,068
+The main thread
+is also unavailable
+
+33
+00:01:41,068 --> 00:01:46,006
+to process new user interactions
+until the hang is resolved.
+
+34
+00:01:46,006 --> 00:01:51,378
+To the user, it appears
+the app is completely stuck.
+
+35
+00:01:51,378 --> 00:01:52,879
+Creating a responsive app
+
+36
+00:01:52,879 --> 00:01:56,717
+is critical to providing
+a positive user experience.
+
+37
+00:01:56,717 --> 00:01:59,519
+Consistently unresponsive apps
+may result in users
+
+38
+00:01:59,519 --> 00:02:03,123
+force quitting the app,
+switching to a different app,
+
+39
+00:02:03,123 --> 00:02:05,559
+and in some cases,
+even deleting your app
+
+40
+00:02:05,559 --> 00:02:08,061
+and writing a negative review.
+
+41
+00:02:08,061 --> 00:02:10,697
+Because of this,
+tracking down hangs in your app
+
+42
+00:02:10,697 --> 00:02:15,202
+is critical to gaining
+and maintaining your user base.
+
+43
+00:02:15,202 --> 00:02:17,504
+Providing a responsive
+experience ensures people
+
+44
+00:02:17,504 --> 00:02:19,973
+will enjoy using your app.
+
+45
+00:02:21,975 --> 00:02:24,778
+For more information on hangs
+and what causes them,
+
+46
+00:02:24,778 --> 00:02:27,514
+as well as strategies to
+eliminate them from your code,
+
+47
+00:02:27,514 --> 00:02:30,217
+checkout the "Understand and
+eliminate hangs from your app"
+
+48
+00:02:30,217 --> 00:02:32,819
+talk from 2021.
+
+49
+00:02:32,819 --> 00:02:34,087
+The app-development process
+
+50
+00:02:34,087 --> 00:02:36,723
+can be broken down
+into three phases.
+
+51
+00:02:36,723 --> 00:02:41,395
+First, developing the latest
+app version at desk using Xcode.
+
+52
+00:02:41,395 --> 00:02:43,997
+Then, testing the app
+and collecting feedback
+
+53
+00:02:43,997 --> 00:02:46,967
+in a beta environment
+without Xcode.
+
+54
+00:02:46,967 --> 00:02:48,835
+For example,
+you may have an app version
+
+55
+00:02:48,835 --> 00:02:50,971
+that's development-signed
+on your device
+
+56
+00:02:50,971 --> 00:02:53,540
+or distributed
+through TestFlight.
+
+57
+00:02:53,540 --> 00:02:57,677
+Finally, releasing the latest
+app version on the App Store.
+
+58
+00:02:57,677 --> 00:02:59,913
+Even for the most
+proactive developers,
+
+59
+00:02:59,913 --> 00:03:02,582
+new hang issues
+can arise at any phase,
+
+60
+00:03:02,582 --> 00:03:05,085
+so it's important that you
+know the tools to resolve them
+
+61
+00:03:05,085 --> 00:03:07,120
+during each one.
+
+62
+00:03:07,120 --> 00:03:09,856
+Before iOS 16 and Xcode 14,
+
+63
+00:03:09,856 --> 00:03:12,626
+we offered two tools
+that assisted with discovering
+
+64
+00:03:12,626 --> 00:03:14,995
+and diagnosing
+the hangs in your app.
+
+65
+00:03:14,995 --> 00:03:17,697
+MetricKit is a framework
+that supports collecting
+
+66
+00:03:17,697 --> 00:03:21,201
+nonaggregated hang rate metrics
+and diagnostic reports
+
+67
+00:03:21,201 --> 00:03:26,106
+from individual users on your
+beta or public release app.
+
+68
+00:03:26,106 --> 00:03:29,776
+The Xcode Organizer provides
+an aggregated hang rate metric
+
+69
+00:03:29,776 --> 00:03:32,946
+from users on your
+public release app.
+
+70
+00:03:32,946 --> 00:03:35,782
+There are gaps here,
+specifically when developing
+
+71
+00:03:35,782 --> 00:03:39,052
+your app or when trying
+to understand what source code
+
+72
+00:03:39,052 --> 00:03:43,657
+has caused the public release
+hang-rate metric to rise.
+
+73
+00:03:43,657 --> 00:03:46,226
+In iOS 16 and Xcode 14,
+
+74
+00:03:46,226 --> 00:03:50,697
+we've been busy introducing
+several new tools to help.
+
+75
+00:03:50,697 --> 00:03:52,799
+Let's introduce
+each of them briefly
+
+76
+00:03:52,799 --> 00:03:55,669
+before we cover them
+in more detail.
+
+77
+00:03:55,669 --> 00:03:57,938
+The Thread Performance
+Checker in Xcode
+
+78
+00:03:57,938 --> 00:04:00,407
+alerts you to hang-causing
+threading issues
+
+79
+00:04:00,407 --> 00:04:04,578
+while debugging your app
+without actively tracing it.
+
+80
+00:04:04,578 --> 00:04:07,914
+Instruments in Xcode
+now detects and labels hangs
+
+81
+00:04:07,914 --> 00:04:10,484
+while tracing your app.
+
+82
+00:04:10,484 --> 00:04:13,420
+On-device hang detection
+provides hang detection
+
+83
+00:04:13,420 --> 00:04:16,256
+without using Xcode or tracing,
+
+84
+00:04:16,256 --> 00:04:18,458
+providing real-time
+hang notifications
+
+85
+00:04:18,458 --> 00:04:20,827
+and supporting diagnostics
+while using
+
+86
+00:04:20,827 --> 00:04:24,164
+your development-signed
+or TestFlight app.
+
+87
+00:04:24,164 --> 00:04:26,399
+And finally,
+the organizer in Xcode
+
+88
+00:04:26,399 --> 00:04:29,035
+now supports hang reports,
+which provides
+
+89
+00:04:29,035 --> 00:04:33,373
+aggregated hang diagnostics
+from users in the field.
+
+90
+00:04:33,373 --> 00:04:35,108
+Now that you know
+what hangs are
+
+91
+00:04:35,108 --> 00:04:37,077
+and the different phases
+they can arise,
+
+92
+00:04:37,077 --> 00:04:39,312
+I will cover
+how to track down hangs
+
+93
+00:04:39,312 --> 00:04:43,350
+while developing
+an app with Xcode.
+
+94
+00:04:43,350 --> 00:04:46,620
+In Xcode 14, the new
+Thread Performance Checker tool
+
+95
+00:04:46,620 --> 00:04:49,823
+notifies you in the Xcode
+Issue Navigator when it detects
+
+96
+00:04:49,823 --> 00:04:52,425
+priority inversions
+and non-UI work
+
+97
+00:04:52,425 --> 00:04:54,327
+on the main thread of your app,
+
+98
+00:04:54,327 --> 00:04:58,298
+both of which
+are common causes of hangs.
+
+99
+00:04:58,298 --> 00:04:59,633
+I have now returned to Xcode
+
+100
+00:04:59,633 --> 00:05:03,036
+to diagnose the hang I observed
+earlier in the Food Truck app
+
+101
+00:05:03,036 --> 00:05:06,606
+when I was scrolling through
+the donuts I've created.
+
+102
+00:05:06,606 --> 00:05:08,375
+When I built and ran the app,
+
+103
+00:05:08,375 --> 00:05:10,577
+and repeated
+the user interaction,
+
+104
+00:05:10,577 --> 00:05:13,713
+the Thread Performance Checker
+tool alerted me to a hang risk
+
+105
+00:05:13,713 --> 00:05:16,983
+caused by a priority inversion.
+
+106
+00:05:16,983 --> 00:05:19,586
+This means a higher priority
+thread was attempting
+
+107
+00:05:19,586 --> 00:05:22,556
+to be synchronized
+with a lower priority thread.
+
+108
+00:05:22,556 --> 00:05:24,791
+This may indicate the hang
+we are noticing
+
+109
+00:05:24,791 --> 00:05:27,861
+is caused by the main thread
+waiting on different
+
+110
+00:05:27,861 --> 00:05:30,063
+lower-priority threads.
+
+111
+00:05:30,063 --> 00:05:32,599
+To detect priority inversions
+and non-UI work
+
+112
+00:05:32,599 --> 00:05:34,134
+on the main thread of your app,
+
+113
+00:05:34,134 --> 00:05:36,369
+enable the Thread Performance
+Checker tool
+
+114
+00:05:36,369 --> 00:05:40,607
+from the Diagnostics section
+of the appropriate scheme.
+
+115
+00:05:40,607 --> 00:05:43,243
+The Thread Performance Checker
+alert has helped me discover
+
+116
+00:05:43,243 --> 00:05:45,745
+the potential culprit
+of my hang,
+
+117
+00:05:45,745 --> 00:05:48,114
+but in order to triage further,
+I will want to know
+
+118
+00:05:48,114 --> 00:05:51,551
+what the other thread was doing
+during the hang duration.
+
+119
+00:05:51,551 --> 00:05:56,456
+Let's use another tool
+to dive deeper.
+
+120
+00:05:56,456 --> 00:05:58,992
+The Time Profiler instrument
+gives you the ability to know
+
+121
+00:05:58,992 --> 00:06:01,828
+what each thread
+in your app was doing over time
+
+122
+00:06:01,828 --> 00:06:04,264
+by providing call stacks.
+
+123
+00:06:04,264 --> 00:06:08,235
+New in Xcode 14, the Time
+Profiler also detects hangs
+
+124
+00:06:08,235 --> 00:06:12,239
+and labels them directly in
+the corresponding process track.
+
+125
+00:06:12,239 --> 00:06:14,741
+In the Food Truck app,
+I'll use the Time Profiler
+
+126
+00:06:14,741 --> 00:06:16,610
+to confirm a hang is occurring
+
+127
+00:06:16,610 --> 00:06:18,445
+when scrolling through
+my donuts,
+
+128
+00:06:18,445 --> 00:06:21,681
+that it was caused by a priority
+inversion on the main thread,
+
+129
+00:06:21,681 --> 00:06:23,783
+and figure out
+what the lower priority threads
+
+130
+00:06:23,783 --> 00:06:28,255
+were busy doing that caused
+the main thread to wait.
+
+131
+00:06:28,255 --> 00:06:31,324
+I start from the
+Product  Profile menu in Xcode.
+
+132
+00:06:31,324 --> 00:06:33,326
+This builds the app for release
+
+133
+00:06:33,326 --> 00:06:37,464
+and launches Instruments
+already setup to target the app.
+
+134
+00:06:37,464 --> 00:06:40,233
+I launch
+the Time Profiler template
+
+135
+00:06:40,233 --> 00:06:43,436
+and begin recording a trace of
+the problematic user interaction
+
+136
+00:06:43,436 --> 00:06:45,572
+in the Food Truck app.
+
+137
+00:06:49,542 --> 00:06:51,411
+I see there is a hang
+being detected
+
+138
+00:06:51,411 --> 00:06:53,213
+and labeled in the timeline.
+
+139
+00:06:53,213 --> 00:06:55,115
+The hang duration
+is also specified
+
+140
+00:06:55,115 --> 00:06:58,718
+to help evaluate
+the severity of the issue.
+
+141
+00:06:58,718 --> 00:07:01,588
+Next, I can triple-click
+the hang interval
+
+142
+00:07:01,588 --> 00:07:04,391
+which creates a time filter
+for the duration of the hang
+
+143
+00:07:04,391 --> 00:07:06,793
+and filters the information
+in the detail views
+
+144
+00:07:06,793 --> 00:07:09,296
+at the bottom
+to only events occurring
+
+145
+00:07:09,296 --> 00:07:11,431
+in this selected time interval.
+
+146
+00:07:11,431 --> 00:07:14,034
+It also makes it easier
+to see what was happening
+
+147
+00:07:14,034 --> 00:07:17,737
+during this time period
+in other tracks.
+
+148
+00:07:17,737 --> 00:07:19,839
+The first thing I notice
+is that the main thread
+
+149
+00:07:19,839 --> 00:07:23,510
+has barely any CPU usage
+during the hang interval,
+
+150
+00:07:23,510 --> 00:07:25,912
+meaning the main thread
+was unresponsive
+
+151
+00:07:25,912 --> 00:07:27,981
+because it was waiting
+on another thread,
+
+152
+00:07:27,981 --> 00:07:31,284
+not because it was doing
+too much work itself.
+
+153
+00:07:31,284 --> 00:07:33,953
+This aligns with
+the Thread Performance Checker's
+
+154
+00:07:33,953 --> 00:07:37,424
+priority inversion alert
+from earlier.
+
+155
+00:07:37,424 --> 00:07:39,159
+Next, I see a worker thread
+
+156
+00:07:39,159 --> 00:07:42,295
+that has lots of CPU usage
+during the hang.
+
+157
+00:07:42,295 --> 00:07:46,566
+This is likely the thread that
+the main thread is waiting for.
+
+158
+00:07:46,566 --> 00:07:48,101
+The next step
+would be to examine
+
+159
+00:07:48,101 --> 00:07:50,737
+what the worker thread
+was doing during the hang
+
+160
+00:07:50,737 --> 00:07:53,640
+and resolve
+the priority inversion.
+
+161
+00:07:53,640 --> 00:07:55,442
+Hang detection
+and labeling in Instruments
+
+162
+00:07:55,442 --> 00:07:58,345
+is a great way to surface
+any hangs that are encountered
+
+163
+00:07:58,345 --> 00:08:00,347
+while profiling your app.
+
+164
+00:08:00,347 --> 00:08:02,816
+It is available by default
+in the Time Profiler
+
+165
+00:08:02,816 --> 00:08:06,019
+and CPU Profiler instruments.
+
+166
+00:08:06,019 --> 00:08:09,255
+There is also a new standalone
+hang tracing instrument
+
+167
+00:08:09,255 --> 00:08:11,524
+that you can add
+to any trace documents
+
+168
+00:08:11,524 --> 00:08:15,495
+to surface hangs in combination
+with other instruments.
+
+169
+00:08:15,495 --> 00:08:17,897
+In addition to hang detection
+and labeling,
+
+170
+00:08:17,897 --> 00:08:20,900
+it allows you to configure
+a hang duration threshold
+
+171
+00:08:20,900 --> 00:08:24,838
+to find specific periods
+of unresponsiveness.
+
+172
+00:08:24,838 --> 00:08:26,773
+You have now learned
+how to use Xcode
+
+173
+00:08:26,773 --> 00:08:30,043
+to discover
+and diagnose hangs at desk.
+
+174
+00:08:30,043 --> 00:08:32,846
+Even with great testing
+coverage during development,
+
+175
+00:08:32,846 --> 00:08:35,181
+beta and public release
+environments are likely
+
+176
+00:08:35,181 --> 00:08:39,586
+to uncover hangs in code paths
+you hadn't considered.
+
+177
+00:08:39,586 --> 00:08:42,255
+Next, I will introduce
+how to track down hangs
+
+178
+00:08:42,255 --> 00:08:45,525
+once the app is deployed
+in a beta environment.
+
+179
+00:08:45,525 --> 00:08:48,161
+I've now deployed
+a build of the Food Truck app
+
+180
+00:08:48,161 --> 00:08:50,430
+to TestFlight through
+App Store Connect
+
+181
+00:08:50,430 --> 00:08:53,400
+and it is downloaded
+on my personal device.
+
+182
+00:08:53,400 --> 00:08:56,302
+I'll test the app when
+selling donuts around town,
+
+183
+00:08:56,302 --> 00:08:58,505
+including in places where
+I don't always have
+
+184
+00:08:58,505 --> 00:09:00,507
+a strong network connection.
+
+185
+00:09:00,507 --> 00:09:03,343
+But how do I discover
+and diagnose hangs
+
+186
+00:09:03,343 --> 00:09:08,314
+if my device
+is not connected to Xcode?
+
+187
+00:09:08,314 --> 00:09:11,317
+To continue to monitor for hangs
+under these conditions,
+
+188
+00:09:11,317 --> 00:09:16,122
+iOS 16 introduces on-device hang
+detection in Developer settings,
+
+189
+00:09:16,122 --> 00:09:18,758
+which provides real-time
+hang notifications
+
+190
+00:09:18,758 --> 00:09:21,461
+and supporting diagnostics.
+
+191
+00:09:21,461 --> 00:09:23,363
+This is available
+for development-signed
+
+192
+00:09:23,363 --> 00:09:25,765
+or TestFlight apps.
+
+193
+00:09:25,765 --> 00:09:28,435
+It's time to start
+selling orders.
+
+194
+00:09:28,435 --> 00:09:30,703
+When I attempt to open
+my current orders,
+
+195
+00:09:30,703 --> 00:09:33,473
+I receive an on-device
+hang detection notification
+
+196
+00:09:33,473 --> 00:09:35,108
+that my app is hanging,
+
+197
+00:09:35,108 --> 00:09:38,311
+this time for over
+three seconds.
+
+198
+00:09:38,311 --> 00:09:40,146
+I wonder why
+I didn't notice this hang
+
+199
+00:09:40,146 --> 00:09:42,749
+when I was developing
+with Xcode?
+
+200
+00:09:42,749 --> 00:09:45,051
+I will need to use
+the diagnostic information
+
+201
+00:09:45,051 --> 00:09:49,389
+provided by the on-device hang
+detection tool to learn more.
+
+202
+00:09:49,389 --> 00:09:51,324
+Once your app is setup
+for development,
+
+203
+00:09:51,324 --> 00:09:52,992
+this feature can be
+enabled by opening
+
+204
+00:09:52,992 --> 00:09:55,728
+Settings  Developer 
+Hang Detection,
+
+205
+00:09:55,728 --> 00:09:58,798
+and toggling the switch.
+
+206
+00:09:58,798 --> 00:10:00,633
+The Hang Threshold setting
+allows you to configure
+
+207
+00:10:00,633 --> 00:10:03,303
+the minimum duration
+of hangs to detect.
+
+208
+00:10:03,303 --> 00:10:06,539
+The shortest hang threshold
+is 250 milliseconds
+
+209
+00:10:06,539 --> 00:10:10,009
+and can be bumped
+to 500 milliseconds or higher.
+
+210
+00:10:10,009 --> 00:10:12,812
+Long hangs tend to have
+a higher user-impact,
+
+211
+00:10:12,812 --> 00:10:15,849
+but even shorter ones can be
+disruptive to the experience,
+
+212
+00:10:15,849 --> 00:10:17,517
+depending on the context,
+
+213
+00:10:17,517 --> 00:10:20,286
+especially if they happen
+consecutively.
+
+214
+00:10:20,286 --> 00:10:21,621
+After installing your app,
+
+215
+00:10:21,621 --> 00:10:24,724
+it will appear in the list
+of monitored apps.
+
+216
+00:10:24,724 --> 00:10:27,293
+The final section
+shows a chronological list
+
+217
+00:10:27,293 --> 00:10:30,763
+of available logs for the hangs
+you were alerted to.
+
+218
+00:10:30,763 --> 00:10:33,199
+Note that these diagnostics
+are best-effort
+
+219
+00:10:33,199 --> 00:10:36,035
+and processed in the background
+at a low priority
+
+220
+00:10:36,035 --> 00:10:39,072
+to minimize
+performance overhead.
+
+221
+00:10:39,072 --> 00:10:41,241
+This means the processing
+can take longer,
+
+222
+00:10:41,241 --> 00:10:44,377
+especially if the system
+is busy.
+
+223
+00:10:44,377 --> 00:10:47,046
+Fortunately, a passive
+notification is displayed
+
+224
+00:10:47,046 --> 00:10:50,283
+when new diagnostics
+become available.
+
+225
+00:10:50,283 --> 00:10:53,620
+Let's examine the diagnostics
+for the hang that was detected
+
+226
+00:10:53,620 --> 00:10:55,588
+when I was opening
+the orders in the app
+
+227
+00:10:55,588 --> 00:10:58,591
+while selling donuts
+around town.
+
+228
+00:10:58,591 --> 00:11:00,760
+I am given both
+a text-based hang log
+
+229
+00:11:00,760 --> 00:11:03,596
+and a tailspin
+for the detected hang.
+
+230
+00:11:03,596 --> 00:11:06,065
+A text-based hang log
+has less information,
+
+231
+00:11:06,065 --> 00:11:08,201
+but can give us
+an understanding of the hang
+
+232
+00:11:08,201 --> 00:11:10,069
+at a glance.
+
+233
+00:11:10,069 --> 00:11:12,605
+For a deeper investigation,
+open the tailspin
+
+234
+00:11:12,605 --> 00:11:15,642
+in Instruments for viewing
+the thread interaction within
+
+235
+00:11:15,642 --> 00:11:19,412
+your process or identifying
+the usage of system resources,
+
+236
+00:11:19,412 --> 00:11:21,381
+for example.
+
+237
+00:11:21,381 --> 00:11:23,216
+To start, I'll use
+the Share button
+
+238
+00:11:23,216 --> 00:11:25,652
+to send the text-based hang log
+to a Mac,
+
+239
+00:11:25,652 --> 00:11:30,423
+where I can symbolicate it
+and view it on a larger screen.
+
+240
+00:11:30,423 --> 00:11:33,126
+From viewing an excerpt
+of the text-based hang log
+
+241
+00:11:33,126 --> 00:11:36,396
+I transferred and symbolicated,
+I see that during the hang,
+
+242
+00:11:36,396 --> 00:11:38,531
+I am calling a method
+on the main thread
+
+243
+00:11:38,531 --> 00:11:42,735
+that I know performs synchronous
+requests to the network.
+
+244
+00:11:42,735 --> 00:11:44,804
+When I am testing
+the application at my desk
+
+245
+00:11:44,804 --> 00:11:47,674
+with Xcode and a strong
+network connection,
+
+246
+00:11:47,674 --> 00:11:49,075
+there may not be any delay
+
+247
+00:11:49,075 --> 00:11:51,644
+when requesting data
+from the network.
+
+248
+00:11:51,644 --> 00:11:53,880
+However, when testing
+the app in places
+
+249
+00:11:53,880 --> 00:11:55,848
+with a limited
+network connection,
+
+250
+00:11:55,848 --> 00:12:00,086
+the request takes longer
+and results in a hang.
+
+251
+00:12:00,086 --> 00:12:02,255
+It is important to test
+the beta version of your app
+
+252
+00:12:02,255 --> 00:12:04,624
+under these different,
+real-world conditions,
+
+253
+00:12:04,624 --> 00:12:07,760
+and on-device hang detection
+allows you to monitor for hangs
+
+254
+00:12:07,760 --> 00:12:10,663
+using just your device.
+
+255
+00:12:10,663 --> 00:12:13,499
+At this point, I have discovered
+and diagnosed hangs
+
+256
+00:12:13,499 --> 00:12:16,869
+using the available tooling in
+the development and beta phases,
+
+257
+00:12:16,869 --> 00:12:19,305
+and I am ready to make
+the Food Truck app available
+
+258
+00:12:19,305 --> 00:12:22,075
+to customers in the App Store.
+
+259
+00:12:22,075 --> 00:12:24,711
+I'll now present how to track
+down hangs once your app
+
+260
+00:12:24,711 --> 00:12:26,512
+is in the hands
+of your customers,
+
+261
+00:12:26,512 --> 00:12:28,047
+on various OS versions,
+
+262
+00:12:28,047 --> 00:12:30,583
+devices, and in other
+real-world conditions
+
+263
+00:12:30,583 --> 00:12:35,855
+you may not have been able to
+replicate in your prior testing.
+
+264
+00:12:35,855 --> 00:12:38,891
+New in Xcode 14,
+the Xcode Organizer
+
+265
+00:12:38,891 --> 00:12:42,762
+supports hang reports to deliver
+aggregated hang diagnostics
+
+266
+00:12:42,762 --> 00:12:46,332
+from customer devices.
+
+267
+00:12:46,332 --> 00:12:49,035
+The collected data is from
+customers which have consented
+
+268
+00:12:49,035 --> 00:12:51,838
+to share app analytics,
+and they contain information
+
+269
+00:12:51,838 --> 00:12:57,377
+about the main thread stack
+trace that led to the hangs.
+
+270
+00:12:57,377 --> 00:13:00,613
+Hang reports are available
+from the left-side navigation
+
+271
+00:13:00,613 --> 00:13:03,750
+of the Xcode Organizer.
+
+272
+00:13:03,750 --> 00:13:05,785
+When similar stack traces
+are collected,
+
+273
+00:13:05,785 --> 00:13:09,555
+they are grouped together
+to form a single signature.
+
+274
+00:13:09,555 --> 00:13:11,924
+In the list,
+the signatures are shown sorted
+
+275
+00:13:11,924 --> 00:13:14,427
+based on the user impact.
+
+276
+00:13:14,427 --> 00:13:18,031
+For each signature, you can
+find a few sample hang logs.
+
+277
+00:13:18,031 --> 00:13:20,933
+Each hang log contains
+the main thread stack trace
+
+278
+00:13:20,933 --> 00:13:24,871
+containing the code responsible
+for the hang, the hang duration,
+
+279
+00:13:24,871 --> 00:13:28,641
+and the device and OS version
+from which the log originated.
+
+280
+00:13:28,641 --> 00:13:32,145
+Each signature also provides
+aggregate statistics about
+
+281
+00:13:32,145 --> 00:13:35,448
+how many hang logs the signature
+was responsible for
+
+282
+00:13:35,448 --> 00:13:39,385
+and a breakdown of those logs
+by OS Version and device.
+
+283
+00:13:39,385 --> 00:13:42,288
+To identify the hangs
+most affecting your customers,
+
+284
+00:13:42,288 --> 00:13:45,692
+pay close attention
+to your top signatures.
+
+285
+00:13:45,692 --> 00:13:49,662
+In this case, the top signature
+is responsible for 21 percent
+
+286
+00:13:49,662 --> 00:13:53,266
+of the hang time
+in this release.
+
+287
+00:13:53,266 --> 00:13:55,168
+Since I've submitted
+the app to the App Store
+
+288
+00:13:55,168 --> 00:13:58,004
+with symbol information,
+the hangs report shows me
+
+289
+00:13:58,004 --> 00:14:02,341
+all of the functions named just
+as they are in the source code.
+
+290
+00:14:02,341 --> 00:14:05,812
+By examining the functions in
+this main thread's call stack,
+
+291
+00:14:05,812 --> 00:14:08,881
+I can infer that this hang was
+caused by synchronously reading
+
+292
+00:14:08,881 --> 00:14:11,617
+a file from disk
+on the main thread,
+
+293
+00:14:11,617 --> 00:14:15,955
+which is known to block
+for significant periods of time.
+
+294
+00:14:15,955 --> 00:14:18,091
+It is important to tackle
+the performance problems
+
+295
+00:14:18,091 --> 00:14:20,093
+that are most affecting
+your customers,
+
+296
+00:14:20,093 --> 00:14:23,663
+and the Organizer is
+a great tool to identify them.
+
+297
+00:14:23,663 --> 00:14:25,898
+Check this data after
+each app release
+
+298
+00:14:25,898 --> 00:14:28,634
+to validate the previous hangs
+have been resolved,
+
+299
+00:14:28,634 --> 00:14:31,738
+and to address new hangs
+that may appear.
+
+300
+00:14:33,740 --> 00:14:36,109
+You can also retrieve
+the same hang report data
+
+301
+00:14:36,109 --> 00:14:39,145
+through the App Store
+Connect REST APIs.
+
+302
+00:14:39,145 --> 00:14:41,147
+This can help you integrate
+performance data
+
+303
+00:14:41,147 --> 00:14:45,118
+with your own systems,
+or run additional analysis.
+
+304
+00:14:45,118 --> 00:14:46,886
+I highly recommend you check out
+
+305
+00:14:46,886 --> 00:14:50,223
+the "Identify trends with the
+Power and Performance API" video
+
+306
+00:14:50,223 --> 00:14:54,393
+to learn more about using
+the Power and Performance APIs.
+
+307
+00:14:54,393 --> 00:14:58,464
+Added in Xcode 13.2, you can
+now receive notifications
+
+308
+00:14:58,464 --> 00:15:02,535
+when monitoring power and
+performance metrics in your app.
+
+309
+00:15:02,535 --> 00:15:04,570
+I recommend
+you enable notifications
+
+310
+00:15:04,570 --> 00:15:07,306
+by clicking the Notifications
+button in the top right
+
+311
+00:15:07,306 --> 00:15:10,510
+of the Xcode Organizer's
+Regressions view.
+
+312
+00:15:10,510 --> 00:15:14,514
+This will alert you to sudden
+rises in your app's hang rate.
+
+313
+00:15:14,514 --> 00:15:16,649
+Find out more about performance
+regressions in the
+
+314
+00:15:16,649 --> 00:15:19,652
+"Diagnose Power and Performance
+Regressions in your app" talk
+
+315
+00:15:19,652 --> 00:15:21,754
+from 2021.
+
+316
+00:15:21,754 --> 00:15:24,423
+To improve your experience
+in the Xcode Organizer,
+
+317
+00:15:24,423 --> 00:15:27,460
+I strongly recommend
+you build and submit your app
+
+318
+00:15:27,460 --> 00:15:30,563
+to the App Store
+with symbol information.
+
+319
+00:15:30,563 --> 00:15:33,332
+This symbol information is used
+to add function names
+
+320
+00:15:33,332 --> 00:15:36,569
+from your app to reports
+in the Xcode Organizer.
+
+321
+00:15:36,569 --> 00:15:37,804
+This makes stack traces
+
+322
+00:15:37,804 --> 00:15:40,373
+significantly easier
+to understand.
+
+323
+00:15:40,373 --> 00:15:42,742
+It also enables
+one-click navigation
+
+324
+00:15:42,742 --> 00:15:44,477
+from a function name
+in a stack trace
+
+325
+00:15:44,477 --> 00:15:47,880
+to the function definition
+in the Xcode source editor.
+
+326
+00:15:47,880 --> 00:15:49,448
+The information extracted
+
+327
+00:15:49,448 --> 00:15:51,584
+is limited to function
+and methods,
+
+328
+00:15:51,584 --> 00:15:53,686
+names and paths
+of source code files,
+
+329
+00:15:53,686 --> 00:15:55,655
+and line number information.
+
+330
+00:15:55,655 --> 00:15:58,491
+It is important to note that
+the limited symbol information
+
+331
+00:15:58,491 --> 00:16:02,295
+will be securely stored
+and will never be shared.
+
+332
+00:16:02,295 --> 00:16:03,830
+Fantastic!
+
+333
+00:16:03,830 --> 00:16:06,032
+You now know how to discover
+and diagnose hangs
+
+334
+00:16:06,032 --> 00:16:09,602
+at each phase
+in the development process.
+
+335
+00:16:09,602 --> 00:16:11,838
+Going forward,
+discover, diagnose,
+
+336
+00:16:11,838 --> 00:16:14,240
+and fix hangs
+in the earliest possible phase
+
+337
+00:16:14,240 --> 00:16:16,075
+of the development process.
+
+338
+00:16:16,075 --> 00:16:18,211
+Use the tools available to help,
+
+339
+00:16:18,211 --> 00:16:22,815
+including proactively profiling
+new features using Instruments.
+
+340
+00:16:22,815 --> 00:16:25,284
+Be sure to enable
+the Thread Performance Checker
+
+341
+00:16:25,284 --> 00:16:28,287
+and on-device hang detection.
+
+342
+00:16:28,287 --> 00:16:31,157
+After each release,
+use the Xcode Organizer
+
+343
+00:16:31,157 --> 00:16:33,826
+to tackle hangs that are most
+affecting your customers
+
+344
+00:16:33,826 --> 00:16:36,362
+and to validate that hangs
+from previous app versions
+
+345
+00:16:36,362 --> 00:16:38,564
+have been resolved.
+
+346
+00:16:38,564 --> 00:16:41,734
+Enable regression notifications
+to be proactively alerted
+
+347
+00:16:41,734 --> 00:16:43,803
+to regressed
+performance metrics,
+
+348
+00:16:43,803 --> 00:16:48,007
+which can be the first sign of
+power and performance problems.
+
+349
+00:16:48,007 --> 00:16:50,977
+And finally, build and submit
+your app to the App Store
+
+350
+00:16:50,977 --> 00:16:52,478
+with symbol information
+
+351
+00:16:52,478 --> 00:16:55,815
+to improve the usefulness
+of the Xcode Organizer.
+
+352
+00:16:55,815 --> 00:16:57,250
+By following these steps,
+
+353
+00:16:57,250 --> 00:16:59,352
+your apps will have
+even better performance
+
+354
+00:16:59,352 --> 00:17:02,121
+to provide the best possible
+user experience.
+
+355
+00:17:02,121 --> 00:17:05,591
+Thanks for hanging out at WWDC!
+
+356
+00:17:05,591 --> 00:17:09,028
+♪
+

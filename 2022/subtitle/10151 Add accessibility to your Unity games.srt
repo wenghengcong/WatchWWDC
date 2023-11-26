@@ -1,0 +1,1024 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:12,112
+Hello everyone,
+my name is Eric,
+
+3
+00:00:12,145 --> 00:00:17,050
+and I'm excited to tell you how to add
+accessibility to your Unity games.
+
+4
+00:00:18,085 --> 00:00:22,723
+Accessibility is about
+allowing everyone to use our products.
+
+5
+00:00:22,756 --> 00:00:27,361
+And today marks a huge leap forward
+for accessible gaming
+
+6
+00:00:27,394 --> 00:00:31,398
+with the Apple Accessibility
+plug-in for Unity developers.
+
+7
+00:00:31,431 --> 00:00:36,637
+We will focus on three Apple technologies
+for making your games accessible.
+
+8
+00:00:37,738 --> 00:00:43,210
+VoiceOver is a screen reader which helps
+users who are blind or low vision.
+
+9
+00:00:43,243 --> 00:00:47,581
+It reads items on the screen
+and provides custom gestures
+
+10
+00:00:47,614 --> 00:00:50,617
+for users to interact with controls.
+
+11
+00:00:51,985 --> 00:00:55,522
+Switch control, which allows someone
+with low motor control
+
+12
+00:00:55,556 --> 00:00:59,593
+to use an external switch
+for device interaction.
+
+13
+00:00:59,626 --> 00:01:03,397
+And dynamic type,
+which allows people to set
+
+14
+00:01:03,430 --> 00:01:06,800
+the text size
+according to their reading ability.
+
+15
+00:01:07,801 --> 00:01:10,904
+To get started, clone the repository
+
+16
+00:01:10,938 --> 00:01:13,407
+and build all Apple's plug-ins
+
+17
+00:01:13,440 --> 00:01:17,344
+using the build script
+in the root of the repository.
+
+18
+00:01:17,377 --> 00:01:20,914
+This will produce a Build folder
+that is ready for integration
+
+19
+00:01:20,948 --> 00:01:23,784
+into your Unity projects.
+
+20
+00:01:23,817 --> 00:01:27,888
+Finally, add the Accessibility plug-in
+to your own project
+
+21
+00:01:27,921 --> 00:01:30,924
+using the Unity Package Manager.
+
+22
+00:01:30,958 --> 00:01:35,362
+For more details, look at
+the documentation in the repository
+
+23
+00:01:35,395 --> 00:01:39,166
+and watch the video about
+all of Apple's Unity plug-ins,
+
+24
+00:01:39,199 --> 00:01:44,671
+called "Plug-in and play: Add Apple
+frameworks to your Unity game projects"
+
+25
+00:01:45,539 --> 00:01:50,410
+Now that you have the plug-in,
+I will guide you through three areas.
+
+26
+00:01:50,444 --> 00:01:53,313
+First is accessibility elements.
+
+27
+00:01:53,347 --> 00:01:56,683
+This allows you to add support
+to assistive technologies
+
+28
+00:01:56,717 --> 00:02:00,954
+like VoiceOver or Switch Control
+for your games.
+
+29
+00:02:00,988 --> 00:02:03,857
+Next is Dynamic Type.
+
+30
+00:02:03,891 --> 00:02:08,095
+We create this easy-to-use utility
+that helps you scale text
+
+31
+00:02:08,128 --> 00:02:10,964
+according to user preferences.
+
+32
+00:02:10,998 --> 00:02:13,600
+And UI Accommodations.
+
+33
+00:02:13,634 --> 00:02:18,772
+These are utilities that helps you read
+other user preferences.
+
+34
+00:02:18,805 --> 00:02:21,775
+Let's start with accessibility elements.
+
+35
+00:02:22,876 --> 00:02:27,548
+I built a simple card game
+to help illustrate this concept.
+
+36
+00:02:27,581 --> 00:02:30,551
+You might see that you should tap
+the "flip" button
+
+37
+00:02:30,584 --> 00:02:33,654
+to draw two random cards.
+
+38
+00:02:33,687 --> 00:02:36,957
+However, VoiceOver would not read
+the text on screen
+
+39
+00:02:36,990 --> 00:02:40,561
+and an external switch
+would not tap the button
+
+40
+00:02:40,594 --> 00:02:44,097
+since these are just pixels
+on a screen right now.
+
+41
+00:02:44,131 --> 00:02:49,136
+We need to help the system understand
+what can be interacted with.
+
+42
+00:02:49,169 --> 00:02:52,039
+Accessibility elements define the things
+
+43
+00:02:52,072 --> 00:02:55,542
+that assistive technologies can
+interact with.
+
+44
+00:02:57,244 --> 00:03:00,781
+The text, cards, and the button on screen
+
+45
+00:03:00,814 --> 00:03:03,750
+should be accessibility elements.
+
+46
+00:03:03,784 --> 00:03:07,221
+And we can describe
+each element with a label.
+
+47
+00:03:07,254 --> 00:03:12,693
+VoiceOver will read each label so the user
+can understand what's on the screen.
+
+48
+00:03:14,261 --> 00:03:17,064
+And if the game supports
+multiple languages,
+
+49
+00:03:17,097 --> 00:03:19,466
+we should localize these labels as well.
+
+50
+00:03:21,535 --> 00:03:24,538
+Now VoiceOver can describe
+what is on the screen,
+
+51
+00:03:24,571 --> 00:03:29,576
+but it doesn't recognize that there's
+a button that can be tapped.
+
+52
+00:03:29,610 --> 00:03:32,346
+We can use another property
+called "traits"
+
+53
+00:03:32,379 --> 00:03:36,183
+to inform the system
+of the element's type.
+
+54
+00:03:36,216 --> 00:03:39,186
+We should add the "Button" trait here.
+
+55
+00:03:39,219 --> 00:03:43,156
+Now, VoiceOver will read "Flip button,"
+
+56
+00:03:43,190 --> 00:03:46,393
+and an external switch
+can control this button.
+
+57
+00:03:48,428 --> 00:03:53,800
+We can also add "Static Text" trait
+on our text elements.
+
+58
+00:03:53,834 --> 00:03:59,173
+The "Static Text" trait is
+usually given to labels and text areas
+
+59
+00:03:59,206 --> 00:04:03,443
+so that VoiceOver can provide
+a better text interaction experience.
+
+60
+00:04:04,878 --> 00:04:07,581
+And there are many more traits
+beyond "Button"
+
+61
+00:04:07,614 --> 00:04:10,317
+and "Static Text" that you can explore.
+
+62
+00:04:11,919 --> 00:04:15,422
+So what trait should we use for the cards?
+
+63
+00:04:15,455 --> 00:04:21,094
+Well, we don't need to use traits
+on every accessibility element.
+
+64
+00:04:21,128 --> 00:04:24,464
+Our cards don't need any traits.
+
+65
+00:04:25,098 --> 00:04:28,168
+However, there's still a part of each card
+
+66
+00:04:28,202 --> 00:04:31,071
+that VoiceOver is not aware of:
+
+67
+00:04:31,104 --> 00:04:33,473
+the face value.
+
+68
+00:04:33,507 --> 00:04:38,078
+There's another property that we can
+use for this called "Value."
+
+69
+00:04:39,680 --> 00:04:44,184
+Once we add a "Value" for each card,
+VoiceOver will now read
+
+70
+00:04:44,218 --> 00:04:47,654
+"Card 1 with value 3 of clubs,
+
+71
+00:04:47,688 --> 00:04:51,458
+card 2 with value Ace of clubs."
+
+72
+00:04:51,491 --> 00:04:53,260
+And that's it.
+
+73
+00:04:54,194 --> 00:04:58,065
+Now that you understand the basics,
+let's open Unity
+
+74
+00:04:58,098 --> 00:05:00,934
+to see how to add them to our project.
+
+75
+00:05:02,336 --> 00:05:05,906
+Here I am in a Unity Editor for this game.
+
+76
+00:05:05,939 --> 00:05:08,275
+I have already added
+the Apple Accessibility
+
+77
+00:05:08,308 --> 00:05:09,843
+plugin to this project.
+
+78
+00:05:11,311 --> 00:05:15,649
+First we have the usual
+scene objects like camera,
+
+79
+00:05:15,682 --> 00:05:19,386
+direct light, and a UI Canvas.
+
+80
+00:05:19,419 --> 00:05:22,756
+Under the canvas,
+we have two text elements
+
+81
+00:05:22,789 --> 00:05:24,925
+and a button.
+
+82
+00:05:24,958 --> 00:05:28,428
+After that,
+we have two game objects for cards.
+
+83
+00:05:31,798 --> 00:05:35,235
+Each is composed of two mesh components,
+
+84
+00:05:35,269 --> 00:05:39,806
+each rendering the front and back texture
+for the card on each side.
+
+85
+00:05:39,840 --> 00:05:44,311
+Let's start by defining
+our accessibility elements.
+
+86
+00:05:44,344 --> 00:05:49,416
+To do this, we need the Accessibility Node
+component from this plugin.
+
+87
+00:05:50,851 --> 00:05:55,055
+Select all the objects in the hierarchy
+that should be accessible.
+
+88
+00:05:57,925 --> 00:06:02,763
+And add the Accessibility Node component
+to make them accessibility elements.
+
+89
+00:06:06,366 --> 00:06:08,502
+Next, we add labels.
+
+90
+00:06:09,236 --> 00:06:12,072
+Select the card object,
+
+91
+00:06:12,105 --> 00:06:15,676
+go to "Accessibility Node" component
+on the right,
+
+92
+00:06:15,709 --> 00:06:18,045
+and find the "Label" field.
+
+93
+00:06:19,213 --> 00:06:24,251
+And make sure the label field checkbox
+is checked to provide a custom label.
+
+94
+00:06:26,186 --> 00:06:28,388
+Then type "Card 1."
+
+95
+00:06:31,859 --> 00:06:35,329
+And the same for Card 2.
+
+96
+00:06:40,434 --> 00:06:43,604
+Text and buttons need labels too,
+
+97
+00:06:43,637 --> 00:06:47,975
+but we don't have to provide
+an explicit accessibility labels for them
+
+98
+00:06:48,008 --> 00:06:52,546
+if we are using the standard controls
+from Unity UI.
+
+99
+00:06:52,579 --> 00:06:56,083
+The plug-in already has
+default implementations for those.
+
+100
+00:06:57,384 --> 00:07:00,354
+Next, we need
+to add a trait to our button.
+
+101
+00:07:02,422 --> 00:07:05,492
+Select the flip button
+
+102
+00:07:05,526 --> 00:07:09,229
+and change the "Traits"
+from "None" to "Button."
+
+103
+00:07:13,567 --> 00:07:15,802
+Select the two text elements...
+
+104
+00:07:18,138 --> 00:07:21,241
+And change "Traits" to "static text."
+
+105
+00:07:23,911 --> 00:07:25,312
+Great.
+
+106
+00:07:25,345 --> 00:07:29,950
+Lastly, we need to set an accessibility
+Value for the card faces.
+
+107
+00:07:29,983 --> 00:07:33,954
+Since the cards are randomly drawn,
+I need to add a script
+
+108
+00:07:33,987 --> 00:07:36,023
+to set the Value dynamically.
+
+109
+00:07:37,424 --> 00:07:42,396
+Select the two cards and add
+a new script called AccessibleCard.
+
+110
+00:07:44,831 --> 00:07:48,101
+First, in one of my other C Sharp files,
+
+111
+00:07:48,135 --> 00:07:53,607
+I already have an enum for all
+the card faces called Playing Card.
+
+112
+00:07:53,640 --> 00:07:57,578
+In my new AccessibleCard mono
+behavior script,
+
+113
+00:07:57,611 --> 00:07:59,847
+we have a variable for the card type
+
+114
+00:07:59,880 --> 00:08:03,350
+and a boolean
+for whether the card is facing up or down.
+
+115
+00:08:05,552 --> 00:08:10,457
+So now let's add
+accessibilityValue to these cards.
+
+116
+00:08:10,490 --> 00:08:15,762
+First, we get the accessibilityNode
+component attached to this gameObject.
+
+117
+00:08:17,064 --> 00:08:21,401
+Next, set the accessibilityValue
+delegate to a function
+
+118
+00:08:21,435 --> 00:08:23,837
+that returns the card face value
+dynamically.
+
+119
+00:08:25,339 --> 00:08:28,809
+Inside this function,
+if the card is covered,
+
+120
+00:08:28,842 --> 00:08:32,713
+we return the "covered"
+for the accessibilityValue.
+
+121
+00:08:32,746 --> 00:08:36,817
+Or if not covered,
+we will enumerate all card faces
+
+122
+00:08:36,850 --> 00:08:41,822
+and return a description for each,
+like "Ace of Spades."
+
+123
+00:08:41,855 --> 00:08:44,191
+And that's it.
+
+124
+00:08:44,224 --> 00:08:48,395
+Now let's build our project
+and see it in action.
+
+125
+00:08:48,428 --> 00:08:51,532
+Here's our game.
+Let's turn on VoiceOver.
+
+126
+00:08:55,335 --> 00:08:57,804
+Automated voice: VoiceOver on.
+Eric's Game.
+
+127
+00:08:57,838 --> 00:08:59,740
+Card 2, covered.
+
+128
+00:08:59,773 --> 00:09:03,076
+Eric: I could swipe right
+to move to the next element.
+
+129
+00:09:03,744 --> 00:09:05,546
+Automated voice: Card 1, covered.
+
+130
+00:09:07,314 --> 00:09:08,982
+Eric's card game.
+
+131
+00:09:10,884 --> 00:09:12,386
+Flip the cards.
+
+132
+00:09:14,087 --> 00:09:16,256
+Flip. Button.
+
+133
+00:09:16,290 --> 00:09:20,661
+Eric: You see that all five objects
+are now accessible through VoiceOver,
+
+134
+00:09:20,694 --> 00:09:23,163
+which is awesome.
+
+135
+00:09:23,197 --> 00:09:27,568
+To tap the button when VoiceOver is on,
+do a double-tap.
+
+136
+00:09:28,335 --> 00:09:30,504
+Automated voice: Flip.
+
+137
+00:09:30,537 --> 00:09:32,339
+Eric: Let's check the cards again.
+
+138
+00:09:34,441 --> 00:09:36,743
+Automated voice: Card 1, Two of Clubs.
+
+139
+00:09:38,378 --> 00:09:40,681
+Card 2, Ace of Clubs.
+
+140
+00:09:40,714 --> 00:09:45,352
+Eric: VoiceOver now reads
+the updated card faces correctly.
+
+141
+00:09:45,385 --> 00:09:46,386
+Cool.
+
+142
+00:09:46,420 --> 00:09:50,357
+So we just made our game accessible
+to millions of VoiceOver users
+
+143
+00:09:50,390 --> 00:09:52,326
+who can now fall in love with it.
+
+144
+00:09:52,359 --> 00:09:57,097
+And people who use external switch control
+can also play our game.
+
+145
+00:09:57,130 --> 00:10:00,367
+So that was accessibility elements.
+
+146
+00:10:00,400 --> 00:10:03,504
+Next, let's talk about Dynamic Type.
+
+147
+00:10:04,838 --> 00:10:07,975
+Games can be difficult to play
+for many people
+
+148
+00:10:08,008 --> 00:10:10,978
+because text is too small to read.
+
+149
+00:10:11,011 --> 00:10:14,748
+On iOS and tvOS, everyone can choose
+
+150
+00:10:14,781 --> 00:10:17,985
+the right text size
+for their reading ability in Settings.
+
+151
+00:10:20,120 --> 00:10:23,423
+With the Accessibility Plugin,
+you can read this setting
+
+152
+00:10:23,457 --> 00:10:28,095
+to make sure the text in your game
+is displayed at the expected size.
+
+153
+00:10:30,264 --> 00:10:35,169
+Let's take a look at our game example
+to see how we can use Dynamic Type.
+
+154
+00:10:36,370 --> 00:10:41,441
+Create a mono behavior script
+called DynamicTextSize.cs.
+
+155
+00:10:41,475 --> 00:10:46,213
+In the start function, first store
+the default text size into a variable.
+
+156
+00:10:47,181 --> 00:10:51,852
+Then inside the OnEnable function,
+subscribe to setting changed event
+
+157
+00:10:51,885 --> 00:10:57,057
+using AccessibilitySettings.
+onPreferredTextSizesChanged.
+
+158
+00:10:57,891 --> 00:11:02,429
+This allows us to update the UI as soon
+as the user changes the text setting.
+
+159
+00:11:03,830 --> 00:11:07,334
+Next, inside the settingsChanged function,
+
+160
+00:11:07,367 --> 00:11:11,205
+first read the
+PreferredContentSizeMultiplier.
+
+161
+00:11:11,238 --> 00:11:14,541
+Then multiply by your original text size
+
+162
+00:11:14,575 --> 00:11:17,544
+and assign it back to the text element.
+
+163
+00:11:18,512 --> 00:11:21,949
+Inside Unity Editor,
+select all game objects
+
+164
+00:11:21,982 --> 00:11:25,052
+that have a Text element.
+
+165
+00:11:25,085 --> 00:11:28,956
+And add the DynamicTextSize component
+that we just created.
+
+166
+00:11:32,492 --> 00:11:36,730
+Now our game is all set
+for Dynamic type support.
+
+167
+00:11:37,397 --> 00:11:41,168
+Before we see the result in action,
+first I am going to show you
+
+168
+00:11:41,201 --> 00:11:45,205
+a trick to quickly test
+Dynamic Type in your games.
+
+169
+00:11:45,239 --> 00:11:49,376
+Open Settings, and find Control Center.
+
+170
+00:11:54,214 --> 00:11:58,986
+Scroll down until you see Text Size,
+and add it to Control Center.
+
+171
+00:12:02,422 --> 00:12:06,827
+Now we can adjust text sizes quickly
+by opening Control Center
+
+172
+00:12:06,860 --> 00:12:08,996
+and change the text size options.
+
+173
+00:12:17,905 --> 00:12:23,744
+Great–as I change the text size,
+our game adjusts font sizes in real time.
+
+174
+00:12:24,811 --> 00:12:27,648
+The text percentage value shown
+in Control Center
+
+175
+00:12:27,681 --> 00:12:30,817
+is exactly what we are reading
+from that multiplier.
+
+176
+00:12:30,851 --> 00:12:35,689
+You can also adopt this setting
+on non-text objects.
+
+177
+00:12:35,722 --> 00:12:39,226
+For example,
+I can swap the card face assets
+
+178
+00:12:39,259 --> 00:12:42,496
+to Large Print when the size is increased.
+
+179
+00:12:45,265 --> 00:12:50,137
+First I create a script called
+DynamicCardFaces.
+
+180
+00:12:50,170 --> 00:12:54,741
+Then same thing as before,
+subscribe to the TextSizeChanged event.
+
+181
+00:12:55,809 --> 00:13:01,481
+Instead of reading a multiplier,
+I read an enum of text size category
+
+182
+00:13:01,515 --> 00:13:05,619
+that is mapped to the ticks
+on the Control Center slider.
+
+183
+00:13:05,652 --> 00:13:10,624
+I could swap the asset whenever
+someone selects a larger text size.
+
+184
+00:13:11,825 --> 00:13:14,728
+And I simply choose
+between a regular material
+
+185
+00:13:14,761 --> 00:13:16,563
+and a large print material.
+
+186
+00:13:17,464 --> 00:13:20,734
+Now if we select a really large size...
+
+187
+00:13:26,273 --> 00:13:30,010
+Users would see a large print version
+of the cards,
+
+188
+00:13:30,043 --> 00:13:35,282
+which are great card faces that are much
+easier to read for people with low vision.
+
+189
+00:13:36,783 --> 00:13:40,754
+Lastly, I want to talk to you
+about UI accommodation settings
+
+190
+00:13:40,787 --> 00:13:43,223
+that you can access with this plug-in.
+
+191
+00:13:44,224 --> 00:13:48,662
+The first setting is Reduce Transparency.
+
+192
+00:13:48,695 --> 00:13:52,933
+When this setting is on,
+the background is turned opaque,
+
+193
+00:13:52,966 --> 00:13:56,670
+instead of a blur or transparent effect.
+
+194
+00:13:56,703 --> 00:14:01,108
+It can help improve legibility when
+those effects makes text hard to read.
+
+195
+00:14:02,042 --> 00:14:04,344
+To check this preference, call
+
+196
+00:14:04,378 --> 00:14:08,482
+AccessibilitySettings.
+IsReduceTransparencyEnabled.
+
+197
+00:14:10,284 --> 00:14:13,887
+Next, the Increase Contrast setting.
+
+198
+00:14:13,921 --> 00:14:18,926
+Notice how the switches have
+a darker grey that helps them stand out,
+
+199
+00:14:18,959 --> 00:14:23,230
+making controls easier to recognize
+across the entire device.
+
+200
+00:14:24,464 --> 00:14:28,802
+You can increase contrast
+for your own UI when this is enabled
+
+201
+00:14:28,836 --> 00:14:31,405
+by checking this setting using
+
+202
+00:14:31,438 --> 00:14:35,442
+AccessibilitySettings.
+IsIncreaseContrastEnabled.
+
+203
+00:14:37,144 --> 00:14:40,614
+Next, the Reduce Motion setting.
+
+204
+00:14:40,647 --> 00:14:45,586
+Some people are sensitive to motion
+like we have in this card flip animation.
+
+205
+00:14:46,854 --> 00:14:50,791
+We should remove that animation
+when Reduce Motion is enabled.
+
+206
+00:14:51,892 --> 00:14:54,061
+Let's look at the code to do this.
+
+207
+00:14:55,362 --> 00:15:00,701
+In our CardController script,
+we have this Flip function.
+
+208
+00:15:00,734 --> 00:15:05,539
+First we check if user's
+reduce motion setting is on.
+
+209
+00:15:05,572 --> 00:15:11,211
+If not on, we should flip the card by
+invoking an animation through Coroutine.
+
+210
+00:15:12,145 --> 00:15:16,283
+Otherwise we just set the rotation,
+and no animations.
+
+211
+00:15:16,316 --> 00:15:17,851
+And that's it.
+
+212
+00:15:17,885 --> 00:15:22,422
+Now people who are sensitive to motion
+would enjoy our game.
+
+213
+00:15:23,357 --> 00:15:27,494
+To recap, get started
+with the Apple Accessibility plugin
+
+214
+00:15:27,528 --> 00:15:31,932
+by cloning the GitHub repository
+linked in this session's resources.
+
+215
+00:15:33,000 --> 00:15:36,603
+Add accessibility elements
+so that people can use VoiceOver
+
+216
+00:15:36,637 --> 00:15:38,805
+and Switch Control with your games.
+
+217
+00:15:40,007 --> 00:15:42,943
+Adapt your text size with Dynamic Type.
+
+218
+00:15:44,478 --> 00:15:46,947
+And check for UI accommodations
+
+219
+00:15:46,980 --> 00:15:50,250
+so everyone can have a great experience
+with your game.
+
+220
+00:15:51,385 --> 00:15:53,620
+Thank you so much for joining me.
+
+221
+00:15:53,654 --> 00:15:57,624
+We look forward to seeing how you make
+games available for everyone
+
+222
+00:15:57,658 --> 00:16:00,961
+with a great accessibility experience.
+

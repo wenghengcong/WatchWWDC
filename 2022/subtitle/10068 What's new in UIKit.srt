@@ -1,0 +1,1514 @@
+1
+00:00:00,501 --> 00:00:06,507
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,309 --> 00:00:14,214
+- Welcome to
+"What's New in UIKit" in iOS 16.
+
+3
+00:00:14,248 --> 00:00:18,785
+I'm Dima, and I'm an engineering
+manager on the UIKit team.
+
+4
+00:00:19,586 --> 00:00:23,757
+UIKit is the powerful framework
+at the core of your apps.
+
+5
+00:00:23,790 --> 00:00:28,529
+It has been updated to support
+new features in iOS 16.
+
+6
+00:00:29,663 --> 00:00:35,636
+In this video, I will cover
+UI improvements for productivity,
+
+7
+00:00:35,669 --> 00:00:37,838
+Control enhancements,
+
+8
+00:00:37,871 --> 00:00:40,374
+API refinements,
+
+9
+00:00:40,407 --> 00:00:43,644
+and I will talk about exciting new ways
+
+10
+00:00:43,677 --> 00:00:48,048
+to use UIKit and SwiftUI together.
+
+11
+00:00:50,684 --> 00:00:57,124
+We made it even easier in UIKit to develop
+streamlined, discoverable user interfaces
+
+12
+00:00:57,157 --> 00:01:01,395
+with improved navigation bars
+that feature a new title menu,
+
+13
+00:01:01,428 --> 00:01:05,265
+find and replace,
+and reimagined editing interactions
+
+14
+00:01:05,299 --> 00:01:07,134
+for cut, copy, and paste.
+
+15
+00:01:07,167 --> 00:01:10,704
+You will be able to enhance
+your document-based applications.
+
+16
+00:01:11,405 --> 00:01:15,809
+I'll start by taking a closer look
+at navigation bars,
+
+17
+00:01:15,843 --> 00:01:20,113
+updated to support desktop class
+toolbar capabilities.
+
+18
+00:01:22,416 --> 00:01:28,055
+In iOS 16, UIKit introduces
+two new navigation styles
+
+19
+00:01:28,088 --> 00:01:31,291
+to better support the needs
+of document based apps:
+
+20
+00:01:31,325 --> 00:01:34,494
+browser and editor.
+
+21
+00:01:35,729 --> 00:01:41,335
+The browser style is designed for apps
+that use history or folder structure
+
+22
+00:01:41,368 --> 00:01:45,539
+for navigation,
+like web and document browsers.
+
+23
+00:01:47,040 --> 00:01:53,280
+The editor is intended for interfaces
+centered around editing documents.
+
+24
+00:01:55,148 --> 00:02:00,721
+in iOS 16, you can add a variety
+of bar button items to your app,
+
+25
+00:02:00,754 --> 00:02:06,059
+a subset of which will be displayed
+in the center of the navigation bar.
+
+26
+00:02:07,294 --> 00:02:10,998
+By tapping the "customize toolbar" entry
+in the menu,
+
+27
+00:02:11,031 --> 00:02:16,436
+items can be rearranged
+by dragging to and from the items popup.
+
+28
+00:02:17,871 --> 00:02:22,409
+The resulting new configuration
+persists across app launch.
+
+29
+00:02:25,312 --> 00:02:28,615
+To accommodate a size change,
+for example,
+
+30
+00:02:28,649 --> 00:02:32,519
+when entering side-by-side mode
+with another app,
+
+31
+00:02:32,553 --> 00:02:36,857
+the system automatically provides
+an overflow menu
+
+32
+00:02:36,890 --> 00:02:40,794
+to access any items that don't fit.
+
+33
+00:02:42,796 --> 00:02:47,467
+We have added a title menu that works
+with the new navigation styles
+
+34
+00:02:47,501 --> 00:02:50,704
+and supports a few standard functions:
+
+35
+00:02:50,737 --> 00:02:54,007
+duplicate, move, rename,
+
+36
+00:02:54,041 --> 00:02:56,844
+export, and print.
+
+37
+00:02:57,711 --> 00:03:00,981
+These are displayed in the menu
+automatically
+
+38
+00:03:01,014 --> 00:03:05,185
+when the corresponding delegate methods
+are implemented.
+
+39
+00:03:05,219 --> 00:03:10,624
+It's also possible to add
+completely custom items to the title menu.
+
+40
+00:03:15,028 --> 00:03:18,832
+Additionally,
+apps built with Mac Catalyst
+
+41
+00:03:18,866 --> 00:03:21,869
+take advantage
+of the improved navigation bars
+
+42
+00:03:21,902 --> 00:03:25,005
+by seamlessly integrating with NSToolbar
+
+43
+00:03:25,038 --> 00:03:28,108
+with no additional code required.
+
+44
+00:03:29,309 --> 00:03:34,214
+iOS 16 introduces
+new ways to manipulate text
+
+45
+00:03:34,248 --> 00:03:37,384
+consistently across various apps.
+
+46
+00:03:37,417 --> 00:03:41,588
+The first one is the new find and replace.
+
+47
+00:03:41,622 --> 00:03:46,760
+Conceptually, it is different
+from the more high-level in-app search
+
+48
+00:03:46,793 --> 00:03:52,966
+that operates on data model objects
+such as photos or calendar events.
+
+49
+00:03:53,000 --> 00:03:58,705
+Instead, find and replace
+is purposefully built to work with text.
+
+50
+00:03:58,739 --> 00:04:02,409
+It only takes setting a flag
+to activate the feature
+
+51
+00:04:02,442 --> 00:04:08,448
+for built-in UIKit views
+such as UITextView and WKWebView.
+
+52
+00:04:09,650 --> 00:04:14,254
+Additionally, it seamlessly works
+across multiple views and documents
+
+53
+00:04:14,288 --> 00:04:16,490
+that opted into this system.
+
+54
+00:04:17,891 --> 00:04:22,729
+Next, the edit menu
+has received a major upgrade.
+
+55
+00:04:22,763 --> 00:04:26,934
+It now looks different depending
+on the input method used.
+
+56
+00:04:26,967 --> 00:04:30,771
+On touch interaction,
+you get a redesigned menu
+
+57
+00:04:30,804 --> 00:04:33,373
+that is more interactive.
+
+58
+00:04:35,209 --> 00:04:37,211
+When using a pointer,
+
+59
+00:04:37,244 --> 00:04:41,081
+you get a more full-featured context menu.
+
+60
+00:04:42,382 --> 00:04:46,420
+To provide both of these experiences
+in a seamless way,
+
+61
+00:04:46,453 --> 00:04:50,224
+we've introduced UIEditMenuInteraction
+
+62
+00:04:50,257 --> 00:04:55,329
+as a full replacement for
+the now-deprecated UIMenuController.
+
+63
+00:04:56,496 --> 00:05:01,768
+There is also new API
+to insert actions into a text view's menu.
+
+64
+00:05:03,537 --> 00:05:06,673
+Watch "Adopt desktop class
+editing interactions"
+
+65
+00:05:06,707 --> 00:05:10,944
+to learn all the details
+on the new edit menu,
+
+66
+00:05:10,978 --> 00:05:15,015
+and learn how to adopt find interaction
+for custom views.
+
+67
+00:05:17,718 --> 00:05:21,188
+There is one visual UI update
+I'd like to cover.
+
+68
+00:05:22,055 --> 00:05:26,026
+In iOS 16, the sidebar in slide over mode
+
+69
+00:05:26,059 --> 00:05:28,395
+automatically becomes vibrant
+
+70
+00:05:28,428 --> 00:05:31,298
+without any additional code.
+
+71
+00:05:31,331 --> 00:05:36,170
+To achieve this, UIKit manages a set
+of private views on your behalf.
+
+72
+00:05:38,005 --> 00:05:41,575
+Those are the new
+productivity features in UIKit:
+
+73
+00:05:41,608 --> 00:05:44,811
+the new customizable navigation bars,
+
+74
+00:05:44,845 --> 00:05:48,448
+find and replace, editing interactions,
+
+75
+00:05:48,482 --> 00:05:52,119
+as well as the powerful title menu.
+
+76
+00:05:52,152 --> 00:05:54,621
+I am just scratching the surface here.
+
+77
+00:05:54,655 --> 00:05:59,293
+To learn a lot more, check
+the "Meet desktop class iPad" session,
+
+78
+00:05:59,326 --> 00:06:03,830
+as well as a more in depth
+"Build a desktop class iPad app,"
+
+79
+00:06:03,864 --> 00:06:07,134
+where you'll be walked through
+improving a sample app
+
+80
+00:06:07,167 --> 00:06:11,572
+with new advanced
+UIKit features in iOS 16.
+
+81
+00:06:13,106 --> 00:06:17,211
+Now I'm going to introduce
+two new controls we've added
+
+82
+00:06:17,244 --> 00:06:21,782
+and discuss some enhancements
+to UIPageControl.
+
+83
+00:06:22,983 --> 00:06:28,488
+The inline calendar style
+of UIDatePicker is now available
+
+84
+00:06:28,522 --> 00:06:31,158
+as a standalone fully-featured component,
+
+85
+00:06:31,191 --> 00:06:34,628
+in the form of UICalendarView.
+
+86
+00:06:34,661 --> 00:06:39,533
+UICalendarView supports different types
+of selection behaviors,
+
+87
+00:06:39,566 --> 00:06:41,535
+like optional single dates,
+
+88
+00:06:41,568 --> 00:06:44,972
+as well as selecting multiple dates.
+
+89
+00:06:45,005 --> 00:06:47,407
+On top of the available date range,
+
+90
+00:06:47,441 --> 00:06:52,513
+it also supports
+disabling individual dates from selection.
+
+91
+00:06:53,647 --> 00:06:58,919
+Moreover, you can annotate
+individual dates with decorations.
+
+92
+00:07:00,287 --> 00:07:03,657
+One major difference
+between UICalendarView
+
+93
+00:07:03,690 --> 00:07:08,662
+and UIDatePicker is that
+UICalendarView represents dates
+
+94
+00:07:08,695 --> 00:07:13,400
+as NSDateComponents,
+rather than NSDate.
+
+95
+00:07:13,433 --> 00:07:16,937
+Unlike NSDate,
+date components are a better,
+
+96
+00:07:16,970 --> 00:07:20,507
+and a more correct representation
+of a date
+
+97
+00:07:20,541 --> 00:07:25,712
+whereas NSDate is a representation
+of a point in time.
+
+98
+00:07:27,381 --> 00:07:31,151
+Because NSDateComponents
+offer many flexibilities,
+
+99
+00:07:31,185 --> 00:07:33,220
+you should be very explicit
+
+100
+00:07:33,253 --> 00:07:37,591
+about which NSCalendar
+the components are represented by.
+
+101
+00:07:38,692 --> 00:07:43,530
+Note that you should not make assumptions
+about the type of the current calendar.
+
+102
+00:07:43,564 --> 00:07:45,966
+If you need the calendar to be Gregorian,
+
+103
+00:07:45,999 --> 00:07:50,137
+explicitly specify the Gregorian calendar.
+
+104
+00:07:53,040 --> 00:07:57,277
+To configure a Calendar view
+like the one shown earlier,
+
+105
+00:07:57,311 --> 00:08:02,816
+first, create the Calendar view
+and set its delegate.
+
+106
+00:08:02,850 --> 00:08:08,188
+To ensure that the Calendar is backed
+by the Gregorian NSCalendar,
+
+107
+00:08:08,222 --> 00:08:11,625
+set the calendar property
+on the calendarView
+
+108
+00:08:11,658 --> 00:08:14,528
+to a Gregorian NSCalendar.
+
+109
+00:08:15,829 --> 00:08:19,733
+Next, to configure
+the multi-date selection.
+
+110
+00:08:19,766 --> 00:08:24,304
+Create
+a UICalendarSelectionMultiDate object,
+
+111
+00:08:24,338 --> 00:08:26,473
+and set the selected dates property
+
+112
+00:08:26,507 --> 00:08:31,979
+on the selection object to existing dates
+you have from your data model
+
+113
+00:08:32,012 --> 00:08:34,481
+to show in the Calendar view.
+
+114
+00:08:35,782 --> 00:08:41,922
+Then, set the selection object
+to the calendar view's selection behavior.
+
+115
+00:08:44,892 --> 00:08:49,229
+To prevent the selection of individual
+dates in the Calendar,
+
+116
+00:08:49,263 --> 00:08:53,467
+implement the
+multiDateSelection:canSelectDate: method
+
+117
+00:08:53,500 --> 00:08:56,170
+from the calendar's selection's delegate
+
+118
+00:08:56,203 --> 00:08:59,273
+to control which dates can be selected.
+
+119
+00:09:00,607 --> 00:09:06,213
+Dates that cannot be selected will appear
+greyed out in the calendar view.
+
+120
+00:09:07,748 --> 00:09:11,552
+To annotate individual dates
+with decorations,
+
+121
+00:09:11,585 --> 00:09:14,021
+implement the calendar delegate's
+
+122
+00:09:14,054 --> 00:09:17,691
+calendarView:decorationForDateComponents:
+Method.
+
+123
+00:09:19,426 --> 00:09:22,462
+For no decorations, simply return nil.
+
+124
+00:09:23,564 --> 00:09:28,235
+For a default grey circle,
+return the default decoration.
+
+125
+00:09:29,670 --> 00:09:35,909
+You can also create image decorations
+with options to customize its color.
+
+126
+00:09:35,943 --> 00:09:40,247
+And if you need more,
+use the customView decoration
+
+127
+00:09:40,280 --> 00:09:43,083
+and return your view in the view provider.
+
+128
+00:09:44,484 --> 00:09:48,889
+Please note that the custom view
+decorations do not allow interaction
+
+129
+00:09:48,922 --> 00:09:52,226
+and are clipped to the available space.
+
+130
+00:09:53,594 --> 00:09:56,697
+The page control is also improved.
+
+131
+00:09:56,730 --> 00:10:01,268
+We added the support for custom
+indicator images for the current page,
+
+132
+00:10:01,301 --> 00:10:03,737
+so you can now choose different images
+
+133
+00:10:03,770 --> 00:10:06,773
+depending on whether the page
+is selected or not.
+
+134
+00:10:08,308 --> 00:10:12,479
+Now you can also fully customize
+both the orientation
+
+135
+00:10:12,513 --> 00:10:14,748
+and the direction of the page control.
+
+136
+00:10:16,450 --> 00:10:20,888
+Here is an example of configuring
+a vertical page control
+
+137
+00:10:20,921 --> 00:10:26,126
+whose indicators change between
+the current versus the non-current pages.
+
+138
+00:10:27,794 --> 00:10:31,765
+I set the page control's direction
+to top-to-bottom
+
+139
+00:10:31,798 --> 00:10:36,670
+and set preferred indicator image
+and preferred current indicator image
+
+140
+00:10:36,703 --> 00:10:38,338
+and that's it!
+
+141
+00:10:41,241 --> 00:10:46,580
+Apple is committed to protecting
+user privacy and security.
+
+142
+00:10:46,613 --> 00:10:49,950
+In iOS 15,
+when an application programmatically
+
+143
+00:10:49,983 --> 00:10:54,788
+accessed the pasteboard without
+using system provided Paste interfaces,
+
+144
+00:10:54,821 --> 00:10:59,359
+a banner would appear to indicate
+that the pasteboard was accessed.
+
+145
+00:11:00,594 --> 00:11:04,831
+New to iOS 16,
+the system behavior has changed.
+
+146
+00:11:04,865 --> 00:11:06,800
+Now, instead of a banner,
+
+147
+00:11:06,834 --> 00:11:11,738
+we will display an alert that asks
+for permission to use the pasteboard.
+
+148
+00:11:13,073 --> 00:11:16,810
+System paste interfaces
+that the users interact with
+
+149
+00:11:16,844 --> 00:11:19,780
+provide implicit access to the pasteboard
+
+150
+00:11:19,813 --> 00:11:22,349
+and will avoid the alert.
+
+151
+00:11:23,817 --> 00:11:26,253
+If you have custom paste controls,
+
+152
+00:11:26,286 --> 00:11:30,023
+you can replace them
+with the new UIPasteControl
+
+153
+00:11:30,057 --> 00:11:33,560
+that looks and behaves
+like a filled UIButton.
+
+154
+00:11:34,895 --> 00:11:39,266
+It is enabled whenever the pasteboard
+gets content compatible
+
+155
+00:11:39,299 --> 00:11:42,202
+with the control's paste target.
+
+156
+00:11:43,670 --> 00:11:47,007
+So those are
+the new powerful UICalendarView,
+
+157
+00:11:47,040 --> 00:11:49,643
+the improved UIPageControl,
+
+158
+00:11:49,676 --> 00:11:53,814
+as well as
+the security-oriented UIPasteControl.
+
+159
+00:11:53,847 --> 00:11:56,783
+Go ahead and try them out.
+
+160
+00:11:57,718 --> 00:12:01,955
+Now I'll walk you through some
+API refinements we've made.
+
+161
+00:12:03,690 --> 00:12:07,528
+In iOS 15,
+detents were added to sheets
+
+162
+00:12:07,561 --> 00:12:11,765
+which enabled building flexible
+and dynamic UIs.
+
+163
+00:12:11,798 --> 00:12:16,770
+In iOS 16, we added support
+for custom detents
+
+164
+00:12:16,803 --> 00:12:20,007
+so you can make sheets any size.
+
+165
+00:12:21,308 --> 00:12:26,446
+To take advantage of this feature,
+use the new ".custom" detent
+
+166
+00:12:26,480 --> 00:12:31,885
+and specify the sheet's height
+in points in an associated block.
+
+167
+00:12:31,919 --> 00:12:35,055
+You can return a constant value,
+
+168
+00:12:35,088 --> 00:12:39,459
+or a percentage of
+the maximum detent height.
+
+169
+00:12:42,396 --> 00:12:47,134
+And you can also give your custom detent
+an identifier
+
+170
+00:12:47,167 --> 00:12:50,103
+if you need to refer to it
+from other APIs,
+
+171
+00:12:50,137 --> 00:12:54,575
+for example, to disable dimming
+above your custom detent.
+
+172
+00:12:57,444 --> 00:13:01,148
+Note that the value you return
+from the custom block
+
+173
+00:13:01,181 --> 00:13:05,352
+shouldn't account for
+the bottom safe area inset.
+
+174
+00:13:05,385 --> 00:13:11,725
+This is so the same calculation works for
+both floating and edge-attached sheets.
+
+175
+00:13:13,894 --> 00:13:19,700
+To learn more about customizing sheets
+with system detents and other options,
+
+176
+00:13:19,733 --> 00:13:24,872
+watch the Customize
+and resize sheets in UIKit video.
+
+177
+00:13:24,905 --> 00:13:28,609
+The sample code for that video
+has also been updated
+
+178
+00:13:28,642 --> 00:13:31,879
+to show these new custom detent APIs.
+
+179
+00:13:33,547 --> 00:13:37,851
+There are new features
+for SF Symbols in UIKit.
+
+180
+00:13:38,785 --> 00:13:41,655
+Symbols support four rendering modes:
+
+181
+00:13:41,688 --> 00:13:44,057
+monochrome, multicolor,
+
+182
+00:13:44,091 --> 00:13:47,928
+hierarchical, and palette.
+
+183
+00:13:47,961 --> 00:13:51,164
+UIKit would use monochrome rendering
+by default
+
+184
+00:13:51,198 --> 00:13:55,769
+unless the symbol was configured
+with a different rendering mode.
+
+185
+00:13:55,802 --> 00:13:59,940
+In iOS 16,
+UIKit may render individual symbols
+
+186
+00:13:59,973 --> 00:14:02,376
+with a mode other than monochrome
+
+187
+00:14:02,409 --> 00:14:05,279
+if no rendering mode is specified.
+
+188
+00:14:07,047 --> 00:14:10,284
+Take these device symbols, for example.
+
+189
+00:14:10,317 --> 00:14:13,453
+In iOS 15 and earlier,
+
+190
+00:14:13,487 --> 00:14:16,456
+these symbols use monochrome rendering
+
+191
+00:14:16,490 --> 00:14:19,226
+if no rendering mode is specified.
+
+192
+00:14:20,427 --> 00:14:25,699
+In iOS 16, these symbols instead default
+to hierarchical rendering.
+
+193
+00:14:26,867 --> 00:14:29,736
+Generally,
+a symbol's default rendering mode
+
+194
+00:14:29,770 --> 00:14:33,473
+is the preferred way
+to display the symbol.
+
+195
+00:14:33,507 --> 00:14:38,245
+So in this case, you should allow
+the default hierarchical rendering
+
+196
+00:14:38,278 --> 00:14:40,781
+to take effect.
+
+197
+00:14:40,814 --> 00:14:45,786
+However, monochrome rendering
+can be explicitly requested
+
+198
+00:14:45,819 --> 00:14:51,825
+with the new UIImage.SymbolConfiguration.
+preferringMonochrome() API.
+
+199
+00:14:55,596 --> 00:14:58,765
+UIKit added support for variable symbols,
+
+200
+00:14:58,799 --> 00:15:02,169
+which allows apps to display
+variations of a symbol
+
+201
+00:15:02,202 --> 00:15:06,173
+based on a value from 0 to 1.
+
+202
+00:15:06,206 --> 00:15:10,978
+Suppose an app wants to depict
+the current volume level with a symbol.
+
+203
+00:15:11,011 --> 00:15:15,682
+The app can use
+the speaker.3.wave.fill symbol,
+
+204
+00:15:15,716 --> 00:15:20,254
+which has been updated
+to support variable rendering.
+
+205
+00:15:20,287 --> 00:15:24,758
+At a value of 0,
+the speaker waves are faded out,
+
+206
+00:15:24,791 --> 00:15:27,861
+indicating the lowest volume level.
+
+207
+00:15:27,895 --> 00:15:30,430
+As the value increases up to 1,
+
+208
+00:15:30,464 --> 00:15:33,800
+the speaker waves progressively fill in,
+
+209
+00:15:33,834 --> 00:15:36,170
+indicating higher volume levels.
+
+210
+00:15:37,471 --> 00:15:40,307
+If a symbol supports variable rendering,
+
+211
+00:15:40,340 --> 00:15:43,477
+then apps can request
+a version of the symbol
+
+212
+00:15:43,510 --> 00:15:47,247
+reflecting a value between 0 and 1.
+
+213
+00:15:48,982 --> 00:15:53,687
+Using variable symbols is straightforward.
+
+214
+00:15:53,720 --> 00:15:57,457
+You can get the regular
+non-variable version of a symbol
+
+215
+00:15:57,491 --> 00:16:02,095
+with the standard SF Symbols API
+on UIImage.
+
+216
+00:16:03,830 --> 00:16:07,634
+To get a version of that symbol
+with a particular variable value,
+
+217
+00:16:07,668 --> 00:16:10,771
+simply add the variableValue parameter.
+
+218
+00:16:12,039 --> 00:16:15,943
+You can even mix variable rendering
+with other rendering modes,
+
+219
+00:16:15,976 --> 00:16:19,279
+such as palette,
+to further style the symbol.
+
+220
+00:16:20,914 --> 00:16:25,686
+Many system symbols now
+support variable rendering,
+
+221
+00:16:25,719 --> 00:16:30,757
+and apps can update their custom symbols
+to support variability as well.
+
+222
+00:16:32,192 --> 00:16:35,529
+To learn how to create
+custom variable symbols,
+
+223
+00:16:35,562 --> 00:16:40,267
+check out the sessions
+"Adopt variable color in SF Symbols"
+
+224
+00:16:40,300 --> 00:16:43,604
+and "What's new in SF Symbols 4”.
+
+225
+00:16:45,439 --> 00:16:49,877
+We've modernized UIKit to work
+with new Swift Concurrency features,
+
+226
+00:16:49,910 --> 00:16:52,045
+including making immutable types
+
+227
+00:16:52,079 --> 00:16:56,216
+such as UIImage and UIColor
+conform to Sendable,
+
+228
+00:16:56,250 --> 00:16:58,986
+so you can send them between the MainActor
+
+229
+00:16:59,019 --> 00:17:02,456
+and custom actors
+without compiler warning.
+
+230
+00:17:03,957 --> 00:17:09,930
+For example, here we have
+a custom actor called Processor,
+
+231
+00:17:09,963 --> 00:17:12,900
+and a view controller called ImageViewer
+
+232
+00:17:12,933 --> 00:17:15,969
+which is bound to the MainActor.
+
+233
+00:17:16,003 --> 00:17:18,572
+In the method sendImageForProcessing,
+
+234
+00:17:18,605 --> 00:17:24,077
+the ImageViewer sends an image
+to the Processor actor for processing,
+
+235
+00:17:24,111 --> 00:17:28,448
+to make it fancy like adding glitter
+and rainbows to it.
+
+236
+00:17:28,482 --> 00:17:32,386
+This is safe because UIImage is immutable,
+
+237
+00:17:32,419 --> 00:17:34,755
+so Processor has to make new copy
+
+238
+00:17:34,788 --> 00:17:36,990
+to add the rainbows and glitter.
+
+239
+00:17:38,358 --> 00:17:41,862
+Any code that has a reference
+to the original image
+
+240
+00:17:41,895 --> 00:17:44,364
+doesn't show these modifications,
+
+241
+00:17:44,398 --> 00:17:48,135
+and a shared state
+is not unsafely mutated.
+
+242
+00:17:49,870 --> 00:17:52,973
+Contrast this with UIBezierPath,
+
+243
+00:17:53,006 --> 00:17:56,543
+which is not Sendable
+because it is mutable.
+
+244
+00:17:57,845 --> 00:18:02,082
+How cool is it that something
+that could previously only be expressed
+
+245
+00:18:02,115 --> 00:18:06,753
+in documentation
+can now be checked by the compiler?
+
+246
+00:18:09,056 --> 00:18:12,693
+To learn more about
+Sendable and Swift Concurrency,
+
+247
+00:18:12,726 --> 00:18:17,464
+check out "Eliminate data races
+using Swift Concurrency"
+
+248
+00:18:17,497 --> 00:18:23,337
+and "Visualize and optimize
+Swift Concurrency" videos.
+
+249
+00:18:25,405 --> 00:18:30,644
+iOS 16 features new powerful support
+for external displays.
+
+250
+00:18:31,245 --> 00:18:36,583
+The great news is that you don't have to
+update your app to take advantage of this,
+
+251
+00:18:36,617 --> 00:18:40,487
+unless you are using old UIScreen APIs.
+
+252
+00:18:41,588 --> 00:18:45,459
+You can no longer assume
+your app is on the main screen.
+
+253
+00:18:46,260 --> 00:18:49,763
+Instead, defer to more specific APIs,
+
+254
+00:18:49,796 --> 00:18:53,000
+like trait collection and UIScene APIs,
+
+255
+00:18:53,033 --> 00:18:55,702
+to get the information you need.
+
+256
+00:18:55,736 --> 00:18:58,438
+If your app is still not using UIScene,
+
+257
+00:18:58,472 --> 00:19:03,911
+there's now even more reason to upgrade
+and to support multiple windows.
+
+258
+00:19:05,445 --> 00:19:08,115
+Self-sizing cells in UICollectionView
+
+259
+00:19:08,148 --> 00:19:12,586
+and UITableView got a major upgrade.
+
+260
+00:19:12,619 --> 00:19:16,523
+Now cells are also self-resizing!
+
+261
+00:19:16,557 --> 00:19:21,595
+In iOS 16, when the content
+inside a visible cell changes,
+
+262
+00:19:21,628 --> 00:19:26,633
+the cell will automatically be resized
+to fit the new content.
+
+263
+00:19:28,235 --> 00:19:31,371
+This new behavior is enabled by default,
+
+264
+00:19:31,405 --> 00:19:34,141
+and UICollectionView and UITableView
+
+265
+00:19:34,174 --> 00:19:38,178
+each have a new selfSizingInvalidation
+property
+
+266
+00:19:38,212 --> 00:19:41,548
+that gives you control
+over this new functionality.
+
+267
+00:19:43,016 --> 00:19:44,785
+Here is how it works:
+
+268
+00:19:46,220 --> 00:19:49,690
+When selfSizingInvalidation is enabled,
+
+269
+00:19:49,723 --> 00:19:52,259
+cells can request to be resized
+
+270
+00:19:52,292 --> 00:19:55,162
+by their containing collection
+or table view.
+
+271
+00:19:56,930 --> 00:20:01,768
+If you're using UIListContentConfiguration
+to configure cells,
+
+272
+00:20:01,802 --> 00:20:04,204
+the invalidation happens automatically
+
+273
+00:20:04,238 --> 00:20:07,474
+whenever the cell's configuration changes.
+
+274
+00:20:08,942 --> 00:20:11,011
+For any other cases,
+
+275
+00:20:11,044 --> 00:20:14,915
+you can call
+the invalidateIntrinsicContentSize method
+
+276
+00:20:14,948 --> 00:20:19,086
+on the cell
+or its contentView to resize the cell.
+
+277
+00:20:20,888 --> 00:20:24,558
+By default,
+cells will be resized with animation,
+
+278
+00:20:24,591 --> 00:20:28,428
+but you can wrap the call
+to invalidateIntrinsicContentSize
+
+279
+00:20:28,462 --> 00:20:33,734
+inside performWithoutAnimation
+to resize without animation.
+
+280
+00:20:33,767 --> 00:20:38,539
+UICollectionView and UITableView
+intelligently coalesce
+
+281
+00:20:38,572 --> 00:20:40,474
+size invalidation from cells
+
+282
+00:20:40,507 --> 00:20:44,645
+into a single update
+performed at the optimal time.
+
+283
+00:20:47,247 --> 00:20:49,950
+If you're using Auto Layout in your cells,
+
+284
+00:20:49,983 --> 00:20:53,754
+you can opt-in to an even more
+comprehensive behavior
+
+285
+00:20:53,787 --> 00:20:57,691
+by choosing enabledIncludingConstraints.
+
+286
+00:20:57,724 --> 00:21:03,564
+This means when a cell detects any auto
+layout changes inside its contentView,
+
+287
+00:21:03,597 --> 00:21:08,702
+it will automatically call
+invalidateIntrinsicContentSize on itself
+
+288
+00:21:08,735 --> 00:21:14,074
+so that the containing collection
+or table view can resize it if necessary.
+
+289
+00:21:15,008 --> 00:21:17,044
+This makes it incredibly easy
+
+290
+00:21:17,077 --> 00:21:20,147
+to have cells
+that automatically adjust their size
+
+291
+00:21:20,180 --> 00:21:23,450
+in response to content
+or layout updates.
+
+292
+00:21:25,419 --> 00:21:28,689
+UIKit is powerful and flexible.
+
+293
+00:21:28,722 --> 00:21:32,125
+You can also take advantage
+of the expressiveness
+
+294
+00:21:32,159 --> 00:21:36,330
+of implementing UIs using SwiftUI.
+
+295
+00:21:36,363 --> 00:21:41,935
+We've made it much easier to incorporate
+both frameworks in the same app.
+
+296
+00:21:43,971 --> 00:21:50,177
+In iOS 16, there is an entirely new way
+to build cells for your collection
+
+297
+00:21:50,210 --> 00:21:53,647
+and table views using SwiftUI.
+
+298
+00:21:55,048 --> 00:21:59,520
+This is made possible
+by a new content configuration type
+
+299
+00:21:59,553 --> 00:22:03,290
+named UIHostingConfiguration.
+
+300
+00:22:03,323 --> 00:22:05,592
+With just one line of code,
+
+301
+00:22:05,626 --> 00:22:10,063
+you can start writing SwiftUI
+right inside your cells--
+
+302
+00:22:10,097 --> 00:22:14,001
+no extra views
+or view controllers needed at all.
+
+303
+00:22:15,869 --> 00:22:19,540
+Here is a simple custom cell
+written in SwiftUI
+
+304
+00:22:19,573 --> 00:22:22,476
+using UIHostingConfiguration.
+
+305
+00:22:22,509 --> 00:22:25,646
+It is extremely easily
+to build this cell.
+
+306
+00:22:27,147 --> 00:22:33,587
+Not only is this a great way to start
+integrating SwiftUI into your app,
+
+307
+00:22:33,620 --> 00:22:39,426
+the expressive nature of SwiftUI means
+there's never been a more powerful way
+
+308
+00:22:39,459 --> 00:22:42,996
+to build custom cells in UIKit.
+
+309
+00:22:43,797 --> 00:22:46,266
+There is a lot more to this topic,
+
+310
+00:22:46,300 --> 00:22:49,169
+so be sure to check out the video
+
+311
+00:22:49,203 --> 00:22:53,674
+"Use SwiftUI with UIKit" to learn more.
+
+312
+00:22:56,643 --> 00:23:02,249
+There are a couple of small but important
+changes that you should be aware of.
+
+313
+00:23:02,983 --> 00:23:06,286
+To prevent users from being fingerprinted,
+
+314
+00:23:06,320 --> 00:23:10,123
+UIDevice.name now reports the model name
+
+315
+00:23:10,157 --> 00:23:14,027
+rather than the user's custom device name.
+
+316
+00:23:14,061 --> 00:23:18,799
+Using the customized name
+now requires getting an entitlement.
+
+317
+00:23:20,534 --> 00:23:24,805
+Setting UIDevice.orientation
+is no longer supported.
+
+318
+00:23:24,838 --> 00:23:28,509
+Instead, use UIViewController APIs
+
+319
+00:23:28,542 --> 00:23:31,512
+such as preferredInterfaceOrientation
+
+320
+00:23:31,545 --> 00:23:35,516
+to express the intended orientation
+of your interface.
+
+321
+00:23:36,783 --> 00:23:38,785
+What's next?
+
+322
+00:23:38,819 --> 00:23:43,690
+Compile your app using iOS 16 SDK.
+
+323
+00:23:43,724 --> 00:23:47,594
+Test out the new features
+such as text edit menus
+
+324
+00:23:47,628 --> 00:23:50,197
+and find and replace.
+
+325
+00:23:50,230 --> 00:23:55,002
+Adopt the new UIKit APIs
+to use new enhanced controls
+
+326
+00:23:55,035 --> 00:23:57,571
+and productivity features.
+
+327
+00:23:57,604 --> 00:24:00,507
+And experiment with the new exciting ways
+
+328
+00:24:00,541 --> 00:24:04,311
+to incorporate SwiftUI in your UIKit app.
+
+329
+00:24:05,179 --> 00:24:06,680
+Thank you. ♪ ♪
+

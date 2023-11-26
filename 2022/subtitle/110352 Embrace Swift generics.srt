@@ -1,0 +1,2588 @@
+1
+00:00:00,033 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,743
+♪
+
+3
+00:00:09,743 --> 00:00:13,580
+Hi everyone, I'm Holly
+from the Swift Compiler team.
+
+4
+00:00:13,580 --> 00:00:17,351
+Welcome
+to "Embrace Swift generics."
+
+5
+00:00:17,351 --> 00:00:19,486
+Generics are a fundamental tool
+
+6
+00:00:19,486 --> 00:00:21,922
+for writing abstract code
+in Swift,
+
+7
+00:00:21,922 --> 00:00:26,526
+which is crucial for managing
+complexity as your code evolves.
+
+8
+00:00:26,526 --> 00:00:31,465
+Abstraction separates ideas
+from specific details.
+
+9
+00:00:31,465 --> 00:00:34,201
+In code, there are
+a lot of different ways
+
+10
+00:00:34,201 --> 00:00:36,536
+abstraction is useful.
+
+11
+00:00:36,536 --> 00:00:40,173
+One form of abstraction
+that you likely use all the time
+
+12
+00:00:40,173 --> 00:00:45,212
+is factoring code out into
+a function or a local variable.
+
+13
+00:00:45,212 --> 00:00:47,481
+This can be really useful
+if you need to use
+
+14
+00:00:47,481 --> 00:00:51,551
+the same functionality
+or value multiple times.
+
+15
+00:00:51,551 --> 00:00:55,055
+When you extract the
+functionality into a function,
+
+16
+00:00:55,055 --> 00:00:57,391
+the details are abstracted away,
+
+17
+00:00:57,391 --> 00:00:59,693
+and the code
+that uses the abstraction
+
+18
+00:00:59,693 --> 00:01:01,929
+can express
+the idea of what's happening
+
+19
+00:01:01,929 --> 00:01:04,464
+without repeating the details.
+
+20
+00:01:04,464 --> 00:01:09,102
+In Swift, you can also
+abstract away concrete types.
+
+21
+00:01:09,102 --> 00:01:12,039
+If you have a set of types
+that are all the same idea
+
+22
+00:01:12,039 --> 00:01:15,409
+with different details,
+you can write abstract code
+
+23
+00:01:15,409 --> 00:01:18,979
+to work with all
+of those concrete types.
+
+24
+00:01:18,979 --> 00:01:21,448
+Today, we'll walk through
+the workflow
+
+25
+00:01:21,448 --> 00:01:24,518
+of modeling code
+with concrete types,
+
+26
+00:01:24,518 --> 00:01:29,589
+identifying common capabilities
+of a set of concrete types,
+
+27
+00:01:29,589 --> 00:01:32,926
+building an interface
+to represent those capabilities,
+
+28
+00:01:32,926 --> 00:01:34,127
+and finally,
+
+29
+00:01:34,127 --> 00:01:38,432
+we'll dive into writing generic
+code using that interface.
+
+30
+00:01:38,432 --> 00:01:40,801
+We'll dig into Swift's
+abstraction tools
+
+31
+00:01:40,801 --> 00:01:44,271
+while building up some code
+to simulate a farm.
+
+32
+00:01:44,271 --> 00:01:48,141
+So, let's start by writing
+some concrete types.
+
+33
+00:01:48,141 --> 00:01:50,877
+We'll start with one struct
+called "Cow."
+
+34
+00:01:50,877 --> 00:01:52,679
+Cow has a method called "eat,"
+
+35
+00:01:52,679 --> 00:01:56,016
+which accepts
+a parameter of type Hay.
+
+36
+00:01:56,016 --> 00:01:58,018
+Hay is another struct.
+
+37
+00:01:58,018 --> 00:02:00,253
+It has a static method
+called "grow"
+
+38
+00:02:00,253 --> 00:02:02,422
+to grow the crop
+that produces Hay,
+
+39
+00:02:02,422 --> 00:02:05,058
+which is Alfalfa.
+
+40
+00:02:05,058 --> 00:02:07,828
+The Alfalfa struct
+has a method to harvest Hay
+
+41
+00:02:07,828 --> 00:02:10,664
+from an instance of Alfalfa.
+
+42
+00:02:10,664 --> 00:02:13,233
+Finally,
+we'll add a struct called "Farm"
+
+43
+00:02:13,233 --> 00:02:16,570
+that has a method
+for feeding a cow.
+
+44
+00:02:16,570 --> 00:02:18,305
+The feed method
+can be implemented
+
+45
+00:02:18,305 --> 00:02:21,908
+by first growing some
+alfalfa to produce hay,
+
+46
+00:02:21,908 --> 00:02:23,977
+then harvesting the hay,
+
+47
+00:02:23,977 --> 00:02:26,880
+and finally,
+feeding the hay to the cow.
+
+48
+00:02:26,880 --> 00:02:30,317
+And now, I can feed cows
+on my farm.
+
+49
+00:02:30,317 --> 00:02:34,421
+But I want to add
+more kinds of animals.
+
+50
+00:02:34,421 --> 00:02:37,324
+I can add more structs
+to represent other animals,
+
+51
+00:02:37,324 --> 00:02:39,760
+like Horse and Chicken.
+
+52
+00:02:39,760 --> 00:02:43,630
+And I want to be able to feed
+cows, horses, and chickens
+
+53
+00:02:43,630 --> 00:02:46,033
+on the farm.
+
+54
+00:02:46,033 --> 00:02:48,368
+I could overload the feed method
+
+55
+00:02:48,368 --> 00:02:51,671
+to accept each type
+of parameter separately,
+
+56
+00:02:51,671 --> 00:02:56,910
+but each overload will have
+a really similar implementation.
+
+57
+00:02:56,910 --> 00:02:59,079
+This will become
+extra boilerplate
+
+58
+00:02:59,079 --> 00:03:01,515
+as I add more types of animals,
+
+59
+00:03:01,515 --> 00:03:04,785
+and it's mostly
+repeated code anyway.
+
+60
+00:03:04,785 --> 00:03:07,020
+If you find yourself
+writing overloads
+
+61
+00:03:07,020 --> 00:03:09,256
+with repetitive implementations,
+
+62
+00:03:09,256 --> 00:03:11,691
+it might be a sign
+to generalize.
+
+63
+00:03:11,691 --> 00:03:15,362
+Fundamentally, these
+implementations are so similar
+
+64
+00:03:15,362 --> 00:03:17,330
+because different types
+of animals
+
+65
+00:03:17,330 --> 00:03:20,233
+are similar in functionality.
+
+66
+00:03:20,233 --> 00:03:23,203
+The next step is to identify
+the common capabilities
+
+67
+00:03:23,203 --> 00:03:25,672
+between the animal types.
+
+68
+00:03:25,672 --> 00:03:27,340
+We've built a set
+of animal types
+
+69
+00:03:27,340 --> 00:03:31,311
+that all have the ability
+to eat some type of food.
+
+70
+00:03:31,311 --> 00:03:34,548
+Each type of animal will have
+a different way of eating,
+
+71
+00:03:34,548 --> 00:03:36,883
+so each implementation
+of the eat method
+
+72
+00:03:36,883 --> 00:03:40,320
+will have differences
+in behavior.
+
+73
+00:03:40,320 --> 00:03:41,521
+What we want to do
+
+74
+00:03:41,521 --> 00:03:44,758
+is allow abstract code
+to call the eat method
+
+75
+00:03:44,758 --> 00:03:47,761
+and have that abstract code
+behave differently
+
+76
+00:03:47,761 --> 00:03:51,331
+depending on the concrete type
+it's operating on.
+
+77
+00:03:51,331 --> 00:03:54,568
+The ability of abstract code
+to behave differently
+
+78
+00:03:54,568 --> 00:03:58,805
+for different concrete types
+is called "polymorphism."
+
+79
+00:03:58,805 --> 00:04:03,510
+Polymorphism allows one piece
+of code to have many behaviors
+
+80
+00:04:03,510 --> 00:04:07,214
+depending on how
+the code is used.
+
+81
+00:04:07,214 --> 00:04:12,152
+Appropriately, polymorphism
+itself comes in different forms.
+
+82
+00:04:12,152 --> 00:04:14,654
+The first is
+function overloading,
+
+83
+00:04:14,654 --> 00:04:17,357
+where the same function call
+can mean different things
+
+84
+00:04:17,357 --> 00:04:20,026
+depending on the argument type.
+
+85
+00:04:20,026 --> 00:04:23,130
+Overloading is called
+"ad-hoc polymorphism"
+
+86
+00:04:23,130 --> 00:04:26,032
+because it isn't really
+a general solution.
+
+87
+00:04:26,032 --> 00:04:30,570
+We just saw how overloading
+can lead to repetitive code.
+
+88
+00:04:30,570 --> 00:04:33,140
+Next is subtype polymorphism,
+
+89
+00:04:33,140 --> 00:04:35,475
+where code
+operating on a supertype
+
+90
+00:04:35,475 --> 00:04:38,545
+can have different behavior
+based on the specific subtype
+
+91
+00:04:38,545 --> 00:04:41,281
+the code is using at runtime.
+
+92
+00:04:41,281 --> 00:04:44,684
+Finally, we have
+parametric polymorphism,
+
+93
+00:04:44,684 --> 00:04:47,988
+which is achieved
+using generics.
+
+94
+00:04:47,988 --> 00:04:51,391
+Generic code uses
+type parameters to allow writing
+
+95
+00:04:51,391 --> 00:04:54,561
+one piece of code
+that works with different types,
+
+96
+00:04:54,561 --> 00:04:58,865
+and concrete types themselves
+are used as arguments.
+
+97
+00:04:58,865 --> 00:05:01,268
+We've already
+ruled out overloading,
+
+98
+00:05:01,268 --> 00:05:04,971
+so let's try to use
+subtype polymorphism.
+
+99
+00:05:04,971 --> 00:05:07,974
+One way to represent
+subtype relationships
+
+100
+00:05:07,974 --> 00:05:10,277
+is with a class hierarchy.
+
+101
+00:05:10,277 --> 00:05:14,514
+We could introduce
+a class called "Animal."
+
+102
+00:05:14,514 --> 00:05:19,953
+Next, we'd change each animal
+type from a struct to a class.
+
+103
+00:05:19,953 --> 00:05:22,489
+Each specific animal class
+will inherit
+
+104
+00:05:22,489 --> 00:05:27,394
+from the Animal superclass,
+and override the eat method.
+
+105
+00:05:27,394 --> 00:05:31,231
+Now, we have
+an abstract base-class Animal
+
+106
+00:05:31,231 --> 00:05:35,468
+that can represent all
+of our specific animal types.
+
+107
+00:05:35,468 --> 00:05:38,305
+Code that calls eat
+on the Animal class
+
+108
+00:05:38,305 --> 00:05:40,440
+will use subtype polymorphism
+
+109
+00:05:40,440 --> 00:05:43,143
+to call the subclass
+implementation.
+
+110
+00:05:43,143 --> 00:05:44,878
+But we're not done.
+
+111
+00:05:44,878 --> 00:05:47,047
+We still haven't filled
+in a parameter type
+
+112
+00:05:47,047 --> 00:05:49,049
+for the eat method on Animal,
+
+113
+00:05:49,049 --> 00:05:52,886
+and there are a few other
+red flags in this code.
+
+114
+00:05:52,886 --> 00:05:57,324
+First, using classes forced us
+into reference semantics,
+
+115
+00:05:57,324 --> 00:06:00,427
+even though we don't need
+or want any state to be shared
+
+116
+00:06:00,427 --> 00:06:04,197
+between different
+animal instances.
+
+117
+00:06:04,197 --> 00:06:06,900
+This strategy
+also requires subclasses
+
+118
+00:06:06,900 --> 00:06:09,669
+to override methods
+in the base class,
+
+119
+00:06:09,669 --> 00:06:11,771
+but forgetting to do this
+wouldn't be caught
+
+120
+00:06:11,771 --> 00:06:13,974
+until runtime.
+
+121
+00:06:13,974 --> 00:06:16,676
+But the bigger problem
+with this model of abstraction
+
+122
+00:06:16,676 --> 00:06:20,947
+is that each animal subtype
+eats a different type of food,
+
+123
+00:06:20,947 --> 00:06:23,750
+and this dependency
+is really difficult to express
+
+124
+00:06:23,750 --> 00:06:26,786
+with a class hierarchy.
+
+125
+00:06:26,786 --> 00:06:29,656
+One approach we could take
+is to have the method accept
+
+126
+00:06:29,656 --> 00:06:33,226
+a less specific type,
+such as Any.
+
+127
+00:06:33,226 --> 00:06:36,596
+But this strategy relies
+on subclass implementations
+
+128
+00:06:36,596 --> 00:06:40,333
+to make sure the correct type
+was passed at runtime.
+
+129
+00:06:40,333 --> 00:06:42,335
+So, we've imposed
+extra boilerplate
+
+130
+00:06:42,335 --> 00:06:45,939
+in each overridden method,
+but more importantly,
+
+131
+00:06:45,939 --> 00:06:49,309
+it allows you to accidentally
+pass the wrong type of food,
+
+132
+00:06:49,309 --> 00:06:51,077
+leaving you with another bug
+
+133
+00:06:51,077 --> 00:06:53,780
+that could only be caught
+at runtime.
+
+134
+00:06:53,780 --> 00:06:56,650
+So, let's try something else.
+
+135
+00:06:56,650 --> 00:06:59,552
+We could instead express
+the animal's feed type
+
+136
+00:06:59,552 --> 00:07:01,488
+in a type-safe way
+
+137
+00:07:01,488 --> 00:07:06,226
+by introducing a type parameter
+on the Animal superclass.
+
+138
+00:07:06,226 --> 00:07:09,062
+This type parameter serves
+as a placeholder
+
+139
+00:07:09,062 --> 00:07:13,400
+for the specific feed type
+for each subclass.
+
+140
+00:07:13,400 --> 00:07:15,935
+With this approach,
+the Food type parameter
+
+141
+00:07:15,935 --> 00:07:20,440
+must be elevated to the
+declaration of the Animal class.
+
+142
+00:07:20,440 --> 00:07:22,309
+This seems a little unnatural
+
+143
+00:07:22,309 --> 00:07:25,111
+because though animals
+need food to operate,
+
+144
+00:07:25,111 --> 00:07:28,048
+eating food isn't
+the core purpose of an animal,
+
+145
+00:07:28,048 --> 00:07:30,116
+and a lot of code
+that works with animals
+
+146
+00:07:30,116 --> 00:07:33,253
+probably won't care
+about food at all.
+
+147
+00:07:33,253 --> 00:07:36,523
+Despite that, all references
+to the Animal class
+
+148
+00:07:36,523 --> 00:07:39,259
+need to specify the food type.
+
+149
+00:07:39,259 --> 00:07:41,995
+For example,
+each Animal subclass
+
+150
+00:07:41,995 --> 00:07:45,865
+needs to explicitly specify
+its food type in angle brackets
+
+151
+00:07:45,865 --> 00:07:48,702
+in the inheritance clause.
+
+152
+00:07:48,702 --> 00:07:52,138
+This boilerplate at each
+use site of the Animal class
+
+153
+00:07:52,138 --> 00:07:55,675
+could become onerous
+if we added more types
+
+154
+00:07:55,675 --> 00:07:58,311
+that are specific
+to each animal.
+
+155
+00:07:58,311 --> 00:07:59,846
+So, none of our approaches here
+
+156
+00:07:59,846 --> 00:08:04,250
+have good ergonomics
+or the right semantics.
+
+157
+00:08:04,250 --> 00:08:08,455
+The fundamental problem
+is that a class is a data type,
+
+158
+00:08:08,455 --> 00:08:10,924
+and we're trying
+to convolute a superclass
+
+159
+00:08:10,924 --> 00:08:15,695
+to make it represent abstract
+ideas about concrete types.
+
+160
+00:08:15,695 --> 00:08:18,932
+Instead, we want
+a language construct
+
+161
+00:08:18,932 --> 00:08:22,168
+that was designed to represent
+capabilities of types
+
+162
+00:08:22,168 --> 00:08:26,106
+without the details
+of how the capability works.
+
+163
+00:08:26,106 --> 00:08:29,442
+Animals have
+two common capabilities.
+
+164
+00:08:29,442 --> 00:08:32,379
+Each animal has
+a specific type of food,
+
+165
+00:08:32,379 --> 00:08:36,616
+along with an operation
+for consuming some of that food.
+
+166
+00:08:36,616 --> 00:08:41,020
+We can build an interface that
+represents those capabilities.
+
+167
+00:08:41,020 --> 00:08:44,924
+In Swift, this is done
+using a protocol.
+
+168
+00:08:44,924 --> 00:08:47,193
+A protocol
+is an abstraction tool
+
+169
+00:08:47,193 --> 00:08:52,031
+that describes the functionality
+of conforming types.
+
+170
+00:08:52,031 --> 00:08:55,235
+Using a protocol,
+you can separate the ideas
+
+171
+00:08:55,235 --> 00:08:59,372
+about what a type does
+from the implementation details.
+
+172
+00:08:59,372 --> 00:09:01,641
+The ideas about
+what a type does
+
+173
+00:09:01,641 --> 00:09:04,911
+are expressed
+through an interface.
+
+174
+00:09:04,911 --> 00:09:07,514
+Let's translate
+the capabilities of an animal
+
+175
+00:09:07,514 --> 00:09:10,049
+to a protocol interface.
+
+176
+00:09:10,049 --> 00:09:11,451
+The name of the protocol
+
+177
+00:09:11,451 --> 00:09:14,621
+represents the category of types
+we're describing,
+
+178
+00:09:14,621 --> 00:09:17,190
+so I called
+this protocol "Animal."
+
+179
+00:09:17,190 --> 00:09:21,394
+Each capability will map
+to a protocol requirement.
+
+180
+00:09:21,394 --> 00:09:23,430
+The specific type
+of food will map
+
+181
+00:09:23,430 --> 00:09:28,034
+to an associated type
+of the Animal protocol.
+
+182
+00:09:28,034 --> 00:09:30,804
+Just like a type parameter,
+an associated type
+
+183
+00:09:30,804 --> 00:09:34,073
+serves as a placeholder
+for a concrete type.
+
+184
+00:09:34,073 --> 00:09:36,376
+What makes
+associated types special
+
+185
+00:09:36,376 --> 00:09:38,611
+is that they depend
+on the specific type
+
+186
+00:09:38,611 --> 00:09:40,947
+that conforms
+to the protocol.
+
+187
+00:09:40,947 --> 00:09:43,316
+This relationship
+is guaranteed,
+
+188
+00:09:43,316 --> 00:09:46,319
+so each instance
+of a specific type of animal
+
+189
+00:09:46,319 --> 00:09:49,789
+always has
+the same type of food.
+
+190
+00:09:49,789 --> 00:09:55,028
+Next, the operation to consume
+food will map to a method.
+
+191
+00:09:55,028 --> 00:09:56,896
+This method is called "eat,"
+
+192
+00:09:56,896 --> 00:10:00,266
+and it accepts a parameter
+of the animal's feed type.
+
+193
+00:10:00,266 --> 00:10:03,536
+The protocol does not have an
+implementation of this method,
+
+194
+00:10:03,536 --> 00:10:08,475
+and concrete animal types
+are required to implement it.
+
+195
+00:10:08,475 --> 00:10:10,810
+Now that we have
+the Animal protocol,
+
+196
+00:10:10,810 --> 00:10:14,848
+we can make each concrete
+animal type conform to it.
+
+197
+00:10:14,848 --> 00:10:18,451
+You can annotate a concrete type
+with a protocol conformance
+
+198
+00:10:18,451 --> 00:10:22,088
+at the declaration
+or in an extension.
+
+199
+00:10:22,088 --> 00:10:24,791
+Protocols are not limited
+to classes,
+
+200
+00:10:24,791 --> 00:10:29,596
+so we can use protocols with
+structs, enums, and actors, too.
+
+201
+00:10:29,596 --> 00:10:31,998
+Once you write
+this conformance annotation,
+
+202
+00:10:31,998 --> 00:10:34,434
+the compiler will check
+that the concrete type
+
+203
+00:10:34,434 --> 00:10:38,705
+implements each
+of the protocol requirements.
+
+204
+00:10:38,705 --> 00:10:42,208
+Each animal type must
+implement the eat method,
+
+205
+00:10:42,208 --> 00:10:45,278
+and the compiler can infer
+what the feed type is,
+
+206
+00:10:45,278 --> 00:10:48,781
+because it's used
+in the parameter list.
+
+207
+00:10:48,781 --> 00:10:51,050
+The feed type can also
+be written explicitly
+
+208
+00:10:51,050 --> 00:10:54,220
+using a type alias.
+
+209
+00:10:54,220 --> 00:10:56,789
+We've successfully identified
+the common capabilities
+
+210
+00:10:56,789 --> 00:10:59,959
+of an animal and expressed
+those capabilities,
+
+211
+00:10:59,959 --> 00:11:02,328
+using a protocol interface.
+
+212
+00:11:02,328 --> 00:11:06,132
+Now, we can start
+to write generic code.
+
+213
+00:11:06,132 --> 00:11:08,001
+We can use
+the Animal protocol
+
+214
+00:11:08,001 --> 00:11:10,737
+to implement
+the feed method on Farm.
+
+215
+00:11:10,737 --> 00:11:12,805
+We want to write
+one implementation
+
+216
+00:11:12,805 --> 00:11:15,875
+that works for all
+concrete animal types.
+
+217
+00:11:15,875 --> 00:11:18,177
+We'll use
+parametric polymorphism
+
+218
+00:11:18,177 --> 00:11:21,314
+and introduce a type parameter
+that will be replaced
+
+219
+00:11:21,314 --> 00:11:25,285
+with a concrete type
+when the method is called.
+
+220
+00:11:25,285 --> 00:11:28,254
+A type parameter is written
+after the function name
+
+221
+00:11:28,254 --> 00:11:30,089
+in angle brackets.
+
+222
+00:11:30,089 --> 00:11:33,393
+Just like regular variables
+and function parameters,
+
+223
+00:11:33,393 --> 00:11:37,163
+you can name a type
+parameter whatever you like.
+
+224
+00:11:37,163 --> 00:11:39,098
+And just like
+any other type,
+
+225
+00:11:39,098 --> 00:11:40,767
+you can reference
+the type parameter
+
+226
+00:11:40,767 --> 00:11:44,304
+throughout the function
+signature, using its name.
+
+227
+00:11:44,304 --> 00:11:47,373
+Here, I declared
+a type parameter called “A”,
+
+228
+00:11:47,373 --> 00:11:51,711
+and I used A as the type of
+the animal function parameter.
+
+229
+00:11:51,711 --> 00:11:53,746
+We always want
+the concrete animal type
+
+230
+00:11:53,746 --> 00:11:56,683
+to conform
+to the Animal protocol,
+
+231
+00:11:56,683 --> 00:11:58,384
+so we annotate
+the type parameter
+
+232
+00:11:58,384 --> 00:12:00,820
+with a protocol conformance.
+
+233
+00:12:00,820 --> 00:12:04,457
+Protocol conformances can be
+written in angle brackets,
+
+234
+00:12:04,457 --> 00:12:07,460
+or they can be written
+in a trailing "where" clause,
+
+235
+00:12:07,460 --> 00:12:09,862
+where you can also
+specify relationships
+
+236
+00:12:09,862 --> 00:12:13,032
+between different
+type parameters.
+
+237
+00:12:13,032 --> 00:12:15,868
+Named type parameters
+and trailing "where" clauses
+
+238
+00:12:15,868 --> 00:12:18,905
+are really powerful,
+because they allow you to write
+
+239
+00:12:18,905 --> 00:12:22,809
+sophisticated requirements
+and type relationships.
+
+240
+00:12:22,809 --> 00:12:26,312
+But most generic functions
+don't need this generality.
+
+241
+00:12:26,312 --> 00:12:29,882
+Let's focus on
+the feed method.
+
+242
+00:12:29,882 --> 00:12:34,253
+The type parameter A appears
+once in the parameter list,
+
+243
+00:12:34,253 --> 00:12:37,490
+and the "where" clause lists
+a conformance requirement
+
+244
+00:12:37,490 --> 00:12:39,292
+on the type parameter.
+
+245
+00:12:39,292 --> 00:12:40,660
+In this case,
+
+246
+00:12:40,660 --> 00:12:43,796
+naming the type parameter
+and using the "where" clause
+
+247
+00:12:43,796 --> 00:12:46,999
+make the method look more
+complicated than it really is.
+
+248
+00:12:46,999 --> 00:12:49,769
+This generic pattern
+is really common,
+
+249
+00:12:49,769 --> 00:12:52,605
+so there's a simpler way
+to express it.
+
+250
+00:12:52,605 --> 00:12:55,642
+Instead of writing
+a type parameter explicitly,
+
+251
+00:12:55,642 --> 00:12:58,244
+we can express
+this abstract type
+
+252
+00:12:58,244 --> 00:13:00,813
+in terms of the
+protocol conformance
+
+253
+00:13:00,813 --> 00:13:03,349
+by writing "some Animal”.
+
+254
+00:13:03,349 --> 00:13:06,953
+This declaration is identical
+to the previous one,
+
+255
+00:13:06,953 --> 00:13:09,355
+but the unnecessary
+type parameter list
+
+256
+00:13:09,355 --> 00:13:11,290
+and "where" clause are gone,
+
+257
+00:13:11,290 --> 00:13:14,494
+because we didn't need the
+expressiveness they provide.
+
+258
+00:13:14,494 --> 00:13:17,130
+Writing "some Animal"
+is more straightforward,
+
+259
+00:13:17,130 --> 00:13:19,866
+because it reduces
+syntactic noise,
+
+260
+00:13:19,866 --> 00:13:21,968
+and it includes
+the semantic information
+
+261
+00:13:21,968 --> 00:13:23,703
+about the animal parameter
+
+262
+00:13:23,703 --> 00:13:27,140
+right in the parameter
+declaration.
+
+263
+00:13:27,140 --> 00:13:30,543
+Let's break down
+the some Animal syntax.
+
+264
+00:13:30,543 --> 00:13:32,378
+The "some" in "some Animal"
+
+265
+00:13:32,378 --> 00:13:34,847
+indicates that there is
+a specific type
+
+266
+00:13:34,847 --> 00:13:37,150
+that you're working with.
+
+267
+00:13:37,150 --> 00:13:39,452
+The "some" keyword
+is always followed
+
+268
+00:13:39,452 --> 00:13:42,055
+by a conformance
+requirement.
+
+269
+00:13:42,055 --> 00:13:45,091
+In this case,
+the specific type must conform
+
+270
+00:13:45,091 --> 00:13:47,794
+to the Animal protocol,
+which will allow us
+
+271
+00:13:47,794 --> 00:13:50,263
+to use requirements
+from the Animal protocol
+
+272
+00:13:50,263 --> 00:13:52,598
+on the parameter value.
+
+273
+00:13:52,598 --> 00:13:56,836
+The "some" keyword can be used
+in parameter and result types.
+
+274
+00:13:56,836 --> 00:13:59,138
+If you've written
+SwiftUI code before,
+
+275
+00:13:59,138 --> 00:14:01,841
+you've already used "some"
+in result position
+
+276
+00:14:01,841 --> 00:14:05,645
+using "some View."
+
+277
+00:14:05,645 --> 00:14:10,316
+A result type of "some View"
+is exactly the same concept.
+
+278
+00:14:10,316 --> 00:14:13,119
+In a SwiftUI view,
+the body property
+
+279
+00:14:13,119 --> 00:14:15,822
+returns some specific
+type of view,
+
+280
+00:14:15,822 --> 00:14:18,257
+but code that uses
+the body property
+
+281
+00:14:18,257 --> 00:14:21,661
+doesn't need to know
+what the specific type is.
+
+282
+00:14:21,661 --> 00:14:24,063
+Let's take a step back
+to better understand
+
+283
+00:14:24,063 --> 00:14:28,267
+the concept
+of a specific abstract type.
+
+284
+00:14:28,267 --> 00:14:31,170
+An abstract type
+that represents a placeholder
+
+285
+00:14:31,170 --> 00:14:36,109
+for a specific concrete type
+is called an opaque type.
+
+286
+00:14:36,109 --> 00:14:39,112
+The specific concrete type
+that is substituted in
+
+287
+00:14:39,112 --> 00:14:42,115
+is called
+the underlying type.
+
+288
+00:14:42,115 --> 00:14:44,383
+For values with opaque type,
+
+289
+00:14:44,383 --> 00:14:48,654
+the underlying type is fixed
+for the scope of the value.
+
+290
+00:14:48,654 --> 00:14:52,625
+This way, generic code
+using the value is guaranteed
+
+291
+00:14:52,625 --> 00:14:57,530
+to get the same underlying type
+each time the value is accessed.
+
+292
+00:14:57,530 --> 00:15:01,400
+A type using the "some" keyword
+and a named type parameter
+
+293
+00:15:01,400 --> 00:15:05,805
+in angle brackets
+both declare an opaque type.
+
+294
+00:15:05,805 --> 00:15:09,408
+Opaque types can be used
+for both inputs and outputs,
+
+295
+00:15:09,408 --> 00:15:11,911
+so they can be declared
+in parameter position
+
+296
+00:15:11,911 --> 00:15:15,214
+or in result position.
+
+297
+00:15:15,214 --> 00:15:17,583
+The function arrow
+is the dividing line
+
+298
+00:15:17,583 --> 00:15:19,852
+between these positions.
+
+299
+00:15:19,852 --> 00:15:22,855
+The position of
+an opaque type determines
+
+300
+00:15:22,855 --> 00:15:25,725
+which part of the program
+sees the abstract type
+
+301
+00:15:25,725 --> 00:15:30,129
+and which part of the program
+determines the concrete type.
+
+302
+00:15:30,129 --> 00:15:34,133
+Named type parameters are always
+declared on the input side,
+
+303
+00:15:34,133 --> 00:15:36,869
+so the caller decides
+the underlying type,
+
+304
+00:15:36,869 --> 00:15:41,407
+and the implementation
+uses the abstract type.
+
+305
+00:15:41,407 --> 00:15:44,644
+In general, the part of the
+program supplying the value
+
+306
+00:15:44,644 --> 00:15:47,446
+for an opaque parameter
+or result type
+
+307
+00:15:47,446 --> 00:15:50,917
+decides the underlying type,
+and the part of the program
+
+308
+00:15:50,917 --> 00:15:53,953
+using the value
+sees the abstract type.
+
+309
+00:15:53,953 --> 00:15:56,155
+Let's dig into
+how this works,
+
+310
+00:15:56,155 --> 00:16:00,593
+following our intuition about
+parameter and result values.
+
+311
+00:16:00,593 --> 00:16:04,030
+Because the underlying type
+is inferred from a value,
+
+312
+00:16:04,030 --> 00:16:07,133
+the underlying type always
+comes from the same place
+
+313
+00:16:07,133 --> 00:16:09,602
+as the value.
+
+314
+00:16:09,602 --> 00:16:12,705
+For a local variable,
+the underlying type is inferred
+
+315
+00:16:12,705 --> 00:16:16,642
+from the value on the
+right-hand side of assignment.
+
+316
+00:16:16,642 --> 00:16:19,378
+This means local variables
+with opaque type
+
+317
+00:16:19,378 --> 00:16:22,381
+must always have
+an initial value;
+
+318
+00:16:22,381 --> 00:16:23,983
+and if you don't
+provide one,
+
+319
+00:16:23,983 --> 00:16:27,286
+the compiler will
+report an error.
+
+320
+00:16:27,286 --> 00:16:29,455
+The underlying type
+must be fixed
+
+321
+00:16:29,455 --> 00:16:31,591
+for the scope
+of the variable,
+
+322
+00:16:31,591 --> 00:16:33,993
+so attempting to change
+the underlying type
+
+323
+00:16:33,993 --> 00:16:37,230
+will also result
+in an error.
+
+324
+00:16:37,230 --> 00:16:40,999
+For parameters with opaque type,
+the underlying type is inferred
+
+325
+00:16:40,999 --> 00:16:44,904
+from the argument value
+at the call site.
+
+326
+00:16:44,904 --> 00:16:50,409
+Using "some" in parameter
+position is new in Swift 5.7.
+
+327
+00:16:50,409 --> 00:16:52,345
+The underlying type
+only needs to be fixed
+
+328
+00:16:52,345 --> 00:16:54,513
+for the scope
+of the parameter,
+
+329
+00:16:54,513 --> 00:16:58,417
+so each call can provide
+a different argument type.
+
+330
+00:16:58,417 --> 00:17:01,921
+For an opaque result type,
+the underlying type is inferred
+
+331
+00:17:01,921 --> 00:17:05,157
+from the return value
+in the implementation.
+
+332
+00:17:05,157 --> 00:17:08,961
+A method or computed property
+with an opaque result type
+
+333
+00:17:08,961 --> 00:17:11,397
+can be called from anywhere
+in the program,
+
+334
+00:17:11,397 --> 00:17:15,067
+so the scope of
+this named value is global.
+
+335
+00:17:15,067 --> 00:17:18,237
+This means the underlying
+return type has to be the same
+
+336
+00:17:18,237 --> 00:17:20,873
+across all
+return statements;
+
+337
+00:17:20,873 --> 00:17:24,210
+and if it isn't, the compiler
+will report an error
+
+338
+00:17:24,210 --> 00:17:28,481
+that the underlying return
+values have mismatched types.
+
+339
+00:17:28,481 --> 00:17:31,784
+For an opaque SwiftUI view,
+the ViewBuilder DSL
+
+340
+00:17:31,784 --> 00:17:34,453
+can transform
+control-flow statements
+
+341
+00:17:34,453 --> 00:17:38,090
+to have the same underlying
+return type for each branch.
+
+342
+00:17:38,090 --> 00:17:40,826
+So in this case,
+we can fix the issue
+
+343
+00:17:40,826 --> 00:17:43,396
+by using
+the ViewBuilder DSL.
+
+344
+00:17:43,396 --> 00:17:46,532
+Writing an @ViewBuilder
+annotation on the method
+
+345
+00:17:46,532 --> 00:17:49,769
+and removing return statements
+will enable the result
+
+346
+00:17:49,769 --> 00:17:53,639
+to be built for us
+by the ViewBuilder type.
+
+347
+00:17:53,639 --> 00:17:56,542
+Let's go back
+to the feedAnimal method.
+
+348
+00:17:56,542 --> 00:17:58,844
+I can use "some"
+in the parameter list
+
+349
+00:17:58,844 --> 00:18:00,246
+because I don't need
+to reference
+
+350
+00:18:00,246 --> 00:18:02,815
+the opaque type
+anywhere else.
+
+351
+00:18:02,815 --> 00:18:06,185
+When you need to refer to
+the opaque type multiple times
+
+352
+00:18:06,185 --> 00:18:07,920
+in the function signature,
+
+353
+00:18:07,920 --> 00:18:11,057
+that's when a name type
+parameter comes in handy.
+
+354
+00:18:11,057 --> 00:18:14,727
+For example, if we add
+another associated type
+
+355
+00:18:14,727 --> 00:18:18,397
+to the animal protocol
+called "Habitat,"
+
+356
+00:18:18,397 --> 00:18:20,599
+we might want to be able
+to build a habitat
+
+357
+00:18:20,599 --> 00:18:23,703
+on the farm
+for a given animal.
+
+358
+00:18:23,703 --> 00:18:25,071
+In this case,
+
+359
+00:18:25,071 --> 00:18:28,507
+the result type depends
+on the specific animal type,
+
+360
+00:18:28,507 --> 00:18:30,743
+so we need to use
+the type parameter A
+
+361
+00:18:30,743 --> 00:18:34,447
+in the parameter type
+and the return type.
+
+362
+00:18:34,447 --> 00:18:36,682
+Another common place
+where you need to refer
+
+363
+00:18:36,682 --> 00:18:41,921
+to an opaque type multiple
+times is in generic types.
+
+364
+00:18:41,921 --> 00:18:46,025
+Code often declares a type
+parameter on a generic type,
+
+365
+00:18:46,025 --> 00:18:48,928
+uses the type parameter
+for a stored property,
+
+366
+00:18:48,928 --> 00:18:52,465
+and again
+in a memberwise initializer.
+
+367
+00:18:52,465 --> 00:18:55,568
+Referencing a generic type
+in a different context
+
+368
+00:18:55,568 --> 00:18:59,105
+also requires you to explicitly
+specify the type parameter
+
+369
+00:18:59,105 --> 00:19:01,874
+in angle brackets.
+
+370
+00:19:01,874 --> 00:19:03,909
+The angle brackets
+at the declaration
+
+371
+00:19:03,909 --> 00:19:07,313
+can help clarify
+how to use a generic type,
+
+372
+00:19:07,313 --> 00:19:12,118
+so opaque types must always
+be named for generic types.
+
+373
+00:19:12,118 --> 00:19:14,353
+Now, let's build out
+the implementation
+
+374
+00:19:14,353 --> 00:19:15,921
+of the feed method.
+
+375
+00:19:15,921 --> 00:19:18,124
+We can use the type
+of the animal parameter
+
+376
+00:19:18,124 --> 00:19:20,459
+to access the crop type
+to grow
+
+377
+00:19:20,459 --> 00:19:23,162
+through the
+Feed-associated type.
+
+378
+00:19:23,162 --> 00:19:26,165
+We'll call Feed.grow() to
+get an instance of the crop
+
+379
+00:19:26,165 --> 00:19:28,167
+that produces
+this type of feed.
+
+380
+00:19:28,167 --> 00:19:31,504
+Next, we need to harvest
+the produce from the crop,
+
+381
+00:19:31,504 --> 00:19:33,172
+which we can do
+by calling a method
+
+382
+00:19:33,172 --> 00:19:36,308
+provided by the crop type
+called "harvest."
+
+383
+00:19:36,308 --> 00:19:39,812
+And finally, we can feed
+this produce to the animal.
+
+384
+00:19:39,812 --> 00:19:42,848
+Because the underlying
+animal type is fixed,
+
+385
+00:19:42,848 --> 00:19:45,184
+the compiler knows
+the relationship
+
+386
+00:19:45,184 --> 00:19:47,219
+between the plant type,
+the produce type,
+
+387
+00:19:47,219 --> 00:19:50,756
+and the animal type across
+the various method calls.
+
+388
+00:19:50,756 --> 00:19:53,592
+These static relationships
+prevent us from making
+
+389
+00:19:53,592 --> 00:19:58,998
+the mistake of feeding the
+animal the wrong type of food.
+
+390
+00:19:58,998 --> 00:20:01,767
+If we attempt to use a type
+that is not guaranteed
+
+391
+00:20:01,767 --> 00:20:04,703
+to be the correct food type
+for this animal,
+
+392
+00:20:04,703 --> 00:20:07,440
+the compiler will tell us.
+
+393
+00:20:07,440 --> 00:20:09,575
+To learn how
+the other farm protocols
+
+394
+00:20:09,575 --> 00:20:12,411
+were crafted to express
+the relationship
+
+395
+00:20:12,411 --> 00:20:15,181
+between the animal-feed type
+and its plant,
+
+396
+00:20:15,181 --> 00:20:18,851
+check out "Design protocol
+interfaces in Swift."
+
+397
+00:20:18,851 --> 00:20:23,222
+Lastly, let's add a method
+for feeding all the animals.
+
+398
+00:20:23,222 --> 00:20:26,892
+I'll add a method called
+feedAll that accepts an array.
+
+399
+00:20:26,892 --> 00:20:29,061
+I know the element type
+needs to conform
+
+400
+00:20:29,061 --> 00:20:30,863
+to the Animal protocol,
+
+401
+00:20:30,863 --> 00:20:32,832
+but I want the array
+to be able to store
+
+402
+00:20:32,832 --> 00:20:35,401
+different types of animals.
+
+403
+00:20:35,401 --> 00:20:39,538
+Let's see if some Animal
+can help us here.
+
+404
+00:20:39,538 --> 00:20:42,741
+With "some" there is
+a specific underlying type
+
+405
+00:20:42,741 --> 00:20:44,543
+that cannot vary.
+
+406
+00:20:44,543 --> 00:20:47,213
+Because the underlying type
+is fixed,
+
+407
+00:20:47,213 --> 00:20:51,350
+all of the elements in the array
+need to have the same type.
+
+408
+00:20:51,350 --> 00:20:55,321
+So, an array of some Animal
+doesn't express the right thing,
+
+409
+00:20:55,321 --> 00:20:59,458
+because I want an array that
+can hold different animal types.
+
+410
+00:20:59,458 --> 00:21:01,293
+Here, we really
+need a supertype
+
+411
+00:21:01,293 --> 00:21:04,430
+that can represent
+any type of animal.
+
+412
+00:21:04,430 --> 00:21:07,800
+We can express
+an arbitrary type of animal
+
+413
+00:21:07,800 --> 00:21:11,036
+by writing "any Animal."
+
+414
+00:21:11,036 --> 00:21:14,340
+The "any" keyword indicates
+that this type can store
+
+415
+00:21:14,340 --> 00:21:16,842
+any arbitrary
+type of animal,
+
+416
+00:21:16,842 --> 00:21:21,814
+and the underlying type of
+animal can vary at runtime.
+
+417
+00:21:21,814 --> 00:21:23,816
+Just like with
+the "some" keyword,
+
+418
+00:21:23,816 --> 00:21:25,751
+the "any" keyword
+is always followed
+
+419
+00:21:25,751 --> 00:21:28,487
+by a conformance
+requirement.
+
+420
+00:21:28,487 --> 00:21:32,525
+any Animal is a single static
+type that has the capability
+
+421
+00:21:32,525 --> 00:21:35,761
+to store any concrete
+animal type dynamically,
+
+422
+00:21:35,761 --> 00:21:38,664
+which allows us to use
+subtype polymorphism
+
+423
+00:21:38,664 --> 00:21:40,933
+with value types.
+
+424
+00:21:40,933 --> 00:21:43,402
+To allow for
+this flexible storage,
+
+425
+00:21:43,402 --> 00:21:46,172
+the any Animal type has
+a special representation
+
+426
+00:21:46,172 --> 00:21:48,240
+in memory.
+
+427
+00:21:48,240 --> 00:21:52,411
+You can think of this
+representation like a box.
+
+428
+00:21:52,411 --> 00:21:54,813
+Sometimes,
+a value is small enough
+
+429
+00:21:54,813 --> 00:21:57,816
+to fit inside
+the box directly.
+
+430
+00:21:57,816 --> 00:22:00,886
+And other values
+are too large for the box,
+
+431
+00:22:00,886 --> 00:22:03,722
+so the value has to be
+allocated elsewhere,
+
+432
+00:22:03,722 --> 00:22:06,859
+and the box stores
+a pointer to that value.
+
+433
+00:22:06,859 --> 00:22:10,496
+The static type any Animal
+that can dynamically store
+
+434
+00:22:10,496 --> 00:22:13,666
+any concrete animal type
+is formally called
+
+435
+00:22:13,666 --> 00:22:16,368
+an existential type.
+
+436
+00:22:16,368 --> 00:22:19,572
+And the strategy of using
+the same representation
+
+437
+00:22:19,572 --> 00:22:23,576
+for different concrete types
+is called "type erasure."
+
+438
+00:22:23,576 --> 00:22:27,313
+The concrete type is said
+to be erased at compile time,
+
+439
+00:22:27,313 --> 00:22:30,783
+and the concrete type
+is only known at runtime.
+
+440
+00:22:30,783 --> 00:22:34,420
+These two instances of the
+existential type any Animal
+
+441
+00:22:34,420 --> 00:22:38,991
+have the same static type,
+but different dynamic types.
+
+442
+00:22:38,991 --> 00:22:42,027
+Type erasure eliminates
+the type-level distinction
+
+443
+00:22:42,027 --> 00:22:46,098
+between different animal values,
+which allows us to use values
+
+444
+00:22:46,098 --> 00:22:49,101
+with different dynamic types
+interchangeably
+
+445
+00:22:49,101 --> 00:22:51,270
+as the same static type.
+
+446
+00:22:51,270 --> 00:22:54,940
+We can use type erasure
+to write a heterogeneous array
+
+447
+00:22:54,940 --> 00:22:56,375
+of value types,
+
+448
+00:22:56,375 --> 00:23:00,346
+which is exactly what we want
+for the feedAll method.
+
+449
+00:23:00,346 --> 00:23:02,848
+So we'll use an array
+of any Animal
+
+450
+00:23:02,848 --> 00:23:04,817
+as the parameter type.
+
+451
+00:23:04,817 --> 00:23:06,819
+Using the "any" keyword
+for protocols
+
+452
+00:23:06,819 --> 00:23:11,824
+with associated types
+is new in Swift 5.7.
+
+453
+00:23:11,824 --> 00:23:13,759
+To implement
+the feedAll method,
+
+454
+00:23:13,759 --> 00:23:17,329
+we'll first iterate
+over the animal's array.
+
+455
+00:23:17,329 --> 00:23:19,965
+For each animal, we want
+to call the eat method
+
+456
+00:23:19,965 --> 00:23:22,268
+from the Animal protocol.
+
+457
+00:23:22,268 --> 00:23:23,702
+To call this method,
+
+458
+00:23:23,702 --> 00:23:25,804
+we need to get
+the specific feed type
+
+459
+00:23:25,804 --> 00:23:29,408
+for the underlying animal
+at this iteration.
+
+460
+00:23:29,408 --> 00:23:32,845
+But as soon as we try
+to call eat on any Animal,
+
+461
+00:23:32,845 --> 00:23:35,447
+we'll get a compiler error.
+
+462
+00:23:35,447 --> 00:23:38,217
+Because we've eliminated
+the type-level distinction
+
+463
+00:23:38,217 --> 00:23:40,653
+between specific
+animal types,
+
+464
+00:23:40,653 --> 00:23:43,389
+we've also eliminated
+all type relationships
+
+465
+00:23:43,389 --> 00:23:46,225
+that depend on
+the specific animal type,
+
+466
+00:23:46,225 --> 00:23:48,761
+including associated types.
+
+467
+00:23:48,761 --> 00:23:53,065
+So, we can't know what type
+of feed this animal expects.
+
+468
+00:23:53,065 --> 00:23:55,467
+To rely on type
+relationships,
+
+469
+00:23:55,467 --> 00:23:57,503
+we need to get back
+into a context
+
+470
+00:23:57,503 --> 00:24:00,372
+where the specific type
+of animal is fixed.
+
+471
+00:24:00,372 --> 00:24:03,776
+Instead of calling eat
+directly on any Animal,
+
+472
+00:24:03,776 --> 00:24:08,614
+we need to call the feed method
+that accepts some Animal.
+
+473
+00:24:08,614 --> 00:24:12,518
+Now, any Animal is a different
+type from some Animal,
+
+474
+00:24:12,518 --> 00:24:15,954
+but the compiler can convert
+an instance of any Animal
+
+475
+00:24:15,954 --> 00:24:19,625
+to some Animal by unboxing
+the underlying value
+
+476
+00:24:19,625 --> 00:24:24,797
+and passing it directly
+to the some Animal parameter.
+
+477
+00:24:24,797 --> 00:24:30,436
+This capability of unboxing
+arguments is new in Swift 5.7.
+
+478
+00:24:30,436 --> 00:24:34,139
+You can think of unboxing as
+the compiler opening the box
+
+479
+00:24:34,139 --> 00:24:37,710
+and taking out the value
+stored inside.
+
+480
+00:24:37,710 --> 00:24:40,112
+For the scope
+of the some Animal parameter,
+
+481
+00:24:40,112 --> 00:24:43,082
+the value has
+a fixed underlying type,
+
+482
+00:24:43,082 --> 00:24:45,617
+so we have access
+to all of the operations
+
+483
+00:24:45,617 --> 00:24:47,319
+on the underlying type,
+
+484
+00:24:47,319 --> 00:24:51,023
+including access
+to associated types.
+
+485
+00:24:51,023 --> 00:24:54,126
+This is really cool
+because it allows us to opt
+
+486
+00:24:54,126 --> 00:24:56,528
+for flexible storage
+when we need it,
+
+487
+00:24:56,528 --> 00:24:59,331
+while still allowing us
+to get back to a context
+
+488
+00:24:59,331 --> 00:25:01,100
+where we have
+the full expressivity
+
+489
+00:25:01,100 --> 00:25:04,937
+of the static type system
+by fixing the underlying type
+
+490
+00:25:04,937 --> 00:25:07,139
+for the scope of a function.
+
+491
+00:25:07,139 --> 00:25:08,807
+And most of the time,
+
+492
+00:25:08,807 --> 00:25:10,909
+you don't have to think
+about the unboxing
+
+493
+00:25:10,909 --> 00:25:13,479
+because it just works
+in the way you'd expect,
+
+494
+00:25:13,479 --> 00:25:16,949
+similar to how calling
+a protocol method on any Animal
+
+495
+00:25:16,949 --> 00:25:20,386
+really calls the method
+on the underlying type.
+
+496
+00:25:20,386 --> 00:25:23,956
+So, we can pass each animal
+to the feed method,
+
+497
+00:25:23,956 --> 00:25:26,492
+where we can grow and
+harvest the appropriate crop
+
+498
+00:25:26,492 --> 00:25:31,430
+to feed to the specific
+animal at each iteration.
+
+499
+00:25:31,430 --> 00:25:34,800
+Throughout this process, we've
+seen that "some" and "any"
+
+500
+00:25:34,800 --> 00:25:38,003
+have different capabilities.
+
+501
+00:25:38,003 --> 00:25:42,007
+With "some,"
+the underlying type is fixed.
+
+502
+00:25:42,007 --> 00:25:44,777
+This allows you to rely
+on type relationships
+
+503
+00:25:44,777 --> 00:25:47,780
+to the underlying type
+in your generic code,
+
+504
+00:25:47,780 --> 00:25:51,517
+so you'll have full access
+to the API and associated types
+
+505
+00:25:51,517 --> 00:25:54,453
+on the protocol
+you're working with.
+
+506
+00:25:54,453 --> 00:25:59,057
+Use "any" when you need to store
+arbitrary concrete types.
+
+507
+00:25:59,057 --> 00:26:01,427
+"any" provides type erasure,
+
+508
+00:26:01,427 --> 00:26:04,963
+which allows you represent
+heterogeneous collections,
+
+509
+00:26:04,963 --> 00:26:07,366
+represent the absence
+of an underlying type,
+
+510
+00:26:07,366 --> 00:26:08,867
+using optionals,
+
+511
+00:26:08,867 --> 00:26:12,838
+and make the abstraction
+an implementation detail.
+
+512
+00:26:12,838 --> 00:26:15,707
+In general,
+write "some" by default,
+
+513
+00:26:15,707 --> 00:26:17,276
+and change "some" to "any"
+
+514
+00:26:17,276 --> 00:26:20,946
+when you know you need
+to store arbitrary values.
+
+515
+00:26:20,946 --> 00:26:23,415
+With this approach,
+you'll only pay the cost
+
+516
+00:26:23,415 --> 00:26:26,418
+of type erasure
+and its semantic limitations
+
+517
+00:26:26,418 --> 00:26:30,389
+when you need the storage
+flexibility it provides.
+
+518
+00:26:30,389 --> 00:26:32,958
+This workflow is similar
+to writing let-constants
+
+519
+00:26:32,958 --> 00:26:36,628
+by default, until you know
+you need mutation.
+
+520
+00:26:36,628 --> 00:26:38,797
+In this session,
+we walked through
+
+521
+00:26:38,797 --> 00:26:40,732
+the workflow
+of generalizing code
+
+522
+00:26:40,732 --> 00:26:44,169
+as it evolves and gains
+more functionality.
+
+523
+00:26:44,169 --> 00:26:47,573
+We started by writing
+concrete types.
+
+524
+00:26:47,573 --> 00:26:49,875
+As the code gained
+more functionality,
+
+525
+00:26:49,875 --> 00:26:54,446
+we noticed repetition between
+different concrete types.
+
+526
+00:26:54,446 --> 00:26:57,649
+From there, we identified
+common capabilities
+
+527
+00:26:57,649 --> 00:27:00,853
+and generalized them
+using a protocol.
+
+528
+00:27:00,853 --> 00:27:05,224
+Finally, we wrote abstract
+code using "some" and "any”,
+
+529
+00:27:05,224 --> 00:27:09,828
+and we discussed preferring
+"some" for more expressive code.
+
+530
+00:27:09,828 --> 00:27:12,130
+To dig deeper
+into crafting protocols
+
+531
+00:27:12,130 --> 00:27:14,166
+and understanding
+type erasure,
+
+532
+00:27:14,166 --> 00:27:18,170
+check out "Design protocol
+interfaces in Swift."
+
+533
+00:27:18,170 --> 00:27:21,373
+Thank you joining me
+and have a great WWDC.
+
+534
+00:27:21,373 --> 00:27:26,411
+♪
+

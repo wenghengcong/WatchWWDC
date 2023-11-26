@@ -1,0 +1,1404 @@
+1
+00:00:00,033 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,943
+♪
+
+3
+00:00:09,943 --> 00:00:14,748
+Hello, I am Teja, an engineer on
+the iOS System Experience team,
+
+4
+00:00:14,748 --> 00:00:18,318
+and in this session, you'll get
+to meet Focus filters.
+
+5
+00:00:18,318 --> 00:00:24,291
+Focus was introduced in iOS 15,
+macOS Monterey and watchOS 8.
+
+6
+00:00:24,291 --> 00:00:27,527
+It is a way for people to
+concentrate on what's important
+
+7
+00:00:27,527 --> 00:00:31,531
+by configuring system behavior
+for a period of time.
+
+8
+00:00:31,531 --> 00:00:34,968
+Focus is enabled by simply
+going into Control Center
+
+9
+00:00:34,968 --> 00:00:39,806
+and selecting from either a
+system Focus or a custom Focus.
+
+10
+00:00:39,806 --> 00:00:42,342
+During the time
+that a Focus is enabled,
+
+11
+00:00:42,342 --> 00:00:45,078
+notification behavior
+can be customized.
+
+12
+00:00:45,078 --> 00:00:48,482
+For example, during Work Focus,
+someone may want
+
+13
+00:00:48,482 --> 00:00:51,919
+to only allow notifications
+from their coworkers
+
+14
+00:00:51,919 --> 00:00:55,355
+or only allow notifications
+for a select few apps
+
+15
+00:00:55,355 --> 00:00:57,524
+that are relevant to work.
+
+16
+00:00:57,524 --> 00:01:01,094
+For each Focus, system behavior
+can be configured
+
+17
+00:01:01,094 --> 00:01:04,264
+and scheduled in Settings.
+
+18
+00:01:04,264 --> 00:01:08,669
+iOS 16 and macOS Ventura
+enhance the Focus feature
+
+19
+00:01:08,669 --> 00:01:10,704
+with Focus filters.
+
+20
+00:01:10,704 --> 00:01:13,273
+I'll start by introducing you
+to Focus filters
+
+21
+00:01:13,273 --> 00:01:15,475
+and how they behave.
+
+22
+00:01:15,475 --> 00:01:20,814
+Then, I'll go over how to define
+a Focus filter in your app.
+
+23
+00:01:20,814 --> 00:01:25,285
+After that, I'll cover what it
+means to act on a Focus filter.
+
+24
+00:01:25,285 --> 00:01:28,155
+And finally, I'll cover how
+your app can provide
+
+25
+00:01:28,155 --> 00:01:31,825
+additional context
+back to the system.
+
+26
+00:01:31,825 --> 00:01:34,027
+Focus filters
+are a way for someone
+
+27
+00:01:34,027 --> 00:01:39,666
+to customize app behavior based
+on the currently enabled Focus.
+
+28
+00:01:39,666 --> 00:01:41,902
+There are some great examples
+of system apps
+
+29
+00:01:41,902 --> 00:01:44,938
+that have adopted Focus filters.
+
+30
+00:01:44,938 --> 00:01:46,940
+The Calendar app allows people
+
+31
+00:01:46,940 --> 00:01:50,510
+to filter which calendars
+should be visible by default
+
+32
+00:01:50,510 --> 00:01:53,146
+when a Focus is enabled.
+
+33
+00:01:53,146 --> 00:01:55,882
+This is what my calendar
+normally looks like.
+
+34
+00:01:55,882 --> 00:01:57,551
+And as you can see,
+I have a mix
+
+35
+00:01:57,551 --> 00:02:01,488
+of work and personal
+calendar events.
+
+36
+00:02:01,488 --> 00:02:04,324
+I can configure
+a Focus filter for Calendar,
+
+37
+00:02:04,324 --> 00:02:08,895
+during the Personal Focus, to
+only show my personal calendar.
+
+38
+00:02:08,895 --> 00:02:10,731
+After setting up
+the Focus filter,
+
+39
+00:02:10,731 --> 00:02:13,300
+this is what my calendar
+looks like.
+
+40
+00:02:13,300 --> 00:02:16,670
+Calendar has indicated
+that this is filtered by Focus
+
+41
+00:02:16,670 --> 00:02:19,740
+and provided a way
+to toggle the filtering.
+
+42
+00:02:19,740 --> 00:02:22,709
+Now I won't be overwhelmed
+with my work calendar
+
+43
+00:02:22,709 --> 00:02:26,279
+when trying to enjoy
+some personal time.
+
+44
+00:02:26,279 --> 00:02:28,648
+The Mail app's inbox
+can be filtered
+
+45
+00:02:28,648 --> 00:02:32,853
+to show only relevant mailboxes
+during a Focus.
+
+46
+00:02:32,853 --> 00:02:35,422
+Mail notifications
+are also filtered
+
+47
+00:02:35,422 --> 00:02:40,027
+to show only the relevant
+notifications prominently.
+
+48
+00:02:40,027 --> 00:02:42,162
+This means
+that I can set up Mail
+
+49
+00:02:42,162 --> 00:02:45,265
+to only deliver work-related
+Mail notifications
+
+50
+00:02:45,265 --> 00:02:48,235
+during the Work Focus
+and prevent
+
+51
+00:02:48,235 --> 00:02:52,439
+personal mail notifications
+from interrupting me.
+
+52
+00:02:52,439 --> 00:02:53,507
+There are many reasons
+
+53
+00:02:53,507 --> 00:02:56,510
+why your app may want
+to implement Focus filters.
+
+54
+00:02:56,510 --> 00:02:59,179
+Perhaps your app
+manages multiple accounts,
+
+55
+00:02:59,179 --> 00:03:01,615
+and it's appropriate
+to associate a Focus
+
+56
+00:03:01,615 --> 00:03:04,084
+with a particular account.
+
+57
+00:03:04,084 --> 00:03:07,654
+Apps with large amount of data
+may need to filter content
+
+58
+00:03:07,654 --> 00:03:09,656
+for the Focus.
+
+59
+00:03:09,656 --> 00:03:11,324
+If you would like
+to help your users
+
+60
+00:03:11,324 --> 00:03:13,794
+avoid getting distracted
+while focused,
+
+61
+00:03:13,794 --> 00:03:16,196
+you can do this
+by reducing badge counts,
+
+62
+00:03:16,196 --> 00:03:18,632
+in-app alerts,
+and notifications
+
+63
+00:03:18,632 --> 00:03:23,303
+to what is salient
+for the enabled Focus.
+
+64
+00:03:23,303 --> 00:03:26,673
+Regarding appearance, your app
+may want to surface a theme
+
+65
+00:03:26,673 --> 00:03:30,110
+or a layout based
+on the enabled Focus.
+
+66
+00:03:30,110 --> 00:03:34,281
+Fundamentally, if your app
+can surface different content
+
+67
+00:03:34,281 --> 00:03:38,151
+based on context, you may be
+able to employ Focus filters
+
+68
+00:03:38,151 --> 00:03:41,388
+to enhance user experience.
+
+69
+00:03:41,388 --> 00:03:44,491
+Let me explain
+how Focus filters work.
+
+70
+00:03:44,491 --> 00:03:49,596
+Your app defines what can be
+customized by a user per Focus,
+
+71
+00:03:49,596 --> 00:03:52,732
+and this is done
+using an AppIntent.
+
+72
+00:03:52,732 --> 00:03:57,237
+The system will expose what
+can be configured per Focus.
+
+73
+00:03:57,237 --> 00:04:00,774
+UI to configure properties
+defined by your AppIntent
+
+74
+00:04:00,774 --> 00:04:05,579
+will be exposed in Focus
+settings as a Focus filter.
+
+75
+00:04:05,579 --> 00:04:09,216
+Users can configure your app
+to behave a certain way
+
+76
+00:04:09,216 --> 00:04:13,320
+by navigating to Focus settings
+and configuring Focus filters
+
+77
+00:04:13,320 --> 00:04:15,589
+for your app.
+
+78
+00:04:15,589 --> 00:04:17,924
+Now, I'm going to go over
+how you can incorporate
+
+79
+00:04:17,924 --> 00:04:21,128
+Focus filters
+into your codebase.
+
+80
+00:04:21,128 --> 00:04:24,164
+There are a few parts
+to defining your Focus filter.
+
+81
+00:04:24,164 --> 00:04:28,168
+The first is implementing
+SetFocusFilterIntent.
+
+82
+00:04:28,168 --> 00:04:30,537
+This indicates to the system
+that your app
+
+83
+00:04:30,537 --> 00:04:35,008
+is interested in having
+custom settings per Focus.
+
+84
+00:04:35,008 --> 00:04:38,678
+The second step is defining
+your app's parameters.
+
+85
+00:04:38,678 --> 00:04:42,516
+These will represent what can
+be configured within your app
+
+86
+00:04:42,516 --> 00:04:44,217
+by the user.
+
+87
+00:04:44,217 --> 00:04:47,787
+The final step is to set
+the display representation,
+
+88
+00:04:47,787 --> 00:04:50,857
+so your Focus filter
+appears in system settings
+
+89
+00:04:50,857 --> 00:04:52,893
+with the correct content.
+
+90
+00:04:52,893 --> 00:04:57,397
+This way, users are aware
+of what is configured.
+
+91
+00:04:57,397 --> 00:04:59,232
+I'll dive into some code.
+
+92
+00:04:59,232 --> 00:05:02,836
+The first thing you need to do
+is import AppIntents
+
+93
+00:05:02,836 --> 00:05:07,541
+and define a struct that
+implements SetFocusFilterIntent.
+
+94
+00:05:07,541 --> 00:05:10,110
+This is your Focus filter.
+
+95
+00:05:10,110 --> 00:05:12,179
+Setting the title
+and description
+
+96
+00:05:12,179 --> 00:05:17,651
+will help users discover
+what your Focus is all about.
+
+97
+00:05:17,651 --> 00:05:22,088
+Focus filters appear
+in a grid view in Settings.
+
+98
+00:05:22,088 --> 00:05:24,691
+Before your Focus filter
+has been configured,
+
+99
+00:05:24,691 --> 00:05:28,528
+it will be surfaced
+to the user with this look.
+
+100
+00:05:28,528 --> 00:05:31,665
+The icon here
+is your app's icon,
+
+101
+00:05:31,665 --> 00:05:34,534
+the primary text
+is your app's name,
+
+102
+00:05:34,534 --> 00:05:37,704
+and the secondary text
+will match the title variable
+
+103
+00:05:37,704 --> 00:05:40,874
+that you set
+in your Focus filter.
+
+104
+00:05:40,874 --> 00:05:44,211
+When the user taps in
+to configure your filter,
+
+105
+00:05:44,211 --> 00:05:46,846
+the same content is displayed.
+
+106
+00:05:46,846 --> 00:05:50,517
+This time, the system also
+includes the description string
+
+107
+00:05:50,517 --> 00:05:54,554
+that you've provided,
+for additional context.
+
+108
+00:05:54,554 --> 00:05:57,657
+Both the title and description
+strings are static,
+
+109
+00:05:57,657 --> 00:05:59,326
+and they are read by the system
+
+110
+00:05:59,326 --> 00:06:02,562
+at the time that your app
+is installed.
+
+111
+00:06:02,562 --> 00:06:05,832
+When defining your Focus filter,
+you'll have to specify
+
+112
+00:06:05,832 --> 00:06:08,802
+what a person can customize
+by providing a series
+
+113
+00:06:08,802 --> 00:06:13,006
+of properties that are decorated
+as parameters.
+
+114
+00:06:13,006 --> 00:06:16,009
+When specifying a parameter,
+you must give it a name
+
+115
+00:06:16,009 --> 00:06:17,911
+and a data type.
+
+116
+00:06:17,911 --> 00:06:19,980
+Parameters can be
+of a standard data type
+
+117
+00:06:19,980 --> 00:06:23,683
+such as Bool, string,
+float, etcetera.
+
+118
+00:06:23,683 --> 00:06:25,619
+If you have a custom data
+type that you would like
+
+119
+00:06:25,619 --> 00:06:28,922
+to have configured,
+you can make it an entity,
+
+120
+00:06:28,922 --> 00:06:32,392
+which will allow you
+to decorate it as a parameter.
+
+121
+00:06:32,392 --> 00:06:35,228
+To learn more about entities
+and App Intents,
+
+122
+00:06:35,228 --> 00:06:38,632
+watch the
+"Dive into App Intents" session.
+
+123
+00:06:38,632 --> 00:06:41,768
+When defining your Focus filter,
+you will only specify
+
+124
+00:06:41,768 --> 00:06:44,771
+the data type and name
+for each parameter.
+
+125
+00:06:44,771 --> 00:06:48,775
+It is up to users to configure
+the value of the parameter
+
+126
+00:06:48,775 --> 00:06:52,145
+that would apply
+during each Focus.
+
+127
+00:06:52,145 --> 00:06:54,381
+Parameters can be
+marked as optional,
+
+128
+00:06:54,381 --> 00:06:57,717
+which means that they do not
+have to be configured.
+
+129
+00:06:57,717 --> 00:07:03,123
+Parameters that are not optional
+should provide default values.
+
+130
+00:07:03,123 --> 00:07:06,326
+In code, you specify
+a parameter --
+
+131
+00:07:06,326 --> 00:07:09,596
+or an optional parameter --
+by defining a variable
+
+132
+00:07:09,596 --> 00:07:12,499
+of the type you want
+in your Focus filter
+
+133
+00:07:12,499 --> 00:07:15,435
+and decorating it
+as a parameter.
+
+134
+00:07:15,435 --> 00:07:19,205
+Here, I've created a required
+Bool parameter that represents
+
+135
+00:07:19,205 --> 00:07:23,376
+whether my Focus filter
+should always use Dark Mode.
+
+136
+00:07:23,376 --> 00:07:25,779
+I've set its default to false.
+
+137
+00:07:25,779 --> 00:07:29,115
+I've also created
+an optional string parameter
+
+138
+00:07:29,115 --> 00:07:33,987
+that represents a user's status
+message during this Focus.
+
+139
+00:07:33,987 --> 00:07:37,524
+Lastly, I've included
+an optional account parameter
+
+140
+00:07:37,524 --> 00:07:40,527
+that is an entity
+defined by my app;
+
+141
+00:07:40,527 --> 00:07:44,931
+it contains information
+about a particular account.
+
+142
+00:07:44,931 --> 00:07:48,635
+The title, which is set on all
+three of these parameters,
+
+143
+00:07:48,635 --> 00:07:51,805
+is displayed in Settings
+to describe the parameter
+
+144
+00:07:51,805 --> 00:07:54,274
+to the user.
+
+145
+00:07:54,274 --> 00:07:55,508
+In Focus settings,
+
+146
+00:07:55,508 --> 00:07:58,345
+once a user configures
+your app's Focus filter,
+
+147
+00:07:58,345 --> 00:08:00,780
+it'll be presented
+in a similar grid
+
+148
+00:08:00,780 --> 00:08:02,582
+to what I showed earlier.
+
+149
+00:08:02,582 --> 00:08:04,050
+But this time,
+because the filter
+
+150
+00:08:04,050 --> 00:08:07,954
+has already been configured,
+the content is dynamic
+
+151
+00:08:07,954 --> 00:08:11,624
+in order to reflect
+what has been configured.
+
+152
+00:08:11,624 --> 00:08:14,794
+The icon here is
+still your app's icon.
+
+153
+00:08:14,794 --> 00:08:17,330
+The primary text
+and the secondary text
+
+154
+00:08:17,330 --> 00:08:21,534
+can be customized using the
+display representation property
+
+155
+00:08:21,534 --> 00:08:24,471
+on your FocusFilterIntent.
+
+156
+00:08:24,471 --> 00:08:27,574
+The primary text should
+represent what parameters
+
+157
+00:08:27,574 --> 00:08:31,277
+have been configured,
+such as Select Account,
+
+158
+00:08:31,277 --> 00:08:34,180
+Set Status, etcetera.
+
+159
+00:08:34,180 --> 00:08:37,417
+The secondary text should
+represent what the parameters
+
+160
+00:08:37,417 --> 00:08:43,556
+have been configured to,
+such as Work Account or Working.
+
+161
+00:08:43,556 --> 00:08:46,526
+In my code, I set
+the display representation
+
+162
+00:08:46,526 --> 00:08:49,229
+to be generated dynamically.
+
+163
+00:08:49,229 --> 00:08:53,366
+Since account and status
+are optional parameters,
+
+164
+00:08:53,366 --> 00:08:56,035
+they only get included
+in the dynamic primary
+
+165
+00:08:56,035 --> 00:08:59,839
+and secondary texts
+if they are actually set.
+
+166
+00:08:59,839 --> 00:09:03,343
+Since alwaysUseDarkMode
+is a required parameter,
+
+167
+00:09:03,343 --> 00:09:09,115
+it is always included in
+the primary and secondary texts.
+
+168
+00:09:09,115 --> 00:09:11,718
+OK, you have now
+defined your Focus filter,
+
+169
+00:09:11,718 --> 00:09:13,853
+so users can go
+into Focus settings
+
+170
+00:09:13,853 --> 00:09:17,457
+and customize certain values
+for a particular Focus.
+
+171
+00:09:17,457 --> 00:09:20,493
+But how can your app know
+what someone has customized?
+
+172
+00:09:20,493 --> 00:09:23,296
+And how can your app
+update itself accordingly?
+
+173
+00:09:23,296 --> 00:09:26,666
+It has to act on a change
+from the system.
+
+174
+00:09:26,666 --> 00:09:29,702
+When a Focus change occurs
+and the system has determined
+
+175
+00:09:29,702 --> 00:09:32,839
+that it's important for your app
+to know about this change,
+
+176
+00:09:32,839 --> 00:09:36,376
+it will deliver this information
+to you in one of two ways.
+
+177
+00:09:36,376 --> 00:09:39,245
+If the app is running,
+you will receive a call
+
+178
+00:09:39,245 --> 00:09:42,148
+to the perform method
+in your FocusFilterIntent,
+
+179
+00:09:42,148 --> 00:09:44,017
+if you've implemented it.
+
+180
+00:09:44,017 --> 00:09:47,987
+If the app is not running,
+you can implement an extension
+
+181
+00:09:47,987 --> 00:09:49,522
+that will get spun up.
+
+182
+00:09:49,522 --> 00:09:51,724
+Again, if you've
+implemented perform
+
+183
+00:09:51,724 --> 00:09:55,094
+in your FocusFilterIntent,
+that will get called
+
+184
+00:09:55,094 --> 00:09:58,731
+in your extension.
+
+185
+00:09:58,731 --> 00:10:01,668
+Since perform can get called
+on either your app
+
+186
+00:10:01,668 --> 00:10:06,005
+or your extension, not every
+app needs an extension.
+
+187
+00:10:06,005 --> 00:10:09,776
+Typically, if your app
+is only updating its own view
+
+188
+00:10:09,776 --> 00:10:12,445
+in response
+to a Focus transition,
+
+189
+00:10:12,445 --> 00:10:18,017
+then implementing perform
+just in the app would suffice.
+
+190
+00:10:18,017 --> 00:10:21,221
+If your app's widget,
+notifications or badges
+
+191
+00:10:21,221 --> 00:10:24,724
+would need to change
+based on the Focus transition,
+
+192
+00:10:24,724 --> 00:10:29,562
+then you may want to consider
+implementing an extension.
+
+193
+00:10:29,562 --> 00:10:31,664
+Basically,
+if your app would want
+
+194
+00:10:31,664 --> 00:10:34,601
+to update anything
+outside its own views,
+
+195
+00:10:34,601 --> 00:10:37,670
+you would need
+to implement the extension.
+
+196
+00:10:37,670 --> 00:10:40,740
+For the rest of this session,
+I may refer to "your app"
+
+197
+00:10:40,740 --> 00:10:44,511
+but that can mean either
+your app or your extension
+
+198
+00:10:44,511 --> 00:10:47,780
+depending on this context.
+
+199
+00:10:47,780 --> 00:10:52,118
+To respond to a Focus filter,
+implement the perform function,
+
+200
+00:10:52,118 --> 00:10:54,687
+access the populated values
+for parameters
+
+201
+00:10:54,687 --> 00:10:58,525
+provided via Settings,
+and then use these values
+
+202
+00:10:58,525 --> 00:11:02,195
+to update your app's
+views and behavior.
+
+203
+00:11:02,195 --> 00:11:04,631
+Your implementation
+of perform is called
+
+204
+00:11:04,631 --> 00:11:06,799
+when the system
+determines that your app
+
+205
+00:11:06,799 --> 00:11:10,537
+needs to respond
+to a Focus transition.
+
+206
+00:11:10,537 --> 00:11:13,806
+Perform is also called
+when the system determines
+
+207
+00:11:13,806 --> 00:11:18,211
+that the previously delivered
+values are no longer relevant.
+
+208
+00:11:18,211 --> 00:11:21,014
+In this case,
+your Focus filter parameters
+
+209
+00:11:21,014 --> 00:11:24,450
+are configured
+with the default values.
+
+210
+00:11:24,450 --> 00:11:27,387
+When perform is called
+on your app's Focus filter,
+
+211
+00:11:27,387 --> 00:11:30,256
+the values of all the parameters
+will be filled out
+
+212
+00:11:30,256 --> 00:11:32,859
+to match what was configured
+in Settings.
+
+213
+00:11:32,859 --> 00:11:35,895
+The values of the named
+parameters can be read
+
+214
+00:11:35,895 --> 00:11:39,399
+by calling
+self."name of the parameter."
+
+215
+00:11:39,399 --> 00:11:41,634
+In this example,
+at the end of perform,
+
+216
+00:11:41,634 --> 00:11:46,172
+I update my app
+with the data I received.
+
+217
+00:11:46,172 --> 00:11:47,707
+Sometimes, you may need to query
+
+218
+00:11:47,707 --> 00:11:50,043
+the current Focus
+filter parameters.
+
+219
+00:11:50,043 --> 00:11:51,110
+In my case,
+
+220
+00:11:51,110 --> 00:11:55,315
+since my filter is called
+ExampleChatAppFocusFilter,
+
+221
+00:11:55,315 --> 00:11:59,519
+I access ExampleChatAppFocus
+Filter.current.
+
+222
+00:12:02,121 --> 00:12:04,924
+Now that your app is able
+to act on a Focus filter,
+
+223
+00:12:04,924 --> 00:12:08,261
+the next step is to take
+the user experience further
+
+224
+00:12:08,261 --> 00:12:11,998
+by providing additional context
+about how your app behavior
+
+225
+00:12:11,998 --> 00:12:14,701
+has changed back to the system.
+
+226
+00:12:16,569 --> 00:12:19,339
+By providing additional context,
+you can influence
+
+227
+00:12:19,339 --> 00:12:22,909
+your app behavior
+outside your app's views.
+
+228
+00:12:22,909 --> 00:12:26,012
+Examples of this include
+notifications filtering
+
+229
+00:12:26,012 --> 00:12:30,249
+and setting your app's
+notification badge count.
+
+230
+00:12:30,249 --> 00:12:32,452
+One way you can give
+the system information
+
+231
+00:12:32,452 --> 00:12:35,088
+is via the App Context object.
+
+232
+00:12:35,088 --> 00:12:37,090
+This is an object
+that can be returned
+
+233
+00:12:37,090 --> 00:12:41,027
+as part of the result
+of the perform function.
+
+234
+00:12:41,027 --> 00:12:43,663
+Or you can return
+the App Context at any time
+
+235
+00:12:43,663 --> 00:12:46,399
+in your Focus filter
+and force the system
+
+236
+00:12:46,399 --> 00:12:50,603
+to get the updated value
+by calling invalidate.
+
+237
+00:12:50,603 --> 00:12:53,806
+When a Focus filter is active,
+your app may have
+
+238
+00:12:53,806 --> 00:12:57,810
+additional context to determine
+if a particular notification
+
+239
+00:12:57,810 --> 00:13:00,313
+should not interrupt the user.
+
+240
+00:13:00,313 --> 00:13:03,616
+To pass along this information,
+your app must set
+
+241
+00:13:03,616 --> 00:13:08,554
+the filterPredicate property
+in the AppContext.
+
+242
+00:13:08,554 --> 00:13:11,324
+This filter predicate
+works in conjunction
+
+243
+00:13:11,324 --> 00:13:15,294
+with a new string property
+called filterCriteria
+
+244
+00:13:15,294 --> 00:13:17,964
+on the UNNotification.
+
+245
+00:13:17,964 --> 00:13:21,834
+If the filter criteria on the
+notification does not match
+
+246
+00:13:21,834 --> 00:13:26,406
+the filter predicate,
+the notification is silenced.
+
+247
+00:13:26,406 --> 00:13:30,009
+To set the filter predicate
+from your FocusFilterIntent,
+
+248
+00:13:30,009 --> 00:13:32,712
+include it in your App Context.
+
+249
+00:13:32,712 --> 00:13:35,648
+Say the device has
+the Personal Focus enabled
+
+250
+00:13:35,648 --> 00:13:38,651
+and the user has set it up so
+that only the personal account
+
+251
+00:13:38,651 --> 00:13:40,453
+is selected;
+
+252
+00:13:40,453 --> 00:13:42,955
+in this case, I set up
+the filter predicate
+
+253
+00:13:42,955 --> 00:13:46,092
+to be the personal account's
+identifier.
+
+254
+00:13:46,092 --> 00:13:49,529
+If the incoming notification is
+not from the personal account,
+
+255
+00:13:49,529 --> 00:13:53,099
+it should not interrupt
+the user.
+
+256
+00:13:53,099 --> 00:13:56,402
+Here, when I'm configuring
+this notification,
+
+257
+00:13:56,402 --> 00:14:00,873
+I set the filterCriteria to be
+the work account's identifier.
+
+258
+00:14:00,873 --> 00:14:03,810
+This is because I know
+this notification
+
+259
+00:14:03,810 --> 00:14:06,145
+is being sent
+to the work account,
+
+260
+00:14:06,145 --> 00:14:09,248
+and I expect that this
+notification would be silenced
+
+261
+00:14:09,248 --> 00:14:13,052
+because the account identifier
+does not match the predicate
+
+262
+00:14:13,052 --> 00:14:14,554
+that I had just set,
+
+263
+00:14:14,554 --> 00:14:19,092
+which only matched with the
+personal account's identifier.
+
+264
+00:14:19,092 --> 00:14:22,028
+This example is
+for a local notification
+
+265
+00:14:22,028 --> 00:14:25,898
+but filter criteria can also
+be set on the JSON payload
+
+266
+00:14:25,898 --> 00:14:29,769
+of a remote notification.
+
+267
+00:14:29,769 --> 00:14:32,371
+Another way to provide
+the system additional context
+
+268
+00:14:32,371 --> 00:14:35,608
+is by updating your app's
+badge count to reflect
+
+269
+00:14:35,608 --> 00:14:39,579
+what is important during
+the currently-enabled Focus.
+
+270
+00:14:39,579 --> 00:14:42,615
+This prevents distractions
+for your users.
+
+271
+00:14:42,615 --> 00:14:45,218
+There is a new API
+in UserNotifications
+
+272
+00:14:45,218 --> 00:14:47,086
+for this purpose.
+
+273
+00:14:47,086 --> 00:14:52,091
+On UNUserNotificationCenter,
+you simply call setBadgeCount
+
+274
+00:14:52,091 --> 00:14:57,163
+with an unsigned integer that
+represents the new badge value.
+
+275
+00:14:57,163 --> 00:14:59,398
+Now, you know how
+to provide additional context
+
+276
+00:14:59,398 --> 00:15:02,735
+to filter notifications
+or set the badge count.
+
+277
+00:15:02,735 --> 00:15:05,371
+Remember, the goal
+of this feature is to surface
+
+278
+00:15:05,371 --> 00:15:08,508
+what is most relevant to a user
+when they are focused.
+
+279
+00:15:08,508 --> 00:15:12,111
+Sometimes this requires
+minimizing unrelated content
+
+280
+00:15:12,111 --> 00:15:16,282
+to prevent distraction
+when a Focus is enabled.
+
+281
+00:15:16,282 --> 00:15:18,951
+For next steps, I encourage you
+to start considering
+
+282
+00:15:18,951 --> 00:15:22,655
+what parts of your app would
+benefit from a Focus filter,
+
+283
+00:15:22,655 --> 00:15:25,558
+determine which properties
+can be configured,
+
+284
+00:15:25,558 --> 00:15:29,028
+set up your app and your
+extension to process this,
+
+285
+00:15:29,028 --> 00:15:30,696
+and then take it a step further
+
+286
+00:15:30,696 --> 00:15:34,567
+by assessing whether
+to provide additional context.
+
+287
+00:15:34,567 --> 00:15:36,435
+That's it for Focus filters!
+
+288
+00:15:36,435 --> 00:15:38,171
+Thank you for joining in
+on this session
+
+289
+00:15:38,171 --> 00:15:40,439
+and have a great rest of WWDC.
+
+290
+00:15:40,439 --> 00:15:44,577
+♪
+

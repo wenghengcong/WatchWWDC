@@ -1,0 +1,1499 @@
+1
+00:00:01,335 --> 00:00:07,341
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,910 --> 00:00:13,714
+Hi there.
+Welcome to this year's WWDC.
+
+3
+00:00:13,747 --> 00:00:15,916
+My name is Stella.
+
+4
+00:00:15,949 --> 00:00:16,984
+And I'm Alex.
+
+5
+00:00:17,017 --> 00:00:20,420
+Stella and I work together
+on the many parts of USD at Apple.
+
+6
+00:00:20,454 --> 00:00:23,891
+Today we'll explore with you
+updates to USD tools and rendering.
+
+7
+00:00:23,924 --> 00:00:24,992
+Take it away, Stella!
+
+8
+00:00:27,160 --> 00:00:29,530
+USD is a foundational technology
+
+9
+00:00:29,563 --> 00:00:34,835
+that, with the growing and deepening
+integration into content creation tools,
+
+10
+00:00:34,868 --> 00:00:40,641
+is enabling more and more ways
+of creating assets and content,
+
+11
+00:00:40,674 --> 00:00:45,045
+rendering for games, AR, film,
+and the web,
+
+12
+00:00:45,078 --> 00:00:47,147
+all with USD at the center.
+
+13
+00:00:48,015 --> 00:00:53,787
+Today, we will focus on two parts
+of the ecosystem: tools and rendering.
+
+14
+00:00:54,688 --> 00:00:58,325
+Let's start with updates to our USD tools.
+
+15
+00:00:59,693 --> 00:01:02,930
+We'll then show you how your assets
+look even better
+
+16
+00:01:02,963 --> 00:01:07,134
+with new lighting in AR Quick Look,
+
+17
+00:01:07,167 --> 00:01:12,072
+take a deep dive into USD rendering,
+
+18
+00:01:12,105 --> 00:01:16,476
+and last but not least,
+show you how to integrate Hydra.
+
+19
+00:01:19,580 --> 00:01:23,450
+Let's get started with USD Tools
+in the Apple ecosystem.
+
+20
+00:01:24,818 --> 00:01:28,922
+We'll cover USDZ Tools,
+Reality Converter,
+
+21
+00:01:28,956 --> 00:01:33,427
+and then follow up
+with additional tools and frameworks
+
+22
+00:01:33,460 --> 00:01:35,095
+that can help you create USDZ content.
+
+23
+00:01:37,965 --> 00:01:40,167
+USDZ Tools is a package
+
+24
+00:01:40,200 --> 00:01:43,971
+that contains essential
+command line USD Python tools
+
+25
+00:01:44,004 --> 00:01:50,477
+to help you generate,
+validate, and inspect USDZ files.
+
+26
+00:01:50,511 --> 00:01:55,182
+The package also includes a converter
+called usdzconvert
+
+27
+00:01:55,215 --> 00:02:00,053
+that creates USDZ files
+from other major 3D file formats.
+
+28
+00:02:01,121 --> 00:02:07,227
+The Python scripts give you powerful tools
+for automation and batch processing.
+
+29
+00:02:07,261 --> 00:02:11,698
+Also, they are a great way
+for you to explore USD and learn
+
+30
+00:02:11,732 --> 00:02:13,333
+how to use the API.
+
+31
+00:02:14,268 --> 00:02:19,673
+This year, we're bringing you
+Python 3 and Apple Silicon support.
+
+32
+00:02:19,706 --> 00:02:23,977
+We've also upgraded the USD version
+to give you simple access
+
+33
+00:02:24,011 --> 00:02:27,681
+to new USD features
+and performance improvements.
+
+34
+00:02:30,117 --> 00:02:35,055
+On top of that, we added
+great new features to usdzconvert.
+
+35
+00:02:35,088 --> 00:02:39,826
+You can now convert OBJ files
+with materials to USDZ
+
+36
+00:02:39,860 --> 00:02:44,298
+with the useObjMtl flag.
+
+37
+00:02:44,331 --> 00:02:50,304
+We also added support
+for points and lines from GLTF files,
+
+38
+00:02:50,337 --> 00:02:55,776
+and scene time
+for animations from FBX files.
+
+39
+00:02:55,809 --> 00:03:01,882
+To display all usdzconvert options
+and ways to customize your conversion,
+
+40
+00:03:01,915 --> 00:03:06,320
+just type "usdzconvert --help"
+on the terminal.
+
+41
+00:03:08,388 --> 00:03:13,193
+This will show you all the options
+you can use with usdzconvert,
+
+42
+00:03:13,227 --> 00:03:14,394
+such as adding copyright information
+
+43
+00:03:16,897 --> 00:03:23,103
+or providing the diffuseColor
+or normalMap for your 3D model,
+
+44
+00:03:23,136 --> 00:03:25,272
+and much more.
+
+45
+00:03:25,305 --> 00:03:28,475
+Alternatively, if you prefer a UI editor
+for your workflow
+
+46
+00:03:29,910 --> 00:03:32,145
+over using the command line,
+
+47
+00:03:32,179 --> 00:03:38,652
+we also have Reality Converter,
+which is built using the USDZ tools
+
+48
+00:03:38,685 --> 00:03:43,390
+and provides the same capabilities
+as usdzconvert,
+
+49
+00:03:43,423 --> 00:03:46,293
+but in an editor window,
+
+50
+00:03:46,326 --> 00:03:52,633
+making it easy to convert, view,
+and customize USD content on MacOS.
+
+51
+00:03:53,634 --> 00:03:56,637
+Simply import common 3D file formats,
+
+52
+00:03:56,670 --> 00:04:00,841
+such as OBJ, GLTF, and FBX,
+
+53
+00:04:00,874 --> 00:04:05,245
+to view the converted USDZ result.
+
+54
+00:04:05,279 --> 00:04:09,983
+This year, we've also improved the UI
+to streamline your workflow.
+
+55
+00:04:10,817 --> 00:04:14,221
+You can select the texture to view
+more information...
+
+56
+00:04:19,760 --> 00:04:23,564
+Customize material properties
+with your own textures...
+
+57
+00:04:31,939 --> 00:04:35,509
+Add copyright or edit file metadata...
+
+58
+00:04:41,915 --> 00:04:47,454
+And choose classic or new lighting,
+which we'll get into more details
+
+59
+00:04:47,487 --> 00:04:48,856
+later in the session.
+
+60
+00:04:50,791 --> 00:04:54,127
+You can even preview
+your USDZ object
+
+61
+00:04:54,161 --> 00:04:59,166
+under a variety of lighting conditions
+with built-in options
+
+62
+00:04:59,199 --> 00:05:00,501
+and adjust exposure accordingly
+
+63
+00:05:02,870 --> 00:05:06,206
+On the asset side, we added a new feature
+
+64
+00:05:06,240 --> 00:05:12,045
+to let you choose texture quality
+while exporting a USDZ file.
+
+65
+00:05:12,079 --> 00:05:17,818
+By default, the textures are exported
+in their original, uncompressed size.
+
+66
+00:05:17,851 --> 00:05:22,956
+But, if you prefer to reduce the size
+of your USDZ files, you now have
+
+67
+00:05:22,990 --> 00:05:26,927
+the option to compress textures
+to the JPEG format.
+
+68
+00:05:29,096 --> 00:05:31,832
+In this example, we used object capture
+to scan this chess piece
+
+69
+00:05:33,667 --> 00:05:35,702
+in high resolution.
+
+70
+00:05:35,736 --> 00:05:40,073
+In order to reduce the file size
+without losing mesh detail,
+
+71
+00:05:40,107 --> 00:05:46,180
+we used RealityConverter to export
+the model with compressed textures.
+
+72
+00:05:46,213 --> 00:05:49,416
+The visual difference
+is hardly noticeable,
+
+73
+00:05:49,449 --> 00:05:54,354
+and we got a whopping 80% reduction
+in the resulting file size!
+
+74
+00:05:56,290 --> 00:05:58,458
+Here is more exciting news:
+
+75
+00:05:58,492 --> 00:06:04,164
+RealityConverter can now fix issues
+with your USD assets automatically!
+
+76
+00:06:04,198 --> 00:06:09,870
+It will correct mismatched attributes
+and connection types,
+
+77
+00:06:09,903 --> 00:06:15,976
+fix a stage with multiple top-level prims
+and a missing default prim,
+
+78
+00:06:16,009 --> 00:06:22,683
+update deprecated attributes,
+and add missing stage metadata.
+
+79
+00:06:22,716 --> 00:06:29,189
+We've also added universal binary support
+so now it runs natively on Apple Silicon.
+
+80
+00:06:30,924 --> 00:06:34,561
+Now, what if you want to create
+3D models from scratch?
+
+81
+00:06:35,963 --> 00:06:41,969
+Last year, we launched Object Capture
+as a RealityKit API on macOS,
+
+82
+00:06:42,002 --> 00:06:47,307
+which provides an innovative way
+to create USDZ assets.
+
+83
+00:06:47,341 --> 00:06:52,713
+You can then use Reality Composer
+to compose a scene with multiple assets.
+
+84
+00:06:52,746 --> 00:06:56,884
+This year, we are bringing you
+RoomPlan API,
+
+85
+00:06:56,917 --> 00:07:00,921
+which lets you create parametric 3D scans
+of your room.
+
+86
+00:07:01,889 --> 00:07:05,826
+I highly recommend you
+to check out these 3 sessions.
+
+87
+00:07:05,859 --> 00:07:10,097
+Together, these technologies make it
+easier than ever
+
+88
+00:07:10,130 --> 00:07:13,867
+for anyone to create
+immersive AR experiences.
+
+89
+00:07:14,601 --> 00:07:16,537
+All these tools we covered today
+
+90
+00:07:16,570 --> 00:07:19,706
+are available for you to download
+right now
+
+91
+00:07:19,740 --> 00:07:24,511
+on our AR Creation Tools
+page on the Apple developer website.
+
+92
+00:07:24,545 --> 00:07:26,346
+Please check them out!
+
+93
+00:07:26,914 --> 00:07:31,718
+Next, let's take a look+
+at AR Quick Look's new lighting.
+
+94
+00:07:32,586 --> 00:07:38,158
+AR Quick Look is the built-in,
+system-wide AR viewer on iOS
+
+95
+00:07:38,192 --> 00:07:43,697
+which enables you to place 3D USDZ objects
+in your physical space,
+
+96
+00:07:43,730 --> 00:07:47,134
+like on a table, a wall, or a floor,
+
+97
+00:07:47,167 --> 00:07:51,972
+and interact with them
+with simple touch gestures.
+
+98
+00:07:52,005 --> 00:07:56,109
+You can even make interactive scenes
+built with Reality Composer
+
+99
+00:07:56,143 --> 00:07:58,812
+and save them to a USDZ file
+
+100
+00:07:58,846 --> 00:08:05,052
+which you can share with others
+on iMessage, Mail, Notes, and more.
+
+101
+00:08:05,085 --> 00:08:09,489
+We constantly strive to make AR Quick Look
+
+102
+00:08:09,523 --> 00:08:13,393
+rendering more realistic, and this year,
+
+103
+00:08:13,427 --> 00:08:18,065
+we are introducing improved lighting
+in AR Quick Look,
+
+104
+00:08:18,098 --> 00:08:23,770
+which is brighter, with enhanced contrast
+and improved shape definition
+
+105
+00:08:23,804 --> 00:08:26,206
+to make your assets look even better.
+
+106
+00:08:27,407 --> 00:08:31,044
+Here is an example of AirPods Pro
+in object mode
+
+107
+00:08:31,078 --> 00:08:33,580
+with classic and new lighting.
+
+108
+00:08:33,614 --> 00:08:37,518
+The AirPods Pro look great
+in both lighting conditions,
+
+109
+00:08:37,551 --> 00:08:40,320
+and you will notice
+the new lighting option
+
+110
+00:08:40,354 --> 00:08:42,422
+offers brighter color,
+
+111
+00:08:42,456 --> 00:08:45,425
+higher contrast, and more highlights.
+
+112
+00:08:47,895 --> 00:08:52,599
+Now let's place the AirPods Max
+on the desk to view it in AR mode
+
+113
+00:08:52,633 --> 00:08:53,700
+with new lighting!
+
+114
+00:08:54,668 --> 00:08:56,937
+Stunning, isn't it?
+
+115
+00:08:57,938 --> 00:09:02,476
+So how do you apply
+the new lighting to your assets?
+
+116
+00:09:02,509 --> 00:09:04,278
+It's really simple.
+
+117
+00:09:04,311 --> 00:09:08,949
+You just have to pick the lighting
+that works best for your content
+
+118
+00:09:08,982 --> 00:09:14,521
+by setting the new preferredIblVersion
+metadata in your USDZ file.
+
+119
+00:09:15,956 --> 00:09:19,960
+Here we have set the value
+of the preferredIblVersion to 2,
+
+120
+00:09:19,993 --> 00:09:23,797
+which will indicate AR Quick Look
+to use the new lighting system.
+
+121
+00:09:24,998 --> 00:09:28,936
+Let's understand this in more detail.
+
+122
+00:09:28,969 --> 00:09:31,405
+The preferredIBLVersion metadata
+
+123
+00:09:31,438 --> 00:09:34,274
+can hold values of 0,1, and 2.
+
+124
+00:09:36,143 --> 00:09:38,645
+An asset with preferredIblVersion set to 0
+
+125
+00:09:38,679 --> 00:09:42,049
+will use the system default lighting.
+
+126
+00:09:43,016 --> 00:09:46,787
+If set to 1, it will continue
+to use the classic lighting.
+
+127
+00:09:48,255 --> 00:09:51,058
+A value of 2
+will give you the new lighting.
+
+128
+00:09:52,059 --> 00:09:56,797
+This means you can easily update
+your current assets to the new lighting
+
+129
+00:09:56,830 --> 00:09:57,664
+as well!
+
+130
+00:09:58,198 --> 00:10:02,970
+We recommend that you make
+an explicit choice and set this metadata
+
+131
+00:10:03,003 --> 00:10:05,339
+in all of your assets.
+
+132
+00:10:05,372 --> 00:10:07,608
+To do that, you can either use
+
+133
+00:10:07,641 --> 00:10:12,546
+usdzconvert
+with the flag preferrediblversion.
+
+134
+00:10:12,579 --> 00:10:15,849
+For example,
+here is how to use the flag to convert
+
+135
+00:10:15,883 --> 00:10:20,087
+the fire hydrant OBJ file
+to USDZ with the new lighting.
+
+136
+00:10:20,921 --> 00:10:24,625
+Or you can use Reality Converter,
+
+137
+00:10:24,658 --> 00:10:27,194
+which will now use
+the new lighting by default.
+
+138
+00:10:28,161 --> 00:10:31,465
+But if you want
+to use the classic lighting,
+
+139
+00:10:31,498 --> 00:10:34,201
+there is a new option
+in the Property Panel.
+
+140
+00:10:35,836 --> 00:10:40,774
+Here we preview the AirPods Max asset
+with both the classic and new lighting.
+
+141
+00:10:42,242 --> 00:10:45,546
+This provides an easy way
+to compare the differences.
+
+142
+00:10:47,247 --> 00:10:50,250
+By clicking the lighting icon,
+the applied lighting
+
+143
+00:10:50,284 --> 00:10:52,986
+will also be highlighted
+for your reference.
+
+144
+00:10:54,821 --> 00:10:59,159
+Lastly, for assets without this metadata,
+
+145
+00:10:59,193 --> 00:11:02,729
+AR Quick Look will determine
+the lighting version automatically
+
+146
+00:11:02,763 --> 00:11:05,566
+based on the file's date-time stamp.
+
+147
+00:11:06,900 --> 00:11:13,507
+If the asset was created after July 1st,
+2022, it will use the new lighting.
+
+148
+00:11:14,808 --> 00:11:18,345
+Older assets will continue
+to use the classic lighting
+
+149
+00:11:18,378 --> 00:11:20,113
+so they don't change how they look.
+
+150
+00:11:21,148 --> 00:11:24,718
+Now, I'll hand it over to Alex
+for USD rendering.
+
+151
+00:11:24,751 --> 00:11:26,053
+Thanks, Stella.
+
+152
+00:11:26,086 --> 00:11:29,022
+We've already seen a lot
+of rendered USD assets today.
+
+153
+00:11:29,056 --> 00:11:33,460
+Now we'll explore what makes USD rendering
+and Hydra a great choice
+
+154
+00:11:33,493 --> 00:11:35,495
+for your 3D content creation pipeline
+
+155
+00:11:35,529 --> 00:11:38,298
+and how you can integrate it
+in your own applications.
+
+156
+00:11:39,399 --> 00:11:43,303
+First, let's take a step back
+and talk about rendering in general.
+
+157
+00:11:44,371 --> 00:11:51,011
+A renderer takes a collection
+of 3D models, cameras, and lights as input
+
+158
+00:11:51,044 --> 00:11:53,847
+and uses them to generate an image.
+
+159
+00:11:53,881 --> 00:11:56,416
+There are many different renderers,
+and each one of them
+
+160
+00:11:56,450 --> 00:12:00,254
+is built for a specific purpose
+and optimized for a different use case.
+
+161
+00:12:01,321 --> 00:12:04,324
+Some renderers are designed
+for real-time applications
+
+162
+00:12:04,358 --> 00:12:07,794
+like rendering a character
+in a game or an AR scene.
+
+163
+00:12:08,662 --> 00:12:12,966
+Others take much longer but produce
+a more photorealistic image,
+
+164
+00:12:13,000 --> 00:12:16,537
+for example, producing visual effects
+for a Hollywood movie.
+
+165
+00:12:17,804 --> 00:12:21,208
+All renderers make choices
+about their features and are unique.
+
+166
+00:12:22,276 --> 00:12:24,678
+Different USD renderers
+for different use cases
+
+167
+00:12:24,711 --> 00:12:26,713
+also exist on Apple platforms.
+
+168
+00:12:27,414 --> 00:12:30,117
+We're adding documentation
+about these different renderers
+
+169
+00:12:30,150 --> 00:12:31,985
+to developer.apple.com.
+
+170
+00:12:32,953 --> 00:12:36,223
+It will help you understand
+the differences between them,
+
+171
+00:12:36,256 --> 00:12:39,126
+explain which USD features
+they support,
+
+172
+00:12:39,159 --> 00:12:43,230
+and provide guidance on how to author USDs
+that work best for you.
+
+173
+00:12:44,364 --> 00:12:48,168
+One of the renderers on Apple platforms
+is RealityKit,
+
+174
+00:12:48,202 --> 00:12:51,171
+which features
+a photorealistic rendering system,
+
+175
+00:12:51,205 --> 00:12:55,008
+optimized for interactive augmented
+reality experiences,
+
+176
+00:12:55,042 --> 00:12:57,110
+and is used in AR Quick Look.
+
+177
+00:12:57,144 --> 00:12:59,880
+It is the primary renderer of USDZ files.
+
+178
+00:13:00,814 --> 00:13:07,588
+Another option for USD rendering on macOS
+is Pixar's open-source renderer, Storm.
+
+179
+00:13:07,621 --> 00:13:10,190
+It is optimized
+for production-grade assets
+
+180
+00:13:10,224 --> 00:13:13,627
+and designed for real-time preview
+of large-scale scenes.
+
+181
+00:13:14,661 --> 00:13:18,699
+It's a great technology for you
+to visualize and iterate on assets
+
+182
+00:13:18,732 --> 00:13:21,435
+as they flow
+through your content creation pipeline.
+
+183
+00:13:22,402 --> 00:13:25,005
+Storm uses a technology called Hydra.
+
+184
+00:13:25,939 --> 00:13:30,978
+Hydra is a core aspect
+of the USD open source project.
+
+185
+00:13:31,011 --> 00:13:34,815
+So next, let's understand Hydra
+and its connection to Storm.
+
+186
+00:13:35,649 --> 00:13:38,519
+We start with this diagram from earlier.
+
+187
+00:13:38,552 --> 00:13:40,988
+Here, we use Storm as the renderer.
+
+188
+00:13:42,189 --> 00:13:46,527
+The input is usually called
+"the scene graph,"
+
+189
+00:13:46,560 --> 00:13:49,162
+and Storm produces a preview render of it.
+
+190
+00:13:50,364 --> 00:13:55,068
+But what if you want to generate
+a photorealistic image of the same scene
+
+191
+00:13:55,102 --> 00:13:56,537
+using a different renderer?
+
+192
+00:13:57,538 --> 00:14:00,307
+That's exactly what Hydra is made for.
+
+193
+00:14:00,340 --> 00:14:03,944
+Instead of tightly coupling
+the scene to the renderer,
+
+194
+00:14:03,977 --> 00:14:07,714
+Hydra acts as an abstract layer
+in between them
+
+195
+00:14:07,748 --> 00:14:10,551
+to transport data from scenes
+to renderers.
+
+196
+00:14:11,752 --> 00:14:14,488
+This allows you to easily swap out
+your renderer
+
+197
+00:14:14,521 --> 00:14:19,393
+based on your needs at any time
+without any changes to your scene graph.
+
+198
+00:14:19,426 --> 00:14:23,297
+For example, you might use Storm
+and Pixar's RenderMan.
+
+199
+00:14:24,431 --> 00:14:28,235
+In your content creation pipeline,
+you can use Storm for fast renders
+
+200
+00:14:28,268 --> 00:14:29,736
+and quick iteration,
+
+201
+00:14:29,770 --> 00:14:32,039
+and then switch to RenderMan
+
+202
+00:14:32,072 --> 00:14:34,208
+to produce
+the final image when you're ready.
+
+203
+00:14:35,142 --> 00:14:38,212
+The same goes for the scene graph.
+
+204
+00:14:38,245 --> 00:14:42,916
+Your input to Hydra can be
+a USD scene graph or a different one.
+
+205
+00:14:43,951 --> 00:14:48,288
+This allows you to leverage
+the same renderer in multiple applications
+
+206
+00:14:48,322 --> 00:14:53,627
+even if each one of them has their own,
+totally different scene graph.
+
+207
+00:14:53,660 --> 00:14:57,731
+The interfaces which connect
+Hydra with scene graphs and renderers
+
+208
+00:14:57,764 --> 00:14:59,900
+are called delegates.
+
+209
+00:14:59,933 --> 00:15:04,137
+Scene graphs are connected
+to Hydra via Scene Delegates,
+
+210
+00:15:04,171 --> 00:15:07,875
+and Renderers are connected
+to Hydra via Render Delegates.
+
+211
+00:15:08,542 --> 00:15:10,477
+And that is Hydra for you!
+
+212
+00:15:11,245 --> 00:15:15,816
+Foundry's Nuke 13 is already
+using Hydra to render the viewport,
+
+213
+00:15:15,849 --> 00:15:19,486
+enabling Nuke artists on macOS
+to have better quality
+
+214
+00:15:19,520 --> 00:15:22,589
+and an interactive experience
+in Nuke's 3D system.
+
+215
+00:15:23,657 --> 00:15:27,060
+This is achieved by using
+Hydra with a custom scene delegate
+
+216
+00:15:27,094 --> 00:15:28,862
+and Metal-accelerated Storm.
+
+217
+00:15:30,063 --> 00:15:33,767
+We are excited to share that
+we've worked with Pixar Animation Studios
+
+218
+00:15:33,800 --> 00:15:38,972
+to publicly release Metal
+accelerated Storm to open source.
+
+219
+00:15:39,006 --> 00:15:42,442
+It is ready for you to use in USD 22.05.
+
+220
+00:15:43,243 --> 00:15:45,579
+Now that we've seen the power of Hydra,
+
+221
+00:15:45,612 --> 00:15:47,781
+let's go through
+a Hydra sample application
+
+222
+00:15:47,814 --> 00:15:51,051
+with the typical use case
+of a USD scene graph
+
+223
+00:15:51,084 --> 00:15:53,487
+and Storm as renderer.
+
+224
+00:15:53,520 --> 00:15:57,291
+It will get you started with using Hydra
+to build content creation tools
+
+225
+00:15:57,324 --> 00:15:59,560
+and 3D workflow applications.
+
+226
+00:16:00,427 --> 00:16:05,899
+Our sample application, HydraPlayer,
+is very simple but powerful.
+
+227
+00:16:05,933 --> 00:16:10,771
+It renders a USD file with Storm
+and lets us move the camera around it.
+
+228
+00:16:12,172 --> 00:16:14,241
+And we're excited to make HydraPlayer
+
+229
+00:16:14,274 --> 00:16:18,378
+a public sample project
+to get you started right away!
+
+230
+00:16:18,412 --> 00:16:21,315
+It is available in the session resources
+and comes
+
+231
+00:16:21,348 --> 00:16:23,183
+with full instructions in the readme.
+
+232
+00:16:24,384 --> 00:16:27,221
+I encourage you to pause this video now,
+
+233
+00:16:27,254 --> 00:16:31,058
+download the project, and then follow
+along as we walk through it.
+
+234
+00:16:32,326 --> 00:16:35,896
+In your Xcode project,
+you will find 4 classes:
+
+235
+00:16:35,929 --> 00:16:41,068
+The AppDelegate, Camera,
+Renderer, and View Controller.
+
+236
+00:16:41,101 --> 00:16:44,071
+The AppDelegate is basically
+your root object
+
+237
+00:16:44,104 --> 00:16:46,273
+and manages interactions with the system.
+
+238
+00:16:47,040 --> 00:16:49,776
+The camera class is
+a simple representation
+
+239
+00:16:49,810 --> 00:16:51,545
+of the USD scene camera
+
+240
+00:16:51,578 --> 00:16:53,947
+to make it easy
+to translate the user input.
+
+241
+00:16:54,882 --> 00:16:58,886
+The renderer class will handle
+all our interactions with USD and Hydra.
+
+242
+00:16:59,920 --> 00:17:04,124
+Last but not least,
+the ViewController handles our user input.
+
+243
+00:17:05,092 --> 00:17:08,795
+Before we can build and launch
+HydraPlayer, there are three things to do:
+
+244
+00:17:09,897 --> 00:17:14,434
+prepare the environment, use Rosetta
+on Apple Silicon Macs,
+
+245
+00:17:14,468 --> 00:17:16,870
+and download and build USD & Hydra.
+
+246
+00:17:16,904 --> 00:17:18,372
+So let's get started.
+
+247
+00:17:20,007 --> 00:17:23,010
+First, we prepare
+our development environment.
+
+248
+00:17:23,043 --> 00:17:27,247
+Make sure you have Xcode,
+Python, and CMake installed.
+
+249
+00:17:29,716 --> 00:17:32,553
+Now let's open up a terminal
+for the other two steps.
+
+250
+00:17:34,087 --> 00:17:38,292
+If you are on an Apple Silicon Mac,
+you need to run under Rosetta
+
+251
+00:17:38,325 --> 00:17:42,496
+while USD is transitioning
+to fully support arm64.
+
+252
+00:17:42,529 --> 00:17:45,065
+To do this, use the arch command.
+
+253
+00:17:46,600 --> 00:17:49,937
+Once your environment is ready,
+we have to download the USD
+
+254
+00:17:49,970 --> 00:17:52,005
+and Hydra source code.
+
+255
+00:17:52,039 --> 00:17:57,110
+Both live in the same GitHub repository
+at PixarAnimationStudios/USD.
+
+256
+00:17:57,978 --> 00:18:01,148
+Now that we have the code,
+we can build it.
+
+257
+00:18:01,181 --> 00:18:04,818
+USD comes
+with a convenient Python build script.
+
+258
+00:18:04,852 --> 00:18:09,323
+We add the flags "generator Xcode"
+and "no-python"
+
+259
+00:18:09,356 --> 00:18:12,226
+and specify
+where we want to install USD to.
+
+260
+00:18:13,160 --> 00:18:16,997
+Let's put it next to the source code
+at "USDInstall."
+
+261
+00:18:17,030 --> 00:18:21,201
+Once USD finished building,
+we are ready to build HydraPlayer!
+
+262
+00:18:22,169 --> 00:18:26,507
+Let's go back to this diagram
+one more time and use it to identify
+
+263
+00:18:26,540 --> 00:18:29,443
+key parts of HydraPlayer
+to check out in detail.
+
+264
+00:18:30,344 --> 00:18:36,183
+We'll look at how to load the 3D models,
+how to set up the camera,
+
+265
+00:18:36,216 --> 00:18:38,552
+and set the scene light.
+
+266
+00:18:38,585 --> 00:18:42,389
+Then we'll learn how to get
+our scene graph to Storm
+
+267
+00:18:42,422 --> 00:18:46,126
+and finally, how to produce
+an image for the application window.
+
+268
+00:18:47,160 --> 00:18:50,964
+So let's get started with loading
+our 3D models from USD.
+
+269
+00:18:50,998 --> 00:18:56,170
+In viewDidAppear in our ViewController,
+we create a file picker
+
+270
+00:18:56,203 --> 00:18:59,806
+with an NSOpenPanel
+when the view appears the first time.
+
+271
+00:19:01,875 --> 00:19:04,645
+Once a file has been selected,
+the renderer
+
+272
+00:19:04,678 --> 00:19:07,981
+can start setting up our scene
+and load the USD file.
+
+273
+00:19:09,049 --> 00:19:12,786
+Loading the file is very simple
+with the USD API.
+
+274
+00:19:12,819 --> 00:19:15,956
+We simply open
+the USD stage at the file path.
+
+275
+00:19:17,824 --> 00:19:19,793
+That's it.
+We have our file loaded.
+
+276
+00:19:20,961 --> 00:19:26,466
+Next, we set up our camera.
+In our code, this is straightforward.
+
+277
+00:19:26,500 --> 00:19:30,237
+In setupCamera,
+we first create a new scene camera.
+
+278
+00:19:31,738 --> 00:19:36,543
+Then we calculate the world size
+and center based on our scene.
+
+279
+00:19:37,377 --> 00:19:43,550
+Next, move our camera at a good distance
+and then focus on the center.
+
+280
+00:19:43,584 --> 00:19:46,787
+This way, our camera
+captures the whole scene.
+
+281
+00:19:47,988 --> 00:19:50,324
+Great, now we have our camera set up.
+
+282
+00:19:50,357 --> 00:19:54,061
+Next, lighting.
+
+283
+00:19:54,094 --> 00:19:59,266
+We keep it easy and create
+one simple ambient light
+
+284
+00:19:59,299 --> 00:20:03,971
+and set its position to match
+the camera, and that's it.
+
+285
+00:20:04,004 --> 00:20:09,910
+And with that, we have our full scene
+with 3D models, a camera and a light!
+
+286
+00:20:09,943 --> 00:20:13,947
+We can now pass our scene to Storm.
+
+287
+00:20:13,981 --> 00:20:17,951
+First, we need to initialize
+our render engine.
+
+288
+00:20:17,985 --> 00:20:24,892
+Here, we create a new UsdImagingGLEngine,
+which is the class name of Storm.
+
+289
+00:20:24,925 --> 00:20:28,762
+The most important parameter here
+is the rootPath.
+
+290
+00:20:28,795 --> 00:20:33,100
+It points the engine to our USD stage
+with our 3D models.
+
+291
+00:20:33,133 --> 00:20:37,171
+To learn more about the other parameters
+and UsdImagingGLEngine,
+
+292
+00:20:37,204 --> 00:20:40,440
+please check out
+Pixar's USD API documentation.
+
+293
+00:20:41,575 --> 00:20:45,779
+Next, we set our camera
+in our engine
+
+294
+00:20:45,812 --> 00:20:48,849
+and set our lighting setup.
+
+295
+00:20:48,882 --> 00:20:53,053
+And last but not least,
+we define how we want Storm to render
+
+296
+00:20:53,086 --> 00:20:55,155
+by setting render parameters.
+
+297
+00:20:55,856 --> 00:20:59,126
+For example,
+we want to render a transparent background
+
+298
+00:20:59,159 --> 00:21:03,030
+so that the rendered image
+works nicely with our app color scheme.
+
+299
+00:21:03,730 --> 00:21:05,966
+Important for scenes with animation,
+
+300
+00:21:05,999 --> 00:21:08,535
+this is also where we specify
+the time code.
+
+301
+00:21:10,337 --> 00:21:12,472
+Now we're ready to render an image!
+
+302
+00:21:13,740 --> 00:21:16,510
+We've already done all the
+necessary setup,
+
+303
+00:21:16,543 --> 00:21:19,813
+so the render command is
+just one line of code.
+
+304
+00:21:20,614 --> 00:21:26,086
+We get the result and display it
+in our window, and there we are!
+
+305
+00:21:26,119 --> 00:21:28,689
+We're rendering the USD toy plane!
+
+306
+00:21:28,722 --> 00:21:31,825
+And actually,
+we're rendering not just one plane.
+
+307
+00:21:31,859 --> 00:21:35,929
+HydraPlayer can easily render
+thousands of animated assets
+
+308
+00:21:35,963 --> 00:21:37,998
+with tens of millions of triangles.
+
+309
+00:21:39,166 --> 00:21:42,636
+If you haven't already,
+check out the resources for this session,
+
+310
+00:21:42,669 --> 00:21:45,806
+download the sample project,
+and have fun exploring it further.
+
+311
+00:21:47,074 --> 00:21:50,511
+Together we explored updates
+to Apple's USD tools
+
+312
+00:21:50,544 --> 00:21:54,581
+that make them more powerful and make
+your assets look even better.
+
+313
+00:21:54,615 --> 00:21:56,717
+We learned about Hydra's features
+
+314
+00:21:56,750 --> 00:21:59,820
+and went
+through the HydraPlayer sample project
+
+315
+00:21:59,853 --> 00:22:03,223
+to see how you can integrate it
+into your own applications.
+
+316
+00:22:04,525 --> 00:22:08,128
+To find out more
+about important concepts of USD,
+
+317
+00:22:08,161 --> 00:22:11,698
+check out the session
+"Understand USD fundamentals.
+
+318
+00:22:12,866 --> 00:22:14,468
+Thank you.
+
+319
+00:22:14,501 --> 00:22:16,436
+♪ ♪
+

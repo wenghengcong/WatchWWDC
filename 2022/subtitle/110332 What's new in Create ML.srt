@@ -1,0 +1,1474 @@
+1
+00:00:00,167 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,977
+♪
+
+3
+00:00:09,977 --> 00:00:13,981
+Namaskar!
+Hello and welcome to WWDC22.
+
+4
+00:00:13,981 --> 00:00:17,651
+My name is Vrushali Mundhe,
+engineer on the Create ML team,
+
+5
+00:00:17,651 --> 00:00:22,456
+and I am excited to share with
+you what's new in Create ML.
+
+6
+00:00:22,456 --> 00:00:24,524
+Create ML allows you
+to easily train
+
+7
+00:00:24,524 --> 00:00:27,628
+powerful machine learning models
+with data you have collected
+
+8
+00:00:27,628 --> 00:00:32,566
+to deliver unique experiences
+and enhance your apps.
+
+9
+00:00:32,566 --> 00:00:36,003
+Create ML ships as an app
+bundled with Xcode,
+
+10
+00:00:36,003 --> 00:00:38,906
+letting you quickly build
+and train Core ML models
+
+11
+00:00:38,906 --> 00:00:41,808
+right on your Mac with no code.
+
+12
+00:00:41,808 --> 00:00:44,978
+Create ML is also available
+as a Swift framework
+
+13
+00:00:44,978 --> 00:00:47,147
+shipping in SDK.
+
+14
+00:00:47,147 --> 00:00:51,251
+Using its APIs, you can easily
+automate model creation
+
+15
+00:00:51,251 --> 00:00:54,588
+or create dynamic experiences
+powered by training
+
+16
+00:00:54,588 --> 00:00:57,758
+directly from
+within your own app.
+
+17
+00:00:57,758 --> 00:01:00,427
+To learn more about Create ML's
+core capabilities,
+
+18
+00:01:00,427 --> 00:01:04,031
+you can check out
+these previous sessions.
+
+19
+00:01:04,031 --> 00:01:08,135
+In this session, we'll talk
+about what's new in Create ML.
+
+20
+00:01:08,135 --> 00:01:10,704
+We will start with new features
+in the Create ML app
+
+21
+00:01:10,704 --> 00:01:12,806
+that can help evaluate
+the accuracy
+
+22
+00:01:12,806 --> 00:01:14,942
+and utility of your models.
+
+23
+00:01:14,942 --> 00:01:18,578
+We will then turn our attention
+to the Create ML framework,
+
+24
+00:01:18,578 --> 00:01:20,681
+its extended capabilities,
+
+25
+00:01:20,681 --> 00:01:23,550
+and ability to now highly
+customize models
+
+26
+00:01:23,550 --> 00:01:26,119
+for your own app.
+
+27
+00:01:26,119 --> 00:01:28,188
+Let's start by reviewing
+a typical workflow
+
+28
+00:01:28,188 --> 00:01:30,157
+for model creation.
+
+29
+00:01:30,157 --> 00:01:33,160
+Given an identified task,
+you begin by collecting
+
+30
+00:01:33,160 --> 00:01:35,629
+and annotating data.
+
+31
+00:01:35,629 --> 00:01:40,033
+Take, for example, wanting
+to visually identify groceries.
+
+32
+00:01:40,033 --> 00:01:42,002
+For this image
+classification task,
+
+33
+00:01:42,002 --> 00:01:45,839
+your starting point would be
+collecting and labeling images;
+
+34
+00:01:45,839 --> 00:01:47,941
+here, some fruits
+and vegetables.
+
+35
+00:01:50,410 --> 00:01:53,780
+Create ML will then help you
+train a model from this data,
+
+36
+00:01:53,780 --> 00:01:56,283
+which can be used in your app.
+
+37
+00:01:56,283 --> 00:01:58,719
+However, before using
+this model,
+
+38
+00:01:58,719 --> 00:02:02,756
+an important step is to evaluate
+how well it performs;
+
+39
+00:02:02,756 --> 00:02:05,826
+here, seeing how accurate
+the model is on images,
+
+40
+00:02:05,826 --> 00:02:09,262
+which were not part
+of the training set.
+
+41
+00:02:09,262 --> 00:02:11,431
+Depending on evaluation,
+
+42
+00:02:11,431 --> 00:02:14,735
+you may iterate on the model
+with additional data
+
+43
+00:02:14,735 --> 00:02:17,170
+and modified training settings
+
+44
+00:02:17,170 --> 00:02:19,773
+or, once the model is
+performing well enough,
+
+45
+00:02:19,773 --> 00:02:22,976
+you're ready to integrate it
+into your app,
+
+46
+00:02:22,976 --> 00:02:26,947
+I would like to focus
+on this evaluation step further.
+
+47
+00:02:26,947 --> 00:02:29,549
+When performing an evaluation,
+we often turn
+
+48
+00:02:29,549 --> 00:02:33,053
+to a set of metrics measured
+by testing your model
+
+49
+00:02:33,053 --> 00:02:35,922
+on new data held out
+from training.
+
+50
+00:02:35,922 --> 00:02:39,292
+You may start by looking
+at a top-level accuracy metric
+
+51
+00:02:39,292 --> 00:02:41,695
+or dive into
+per-class statistics
+
+52
+00:02:41,695 --> 00:02:44,264
+to get a general sense
+of the model's behavior
+
+53
+00:02:44,264 --> 00:02:48,769
+and ability to generalize
+beyond what it was trained on.
+
+54
+00:02:48,769 --> 00:02:51,972
+Ultimately, the model will be
+responsible for empowering
+
+55
+00:02:51,972 --> 00:02:54,141
+data-driven experience
+in your app,
+
+56
+00:02:54,141 --> 00:02:55,742
+and during evaluation,
+
+57
+00:02:55,742 --> 00:03:00,313
+you want to identify the model's
+main strengths and weaknesses
+
+58
+00:03:00,313 --> 00:03:03,283
+in terms of categories
+of inputs or scenarios;
+
+59
+00:03:03,283 --> 00:03:07,754
+it works well or may fall short
+of expectations.
+
+60
+00:03:07,754 --> 00:03:10,657
+There are new features in the
+Create ML app that can help you
+
+61
+00:03:10,657 --> 00:03:13,260
+on this part
+of your model-creation journey.
+
+62
+00:03:13,260 --> 00:03:16,296
+Let me show you a project
+that I'm working on.
+
+63
+00:03:16,296 --> 00:03:18,698
+Here, I have a project
+set up to create a model
+
+64
+00:03:18,698 --> 00:03:20,767
+to identify groceries.
+
+65
+00:03:20,767 --> 00:03:23,070
+I started with collecting
+various fruit
+
+66
+00:03:23,070 --> 00:03:25,839
+and vegetable images
+as my training data
+
+67
+00:03:25,839 --> 00:03:30,143
+and labeled them appropriately.
+
+68
+00:03:30,143 --> 00:03:32,446
+Here are my different classes
+and number of images
+
+69
+00:03:32,446 --> 00:03:34,281
+for each class.
+
+70
+00:03:38,285 --> 00:03:43,557
+I have already trained my image
+classifier for 25 iterations.
+
+71
+00:03:43,557 --> 00:03:46,259
+Next, when I click
+on the Evaluation tab,
+
+72
+00:03:46,259 --> 00:03:49,463
+I can add new test data --
+a set of images
+
+73
+00:03:49,463 --> 00:03:53,433
+apart from training data that
+I had set aside for testing.
+
+74
+00:03:58,371 --> 00:04:03,510
+I will next click Evaluate
+to begin testing.
+
+75
+00:04:03,510 --> 00:04:05,579
+After it finishes evaluation,
+
+76
+00:04:05,579 --> 00:04:08,615
+the UI provides details
+of the results.
+
+77
+00:04:08,615 --> 00:04:11,318
+On the top, there is
+a high-level summary section
+
+78
+00:04:11,318 --> 00:04:14,721
+which gives a quick sense
+of test accuracy.
+
+79
+00:04:14,721 --> 00:04:19,292
+Here, the accuracy
+of this test data is 89 percent.
+
+80
+00:04:19,292 --> 00:04:21,061
+Below in this Metrics tab,
+
+81
+00:04:21,061 --> 00:04:24,798
+a table provides a wealth
+of metrics for each class.
+
+82
+00:04:24,798 --> 00:04:28,668
+You can adjust what is shown
+here using these drop-down menus
+
+83
+00:04:28,668 --> 00:04:31,138
+and add additional metrics
+like false positive
+
+84
+00:04:31,138 --> 00:04:32,606
+and false negative.
+
+85
+00:04:32,606 --> 00:04:34,674
+Let's review one
+of these classes.
+
+86
+00:04:34,674 --> 00:04:36,276
+How about Tomato?
+
+87
+00:04:36,276 --> 00:04:40,080
+The model classified 29 of
+the 32 tomato images correctly.
+
+88
+00:04:40,080 --> 00:04:45,585
+It also shows the precision
+for this class is 91 percent,
+
+89
+00:04:45,585 --> 00:04:47,154
+which means nine percent
+of the time
+
+90
+00:04:47,154 --> 00:04:50,624
+the model says something
+is a tomato, it is incorrect.
+
+91
+00:04:50,624 --> 00:04:53,226
+While these numbers
+and statistics are super useful,
+
+92
+00:04:53,226 --> 00:04:56,096
+it's sometimes even more
+important to look at them
+
+93
+00:04:56,096 --> 00:04:58,465
+in the context
+of the data itself.
+
+94
+00:04:58,465 --> 00:05:02,235
+When I click the precision,
+it takes me to the images
+
+95
+00:05:02,235 --> 00:05:05,372
+that were incorrectly
+classified as tomato.
+
+96
+00:05:05,372 --> 00:05:08,875
+Here are three of these cases
+in the test data.
+
+97
+00:05:08,875 --> 00:05:12,145
+For each image,
+the app displays its thumbnail,
+
+98
+00:05:12,145 --> 00:05:14,447
+the class the model
+has predicted,
+
+99
+00:05:14,447 --> 00:05:16,550
+and the true label below it.
+
+100
+00:05:16,550 --> 00:05:19,052
+In this first example,
+while the model classified this
+
+101
+00:05:19,052 --> 00:05:22,589
+as Tomato,
+it was labeled as Potato.
+
+102
+00:05:22,589 --> 00:05:25,058
+But this sure appears
+to be a tomato to me.
+
+103
+00:05:25,058 --> 00:05:27,694
+This seems like a case
+of a mislabeled test data.
+
+104
+00:05:27,694 --> 00:05:31,631
+In fact, all three of these
+examples seem to be mislabeled.
+
+105
+00:05:31,631 --> 00:05:33,567
+This should be easy to address.
+
+106
+00:05:33,567 --> 00:05:35,135
+I'll make a note to double-check
+
+107
+00:05:35,135 --> 00:05:37,737
+and revisit
+my test-set labeling.
+
+108
+00:05:37,737 --> 00:05:40,006
+This was clearly
+an error on my part,
+
+109
+00:05:40,006 --> 00:05:42,943
+but is it the only source
+of error?
+
+110
+00:05:42,943 --> 00:05:44,844
+I got here
+by exploring the metrics
+
+111
+00:05:44,844 --> 00:05:47,280
+on a random class of my choice.
+
+112
+00:05:47,280 --> 00:05:50,317
+You may wonder,
+"Where should I start?"
+
+113
+00:05:50,317 --> 00:05:53,787
+Or, "What should I
+explore next?"
+
+114
+00:05:53,787 --> 00:05:58,225
+The top-level summary section
+is here to help you out.
+
+115
+00:05:58,225 --> 00:05:59,292
+The app has selected
+
+116
+00:05:59,292 --> 00:06:01,795
+some of the most important
+evaluation details
+
+117
+00:06:01,795 --> 00:06:05,765
+that can serve as a great place
+to start your exploration.
+
+118
+00:06:05,765 --> 00:06:10,604
+Let me restart from the top
+and review the successful cases.
+
+119
+00:06:10,604 --> 00:06:15,742
+Clicking here,
+this correct count...
+
+120
+00:06:15,742 --> 00:06:19,412
+Here, we can get a quick
+glance of all the 162 images
+
+121
+00:06:19,412 --> 00:06:23,550
+the model correctly classified.
+
+122
+00:06:23,550 --> 00:06:27,187
+Next, let me contrast this with
+a review of all the failures
+
+123
+00:06:27,187 --> 00:06:31,258
+by clicking on the incorrect.
+
+124
+00:06:31,258 --> 00:06:33,660
+There are 21 failures in total.
+
+125
+00:06:35,962 --> 00:06:38,765
+Here is that mislabeled
+tomato again.
+
+126
+00:06:38,765 --> 00:06:40,934
+Let me check if there are
+any other types of errors
+
+127
+00:06:40,934 --> 00:06:43,036
+that can stand out.
+
+128
+00:06:43,036 --> 00:06:46,139
+How about... this one?
+
+129
+00:06:46,139 --> 00:06:50,343
+This image is labeled
+as Carrot,
+
+130
+00:06:50,343 --> 00:06:53,780
+but the model predicts
+as Potato.
+
+131
+00:06:53,780 --> 00:06:56,483
+It's hard to tell
+in this small thumbnail,
+
+132
+00:06:56,483 --> 00:07:01,154
+but let's confirm by clicking on
+this image to get a better view.
+
+133
+00:07:01,154 --> 00:07:03,556
+Well, this looks like
+a foot to me.
+
+134
+00:07:03,556 --> 00:07:06,893
+This clearly is not a long,
+skinny carrot shape I'm used to
+
+135
+00:07:06,893 --> 00:07:09,562
+but can be easily confused
+as a potato.
+
+136
+00:07:09,562 --> 00:07:12,198
+Perhaps I should consider
+adding more shape variations
+
+137
+00:07:12,198 --> 00:07:14,501
+to my training data for carrots.
+
+138
+00:07:14,501 --> 00:07:16,603
+Let me make a note
+of this as well.
+
+139
+00:07:16,603 --> 00:07:20,273
+This time, I will click on
+the arrow next to the filename
+
+140
+00:07:20,273 --> 00:07:23,243
+to bring me to this image
+in the Finder.
+
+141
+00:07:25,679 --> 00:07:30,650
+I will right-click
+and label this as red,
+
+142
+00:07:30,650 --> 00:07:33,520
+as reminder of it being
+something I want to revisit
+
+143
+00:07:33,520 --> 00:07:36,456
+in my next round
+of data collection.
+
+144
+00:07:36,456 --> 00:07:40,593
+Let me continue my exploration
+from within this expanded view.
+
+145
+00:07:40,593 --> 00:07:44,297
+Note that this view also shows
+full prediction results,
+
+146
+00:07:44,297 --> 00:07:46,933
+listing the model's confidence
+in every class.
+
+147
+00:07:46,933 --> 00:07:49,669
+It also lets me navigate
+through examples
+
+148
+00:07:49,669 --> 00:07:53,473
+using these left
+and right arrows.
+
+149
+00:07:53,473 --> 00:07:57,243
+I'll move to another example
+from here.
+
+150
+00:07:57,243 --> 00:07:58,912
+This is an interesting case.
+
+151
+00:07:58,912 --> 00:08:02,882
+It has multiple vegetables
+in a single image.
+
+152
+00:08:02,882 --> 00:08:07,120
+It says it's an eggplant
+and it's true
+
+153
+00:08:07,120 --> 00:08:11,091
+that there are eggplants here
+but other things as well.
+
+154
+00:08:11,091 --> 00:08:13,960
+I need to think about whether
+this is an important use case
+
+155
+00:08:13,960 --> 00:08:16,830
+for me to consider in my app.
+
+156
+00:08:16,830 --> 00:08:19,599
+Perhaps the UI can guide
+my users to make sure
+
+157
+00:08:19,599 --> 00:08:22,769
+they only point to one type
+of grocery at a time,
+
+158
+00:08:22,769 --> 00:08:24,971
+or if I want to support
+multiple types,
+
+159
+00:08:24,971 --> 00:08:28,141
+I may want to consider
+using an object detector --
+
+160
+00:08:28,141 --> 00:08:29,776
+another template in the app --
+
+161
+00:08:29,776 --> 00:08:32,679
+rather than the whole
+image classifier.
+
+162
+00:08:32,679 --> 00:08:34,481
+Coming back
+to the summary section,
+
+163
+00:08:34,481 --> 00:08:37,884
+let me check out this line
+about the top confusion.
+
+164
+00:08:37,884 --> 00:08:40,620
+Here it says
+it's 'Pepper' as 'Bean'.
+
+165
+00:08:40,620 --> 00:08:44,257
+Let's click
+to explore this case.
+
+166
+00:08:44,257 --> 00:08:46,259
+Four images labeled as peppers
+
+167
+00:08:46,259 --> 00:08:49,729
+are incorrectly
+classified as beans.
+
+168
+00:08:49,729 --> 00:08:51,598
+These look like
+spicy peppers to me,
+
+169
+00:08:51,598 --> 00:08:55,068
+but I guess they are green
+like beans as well.
+
+170
+00:08:55,068 --> 00:08:58,805
+I wonder if the model is having
+trouble with peppers in general.
+
+171
+00:08:58,805 --> 00:09:05,812
+Let me switch this query option
+from Incorrect to Correct...
+
+172
+00:09:05,812 --> 00:09:09,582
+...to contrast these failures
+to correctly classified peppers.
+
+173
+00:09:09,582 --> 00:09:13,019
+It correctly classified
+32 images;
+
+174
+00:09:13,019 --> 00:09:17,023
+however, I do notice that
+most of these are bell peppers.
+
+175
+00:09:17,023 --> 00:09:19,426
+I should check my training data
+to make sure
+
+176
+00:09:19,426 --> 00:09:24,731
+I have a good representation
+of multiple peppers as well.
+
+177
+00:09:24,731 --> 00:09:26,933
+This quick exploration
+was a great reminder
+
+178
+00:09:26,933 --> 00:09:29,436
+of how important
+the quantity, quality,
+
+179
+00:09:29,436 --> 00:09:34,174
+and variety of training and test
+data are for machine learning.
+
+180
+00:09:34,174 --> 00:09:36,543
+In a matter of a few minutes,
+the app helped me
+
+181
+00:09:36,543 --> 00:09:38,778
+visually identify
+some issues with labeling
+
+182
+00:09:38,778 --> 00:09:40,847
+and representation.
+
+183
+00:09:40,847 --> 00:09:43,516
+I need to make some tweaks
+to my training data
+
+184
+00:09:43,516 --> 00:09:46,019
+and see if it fixes
+the issues we saw.
+
+185
+00:09:46,019 --> 00:09:49,622
+It also revealed something
+I hadn't considered before:
+
+186
+00:09:49,622 --> 00:09:52,759
+what happens if a user
+captures multiple vegetables
+
+187
+00:09:52,759 --> 00:09:54,494
+in a single photo?
+
+188
+00:09:54,494 --> 00:09:58,731
+I need to think about
+my app design some more.
+
+189
+00:09:58,731 --> 00:10:00,834
+All of this exploration
+was possible
+
+190
+00:10:00,834 --> 00:10:04,637
+because I had a collection
+of labeled data to evaluate.
+
+191
+00:10:04,637 --> 00:10:08,942
+But what if I have unlabeled
+examples I want to quickly test,
+
+192
+00:10:08,942 --> 00:10:11,277
+or consider whether or not
+I should explore
+
+193
+00:10:11,277 --> 00:10:15,181
+more camera angles
+or lighting conditions?
+
+194
+00:10:15,181 --> 00:10:18,151
+Here is where
+the Preview tab can help.
+
+195
+00:10:18,151 --> 00:10:21,020
+I can drag a few examples my
+colleague just sent to me here
+
+196
+00:10:21,020 --> 00:10:22,856
+and see how well it does.
+
+197
+00:10:36,603 --> 00:10:38,338
+Or I can even test this live,
+
+198
+00:10:38,338 --> 00:10:41,374
+using my iPhone
+as the Continuity Camera.
+
+199
+00:10:43,610 --> 00:10:45,745
+As I point
+to these actual vegetables,
+
+200
+00:10:45,745 --> 00:10:49,516
+the model is able
+to correctly classify them live.
+
+201
+00:10:49,516 --> 00:10:54,487
+Here, this is a pepper
+and a tomato.
+
+202
+00:10:54,487 --> 00:10:56,689
+To recap, you can now
+dive deeper
+
+203
+00:10:56,689 --> 00:11:01,060
+into a trained model's behavior
+on any labeled dataset.
+
+204
+00:11:01,060 --> 00:11:04,197
+The Evaluation pane provides
+a detailed metric summary
+
+205
+00:11:04,197 --> 00:11:06,399
+with its extended options.
+
+206
+00:11:06,399 --> 00:11:09,502
+A new Explore tab provides
+options which lets you filter
+
+207
+00:11:09,502 --> 00:11:12,171
+and visualize
+the test evaluation results
+
+208
+00:11:12,171 --> 00:11:16,543
+along with the associated data
+in a new interactive UI,
+
+209
+00:11:16,543 --> 00:11:18,945
+currently available
+for image classifier,
+
+210
+00:11:18,945 --> 00:11:24,017
+hand pose classifier,
+and object detection templates.
+
+211
+00:11:24,017 --> 00:11:26,986
+Live preview enables
+immediate feedback.
+
+212
+00:11:26,986 --> 00:11:29,455
+It's expanded
+to image classifier,
+
+213
+00:11:29,455 --> 00:11:34,561
+hand action classifier, and body
+action classifier templates.
+
+214
+00:11:34,561 --> 00:11:36,763
+We have also extended
+the feature to allow you
+
+215
+00:11:36,763 --> 00:11:39,332
+to select from
+any attached webcam
+
+216
+00:11:39,332 --> 00:11:42,068
+and we also support
+Continuity Cameras
+
+217
+00:11:42,068 --> 00:11:45,305
+on macOS Ventura.
+
+218
+00:11:45,305 --> 00:11:48,675
+That's a quick summary of
+what's new in the Create ML app.
+
+219
+00:11:48,675 --> 00:11:50,577
+Let's shift over
+to discuss what's new
+
+220
+00:11:50,577 --> 00:11:52,445
+in the Create ML framework.
+
+221
+00:11:54,914 --> 00:11:57,517
+The Create ML framework
+is available on macOS,
+
+222
+00:11:57,517 --> 00:11:59,819
+iOS, and iPadOS.
+
+223
+00:11:59,819 --> 00:12:04,524
+This year, we are expanding
+some of its support to tvOS 16.
+
+224
+00:12:04,524 --> 00:12:07,126
+The programmatic interface
+not only lets you
+
+225
+00:12:07,126 --> 00:12:09,829
+automate model creation
+at development time
+
+226
+00:12:09,829 --> 00:12:12,865
+but also opens up
+many opportunities to build
+
+227
+00:12:12,865 --> 00:12:17,070
+dynamic features that learn
+directly from users' input
+
+228
+00:12:17,070 --> 00:12:20,073
+or on-device behavior,
+providing personalized
+
+229
+00:12:20,073 --> 00:12:24,444
+and adaptive experiences
+while preserving user privacy.
+
+230
+00:12:24,444 --> 00:12:27,780
+Note that task support
+does differ per platform.
+
+231
+00:12:27,780 --> 00:12:31,150
+For example, while tabular
+classifiers and regressors
+
+232
+00:12:31,150 --> 00:12:34,587
+are available everywhere, some
+of the tasks with larger data
+
+233
+00:12:34,587 --> 00:12:38,324
+and computation requirements,
+such as those involving video,
+
+234
+00:12:38,324 --> 00:12:41,060
+require macOS.
+
+235
+00:12:41,060 --> 00:12:43,096
+One common question
+you may have is,
+
+236
+00:12:43,096 --> 00:12:44,998
+"What if I can't map my idea
+
+237
+00:12:44,998 --> 00:12:48,801
+into one of these Create ML's
+predefined tasks?"
+
+238
+00:12:48,801 --> 00:12:52,238
+To help answer this question,
+we are introducing a new member
+
+239
+00:12:52,238 --> 00:12:54,440
+to the Create ML family:
+
+240
+00:12:54,440 --> 00:12:56,609
+Create ML Components.
+
+241
+00:12:56,609 --> 00:12:59,979
+Create ML Components exposes
+the underlying building blocks
+
+242
+00:12:59,979 --> 00:13:02,482
+of Create ML.
+
+243
+00:13:02,482 --> 00:13:05,585
+It allows you to combine them
+together to create pipelines
+
+244
+00:13:05,585 --> 00:13:09,555
+and models customized
+to your use case.
+
+245
+00:13:09,555 --> 00:13:11,457
+I highly recommend you
+checking out these sessions
+
+246
+00:13:11,457 --> 00:13:12,925
+to learn more.
+
+247
+00:13:12,925 --> 00:13:14,894
+In "Get to know
+Create ML Components,"
+
+248
+00:13:14,894 --> 00:13:16,963
+you will learn about
+the building blocks
+
+249
+00:13:16,963 --> 00:13:19,599
+and how they can
+be composed together.
+
+250
+00:13:19,599 --> 00:13:22,635
+In "Compose advanced models
+with Create ML Components,"
+
+251
+00:13:22,635 --> 00:13:26,239
+you dive deeper into using
+async temporal components
+
+252
+00:13:26,239 --> 00:13:28,608
+and customizing training.
+
+253
+00:13:28,608 --> 00:13:31,711
+There are endless capabilities;
+let me showcase one
+
+254
+00:13:31,711 --> 00:13:33,680
+that I am personally
+excited about:
+
+255
+00:13:33,680 --> 00:13:35,848
+action repetition counting.
+
+256
+00:13:35,848 --> 00:13:40,086
+When I am not working, most
+likely you'll find me dancing.
+
+257
+00:13:40,086 --> 00:13:41,354
+I'm a professionally trained
+
+258
+00:13:41,354 --> 00:13:44,691
+Indian classical dance
+Kathak artist.
+
+259
+00:13:44,691 --> 00:13:45,825
+To improve my form,
+
+260
+00:13:45,825 --> 00:13:49,562
+I often rely on repeatedly
+practicing my routines.
+
+261
+00:13:49,562 --> 00:13:52,999
+As a choreographer/teacher,
+I would like my performers
+
+262
+00:13:52,999 --> 00:13:56,235
+to practice steps for certain
+counts and submit them to me.
+
+263
+00:13:56,235 --> 00:13:59,005
+The new repetition counting
+capabilities in Create ML
+
+264
+00:13:59,005 --> 00:14:01,474
+can help me actually do that!
+
+265
+00:14:01,474 --> 00:14:04,377
+Here, this a chakkar -- twirl --
+
+266
+00:14:04,377 --> 00:14:06,713
+an integral part
+of Kathak dance.
+
+267
+00:14:09,248 --> 00:14:11,951
+I would like to practice this
+for certain counts daily
+
+268
+00:14:11,951 --> 00:14:14,587
+to build my form and my stamina.
+
+269
+00:14:14,587 --> 00:14:18,624
+I have an iOS app built using
+Create ML that counts my moves.
+
+270
+00:14:18,624 --> 00:14:20,359
+Let's try it in action.
+
+271
+00:14:27,867 --> 00:14:30,303
+As I take my chakkars,
+the count increases
+
+272
+00:14:30,303 --> 00:14:31,971
+to correspond to it.
+
+273
+00:14:31,971 --> 00:14:33,806
+Here, I have done five chakkars,
+
+274
+00:14:33,806 --> 00:14:36,743
+and the count reflects
+exactly that.
+
+275
+00:14:36,743 --> 00:14:39,145
+Next, let's try a different
+small routine
+
+276
+00:14:39,145 --> 00:14:41,981
+that consist of right-
+and left-side movements.
+
+277
+00:14:41,981 --> 00:14:44,016
+The counter counts them as one.
+
+278
+00:14:57,029 --> 00:14:59,565
+Here, the count shows three.
+
+279
+00:14:59,565 --> 00:15:02,902
+Let me try another
+quick one-side arm movement.
+
+280
+00:15:17,283 --> 00:15:18,684
+That's four.
+
+281
+00:15:18,684 --> 00:15:20,820
+When combined
+with Action Classification,
+
+282
+00:15:20,820 --> 00:15:24,557
+this will allow you to count and
+categorize repetitive actions
+
+283
+00:15:24,557 --> 00:15:26,359
+at the same time.
+
+284
+00:15:26,359 --> 00:15:30,429
+Repetition counting is available
+as a runtime API.
+
+285
+00:15:30,429 --> 00:15:33,800
+It requires no training data,
+and adding this functionality
+
+286
+00:15:33,800 --> 00:15:37,236
+to your app can be
+just a few lines of code.
+
+287
+00:15:37,236 --> 00:15:40,506
+Its implementation is based
+on a pretrained model
+
+288
+00:15:40,506 --> 00:15:42,642
+designed to be class-agnostic.
+
+289
+00:15:42,642 --> 00:15:46,179
+Meaning, while it works
+on fitness or dance actions,
+
+290
+00:15:46,179 --> 00:15:49,949
+such as jumping jacks,
+squats, twirls, chakkars,
+
+291
+00:15:49,949 --> 00:15:52,552
+it's also applicable
+to a wide variety
+
+292
+00:15:52,552 --> 00:15:56,088
+of full-body
+repetitive actions.
+
+293
+00:15:56,088 --> 00:15:57,857
+You can find out more
+about this model
+
+294
+00:15:57,857 --> 00:16:00,827
+and potential use case
+by checking out the sample code
+
+295
+00:16:00,827 --> 00:16:04,530
+and the article linked
+to this session.
+
+296
+00:16:04,530 --> 00:16:08,334
+So that's a quick overview
+of what's new in Create ML.
+
+297
+00:16:08,334 --> 00:16:11,103
+Interactive evaluation
+and live previews
+
+298
+00:16:11,103 --> 00:16:13,573
+in the Create ML app
+lets you dive deeper
+
+299
+00:16:13,573 --> 00:16:16,475
+into understanding
+the models you train.
+
+300
+00:16:16,475 --> 00:16:20,079
+The Create ML framework
+adds tvOS support,
+
+301
+00:16:20,079 --> 00:16:23,115
+repetition counting,
+and has expanded
+
+302
+00:16:23,115 --> 00:16:27,019
+to give you access to a rich
+set of underlying components
+
+303
+00:16:27,019 --> 00:16:29,889
+to help you build models
+highly customized
+
+304
+00:16:29,889 --> 00:16:32,058
+to your app needs.
+
+305
+00:16:32,058 --> 00:16:33,092
+Thank you,
+
+306
+00:16:33,092 --> 00:16:35,928
+and I hope you enjoyed all
+these exciting new features,
+
+307
+00:16:35,928 --> 00:16:38,464
+and we can't wait to see
+what you do with them!
+
+308
+00:16:38,464 --> 00:16:42,902
+♪
+

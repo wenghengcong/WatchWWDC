@@ -1,0 +1,1851 @@
+1
+00:00:00,000 --> 00:00:03,003
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,509
+♪
+
+3
+00:00:09,509 --> 00:00:12,145
+Hello, and welcome to WWDC.
+
+4
+00:00:12,145 --> 00:00:14,047
+My name is Kacey.
+
+5
+00:00:14,047 --> 00:00:16,617
+You may have come across
+Universal Scene Description,
+
+6
+00:00:16,617 --> 00:00:18,218
+or USD, already.
+
+7
+00:00:18,218 --> 00:00:21,555
+You may have interacted with
+USD files in augmented reality.
+
+8
+00:00:21,555 --> 00:00:25,058
+Or you may have converted assets
+from other formats to USD.
+
+9
+00:00:25,058 --> 00:00:28,195
+But what's really inside
+of a USD file?
+
+10
+00:00:28,195 --> 00:00:31,365
+USD is an important technology
+with unique features,
+
+11
+00:00:31,365 --> 00:00:32,933
+so let's take a look
+under the hood
+
+12
+00:00:32,933 --> 00:00:36,370
+and explore the fundamentals
+of USD together.
+
+13
+00:00:36,370 --> 00:00:39,139
+We'll learn what USD is,
+
+14
+00:00:39,139 --> 00:00:42,843
+introduce some
+basic USD concepts,
+
+15
+00:00:42,843 --> 00:00:46,113
+learn how to compose scenes
+with USD,
+
+16
+00:00:46,113 --> 00:00:50,684
+and get an understanding
+of the USD file formats.
+
+17
+00:00:50,684 --> 00:00:53,921
+First, what is USD?
+
+18
+00:00:53,921 --> 00:00:56,924
+USD was developed
+by Pixar Animation Studios
+
+19
+00:00:56,924 --> 00:00:59,693
+to enable them to create
+the complex movies we love,
+
+20
+00:00:59,693 --> 00:01:02,696
+and it is widely used
+across the film, entertainment,
+
+21
+00:01:02,696 --> 00:01:04,665
+and other industries.
+
+22
+00:01:04,665 --> 00:01:07,200
+It's extensible by design
+and is rapidly emerging
+
+23
+00:01:07,200 --> 00:01:10,370
+as a collaborative,
+key workflow technology.
+
+24
+00:01:10,370 --> 00:01:12,506
+It's an open source project
+built on decades
+
+25
+00:01:12,506 --> 00:01:14,908
+of production experience
+in the film industry
+
+26
+00:01:14,908 --> 00:01:17,210
+and is increasingly
+being adopted for games,
+
+27
+00:01:17,210 --> 00:01:22,416
+simulation, AR, manufacturing,
+and e-commerce.
+
+28
+00:01:22,416 --> 00:01:24,818
+There are three
+core aspects to USD:
+
+29
+00:01:24,818 --> 00:01:27,921
+the scene description
+specification, the API,
+
+30
+00:01:27,921 --> 00:01:30,824
+and the rendering system.
+
+31
+00:01:30,824 --> 00:01:35,529
+Your application interacts
+with USD using the API.
+
+32
+00:01:35,529 --> 00:01:36,964
+The rendering system
+provides support
+
+33
+00:01:36,964 --> 00:01:41,468
+for visualizing the scenes
+with different renderers.
+
+34
+00:01:41,468 --> 00:01:44,604
+Apple has multiple different
+rendering systems for USD.
+
+35
+00:01:44,604 --> 00:01:47,341
+Check out the "Explore USD tools
+and rendering" session
+
+36
+00:01:47,341 --> 00:01:50,677
+to learn more about it.
+
+37
+00:01:50,677 --> 00:01:51,878
+In this session,
+
+38
+00:01:51,878 --> 00:01:54,381
+we focus on the scene
+description specification
+
+39
+00:01:54,381 --> 00:01:56,616
+which states how
+scene data is described,
+
+40
+00:01:56,616 --> 00:01:58,018
+how it is organized,
+
+41
+00:01:58,018 --> 00:02:02,155
+and how it is represented
+in a file format.
+
+42
+00:02:02,155 --> 00:02:04,958
+Fundamentally,
+these USD files contain data
+
+43
+00:02:04,958 --> 00:02:07,627
+describing how a scene
+should look.
+
+44
+00:02:07,627 --> 00:02:09,763
+Rendering applications
+interpret the data,
+
+45
+00:02:09,763 --> 00:02:12,632
+and produce an image
+on the screen.
+
+46
+00:02:12,632 --> 00:02:15,936
+For example,
+at last year's WWDC session,
+
+47
+00:02:15,936 --> 00:02:19,940
+we created this USD scene
+and rendered it in Octane.
+
+48
+00:02:19,940 --> 00:02:22,242
+Now let's dive into
+the fundamental concepts
+
+49
+00:02:22,242 --> 00:02:24,811
+and learn about the data
+behind the render.
+
+50
+00:02:24,811 --> 00:02:26,246
+To keep things simple,
+
+51
+00:02:26,246 --> 00:02:29,549
+we will use
+a text USD representation
+
+52
+00:02:29,549 --> 00:02:32,386
+USD has a lot of cool features
+we'd love to talk about,
+
+53
+00:02:32,386 --> 00:02:33,787
+but for the sake of time,
+
+54
+00:02:33,787 --> 00:02:35,255
+we will focus on
+the essentials features
+
+55
+00:02:35,255 --> 00:02:36,723
+that you may
+most commonly encounter
+
+56
+00:02:36,723 --> 00:02:41,361
+while working with USD
+such as stage, prim, and layers,
+
+57
+00:02:41,361 --> 00:02:43,296
+just to name a few.
+
+58
+00:02:43,296 --> 00:02:45,832
+Let's start with the stage.
+
+59
+00:02:45,832 --> 00:02:48,969
+Imagine we are attending
+a play in a theater.
+
+60
+00:02:48,969 --> 00:02:51,371
+As audience members,
+we observe the stage
+
+61
+00:02:51,371 --> 00:02:54,341
+to watch the actors perform,
+notice the environments,
+
+62
+00:02:54,341 --> 00:02:56,877
+lighting, and the props.
+
+63
+00:02:56,877 --> 00:03:01,281
+This is a good analogy
+to how a stage works in USD.
+
+64
+00:03:01,281 --> 00:03:04,051
+A stage is a scene graph,
+or a data structure,
+
+65
+00:03:04,051 --> 00:03:06,086
+that organizes
+graphical information
+
+66
+00:03:06,086 --> 00:03:07,487
+in a hierarchical way,
+
+67
+00:03:07,487 --> 00:03:10,624
+where all the scene elements
+come together.
+
+68
+00:03:10,624 --> 00:03:13,293
+A stage is a composition
+of one or more layers,
+
+69
+00:03:13,293 --> 00:03:18,298
+which are typically files
+containing scene information.
+
+70
+00:03:18,298 --> 00:03:20,767
+In general,
+a stage is made up of prims,
+
+71
+00:03:20,767 --> 00:03:24,104
+which are the primary
+container objects of a scene.
+
+72
+00:03:24,104 --> 00:03:25,605
+Prims can contain other prims
+
+73
+00:03:25,605 --> 00:03:28,108
+to create a hierarchy
+of scene elements.
+
+74
+00:03:28,108 --> 00:03:30,844
+Let's check out an example.
+
+75
+00:03:30,844 --> 00:03:33,780
+On the left,
+we have a sample USD layer
+
+76
+00:03:33,780 --> 00:03:36,650
+and on the right, we see
+a preview visual representation
+
+77
+00:03:36,650 --> 00:03:38,351
+of the stage.
+
+78
+00:03:38,351 --> 00:03:43,623
+We see two prims:
+a sphere and a cube.
+
+79
+00:03:43,623 --> 00:03:45,525
+Each prim has a certain type
+
+80
+00:03:45,525 --> 00:03:48,662
+that defines what it represents
+on the stage.
+
+81
+00:03:48,662 --> 00:03:50,230
+There are many
+different types of prims
+
+82
+00:03:50,230 --> 00:03:55,068
+that make up a stage such as
+meshes, lights, and materials.
+
+83
+00:03:55,068 --> 00:03:56,303
+For this example,
+
+84
+00:03:56,303 --> 00:03:59,406
+the sphere prim
+has a type called "Sphere,"
+
+85
+00:03:59,406 --> 00:04:03,710
+and the cube prim
+has a type called "Cube."
+
+86
+00:04:03,710 --> 00:04:06,279
+But this brings up
+a good question.
+
+87
+00:04:06,279 --> 00:04:10,016
+How does USD know
+what these prim types mean?
+
+88
+00:04:10,016 --> 00:04:12,419
+USD knows this
+through the use of schemas.
+
+89
+00:04:12,419 --> 00:04:14,020
+Schemas are structured data
+
+90
+00:04:14,020 --> 00:04:16,957
+that define the role
+of a prim on the stage.
+
+91
+00:04:16,957 --> 00:04:19,292
+They provide meaning
+to common scene concepts
+
+92
+00:04:19,292 --> 00:04:22,529
+like geometry,
+materials, and more.
+
+93
+00:04:22,529 --> 00:04:23,797
+For this example,
+
+94
+00:04:23,797 --> 00:04:26,466
+here is a schema definition
+of a sphere.
+
+95
+00:04:26,466 --> 00:04:28,435
+It defines that every sphere
+has a radius
+
+96
+00:04:28,435 --> 00:04:31,104
+and a bounding box extent.
+
+97
+00:04:31,104 --> 00:04:34,174
+With the existing schemas,
+USD gives you a rich foundation
+
+98
+00:04:34,174 --> 00:04:38,011
+of built-in types
+to describe your scenes.
+
+99
+00:04:38,011 --> 00:04:41,848
+Custom schemas enable you
+to extend USD even further.
+
+100
+00:04:41,848 --> 00:04:44,851
+You can provide your own schemas
+that represent your custom data
+
+101
+00:04:44,851 --> 00:04:47,420
+for your own use cases
+and workflows.
+
+102
+00:04:47,420 --> 00:04:49,890
+Schemas don't need to have
+a visual representation.
+
+103
+00:04:49,890 --> 00:04:52,125
+They can just be data
+you want to have in the stage
+
+104
+00:04:52,125 --> 00:04:54,427
+in a structured, meaningful way.
+
+105
+00:04:54,427 --> 00:04:55,529
+For example,
+
+106
+00:04:55,529 --> 00:04:59,432
+here, I've created a new schema
+called "WWDC."
+
+107
+00:04:59,432 --> 00:05:01,268
+It defines that a prim
+that has a title
+
+108
+00:05:01,268 --> 00:05:03,370
+and a year associated with it,
+
+109
+00:05:03,370 --> 00:05:06,373
+and here is a prim
+called "WWDC22"
+
+110
+00:05:06,373 --> 00:05:07,908
+that uses the schema.
+
+111
+00:05:07,908 --> 00:05:09,876
+It has set the year to 2022
+
+112
+00:05:09,876 --> 00:05:12,612
+and the title is set
+to "Call to code."
+
+113
+00:05:12,612 --> 00:05:14,981
+The year and the title
+are called the "attributes"
+
+114
+00:05:14,981 --> 00:05:16,183
+of the prim.
+
+115
+00:05:16,183 --> 00:05:18,518
+Prims can have many
+different attributes.
+
+116
+00:05:18,518 --> 00:05:21,621
+Each attribute has a type
+and a value.
+
+117
+00:05:21,621 --> 00:05:24,024
+Attributes can also have
+default values authored
+
+118
+00:05:24,024 --> 00:05:25,825
+so they don't have to be
+explicitly defined
+
+119
+00:05:25,825 --> 00:05:28,395
+in the prim
+that uses the schema.
+
+120
+00:05:28,395 --> 00:05:30,163
+Going back
+to our Sphere schema,
+
+121
+00:05:30,163 --> 00:05:31,898
+you can see how we've defined
+default values
+
+122
+00:05:31,898 --> 00:05:34,901
+for the radius
+and extent attributes.
+
+123
+00:05:34,901 --> 00:05:37,637
+In this layer,
+we have a single Sphere prim.
+
+124
+00:05:37,637 --> 00:05:39,839
+Since the Radius attribute
+is not set,
+
+125
+00:05:39,839 --> 00:05:42,042
+it derives its value
+from the Sphere schema:
+
+126
+00:05:42,042 --> 00:05:43,910
+a default radius of one.
+
+127
+00:05:43,910 --> 00:05:47,280
+We can be explicit though,
+and set the radius attribute.
+
+128
+00:05:47,280 --> 00:05:48,748
+The sphere still looks the same
+
+129
+00:05:48,748 --> 00:05:50,951
+because this value matches
+the default value of one
+
+130
+00:05:50,951 --> 00:05:52,686
+that is set in the schema.
+
+131
+00:05:52,686 --> 00:05:57,123
+Now let's add a second sphere,
+and set the radius to 0.5.
+
+132
+00:05:57,123 --> 00:05:58,825
+We can see that
+it's indeed half the size
+
+133
+00:05:58,825 --> 00:06:00,694
+of the other sphere.
+
+134
+00:06:00,694 --> 00:06:04,864
+Attributes, prims, and stages
+can also contain metadata,
+
+135
+00:06:04,864 --> 00:06:07,234
+which are key-value pairings
+of information
+
+136
+00:06:07,234 --> 00:06:10,604
+that can provide auxiliary data
+for parts of a scene.
+
+137
+00:06:10,604 --> 00:06:13,807
+Metadata is set
+at the level where it applies.
+
+138
+00:06:13,807 --> 00:06:15,809
+Metadata that affects
+the whole stage
+
+139
+00:06:15,809 --> 00:06:19,246
+and all prims in it
+is set at the stage level.
+
+140
+00:06:19,246 --> 00:06:21,214
+Metadata that is specific
+to a single prim,
+
+141
+00:06:21,214 --> 00:06:23,583
+is set on the prim.
+
+142
+00:06:23,583 --> 00:06:26,019
+Attributes can also
+have metadata.
+
+143
+00:06:26,019 --> 00:06:30,223
+For example, here is some
+typical stage metadata.
+
+144
+00:06:30,223 --> 00:06:33,760
+metersPerUnit defines the scale
+units for the scene.
+
+145
+00:06:33,760 --> 00:06:36,830
+upAxis defines which
+of the X, Y, or Z axes
+
+146
+00:06:36,830 --> 00:06:41,167
+is considered the up direction
+for the camera in the scene.
+
+147
+00:06:41,167 --> 00:06:43,169
+doc strings store
+useful documentation
+
+148
+00:06:43,169 --> 00:06:46,806
+for workflow tracking purposes.
+
+149
+00:06:46,806 --> 00:06:48,742
+Now that we have defined
+these basics,
+
+150
+00:06:48,742 --> 00:06:51,544
+we can already start
+making use of USD.
+
+151
+00:06:51,544 --> 00:06:53,346
+Let's see how
+the pancakes scene can be done
+
+152
+00:06:53,346 --> 00:06:55,849
+using just these concepts.
+
+153
+00:06:55,849 --> 00:06:56,916
+In our layer,
+
+154
+00:06:56,916 --> 00:07:00,654
+we create a transform prim
+called "Pancakes."
+
+155
+00:07:00,654 --> 00:07:03,690
+We then add a transform prim
+called "Blueberry_01"
+
+156
+00:07:03,690 --> 00:07:06,893
+that is a child
+of the Pancakes prim.
+
+157
+00:07:06,893 --> 00:07:11,631
+Within the Blueberry_01 prim,
+we include the Mesh prim.
+
+158
+00:07:11,631 --> 00:07:14,000
+The Mesh prim holds
+the geometry for the blueberry
+
+159
+00:07:14,000 --> 00:07:17,037
+and binds to the materials.
+
+160
+00:07:17,037 --> 00:07:18,538
+Let's complete
+the rest of the asset
+
+161
+00:07:18,538 --> 00:07:21,274
+by adding the other prims.
+
+162
+00:07:21,274 --> 00:07:23,243
+Here is our completed
+pancake scene,
+
+163
+00:07:23,243 --> 00:07:25,245
+using just these basic concepts.
+
+164
+00:07:28,848 --> 00:07:30,684
+These fundamentals
+can get you far,
+
+165
+00:07:30,684 --> 00:07:32,385
+but in production-centric
+projects,
+
+166
+00:07:32,385 --> 00:07:34,387
+we need to collaborate
+with many different team members
+
+167
+00:07:34,387 --> 00:07:36,289
+and organizations.
+
+168
+00:07:36,289 --> 00:07:38,425
+USD has a lot of features
+to address this need
+
+169
+00:07:38,425 --> 00:07:41,661
+in what is called "composition."
+
+170
+00:07:41,661 --> 00:07:43,697
+Composition enables
+the creation of a stage
+
+171
+00:07:43,697 --> 00:07:46,733
+from separate units
+of scene description.
+
+172
+00:07:46,733 --> 00:07:48,835
+This allows for the efficient
+reuse of 3D elements
+
+173
+00:07:48,835 --> 00:07:51,137
+in a scene
+that enables collaboration
+
+174
+00:07:51,137 --> 00:07:53,573
+and fast iteration.
+
+175
+00:07:53,573 --> 00:07:56,509
+We will discuss the most common
+types of composition:
+
+176
+00:07:56,509 --> 00:08:01,181
+layering, references, payloads,
+and variantSets.
+
+177
+00:08:01,181 --> 00:08:03,216
+But let's do it in a fun way.
+
+178
+00:08:03,216 --> 00:08:05,585
+Fancy a game of chess?
+
+179
+00:08:05,585 --> 00:08:07,787
+Let's build out
+a chess set scene.
+
+180
+00:08:07,787 --> 00:08:09,089
+In the scene,
+
+181
+00:08:09,089 --> 00:08:12,158
+we will use a catalog of assets
+in a catalog layer,
+
+182
+00:08:12,158 --> 00:08:14,694
+which will refer
+to our chess pieces.
+
+183
+00:08:14,694 --> 00:08:16,863
+We will then arrange these
+pieces on the chessboard
+
+184
+00:08:16,863 --> 00:08:19,399
+in a layout layer
+to get our final result,
+
+185
+00:08:19,399 --> 00:08:22,535
+which is viewable
+with the ChessSet layer.
+
+186
+00:08:22,535 --> 00:08:25,572
+We'll first need to get
+our chess pieces
+
+187
+00:08:25,572 --> 00:08:28,441
+In chess,
+there are six main pieces:
+
+188
+00:08:28,441 --> 00:08:35,014
+the pawn, rook, bishop,
+knight, queen, and king.
+
+189
+00:08:35,014 --> 00:08:37,584
+We will use these assets,
+created with Object Capture,
+
+190
+00:08:37,584 --> 00:08:40,487
+to build a complete chess set.
+
+191
+00:08:40,487 --> 00:08:42,655
+Let's start by bringing in
+our pieces to our stage
+
+192
+00:08:42,655 --> 00:08:45,892
+using a USD concept,
+referencing.
+
+193
+00:08:45,892 --> 00:08:49,462
+Referencing is when a prim in
+a stage refers to another prim
+
+194
+00:08:49,462 --> 00:08:51,931
+in either the same stage
+or a different layer
+
+195
+00:08:51,931 --> 00:08:54,534
+without copying the data.
+
+196
+00:08:54,534 --> 00:08:56,903
+This helps minimize
+duplication of data
+
+197
+00:08:56,903 --> 00:08:58,872
+and allows for the data
+to be updated separately
+
+198
+00:08:58,872 --> 00:09:01,674
+by different people
+and applications.
+
+199
+00:09:01,674 --> 00:09:06,379
+Let's reference our pawn asset
+into our scene.
+
+200
+00:09:06,379 --> 00:09:10,150
+In our catalog layer,
+we define a prim called "Pawn".
+
+201
+00:09:10,150 --> 00:09:15,555
+So far it doesn't have any data
+and so our stage is still empty.
+
+202
+00:09:15,555 --> 00:09:19,459
+Next, we add a reference
+to the Pawn.usda layer.
+
+203
+00:09:19,459 --> 00:09:20,994
+This brings in the pawn asset,
+
+204
+00:09:20,994 --> 00:09:24,097
+and we can see it
+in the catalog layer.
+
+205
+00:09:24,097 --> 00:09:26,166
+But how does USD know
+which prim it should bring in
+
+206
+00:09:26,166 --> 00:09:28,368
+from the file you reference?
+
+207
+00:09:28,368 --> 00:09:32,439
+We can specify this prim
+with the defaultPrim metadata.
+
+208
+00:09:32,439 --> 00:09:35,408
+The defaultPrim metadata
+is defined on the stage
+
+209
+00:09:35,408 --> 00:09:37,477
+and specifies which prim
+should be referred to
+
+210
+00:09:37,477 --> 00:09:40,280
+when using this scene
+on another stage.
+
+211
+00:09:40,280 --> 00:09:44,417
+We recommend always authoring
+a defaultPrim for USD assets.
+
+212
+00:09:44,417 --> 00:09:45,718
+Let's check our pawn asset
+
+213
+00:09:45,718 --> 00:09:48,421
+to make sure
+the defaultPrim is authored.
+
+214
+00:09:48,421 --> 00:09:50,690
+We can see the defaultPrim
+metadata at the stage level
+
+215
+00:09:50,690 --> 00:09:51,891
+in our asset.
+
+216
+00:09:51,891 --> 00:09:53,893
+Great.
+
+217
+00:09:53,893 --> 00:09:57,096
+Alternatively, if the
+defaultPrim is not authored
+
+218
+00:09:57,096 --> 00:09:58,698
+or you wish to refer to a prim
+
+219
+00:09:58,698 --> 00:10:00,767
+that is different
+from the defaultPrim,
+
+220
+00:10:00,767 --> 00:10:02,435
+you can specify the path
+to the prim
+
+221
+00:10:02,435 --> 00:10:04,337
+in the referencing
+layer explicitly,
+
+222
+00:10:04,337 --> 00:10:08,341
+anywhere in the hierarchy.
+
+223
+00:10:08,341 --> 00:10:12,579
+Paths in USD are used to
+identify elements on a stage.
+
+224
+00:10:12,579 --> 00:10:16,049
+The prim path is a unique
+identifier for a prim.
+
+225
+00:10:16,049 --> 00:10:19,819
+For example, on this stage
+we see three prims.
+
+226
+00:10:19,819 --> 00:10:23,323
+The World prim
+has a prim path of /World.
+
+227
+00:10:23,323 --> 00:10:24,691
+The Pawn and Knight prims
+
+228
+00:10:24,691 --> 00:10:27,360
+are considered children
+of the World prim.
+
+229
+00:10:27,360 --> 00:10:31,130
+Thus the path to the Pawn prim
+would be /World/Pawn,
+
+230
+00:10:31,130 --> 00:10:36,736
+and the path to the Knight prim
+would be /World/Knight.
+
+231
+00:10:36,736 --> 00:10:39,806
+With that in mind, we can
+explicitly set the prim path
+
+232
+00:10:39,806 --> 00:10:44,210
+to the Pawn prim
+in our reference here.
+
+233
+00:10:44,210 --> 00:10:46,179
+For larger scenes,
+it can be expensive
+
+234
+00:10:46,179 --> 00:10:49,048
+to load all
+the scene information at once.
+
+235
+00:10:49,048 --> 00:10:51,251
+For this, USD allows
+for the deferred loading
+
+236
+00:10:51,251 --> 00:10:52,952
+of scene description
+onto a stage
+
+237
+00:10:52,952 --> 00:10:56,289
+with a type of reference
+called a "payload."
+
+238
+00:10:56,289 --> 00:10:58,258
+It is recommended to use
+payloads when referencing
+
+239
+00:10:58,258 --> 00:11:00,827
+large data sets,
+such as complex geometry,
+
+240
+00:11:00,827 --> 00:11:02,161
+or other large scene graphs
+
+241
+00:11:02,161 --> 00:11:04,163
+representing props
+or characters.
+
+242
+00:11:07,433 --> 00:11:10,003
+We'll convert these asset
+references to payloads instead,
+
+243
+00:11:10,003 --> 00:11:14,541
+so we can choose to defer
+the loading of the chess pieces.
+
+244
+00:11:14,541 --> 00:11:16,576
+If we choose
+not to load the payloads,
+
+245
+00:11:16,576 --> 00:11:20,246
+our scene appears empty
+when initially opened.
+
+246
+00:11:20,246 --> 00:11:22,181
+Once we enable
+the loading of payloads,
+
+247
+00:11:22,181 --> 00:11:24,517
+we can see
+all of our pieces again.
+
+248
+00:11:24,517 --> 00:11:26,452
+Now that we have our pieces
+in the scene,
+
+249
+00:11:26,452 --> 00:11:28,888
+we can start laying them out
+on the chess board.
+
+250
+00:11:28,888 --> 00:11:30,423
+We can do this
+on yet another layer
+
+251
+00:11:30,423 --> 00:11:33,259
+using the USD concept
+of layering.
+
+252
+00:11:33,259 --> 00:11:35,929
+With layering,
+layers can be stacked,
+
+253
+00:11:35,929 --> 00:11:38,264
+similar to popular image editing
+software packages
+
+254
+00:11:38,264 --> 00:11:41,534
+such as Photoshop
+or Affinity Photo.
+
+255
+00:11:41,534 --> 00:11:43,536
+Prims in a layer
+that are above another layer
+
+256
+00:11:43,536 --> 00:11:46,539
+are considered stronger
+and can add or override data
+
+257
+00:11:46,539 --> 00:11:49,075
+in the lower layers.
+
+258
+00:11:49,075 --> 00:11:50,376
+As you can see,
+
+259
+00:11:50,376 --> 00:11:53,179
+the pieces are currently
+in their wrong places
+
+260
+00:11:53,179 --> 00:11:55,081
+But don't worry,
+we can use layering
+
+261
+00:11:55,081 --> 00:11:58,718
+to make nondestructive
+modifications to other layers.
+
+262
+00:11:58,718 --> 00:12:00,453
+This is perfect for us
+to move our pieces
+
+263
+00:12:00,453 --> 00:12:04,090
+to the right positions without
+editing our catalog layer.
+
+264
+00:12:04,090 --> 00:12:06,659
+Let's see how this can be done
+
+265
+00:12:06,659 --> 00:12:09,596
+We start by creating a new stage
+called ChessSet
+
+266
+00:12:09,596 --> 00:12:12,131
+which will be our final scene.
+
+267
+00:12:12,131 --> 00:12:13,833
+It contains metadata
+called "sublayers"
+
+268
+00:12:13,833 --> 00:12:15,802
+at the top of the layer.
+
+269
+00:12:15,802 --> 00:12:20,573
+Here we bring in our pieces
+with the catalog layer.
+
+270
+00:12:20,573 --> 00:12:23,776
+Next, we create a new layer --
+Layout.usda --
+
+271
+00:12:23,776 --> 00:12:27,780
+which we use to move our pieces.
+
+272
+00:12:27,780 --> 00:12:29,983
+This layout layer will contain
+the positions
+
+273
+00:12:29,983 --> 00:12:31,818
+of our chess pieces.
+
+274
+00:12:31,818 --> 00:12:34,921
+Let's override the position
+of our pieces in the scene.
+
+275
+00:12:34,921 --> 00:12:37,857
+We'll start with Pawn_01.
+
+276
+00:12:37,857 --> 00:12:39,859
+We modify
+the pawn asset's position
+
+277
+00:12:39,859 --> 00:12:42,662
+by changing
+its translation attributes.
+
+278
+00:12:42,662 --> 00:12:46,766
+Let's check out
+how this updates our scene.
+
+279
+00:12:46,766 --> 00:12:50,003
+Here we have our chess set again
+without our layout layer,
+
+280
+00:12:50,003 --> 00:12:53,406
+so the pawn is still
+in its original position.
+
+281
+00:12:53,406 --> 00:12:55,975
+Once we add our layout layer,
+the pawn has been moved
+
+282
+00:12:55,975 --> 00:12:59,212
+to its expected position
+on the chessboard.
+
+283
+00:12:59,212 --> 00:13:00,947
+Let's do the same
+for the other pieces
+
+284
+00:13:00,947 --> 00:13:03,249
+and move them
+to their correct locations.
+
+285
+00:13:04,951 --> 00:13:06,285
+We position our other
+chess pieces
+
+286
+00:13:06,285 --> 00:13:09,055
+the same way
+we position the pawn.
+
+287
+00:13:09,055 --> 00:13:12,225
+Here's how we did it
+for Pawn_02.
+
+288
+00:13:12,225 --> 00:13:16,529
+And then again
+for Pawn_03, and so on.
+
+289
+00:13:16,529 --> 00:13:18,398
+We finished the changes
+to the layout layer,
+
+290
+00:13:18,398 --> 00:13:21,534
+and now we have the chess pieces
+set in their correct location.
+
+291
+00:13:23,903 --> 00:13:26,205
+We have half
+of our chess set built.
+
+292
+00:13:26,205 --> 00:13:29,676
+We use layers to bring in our
+assets with the catalog layer
+
+293
+00:13:29,676 --> 00:13:32,045
+and use the overrides
+to place them on the board
+
+294
+00:13:32,045 --> 00:13:33,680
+with the layout layer.
+
+295
+00:13:35,715 --> 00:13:37,450
+All that is left
+is setting up the pieces
+
+296
+00:13:37,450 --> 00:13:39,519
+for the opponent side.
+
+297
+00:13:39,519 --> 00:13:41,621
+One thing to note is that
+our opponent's pieces
+
+298
+00:13:41,621 --> 00:13:43,556
+are a different color.
+
+299
+00:13:43,556 --> 00:13:45,525
+Instead of making
+a new set of assets,
+
+300
+00:13:45,525 --> 00:13:47,226
+we can update
+our chess piece assets
+
+301
+00:13:47,226 --> 00:13:50,863
+using another USD concept,
+variantSets.
+
+302
+00:13:50,863 --> 00:13:53,232
+VariantSets allow
+for the dynamic swapping
+
+303
+00:13:53,232 --> 00:13:56,169
+of discrete alternatives
+on the stage.
+
+304
+00:13:56,169 --> 00:13:57,870
+The variants contained
+in a variantSet
+
+305
+00:13:57,870 --> 00:14:00,440
+can be different materials,
+geometry,
+
+306
+00:14:00,440 --> 00:14:03,943
+or anything that
+can be represented in USD.
+
+307
+00:14:03,943 --> 00:14:06,079
+Switching between
+different variants on a stage
+
+308
+00:14:06,079 --> 00:14:08,347
+is nondestructive.
+
+309
+00:14:08,347 --> 00:14:10,216
+We will setup variant sets
+to switch between
+
+310
+00:14:10,216 --> 00:14:14,320
+different materials
+for the chess pieces.
+
+311
+00:14:14,320 --> 00:14:17,657
+In our Pawn asset, we add
+a variantSet called "color"
+
+312
+00:14:17,657 --> 00:14:21,194
+so we can switch between
+different colors for the pawn.
+
+313
+00:14:21,194 --> 00:14:24,197
+Now we add two variants
+to our variantSet:
+
+314
+00:14:24,197 --> 00:14:30,570
+Dark using the dark material and
+Light using the light material.
+
+315
+00:14:30,570 --> 00:14:33,473
+Finally, we set
+the default variant to specify
+
+316
+00:14:33,473 --> 00:14:38,244
+which one to use when we load
+the pawn onto the stage.
+
+317
+00:14:38,244 --> 00:14:40,913
+Now, we are back
+in our catalog layer.
+
+318
+00:14:40,913 --> 00:14:42,849
+We've set up all the pieces
+on the board,
+
+319
+00:14:42,849 --> 00:14:45,651
+but they are all using
+the light material.
+
+320
+00:14:45,651 --> 00:14:47,153
+That is because
+the default variant
+
+321
+00:14:47,153 --> 00:14:49,689
+is set to the light material.
+
+322
+00:14:49,689 --> 00:14:51,557
+Let's change the variant
+of one of the pawns
+
+323
+00:14:51,557 --> 00:14:54,560
+to the dark material.
+
+324
+00:14:54,560 --> 00:14:56,362
+We set the variant to Dark.
+
+325
+00:14:56,362 --> 00:14:58,531
+We can see that one of the pawns
+on the opponent's side
+
+326
+00:14:58,531 --> 00:15:00,633
+is now dark.
+
+327
+00:15:00,633 --> 00:15:04,871
+Let's apply this change
+to the other pieces as well.
+
+328
+00:15:04,871 --> 00:15:07,607
+Finally, we completed
+our chess set.
+
+329
+00:15:09,208 --> 00:15:13,012
+There's one more USD concept we
+can use to optimize our scene:
+
+330
+00:15:13,012 --> 00:15:15,414
+scene graph instancing.
+
+331
+00:15:15,414 --> 00:15:17,016
+Scene graph instancing allows us
+
+332
+00:15:17,016 --> 00:15:20,019
+to reuse parts of scene graph
+on a stage many times
+
+333
+00:15:20,019 --> 00:15:21,220
+to represent anything
+that contains
+
+334
+00:15:21,220 --> 00:15:24,690
+more than one of something
+such as foliage, furniture,
+
+335
+00:15:24,690 --> 00:15:27,660
+or in our case, chess pieces.
+
+336
+00:15:27,660 --> 00:15:29,862
+Using scene graph instancing
+provides both memory
+
+337
+00:15:29,862 --> 00:15:33,266
+and performance improvements
+in your applications.
+
+338
+00:15:33,266 --> 00:15:35,101
+To use scene graph instancing,
+
+339
+00:15:35,101 --> 00:15:37,570
+we can specify the instance
+metadata on a prim
+
+340
+00:15:37,570 --> 00:15:40,139
+or part of a scene graph.
+
+341
+00:15:40,139 --> 00:15:42,175
+All prims that are instanced
+are candidates
+
+342
+00:15:42,175 --> 00:15:44,577
+to share the same scene graph.
+
+343
+00:15:44,577 --> 00:15:48,347
+Let's add support for prim
+instancing in our scene.
+
+344
+00:15:48,347 --> 00:15:51,384
+In our catalog file, we will add
+the metadata "instanceable"
+
+345
+00:15:51,384 --> 00:15:55,021
+to the chess piece prims
+and set the value to true.
+
+346
+00:15:55,021 --> 00:15:57,924
+By adding this metadata,
+USD will now treat these assets
+
+347
+00:15:57,924 --> 00:16:01,494
+as potentially instanceable
+prims that share the same data,
+
+348
+00:16:01,494 --> 00:16:05,198
+rather than duplicating the data
+for each prim.
+
+349
+00:16:05,198 --> 00:16:06,999
+Our chess set
+still looks the same
+
+350
+00:16:06,999 --> 00:16:10,069
+but it's now more performant
+and memory efficient.
+
+351
+00:16:10,069 --> 00:16:12,572
+And with this, we're done
+with our chess set!
+
+352
+00:16:12,572 --> 00:16:16,008
+It looks great, and we exercised
+a lot of USD features.
+
+353
+00:16:17,310 --> 00:16:21,214
+Layering, referencing, payloads
+and variantSets
+
+354
+00:16:21,214 --> 00:16:25,451
+are just some of the types
+of composition that USD defines.
+
+355
+00:16:25,451 --> 00:16:26,853
+There is a specific
+strength order
+
+356
+00:16:26,853 --> 00:16:28,821
+in which USD composes
+the scene graph
+
+357
+00:16:28,821 --> 00:16:32,291
+to ensure consistent
+scene representation.
+
+358
+00:16:32,291 --> 00:16:34,126
+More information
+about composition
+
+359
+00:16:34,126 --> 00:16:36,362
+and the order acronym LIVRPS
+
+360
+00:16:36,362 --> 00:16:40,466
+can be learned
+in Pixar's USD documentation.
+
+361
+00:16:40,466 --> 00:16:41,767
+In this session,
+
+362
+00:16:41,767 --> 00:16:44,237
+we talked about
+what's inside of USD files.
+
+363
+00:16:44,237 --> 00:16:46,339
+Now let's talk about
+the files themselves
+
+364
+00:16:46,339 --> 00:16:48,908
+and how they might
+appear on disk.
+
+365
+00:16:48,908 --> 00:16:51,744
+There are several types
+of USD files.
+
+366
+00:16:51,744 --> 00:16:53,946
+USD files containing
+readable ASCII text
+
+367
+00:16:53,946 --> 00:16:56,282
+had the .usda extension.
+
+368
+00:16:56,282 --> 00:16:59,952
+We have been using these files
+the whole time in this session.
+
+369
+00:16:59,952 --> 00:17:02,788
+A more compact and efficient
+binary representation
+
+370
+00:17:02,788 --> 00:17:07,226
+is the crate format,
+which has the .usdc extension.
+
+371
+00:17:07,226 --> 00:17:10,496
+You may also have files
+with the .usd extension.
+
+372
+00:17:10,496 --> 00:17:15,034
+These could either be ASCII text
+or binary crate files.
+
+373
+00:17:15,034 --> 00:17:18,537
+Lastly, USD has a packaging
+format which can contain
+
+374
+00:17:18,537 --> 00:17:21,540
+multiple USD files
+and associated auxiliary files,
+
+375
+00:17:21,540 --> 00:17:24,110
+like textures, in an
+uncompressed zip archive
+
+376
+00:17:24,110 --> 00:17:27,680
+with the .usdz extension.
+
+377
+00:17:27,680 --> 00:17:31,317
+Today we learned about some
+of USD's fundamental concepts:
+
+378
+00:17:31,317 --> 00:17:38,357
+stage, layers, prims, schemas,
+attributes, and metadata.
+
+379
+00:17:38,357 --> 00:17:40,426
+We used these concepts
+to build a chess set
+
+380
+00:17:40,426 --> 00:17:44,263
+and made use of referencing,
+payloads, the defaultPrim,
+
+381
+00:17:44,263 --> 00:17:48,200
+prim paths, layering,
+and instancing.
+
+382
+00:17:48,200 --> 00:17:51,904
+And finally, we discussed
+the different USD file formats:
+
+383
+00:17:51,904 --> 00:17:57,343
+.usda, .usdc, .usd, and .usdz.
+
+384
+00:17:57,343 --> 00:17:59,645
+We encourage you to learn more
+about these concepts
+
+385
+00:17:59,645 --> 00:18:02,748
+with Pixar's USD documentation
+and take full advantage
+
+386
+00:18:02,748 --> 00:18:05,918
+of USD's capabilities
+in your applications.
+
+387
+00:18:05,918 --> 00:18:07,386
+Thank you!
+
+388
+00:18:07,386 --> 00:18:11,390
+♪
+

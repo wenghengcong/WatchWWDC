@@ -1,0 +1,1973 @@
+1
+00:00:01,401 --> 00:00:07,407
+[spacey music]
+
+2
+00:00:09,309 --> 00:00:13,580
+Hi, I'm Nick Gillett, an engineer
+here at Apple on the Core Data team.
+
+3
+00:00:14,147 --> 00:00:18,218
+In this session, I'll show you how
+to use our developer tools to learn more
+
+4
+00:00:18,252 --> 00:00:21,722
+about your applications that use
+NSPersistentCloudKitContainer.
+
+5
+00:00:21,755 --> 00:00:25,492
+We'll begin with a detailed look
+at how to explore applications
+
+6
+00:00:25,526 --> 00:00:27,761
+in a productive and educational way.
+
+7
+00:00:28,795 --> 00:00:33,800
+Then, we'll use some of my favorite tools
+to analyze how applications behave.
+
+8
+00:00:33,834 --> 00:00:37,037
+And finally, we'll look
+at how you can provide detailed,
+
+9
+00:00:37,070 --> 00:00:41,408
+actionable feedback about your experiences
+with NSPersistentCloudKitContainer.
+
+10
+00:00:42,509 --> 00:00:46,313
+I like to think of engineering
+a bit like the water cycle.
+
+11
+00:00:46,346 --> 00:00:49,983
+Typically, I begin working on a feature
+by exploring the space
+
+12
+00:00:50,017 --> 00:00:51,852
+that feature exists in.
+
+13
+00:00:51,885 --> 00:00:57,057
+Then, based on the things I learn,
+I use a combination of tools and tests
+
+14
+00:00:57,090 --> 00:00:59,993
+to analyze my work
+in a reproducible environment.
+
+15
+00:01:00,794 --> 00:01:05,098
+Finally, I review the results
+with my peers and coworkers
+
+16
+00:01:05,132 --> 00:01:06,400
+and collect their feedback.
+
+17
+00:01:07,134 --> 00:01:10,938
+The goal of this cycle
+is to durably capture the things I learn
+
+18
+00:01:10,971 --> 00:01:12,506
+as I work.
+
+19
+00:01:12,539 --> 00:01:16,877
+Apple platforms include a great selection
+of tools like Xcode,
+
+20
+00:01:16,910 --> 00:01:21,949
+Instruments, and XCTest
+that I use to capture what I learn.
+
+21
+00:01:21,982 --> 00:01:24,885
+Those tools also make it possible
+to collect a wealth
+
+22
+00:01:24,918 --> 00:01:28,989
+of diagnostic information I can use
+to provide actionable feedback.
+
+23
+00:01:30,858 --> 00:01:34,628
+This session references a lot of knowledge
+from years past.
+
+24
+00:01:34,661 --> 00:01:37,731
+I've discussed
+NSPersistentCloudKitContainer
+
+25
+00:01:37,764 --> 00:01:41,168
+and the Core Data CloudKit Sample
+application I'll be showing today
+
+26
+00:01:41,201 --> 00:01:46,840
+in detail in the sessions "Build Apps that
+share data through CloudKit and Core Data"
+
+27
+00:01:46,874 --> 00:01:51,211
+and in the session
+"Using Core Data with CloudKit."
+
+28
+00:01:51,245 --> 00:01:56,483
+I'll also demonstrate how to use
+Xcode and Instruments to run tests
+
+29
+00:01:56,517 --> 00:02:00,254
+and the Device organizer
+to capture data from devices.
+
+30
+00:02:00,287 --> 00:02:03,490
+If you need to,
+I recommend you review the sessions
+
+31
+00:02:03,524 --> 00:02:05,392
+"Getting Started With Instruments"
+
+32
+00:02:05,425 --> 00:02:09,763
+and "Diagnose performance issues
+with the Xcode Organizer"
+
+33
+00:02:09,796 --> 00:02:14,735
+to learn more about these two important
+pieces of the toolchain.
+
+34
+00:02:14,768 --> 00:02:19,873
+All right, let's get started with
+the first part of the cycle, exploration.
+
+35
+00:02:19,907 --> 00:02:24,178
+For me, the primary goal
+of exploration is to learn.
+
+36
+00:02:24,211 --> 00:02:27,814
+I want to challenge and verify
+all of the assumptions I have
+
+37
+00:02:27,848 --> 00:02:29,816
+about how an application will work.
+
+38
+00:02:30,617 --> 00:02:34,087
+I might ask:
+What happens if I tap this button?
+
+39
+00:02:34,121 --> 00:02:39,493
+Does NSPersistentCloudKitContainer sync
+when I save data to a persistent store?
+
+40
+00:02:39,526 --> 00:02:43,630
+Does an application run out of memory
+when working with a large data set?
+
+41
+00:02:44,498 --> 00:02:48,669
+From Core Data's perspective,
+all of these questions are influenced
+
+42
+00:02:48,702 --> 00:02:51,038
+by the data an application works with.
+
+43
+00:02:51,071 --> 00:02:56,743
+For example, the Core Data CloudKit
+sample application uses this data model.
+
+44
+00:02:58,245 --> 00:03:03,383
+It manages a set of posts which have
+some text fields for a title and content.
+
+45
+00:03:04,284 --> 00:03:07,688
+Posts can be related to attachments,
+generally images,
+
+46
+00:03:07,721 --> 00:03:08,889
+which can be quite large.
+
+47
+00:03:10,324 --> 00:03:14,728
+The ImageData is therefore stored
+across a to-one relationship
+
+48
+00:03:14,761 --> 00:03:17,698
+so that it can be loaded on demand.
+
+49
+00:03:17,731 --> 00:03:21,768
+And I'm going to focus
+my exploration on that data set,
+
+50
+00:03:21,802 --> 00:03:24,872
+specifically what happens
+to the sample application
+
+51
+00:03:24,905 --> 00:03:29,443
+as I change the shape,
+structure, and variance of that data.
+
+52
+00:03:30,677 --> 00:03:36,216
+Since its release, the sample application
+has included a built-in way to explore it.
+
+53
+00:03:36,250 --> 00:03:40,487
+The Generate 1000 Posts button
+does exactly what it says on the label.
+
+54
+00:03:41,355 --> 00:03:44,157
+When tapped, it generates
+a sample data set
+
+55
+00:03:44,191 --> 00:03:47,060
+of 1,000 posts with a short title.
+
+56
+00:03:47,094 --> 00:03:50,931
+The Posts table view easily handles
+this level of data.
+
+57
+00:03:50,964 --> 00:03:54,835
+So the next question I would ask is,
+how can I explore a data set
+
+58
+00:03:54,868 --> 00:03:58,138
+of a different shape or size
+in this application?
+
+59
+00:03:59,006 --> 00:04:02,376
+The Generate 1000 Posts button
+runs what I like to call
+
+60
+00:04:02,409 --> 00:04:05,078
+an algorithmic data generator.
+
+61
+00:04:05,112 --> 00:04:08,982
+Algorithmic data generators
+follow a set of predetermined rules
+
+62
+00:04:09,016 --> 00:04:11,852
+like "insert 1000 objects"
+
+63
+00:04:11,885 --> 00:04:17,224
+or "make sure that every field has
+a value, or that no fields have values."
+
+64
+00:04:17,858 --> 00:04:21,395
+We, as it turns out,
+are also data generators.
+
+65
+00:04:21,428 --> 00:04:25,499
+We can hand-craft
+specific data sets in code, in SQL,
+
+66
+00:04:25,532 --> 00:04:28,869
+or by interacting
+directly with an application,
+
+67
+00:04:28,902 --> 00:04:31,705
+and these generated data sets
+can be preserved
+
+68
+00:04:31,738 --> 00:04:33,740
+for later use or analysis.
+
+69
+00:04:34,508 --> 00:04:39,213
+To explore a larger data set,
+I can define a new data generator,
+
+70
+00:04:39,246 --> 00:04:42,850
+the LargeDataGenerator,
+and give it a single method,
+
+71
+00:04:42,883 --> 00:04:46,086
+generateData, to build my new data set.
+
+72
+00:04:46,119 --> 00:04:49,890
+With just two for loops,
+I can generate a set of 60 posts
+
+73
+00:04:49,923 --> 00:04:54,094
+that each have 11 image attachments
+associated with them.
+
+74
+00:04:54,127 --> 00:04:57,231
+That's 660 images in total.
+
+75
+00:04:57,264 --> 00:05:00,601
+At an average size
+of 10-20 megabytes per image,
+
+76
+00:05:00,634 --> 00:05:06,073
+the generated data set
+consumes almost 10GB of data.
+
+77
+00:05:06,106 --> 00:05:10,143
+With such a simple interface,
+data generators are easily invoked
+
+78
+00:05:10,177 --> 00:05:12,246
+in tests like this one.
+
+79
+00:05:12,279 --> 00:05:17,184
+This single line of code generates
+over 10GB of representative data
+
+80
+00:05:17,217 --> 00:05:18,685
+for this test to use.
+
+81
+00:05:20,721 --> 00:05:24,391
+Additionally, we can build
+validation methods in the tests
+
+82
+00:05:24,424 --> 00:05:27,828
+that verify the data generator
+behaves correctly,
+
+83
+00:05:27,861 --> 00:05:31,899
+like asserting that each post
+does indeed get 11 image attachments.
+
+84
+00:05:33,433 --> 00:05:37,604
+Of course, this wouldn't be a talk
+about NSPersistentCloudKitContainer
+
+85
+00:05:37,638 --> 00:05:39,673
+if we didn't sync this data.
+
+86
+00:05:39,706 --> 00:05:42,409
+So let's craft a new test to do just that.
+
+87
+00:05:43,911 --> 00:05:49,183
+The first thing I'll need is an instance
+of NSPersistentCloudKitContainer to use.
+
+88
+00:05:49,216 --> 00:05:52,753
+I've created a helper method
+to make that easy.
+
+89
+00:05:52,786 --> 00:05:55,422
+Next, I use the LargeDataGenerator
+
+90
+00:05:55,455 --> 00:05:58,559
+to populate the container
+with my desired data set.
+
+91
+00:05:59,526 --> 00:06:03,997
+And finally, I wait for the container
+to finish exporting the data.
+
+92
+00:06:04,031 --> 00:06:07,467
+In this specific test,
+I wait for up to 20 minutes
+
+93
+00:06:07,501 --> 00:06:09,736
+to give the large data set time to upload.
+
+94
+00:06:11,338 --> 00:06:15,108
+The eagle eyed among you may have noticed
+that this test appears
+
+95
+00:06:15,142 --> 00:06:18,378
+to be doing a lot of waiting
+for different types of events.
+
+96
+00:06:18,412 --> 00:06:21,381
+Here, when I create the container,
+
+97
+00:06:21,415 --> 00:06:23,750
+I wait for the container
+to finish setting up.
+
+98
+00:06:24,551 --> 00:06:29,323
+And here, I use a helper method
+I wrote to create XCTestExpectations
+
+99
+00:06:29,356 --> 00:06:31,558
+for an export event from the container.
+
+100
+00:06:32,159 --> 00:06:33,493
+Let's look at that in detail.
+
+101
+00:06:34,494 --> 00:06:38,165
+This method takes a desired event type
+and an instance
+
+102
+00:06:38,198 --> 00:06:41,568
+of NSPersistentCloudKitContainer
+as an argument.
+
+103
+00:06:41,602 --> 00:06:45,939
+It creates one expectation
+for each persistent store in the container
+
+104
+00:06:45,973 --> 00:06:50,511
+using XCTestCase's
+expectationForNotification method
+
+105
+00:06:50,544 --> 00:06:55,749
+to observe NSPersistentCloudKitContainer's
+eventChanged notification.
+
+106
+00:06:55,782 --> 00:06:57,951
+In the notification handler block,
+
+107
+00:06:57,985 --> 00:06:59,953
+I verify that the incoming event
+
+108
+00:06:59,987 --> 00:07:01,388
+is of the correct type
+
+109
+00:07:01,421 --> 00:07:04,358
+for the specific store
+this expectation is for,
+
+110
+00:07:04,391 --> 00:07:06,727
+and that it's finished
+by checking endDate
+
+111
+00:07:06,760 --> 00:07:08,195
+is not equal to nil.
+
+112
+00:07:08,962 --> 00:07:10,731
+By using this technique,
+
+113
+00:07:10,764 --> 00:07:14,501
+we can strongly associate
+points of control in our tests
+
+114
+00:07:14,535 --> 00:07:17,471
+with events
+from NSPersistentCloudKitContainer.
+
+115
+00:07:17,504 --> 00:07:24,011
+Back in my test, I add a new container
+to import the data that was just exported.
+
+116
+00:07:24,044 --> 00:07:26,446
+This technique uses a trick.
+
+117
+00:07:26,480 --> 00:07:27,848
+It creates a new instance
+
+118
+00:07:27,881 --> 00:07:31,919
+of NSPersistentCloudKitContainer
+with empty store files.
+
+119
+00:07:31,952 --> 00:07:33,954
+This allows the test to take advantage
+
+120
+00:07:33,987 --> 00:07:37,157
+of NSPersistentCloudKitContainer's
+first-time import
+
+121
+00:07:37,191 --> 00:07:42,296
+to explore what happens when all
+of this data is downloaded by a device.
+
+122
+00:07:42,329 --> 00:07:45,966
+Now, tests are great,
+but sometimes I want to feel
+
+123
+00:07:45,999 --> 00:07:48,702
+how a data set behaves in an application.
+
+124
+00:07:48,735 --> 00:07:52,806
+To do that, I can bind data generators
+to a user interface,
+
+125
+00:07:52,840 --> 00:07:55,375
+as we have done in the sample application.
+
+126
+00:07:56,076 --> 00:07:59,479
+When I tap the Generate Large Data
+button, I can watch
+
+127
+00:07:59,513 --> 00:08:02,482
+the data generator populate the data set.
+
+128
+00:08:02,516 --> 00:08:06,186
+On a second device, I can watch
+the table view populate
+
+129
+00:08:06,220 --> 00:08:12,226
+as NSPersistentCloudKitContainer makes
+progress downloading the generated data.
+
+130
+00:08:12,259 --> 00:08:16,697
+Tapping on an individual post
+allows me to see the attachments download
+
+131
+00:08:16,730 --> 00:08:18,799
+and populate incrementally,
+
+132
+00:08:18,832 --> 00:08:22,102
+just as they would
+for a user of this application.
+
+133
+00:08:22,669 --> 00:08:26,440
+This specific user interface
+is driven by an alert controller.
+
+134
+00:08:27,107 --> 00:08:30,644
+The LargeDataGenerator's simple
+interface makes it easy
+
+135
+00:08:30,677 --> 00:08:34,781
+to add a new alert action
+with just these two lines of code.
+
+136
+00:08:34,815 --> 00:08:38,018
+It's clear, concise,
+and easily understood.
+
+137
+00:08:39,753 --> 00:08:43,290
+In this section, we've explored
+the behavior of an application
+
+138
+00:08:43,323 --> 00:08:45,726
+using the concept of a data generator.
+
+139
+00:08:46,593 --> 00:08:51,098
+Data generators can be driven in
+our applications any way we choose,
+
+140
+00:08:51,131 --> 00:08:55,102
+whether that be by tests
+or custom UI, as I've demonstrated,
+
+141
+00:08:55,135 --> 00:08:57,571
+or by something
+like a command line argument,
+
+142
+00:08:57,604 --> 00:09:01,375
+or anything else that happens to work
+for your specific use case.
+
+143
+00:09:01,408 --> 00:09:05,112
+Now that we know how to populate
+an application with data,
+
+144
+00:09:05,145 --> 00:09:08,849
+we're ready to analyze how
+that changes application behavior.
+
+145
+00:09:08,882 --> 00:09:12,586
+In this section, we'll learn
+about some tools and techniques
+
+146
+00:09:12,619 --> 00:09:14,555
+to analyze how an application behaves
+
+147
+00:09:14,588 --> 00:09:15,822
+with a large data set.
+
+148
+00:09:16,890 --> 00:09:21,562
+Specifically, we'll use Instruments
+to analyze the time and memory complexity
+
+149
+00:09:21,595 --> 00:09:24,665
+of the data set
+created by the LargeDataGenerator.
+
+150
+00:09:25,465 --> 00:09:29,069
+Then, we'll look at the wealth
+of information available to us
+
+151
+00:09:29,102 --> 00:09:30,571
+in the system logs.
+
+152
+00:09:30,604 --> 00:09:35,075
+There we can find a record of activity
+from NSPersistentCloudKitContainer,
+
+153
+00:09:35,108 --> 00:09:39,713
+CloudKit, the system scheduler,
+and from push notifications.
+
+154
+00:09:39,746 --> 00:09:42,449
+Let's get stared with Instruments.
+
+155
+00:09:42,482 --> 00:09:46,420
+One reason I love tests is
+that Xcode makes it easy
+
+156
+00:09:46,453 --> 00:09:49,156
+to analyze the behavior of a test.
+
+157
+00:09:49,189 --> 00:09:52,860
+In my test case, I can right-click
+on the test disclosure
+
+158
+00:09:52,893 --> 00:09:55,229
+in the gutter and select Profile.
+
+159
+00:09:55,262 --> 00:09:59,433
+Xcode will build the tests
+and then automatically launch instruments.
+
+160
+00:10:00,234 --> 00:10:02,769
+I can double-click
+the Time Profiler instrument
+
+161
+00:10:02,803 --> 00:10:05,939
+to examine where my test spends time
+doing work.
+
+162
+00:10:07,508 --> 00:10:11,612
+When I click the record button,
+Instruments will launch the application
+
+163
+00:10:11,645 --> 00:10:14,681
+and execute the selected test.
+
+164
+00:10:14,715 --> 00:10:18,785
+This test appears to be taking
+quite a while to run.
+
+165
+00:10:18,819 --> 00:10:20,787
+Let's skip ahead and see why.
+
+166
+00:10:21,688 --> 00:10:24,758
+Instruments has already selected
+the main thread,
+
+167
+00:10:24,791 --> 00:10:28,795
+and on the right side, I can see
+the heaviest stack trace of the test run.
+
+168
+00:10:30,063 --> 00:10:31,865
+Let's make that a little easier to read.
+
+169
+00:10:36,203 --> 00:10:38,172
+There we go.
+
+170
+00:10:38,205 --> 00:10:42,876
+Now, if I scroll to the bottom,
+I can see the LargeDataGenerator is
+
+171
+00:10:42,910 --> 00:10:45,546
+spending a lot of time
+generating thumbnails.
+
+172
+00:10:45,579 --> 00:10:48,582
+How would we decide
+if this is a bug or a feature?
+
+173
+00:10:50,050 --> 00:10:53,687
+In the LargeDataGenerator,
+I have this line of code that generates
+
+174
+00:10:53,720 --> 00:10:56,623
+a new thumbnail for each attachment.
+
+175
+00:10:56,657 --> 00:11:01,361
+However, I know from the application's
+data model that thumbnails are special.
+
+176
+00:11:01,395 --> 00:11:05,432
+They're computed on demand
+from the related imageData.
+
+177
+00:11:05,465 --> 00:11:09,803
+That means this line is unnecessary,
+and my data generator is wasting
+
+178
+00:11:09,837 --> 00:11:11,605
+a lot of time on them.
+
+179
+00:11:11,638 --> 00:11:14,074
+So I can just remove it.
+
+180
+00:11:14,107 --> 00:11:16,643
+Let's see how that changes
+the performance of the test.
+
+181
+00:11:17,578 --> 00:11:20,781
+After rebuilding the app
+with the updated data generator,
+
+182
+00:11:20,814 --> 00:11:23,617
+I can rerun the test in Instruments.
+
+183
+00:11:23,650 --> 00:11:29,223
+And honestly I don't see much of change,
+
+184
+00:11:29,256 --> 00:11:32,326
+but after a few more seconds,
+the test completes.
+
+185
+00:11:32,359 --> 00:11:35,195
+That's a lot faster than the previous run.
+
+186
+00:11:35,229 --> 00:11:37,998
+Let's see
+where the test spent most of its time.
+
+187
+00:11:43,504 --> 00:11:46,907
+In the right drawer, I now see
+that the heaviest stack trace
+
+188
+00:11:46,940 --> 00:11:49,977
+is saving images to the persistent store,
+
+189
+00:11:50,010 --> 00:11:54,081
+and that's exactly what I would expect
+for a test that manages this much data.
+
+190
+00:11:55,582 --> 00:11:59,720
+That one change reduced the runtime
+of the generateData test
+
+191
+00:11:59,753 --> 00:12:02,322
+from this to this.
+
+192
+00:12:02,356 --> 00:12:05,959
+It executes in one tenth the time.
+
+193
+00:12:05,993 --> 00:12:09,496
+Analyzing tests in this way
+doesn't always uncover bugs,
+
+194
+00:12:09,530 --> 00:12:11,198
+Sometimes we just learn more
+
+195
+00:12:11,231 --> 00:12:13,400
+about where an application
+is spending time
+
+196
+00:12:13,433 --> 00:12:16,003
+when working with a specific data set.
+
+197
+00:12:16,036 --> 00:12:18,472
+But either way, though,
+it's valuable learning.
+
+198
+00:12:19,473 --> 00:12:23,043
+So that's how the Time Profiler instrument
+can help explore
+
+199
+00:12:23,076 --> 00:12:26,413
+where an application
+spends time with a data set.
+
+200
+00:12:26,446 --> 00:12:31,618
+Now, because of the size of this data set,
+I'm also curious how much memory
+
+201
+00:12:31,652 --> 00:12:33,720
+the test uses.
+
+202
+00:12:33,754 --> 00:12:37,558
+So let's give it a run
+using the Allocations instrument.
+
+203
+00:12:37,591 --> 00:12:41,328
+I'll use Xcode to launch
+Instruments to profile my test.
+
+204
+00:12:42,062 --> 00:12:44,765
+Instead of selecting
+the Time Profiler instrument,
+
+205
+00:12:44,798 --> 00:12:47,301
+I'll double-click Allocations...
+
+206
+00:12:51,205 --> 00:12:52,873
+And then click Record.
+
+207
+00:13:02,916 --> 00:13:05,719
+Even though
+this test is executing quickly,
+
+208
+00:13:05,752 --> 00:13:10,057
+it’s using a lot of memory,
+over 10GB, in fact.
+
+209
+00:13:10,090 --> 00:13:13,026
+This tells me that nearly
+the entire data set
+
+210
+00:13:13,060 --> 00:13:15,495
+is being kept in memory
+during the test run.
+
+211
+00:13:15,529 --> 00:13:17,264
+Let's find out why.
+
+212
+00:13:19,199 --> 00:13:22,102
+I can select
+a range of allocations to look at.
+
+213
+00:13:22,135 --> 00:13:26,573
+In the bottom pane, I can see that
+there are a number of large allocations.
+
+214
+00:13:27,407 --> 00:13:31,211
+I can dig into those
+by clicking this disclosure,
+
+215
+00:13:31,245 --> 00:13:33,647
+and then click
+on one of the large data blobs
+
+216
+00:13:33,680 --> 00:13:36,250
+that's been allocated for the test.
+
+217
+00:13:36,283 --> 00:13:41,288
+This specific blob was allocated
+but not freed for almost two seconds.
+
+218
+00:13:41,321 --> 00:13:45,292
+That's an eternity in test time.
+Why was it alive so long?
+
+219
+00:13:46,894 --> 00:13:49,930
+I can explore that by expanding
+the stack trace on the right.
+
+220
+00:13:53,834 --> 00:13:57,404
+From experience, the allocation
+and deallocation stack trace
+
+221
+00:13:57,437 --> 00:14:00,807
+tell me that this object
+was faulted by CoreData
+
+222
+00:14:00,841 --> 00:14:05,145
+and then released when the managed object
+context finished its work.
+
+223
+00:14:05,179 --> 00:14:09,283
+That's usually an indication that
+the object was retained by a fetch,
+
+224
+00:14:09,316 --> 00:14:12,486
+an autoreleasepool,
+or an object in the test.
+
+225
+00:14:15,155 --> 00:14:19,126
+The problematic section of code
+is here in my verifier.
+
+226
+00:14:19,159 --> 00:14:22,563
+I load an image
+from an attachment and verify it.
+
+227
+00:14:22,596 --> 00:14:26,600
+However, this keeps the attachment
+and the associated image data
+
+228
+00:14:26,633 --> 00:14:28,969
+registered
+with the managed object context.
+
+229
+00:14:29,736 --> 00:14:33,106
+There are a number of ways
+we could try to resolve this.
+
+230
+00:14:33,140 --> 00:14:37,177
+For example, in a table view,
+we could use a batched fetch
+
+231
+00:14:37,211 --> 00:14:41,615
+to free the images
+as the table scrolls over the posts.
+
+232
+00:14:41,648 --> 00:14:46,286
+However, this test is executing
+far too quickly for that to be effective.
+
+233
+00:14:46,320 --> 00:14:48,922
+I need to change my approach.
+
+234
+00:14:48,956 --> 00:14:54,228
+Instead of verifying by fetching posts,
+I can fetch attachments instead.
+
+235
+00:14:54,261 --> 00:14:57,931
+If I also fetch only the objectIDs,
+the managed object context
+
+236
+00:14:57,965 --> 00:15:01,368
+won't capture any
+of the loaded objects until I ask it to.
+
+237
+00:15:03,237 --> 00:15:07,040
+I can use NSManagedObjectContext's
+objectWithID method
+
+238
+00:15:07,074 --> 00:15:11,178
+to fetch the attachments
+as I go for validation.
+
+239
+00:15:11,211 --> 00:15:16,250
+Finally, for every 10 attachments
+I validate, I reset the context,
+
+240
+00:15:16,283 --> 00:15:19,653
+freeing all of the cached state
+and the associated memory.
+
+241
+00:15:21,555 --> 00:15:25,459
+If I rerun the test with this change,
+I can see that it results
+
+242
+00:15:25,492 --> 00:15:29,229
+in a much more predictable and tunable
+level of memory consumption.
+
+243
+00:15:30,063 --> 00:15:32,900
+In fact, the verifier
+uses even less memory
+
+244
+00:15:32,933 --> 00:15:34,868
+than the LargeDataGenerator does
+
+245
+00:15:34,902 --> 00:15:36,770
+when it inserts these objects.
+
+246
+00:15:38,272 --> 00:15:41,141
+Let's drill down
+into a specific allocation
+
+247
+00:15:41,175 --> 00:15:42,976
+to learn how the fix works.
+
+248
+00:15:44,344 --> 00:15:47,681
+First, I'll select a range
+of allocations to work with.
+
+249
+00:15:47,714 --> 00:15:50,951
+Then, I'll select
+a specific size to examine,
+
+250
+00:15:54,755 --> 00:16:00,227
+I need to enable destroyed objects to find
+the ones that were freed during this time,
+
+251
+00:16:00,260 --> 00:16:03,530
+and then I can select
+a specific allocation to examine.
+
+252
+00:16:05,732 --> 00:16:10,237
+On the right side, Instruments
+shows me an allocation stack trace,
+
+253
+00:16:10,270 --> 00:16:15,742
+but I want to know where it was freed,
+so I'll select the deallocation event.
+
+254
+00:16:15,776 --> 00:16:18,011
+I happen to know
+that this stack trace means
+
+255
+00:16:18,045 --> 00:16:21,849
+that NSManagedObjectContext
+is asynchronously deallocating
+
+256
+00:16:21,882 --> 00:16:26,320
+the object that retained this blob,
+freeing the consumed memory.
+
+257
+00:16:27,054 --> 00:16:31,191
+This technique allows me to establish
+a high water mark for the test,
+
+258
+00:16:31,225 --> 00:16:33,994
+enabling it
+to run on systems with less memory.
+
+259
+00:16:35,028 --> 00:16:38,932
+By combining tests with Instruments,
+I've been able to discover
+
+260
+00:16:38,966 --> 00:16:43,637
+that this specific test had
+some less-than-desirable behavior.
+
+261
+00:16:43,670 --> 00:16:46,940
+I made targeted changes to address
+that behavior directly
+
+262
+00:16:46,974 --> 00:16:49,610
+and then verify the results.
+
+263
+00:16:49,643 --> 00:16:52,713
+Additionally, the system logs also contain
+
+264
+00:16:52,746 --> 00:16:55,682
+a wealth of information
+about an application
+
+265
+00:16:55,716 --> 00:16:57,918
+and the system services it depends on,
+
+266
+00:16:57,951 --> 00:17:01,922
+like CloudKit,
+scheduling, and push notifications.
+
+267
+00:17:02,890 --> 00:17:08,295
+I'm going to sync a single post
+between my MacBook Pro and my iPhone.
+
+268
+00:17:08,328 --> 00:17:12,399
+When I insert a new post on my Mac,
+give a short title,
+
+269
+00:17:12,432 --> 00:17:14,801
+and let it upload to iCloud,
+
+270
+00:17:14,835 --> 00:17:17,237
+the system logs capture
+a number of events.
+
+271
+00:17:18,338 --> 00:17:21,375
+When it syncs to my iPhone,
+sometimes even capturing
+
+272
+00:17:21,408 --> 00:17:23,076
+intermediate state,
+
+273
+00:17:23,110 --> 00:17:27,181
+the system logs capture
+a corresponding set of events.
+
+274
+00:17:27,214 --> 00:17:31,618
+On the MacBook Pro,
+NSPersistentCloudKitContainer does work
+
+275
+00:17:31,652 --> 00:17:37,357
+inside of the application process,
+in this case, CoreDataCloudKitDemo.
+
+276
+00:17:37,391 --> 00:17:39,826
+When data is written
+to a persistent store,
+
+277
+00:17:39,860 --> 00:17:43,330
+it asks a system service called DASD
+
+278
+00:17:43,363 --> 00:17:47,234
+if now is a good time
+to export that data to CloudKit.
+
+279
+00:17:47,267 --> 00:17:51,605
+If it is, DASD will tell
+NSPersistentCloudKitContainer
+
+280
+00:17:51,638 --> 00:17:53,607
+to run an activity.
+
+281
+00:17:53,640 --> 00:17:57,044
+NSPersistentCloudKitContainer
+will then schedule work
+
+282
+00:17:57,077 --> 00:17:59,046
+with a process called cloudd
+
+283
+00:17:59,079 --> 00:18:02,216
+to export the changed objects to CloudKit.
+
+284
+00:18:02,249 --> 00:18:07,020
+We can observe logs from each
+of these processes using the Console app.
+
+285
+00:18:07,721 --> 00:18:11,792
+For application logs, we simply look
+for the application process,
+
+286
+00:18:11,825 --> 00:18:13,994
+CoreDataCloudKitDemo.
+
+287
+00:18:14,027 --> 00:18:18,131
+Here, I've selected one
+that shows an export completing.
+
+288
+00:18:18,165 --> 00:18:23,237
+For scheduling logs, we want
+to look at logs from the process dasd
+
+289
+00:18:23,270 --> 00:18:26,707
+and from the application's specific store.
+
+290
+00:18:26,740 --> 00:18:29,977
+Here, I've selected the start
+of an export activity
+
+291
+00:18:30,010 --> 00:18:32,613
+for the application's private store.
+
+292
+00:18:32,646 --> 00:18:35,215
+Let's examine
+this log in a bit more detail.
+
+293
+00:18:36,116 --> 00:18:39,653
+Activities created
+by NSPersistentCloudKitContainer
+
+294
+00:18:39,686 --> 00:18:43,257
+with dasd follow a specific format.
+
+295
+00:18:43,290 --> 00:18:47,127
+The activity identifier
+is composed of a specific prefix
+
+296
+00:18:47,160 --> 00:18:52,266
+that NSPersistentCloudKitContainer uses
+along with the store identifier
+
+297
+00:18:52,299 --> 00:18:55,369
+for the store the activity belongs to.
+
+298
+00:18:55,402 --> 00:18:59,506
+The dasd logs include information
+about how the service decides
+
+299
+00:18:59,540 --> 00:19:01,675
+if an activity can run.
+
+300
+00:19:01,708 --> 00:19:05,312
+Policies that affect
+the application's ability to do work
+
+301
+00:19:05,345 --> 00:19:08,949
+will be listed in the log
+along with a final decision.
+
+302
+00:19:10,017 --> 00:19:14,555
+Finally, the process cloudd
+logs information from CloudKit,
+
+303
+00:19:14,588 --> 00:19:16,757
+and I like to filter these logs
+
+304
+00:19:16,790 --> 00:19:19,860
+by the container identifier
+I'm working with.
+
+305
+00:19:19,893 --> 00:19:23,463
+Here I've selected
+the corresponding modify records operation
+
+306
+00:19:23,497 --> 00:19:25,499
+for the export I mentioned earlier.
+
+307
+00:19:26,633 --> 00:19:29,937
+When changes are imported
+on a receiving device,
+
+308
+00:19:29,970 --> 00:19:33,440
+there is one additional process
+to observe.
+
+309
+00:19:33,473 --> 00:19:38,278
+The process apsd is responsible
+for receiving push notifications
+
+310
+00:19:38,312 --> 00:19:40,614
+and forwarding them to the application.
+
+311
+00:19:41,248 --> 00:19:44,017
+That causes NSPersistentCloudKitContainer
+
+312
+00:19:44,051 --> 00:19:48,856
+to initiate a series of activities
+similar to the export process.
+
+313
+00:19:48,889 --> 00:19:52,392
+It asks dasd for time to perform an import
+
+314
+00:19:52,426 --> 00:19:56,530
+and then works with cloudd to fetch
+all of the updated objects from CloudKit
+
+315
+00:19:56,563 --> 00:19:59,299
+and import them
+into the local store.
+
+316
+00:20:00,601 --> 00:20:05,739
+Apsd logs when it receives
+a push notification for an application,
+
+317
+00:20:05,772 --> 00:20:09,142
+and this log captures
+a number of important details.
+
+318
+00:20:10,010 --> 00:20:13,680
+The log message includes
+the container identifier here
+
+319
+00:20:13,714 --> 00:20:16,884
+as well as the subscription name
+and zone identifier
+
+320
+00:20:16,917 --> 00:20:19,319
+that triggered the push notification.
+
+321
+00:20:19,353 --> 00:20:22,422
+These are managed
+by NSPersistentCloudKitContainer
+
+322
+00:20:22,456 --> 00:20:27,728
+and will always start with the
+prefix com.apple.coredata.cloudkit.
+
+323
+00:20:29,296 --> 00:20:31,498
+Now the console app is great.
+
+324
+00:20:31,532 --> 00:20:35,235
+But when I'm developing on my Mac,
+I like to use the log stream command
+
+325
+00:20:35,269 --> 00:20:38,672
+in Terminal to display
+these logs alongside my app.
+
+326
+00:20:40,007 --> 00:20:44,478
+I open one terminal window or tab
+for each of the following predicates,
+
+327
+00:20:44,511 --> 00:20:46,947
+first the application.
+
+328
+00:20:46,980 --> 00:20:52,519
+Next, the logs from cloudd so I can see
+what's happening with the CloudKit server.
+
+329
+00:20:52,553 --> 00:20:56,657
+Next, apsd for push notification logs.
+
+330
+00:20:56,690 --> 00:21:00,661
+And finally, dasd so I can see
+what's happening with activities
+
+331
+00:21:00,694 --> 00:21:04,898
+that NSPersistentCloudKitContainer
+schedules on my behalf.
+
+332
+00:21:04,932 --> 00:21:09,469
+These predicates can also be used
+to guide your queries in the console app.
+
+333
+00:21:11,205 --> 00:21:15,475
+There's so much information
+available to us on the devices we use.
+
+334
+00:21:15,509 --> 00:21:19,646
+The challenge, really, is knowing
+what tools to use to find and analyze it.
+
+335
+00:21:19,680 --> 00:21:24,318
+With just Instruments, we can learn
+about a host of topics like runtime
+
+336
+00:21:24,351 --> 00:21:27,054
+and memory performance and so much more.
+
+337
+00:21:27,087 --> 00:21:31,325
+The system logs capture events
+that describe the work an application does
+
+338
+00:21:31,358 --> 00:21:33,861
+and what the system is doing
+for it behind the scenes.
+
+339
+00:21:34,828 --> 00:21:37,531
+The last phase of my development cycle
+
+340
+00:21:37,564 --> 00:21:40,868
+is collecting and providing
+actionable feedback.
+
+341
+00:21:40,901 --> 00:21:44,671
+In this section, I'll demonstrate
+how to collect diagnostic information
+
+342
+00:21:44,705 --> 00:21:45,939
+from devices.
+
+343
+00:21:45,973 --> 00:21:48,275
+Our goal is to use
+this information
+
+344
+00:21:48,308 --> 00:21:52,846
+to generate feedback that's actionable
+and aligned with a specific goal.
+
+345
+00:21:52,880 --> 00:21:55,115
+These techniques can help
+you collect feedback
+
+346
+00:21:55,148 --> 00:21:59,253
+from any device, whether it's one you own
+or a customer device.
+
+347
+00:21:59,286 --> 00:22:04,391
+There are three steps to gathering
+diagnostic information from a device.
+
+348
+00:22:04,424 --> 00:22:07,661
+First, we'll need to install
+the CloudKit logging profile,
+
+349
+00:22:07,694 --> 00:22:10,764
+which enables logs that can be used
+to identify issues
+
+350
+00:22:10,797 --> 00:22:13,000
+and triage them effectively.
+
+351
+00:22:13,033 --> 00:22:17,404
+Next, we'll collect a sysdiagnose
+from the affected device.
+
+352
+00:22:17,437 --> 00:22:21,141
+And finally, if we have physical access
+to the device,
+
+353
+00:22:21,175 --> 00:22:24,611
+we can also collect
+the persistent store files from Xcode.
+
+354
+00:22:25,145 --> 00:22:29,716
+To install the the logging profile,
+we simply visit the Profile and Logs page
+
+355
+00:22:29,750 --> 00:22:31,818
+on the developer portal.
+
+356
+00:22:31,852 --> 00:22:36,790
+I can search for the CloudKit profile
+and tap the profile link to download it.
+
+357
+00:22:36,823 --> 00:22:41,328
+On some devices, a notification
+will appear to install the profile.
+
+358
+00:22:41,361 --> 00:22:44,498
+However, here on iOS,
+we'll need to install it manually
+
+359
+00:22:44,531 --> 00:22:45,465
+via the Settings app.
+
+360
+00:22:47,267 --> 00:22:52,639
+In Settings, I can navigate to tap
+on the Profile Downloaded cell.
+
+361
+00:22:52,673 --> 00:22:56,610
+Then I can tap on the downloaded profile
+to install it.
+
+362
+00:22:56,643 --> 00:23:00,514
+Follow the steps to complete
+the installation.
+
+363
+00:23:00,547 --> 00:23:02,516
+After the profile is installed,
+
+364
+00:23:02,549 --> 00:23:05,619
+the device can be rebooted,
+and it will take effect.
+
+365
+00:23:09,022 --> 00:23:12,459
+Once the device has rebooted,
+we can reproduce the behavior
+
+366
+00:23:12,492 --> 00:23:15,395
+we want to capture
+and then take a sysdiagnose.
+
+367
+00:23:16,096 --> 00:23:21,702
+Taking a sysdiagnose is done using
+a keychord, a special series of buttons.
+
+368
+00:23:21,735 --> 00:23:25,506
+These are described
+in the instructions page for the profile.
+
+369
+00:23:25,539 --> 00:23:29,076
+I happen to know that for an iPhone,
+we hold the volume buttons
+
+370
+00:23:29,109 --> 00:23:31,645
+and the side button
+for a couple of seconds
+
+371
+00:23:31,678 --> 00:23:33,480
+and then release it.
+
+372
+00:23:33,514 --> 00:23:37,784
+After a short while, a sysdiagnose
+will be available in Settings.
+
+373
+00:23:37,818 --> 00:23:41,255
+The instructions for finding it
+are included in the instructions file
+
+374
+00:23:41,288 --> 00:23:42,256
+for a profile.
+
+375
+00:23:43,190 --> 00:23:48,562
+In Settings I navigate
+to Privacy & Security,
+
+376
+00:23:48,595 --> 00:23:50,564
+Analytics and Improvements,
+
+377
+00:23:50,597 --> 00:23:52,833
+then choose Analytics Data,
+
+378
+00:23:52,866 --> 00:23:56,170
+and scroll through the logs
+until I find the sysdiagnose.
+
+379
+00:23:57,437 --> 00:24:01,308
+If I tap on the sysdiagnose
+and then tap the Share button,
+
+380
+00:24:01,341 --> 00:24:03,310
+I can choose a number of ways to share it.
+
+381
+00:24:04,077 --> 00:24:08,081
+For example, I like to AirDrop them
+to my Mac for analysis.
+
+382
+00:24:08,715 --> 00:24:11,752
+Finally, if possible,
+I can collect the store files
+
+383
+00:24:11,785 --> 00:24:13,921
+from Xcode using the Device Organizer.
+
+384
+00:24:14,721 --> 00:24:16,924
+I can collect the files from this iPhone
+
+385
+00:24:16,957 --> 00:24:18,792
+by clicking on the Sample Application
+
+386
+00:24:18,825 --> 00:24:20,394
+in the installed apps list,
+
+387
+00:24:20,427 --> 00:24:22,262
+clicking on the disclosure button,
+
+388
+00:24:22,296 --> 00:24:24,164
+choosing Download Container,
+
+389
+00:24:24,198 --> 00:24:26,733
+and saving that to my Downloads directory.
+
+390
+00:24:30,470 --> 00:24:34,174
+With all of that done,
+both the system logs and the store files
+
+391
+00:24:34,208 --> 00:24:36,343
+are now available for analysis.
+
+392
+00:24:36,376 --> 00:24:38,946
+We already talked
+about the log stream command,
+
+393
+00:24:38,979 --> 00:24:40,047
+but with a sysdiagnose,
+
+394
+00:24:40,080 --> 00:24:44,985
+I can use the log show command
+to print out logs from the sysdiagnose.
+
+395
+00:24:45,018 --> 00:24:49,389
+Here, I've copied the predicate
+for the apsd logs we talked about earlier.
+
+396
+00:24:51,925 --> 00:24:56,530
+The final argument to the log show command
+is the logarchive to use.
+
+397
+00:24:56,563 --> 00:24:59,466
+If nothing is specified,
+it will display the system logs
+
+398
+00:24:59,499 --> 00:25:01,502
+from the machine its running on.
+
+399
+00:25:01,535 --> 00:25:05,105
+Here, I have specified
+system_logs.logarchive
+
+400
+00:25:05,138 --> 00:25:08,308
+so that it reads the logs
+I took from the sysdiagnose.
+
+401
+00:25:08,342 --> 00:25:11,912
+For example, I can specify
+a precise time range
+
+402
+00:25:11,945 --> 00:25:15,382
+to focus on the time
+when an event I'm interested in occurred.
+
+403
+00:25:16,884 --> 00:25:20,120
+I can also combine many of the predicates
+we discussed earlier
+
+404
+00:25:20,153 --> 00:25:25,492
+to form a unified log of all the activity
+relevant to an application,
+
+405
+00:25:25,526 --> 00:25:28,562
+beginning with the application logs here,
+
+406
+00:25:28,595 --> 00:25:33,200
+the cloudd logs here, apsd logs here,
+
+407
+00:25:33,233 --> 00:25:35,869
+and finally dasd logs here.
+
+408
+00:25:36,703 --> 00:25:40,073
+This powerful command can be included
+in feedback reports
+
+409
+00:25:40,107 --> 00:25:41,408
+or shared with teammates
+
+410
+00:25:41,441 --> 00:25:45,445
+to allow everyone to focus
+on a specific set of logs for analysis.
+
+411
+00:25:46,947 --> 00:25:50,918
+In this session, we talked about
+how you can explore application behavior
+
+412
+00:25:50,951 --> 00:25:52,920
+with data generators,
+
+413
+00:25:52,953 --> 00:25:56,690
+analyze applications with instruments
+and the system logs,
+
+414
+00:25:56,723 --> 00:25:59,193
+and provide or collect actionable feedback
+
+415
+00:25:59,226 --> 00:26:02,663
+from applications
+that use NSPersistentCloudKitContainer.
+
+416
+00:26:03,964 --> 00:26:04,932
+I'm Nick Gillett,
+
+417
+00:26:04,965 --> 00:26:08,101
+and it's been my pleasure to bring you
+this presentation.
+
+418
+00:26:08,135 --> 00:26:13,106
+Thanks for watching, stay active,
+close your rings, and have a great WWDC.
+
+419
+00:26:14,408 --> 00:26:16,476
+[spacey music]
+

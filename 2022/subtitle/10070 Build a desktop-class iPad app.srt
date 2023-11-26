@@ -1,0 +1,1476 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,843 --> 00:00:12,112
+Mohammed:
+Hi, I'm Mohammed from UIKit.
+
+3
+00:00:12,145 --> 00:00:14,114
+Thank you for joining me
+for this deep dive
+
+4
+00:00:14,147 --> 00:00:17,584
+into building a Desktop Class iPad app.
+
+5
+00:00:17,618 --> 00:00:20,954
+In this video,
+we'll use iPadOS 16 APIs
+
+6
+00:00:20,988 --> 00:00:25,092
+to update an existing iPad app
+to a desktop class experience.
+
+7
+00:00:25,125 --> 00:00:28,362
+We'll start by using
+new navigation bar API
+
+8
+00:00:28,395 --> 00:00:30,664
+to surface powerful functionality,
+
+9
+00:00:30,697 --> 00:00:34,334
+increase UI density,
+and provide customizability.
+
+10
+00:00:35,836 --> 00:00:39,573
+Then, we'll adopt new UICollectionView
+and menu API
+
+11
+00:00:39,606 --> 00:00:45,212
+to enable complex workflows
+and quick actions on multiple selections.
+
+12
+00:00:45,245 --> 00:00:49,316
+And we'll round things out by enabling
+the new Find and Replace experience
+
+13
+00:00:49,349 --> 00:00:52,753
+and enhancing text editing
+with the new Edit Menu.
+
+14
+00:00:52,786 --> 00:00:57,858
+The app we'll be updating is
+a Markdown editor built for iPadOS 15.
+
+15
+00:00:57,891 --> 00:01:01,495
+As we walk through each step
+of the modernization process,
+
+16
+00:01:01,528 --> 00:01:05,299
+I'll discuss best practices
+and motivations behind our choices,
+
+17
+00:01:05,332 --> 00:01:08,435
+giving you an idea of the factors
+you should consider
+
+18
+00:01:08,468 --> 00:01:12,072
+while taking your own app
+through a similar process.
+
+19
+00:01:13,140 --> 00:01:15,809
+If you'd like a bit of a primer
+before getting started,
+
+20
+00:01:15,843 --> 00:01:18,045
+check out “Meet Desktop Class iPad”
+
+21
+00:01:18,078 --> 00:01:22,549
+for a breakdown of
+all of UIKit's new iPadOS APIs,
+
+22
+00:01:22,583 --> 00:01:25,152
+and check out
+“What's new in iPad app design”
+
+23
+00:01:25,185 --> 00:01:30,090
+for tips on how to design
+the best Desktop Class iPad app possible.
+
+24
+00:01:30,123 --> 00:01:31,925
+All right, let's dive right in!
+
+25
+00:01:32,659 --> 00:01:37,197
+To start things off, let's consider
+the organization of our app's controls.
+
+26
+00:01:37,231 --> 00:01:41,401
+Since the app is designed for iPadOS 15,
+it already exposes
+
+27
+00:01:41,435 --> 00:01:44,571
+its most important controls
+in the navigation bar
+
+28
+00:01:44,605 --> 00:01:49,276
+and places secondary controls
+in various menus and popovers.
+
+29
+00:01:50,878 --> 00:01:55,916
+In iPadOS 16, UIKit formalizes
+the existing navigation style
+
+30
+00:01:55,949 --> 00:02:01,188
+and introduces two new ones with
+a denser and more customizable layout.
+
+31
+00:02:01,221 --> 00:02:05,826
+This allows apps to express the layout
+that's most appropriate to their content
+
+32
+00:02:05,859 --> 00:02:09,229
+while bringing more functionality
+to the forefront of the UI.
+
+33
+00:02:11,265 --> 00:02:16,603
+Navigator apps have a familiar
+push / pop navigation model.
+
+34
+00:02:16,637 --> 00:02:20,340
+This is generally appropriate
+for apps that display hierarchical data,
+
+35
+00:02:20,374 --> 00:02:22,142
+like Settings.
+
+36
+00:02:23,443 --> 00:02:27,714
+Browsers, like Safari or Files
+are ideal for looking through
+
+37
+00:02:27,748 --> 00:02:32,386
+and navigating back and forth between
+multiple documents or folder structures.
+
+38
+00:02:34,655 --> 00:02:39,993
+And Editors are great for focused viewing
+or editing of individual documents.
+
+39
+00:02:42,029 --> 00:02:46,200
+Being a Markdown editor, this style
+is the perfect choice for our app.
+
+40
+00:02:48,302 --> 00:02:52,506
+The editor style aligns the title
+towards the leading edge of the bar,
+
+41
+00:02:52,539 --> 00:02:55,909
+opening up its center
+for a new set of items.
+
+42
+00:02:55,943 --> 00:02:58,912
+This'll allow us to expose
+additional functionality
+
+43
+00:02:58,946 --> 00:03:02,916
+that might've been hidden away
+in other views or menus.
+
+44
+00:03:02,950 --> 00:03:07,454
+We're going to do a few things to make
+as much use of this design as possible.
+
+45
+00:03:07,487 --> 00:03:12,059
+We'll start by customizing
+the built-in back action to fit our needs.
+
+46
+00:03:12,092 --> 00:03:15,162
+Then we'll add a title menu
+with some document info
+
+47
+00:03:15,195 --> 00:03:18,165
+and common document actions.
+
+48
+00:03:18,198 --> 00:03:23,237
+We'll also add support for renaming
+via the new built-in rename UI.
+
+49
+00:03:23,270 --> 00:03:28,242
+And finally, we'll make previously buried
+functionality more easily accessible
+
+50
+00:03:28,275 --> 00:03:30,177
+by bringing it to the center of the bar.
+
+51
+00:03:30,944 --> 00:03:34,047
+Let's start by opting into
+the editor style by setting
+
+52
+00:03:34,081 --> 00:03:38,285
+our view controller's navigationItem's
+style property to .editor.
+
+53
+00:03:39,987 --> 00:03:42,923
+This immediately gives us
+the leading aligned title
+
+54
+00:03:42,956 --> 00:03:44,892
+and opens up the center area.
+
+55
+00:03:47,394 --> 00:03:51,098
+After that,
+let's remove our trailing done button
+
+56
+00:03:51,131 --> 00:03:55,636
+and replace it
+using the new backAction API.
+
+57
+00:03:55,669 --> 00:03:58,505
+This way we get a more standard look
+for the action
+
+58
+00:03:58,539 --> 00:04:01,975
+that dismisses this view
+and returns to the document picker.
+
+59
+00:04:05,078 --> 00:04:09,750
+Next let's figure out whether our app
+would benefit from a title menu.
+
+60
+00:04:09,783 --> 00:04:12,653
+As the name implies,
+the title menu is presented
+
+61
+00:04:12,686 --> 00:04:15,656
+from the navigation bar's title view.
+
+62
+00:04:15,689 --> 00:04:18,192
+It's a great place to show
+document metadata
+
+63
+00:04:18,225 --> 00:04:22,062
+and surface actions
+that apply to the whole document.
+
+64
+00:04:22,095 --> 00:04:26,366
+If your app isn't document based,
+it may be a good place to surface actions
+
+65
+00:04:26,400 --> 00:04:28,335
+that apply to the entire view.
+
+66
+00:04:29,203 --> 00:04:33,240
+For our app, it makes sense
+to use the document menu's header
+
+67
+00:04:33,273 --> 00:04:37,544
+to surface some useful information
+about the document.
+
+68
+00:04:37,578 --> 00:04:41,548
+We'll also be able to provide
+a draggable representation of the document
+
+69
+00:04:41,582 --> 00:04:45,686
+and easy access to sharing functionality.
+
+70
+00:04:45,719 --> 00:04:48,121
+And now it's time to write some code!
+
+71
+00:04:49,857 --> 00:04:51,892
+Our app is UIDocument backed,
+
+72
+00:04:51,925 --> 00:04:54,862
+so we can use the UIDocument's fileURL
+
+73
+00:04:54,895 --> 00:04:58,966
+to instantiate
+a UIDocumentProperties object.
+
+74
+00:05:00,501 --> 00:05:05,105
+Next, we'll use that same URL
+to create an NSItemProvider.
+
+75
+00:05:07,608 --> 00:05:11,879
+Then we'll use the item provider
+to create a UIDragItem
+
+76
+00:05:11,912 --> 00:05:16,416
+which we'll return from the properties
+object's dragItemsProvider.
+
+77
+00:05:18,252 --> 00:05:22,022
+We'll also use it to construct
+a UIActivityViewController
+
+78
+00:05:22,055 --> 00:05:26,994
+which we'll return from the properties
+object's activityViewControllerProvider.
+
+79
+00:05:27,027 --> 00:05:31,198
+And finally, we'll set the properties
+object as the editor view controller's
+
+80
+00:05:31,231 --> 00:05:34,134
+navigationItem's documentProperties.
+
+81
+00:05:34,168 --> 00:05:37,371
+The code we just wrote results in
+this document header,
+
+82
+00:05:37,404 --> 00:05:39,973
+which provides a quick overview
+of the document
+
+83
+00:05:40,007 --> 00:05:44,211
+including its name, size,
+and an icon representation.
+
+84
+00:05:44,244 --> 00:05:48,081
+Since we specified drag item
+and activity view controller providers,
+
+85
+00:05:48,115 --> 00:05:51,485
+I can drag the icon to copy
+the document outside the app
+
+86
+00:05:51,518 --> 00:05:55,355
+or tap the share button to bring up
+an activity view controller.
+
+87
+00:05:57,057 --> 00:05:59,693
+In addition to displaying
+the document header,
+
+88
+00:05:59,726 --> 00:06:02,696
+the title menu is a good place
+to provide functionality
+
+89
+00:06:02,729 --> 00:06:05,799
+that applies to the entire document.
+
+90
+00:06:05,832 --> 00:06:09,536
+There are two kinds of actions
+that can be displayed in this menu:
+
+91
+00:06:09,570 --> 00:06:14,842
+system-provided ones with pre-defined
+localized titles and symbol images,
+
+92
+00:06:14,875 --> 00:06:17,945
+and entirely custom ones
+that the app provides.
+
+93
+00:06:19,546 --> 00:06:21,481
+Since it comes with
+some additional behavior,
+
+94
+00:06:21,515 --> 00:06:24,284
+let's start with the rename action.
+
+95
+00:06:24,318 --> 00:06:26,954
+We can add this action to our menu
+by conforming
+
+96
+00:06:26,987 --> 00:06:30,057
+to the rename delegate protocol.
+
+97
+00:06:30,090 --> 00:06:34,561
+When triggered, the action presents
+the bar's built-in rename UI.
+
+98
+00:06:35,963 --> 00:06:40,868
+First we'll assign our view controller
+as its navigation item's renameDelegate.
+
+99
+00:06:43,403 --> 00:06:48,041
+Then, we'll implement
+navigationItemDidEndRenamingWithTitle
+
+100
+00:06:48,075 --> 00:06:51,345
+to handle the actual renaming
+of the displayed document.
+
+101
+00:06:52,846 --> 00:06:56,717
+This function is called
+when the rename action is committed.
+
+102
+00:06:56,750 --> 00:07:02,322
+It's the app's responsibility to handle
+this by actually renaming the document.
+
+103
+00:07:02,356 --> 00:07:04,825
+The API is intentionally open ended
+
+104
+00:07:04,858 --> 00:07:08,228
+to support any kind of data model
+your app may have.
+
+105
+00:07:08,262 --> 00:07:10,797
+Moving on to other
+system provided actions,
+
+106
+00:07:10,831 --> 00:07:15,602
+we'll first need to override their
+functions on our editor view controller.
+
+107
+00:07:15,636 --> 00:07:20,474
+Here we've implemented
+the duplicate and move functions.
+
+108
+00:07:20,507 --> 00:07:23,877
+UIKit automatically surfaces
+system-provided actions,
+
+109
+00:07:23,911 --> 00:07:25,612
+including the rename action,
+
+110
+00:07:25,646 --> 00:07:28,482
+in the navigationItem's titleMenuProvider
+
+111
+00:07:28,515 --> 00:07:32,319
+as an array
+of suggested UIMenuElements.
+
+112
+00:07:32,352 --> 00:07:34,321
+To include them in our title menu,
+
+113
+00:07:34,354 --> 00:07:37,558
+we'll just add them
+to the returned menu's children.
+
+114
+00:07:39,159 --> 00:07:41,094
+In addition to the system-vended actions,
+
+115
+00:07:41,128 --> 00:07:43,797
+we can add entirely custom actions
+
+116
+00:07:43,830 --> 00:07:47,067
+or even whole menu hierarchies.
+
+117
+00:07:47,100 --> 00:07:53,006
+Here I've added an Export submenu
+with export as HTML and PDF sub-actions.
+
+118
+00:07:54,408 --> 00:07:57,444
+And with that, tapping the title view
+now brings up a menu
+
+119
+00:07:57,477 --> 00:08:01,481
+with the document header
+and all the actions we just added.
+
+120
+00:08:01,515 --> 00:08:03,050
+And when I select rename,
+
+121
+00:08:03,083 --> 00:08:05,219
+the built-in rename UI is activated
+
+122
+00:08:05,252 --> 00:08:07,221
+and I'm able to rename the document.
+
+123
+00:08:08,755 --> 00:08:11,892
+Now that we've started establishing
+the base structure of our app,
+
+124
+00:08:11,925 --> 00:08:14,161
+it's a good time to check in
+on how things look
+
+125
+00:08:14,194 --> 00:08:17,064
+when we build our app with Mac catalyst.
+
+126
+00:08:17,097 --> 00:08:20,167
+When we run the app on a Mac,
+we'll find that the editor style
+
+127
+00:08:20,200 --> 00:08:23,370
+with its leading aligned title
+has been translated nicely.
+
+128
+00:08:24,872 --> 00:08:27,307
+Our back action
+has also been carried over,
+
+129
+00:08:27,341 --> 00:08:30,444
+and when clicked,
+brings up a file browser.
+
+130
+00:08:31,745 --> 00:08:34,381
+The system provided actions
+and rename functionality
+
+131
+00:08:34,414 --> 00:08:37,584
+are automatically surfaced
+in the app's File menu.
+
+132
+00:08:37,618 --> 00:08:41,655
+Note that the titleMenuProvider
+is not called on Mac Catalyst,
+
+133
+00:08:41,688 --> 00:08:45,993
+so our custom actions are not included
+in the File menu.
+
+134
+00:08:46,026 --> 00:08:48,962
+To expose these actions,
+we would need to manually add them
+
+135
+00:08:48,996 --> 00:08:52,966
+to the app's main menu
+using the main UIMenuSystem.
+
+136
+00:08:55,202 --> 00:08:57,905
+All right, let's continue
+our modernization process.
+
+137
+00:08:57,938 --> 00:09:01,942
+We'll keep checking in on the Mac
+as we make progress towards our goal.
+
+138
+00:09:01,975 --> 00:09:06,880
+Let's consider the opportunities
+made available by the bar's center area.
+
+139
+00:09:06,914 --> 00:09:10,083
+The iOS 15 version of the app
+has a menu that holds
+
+140
+00:09:10,117 --> 00:09:13,520
+a number of secondary controls and tools.
+
+141
+00:09:13,554 --> 00:09:17,524
+With center items, we're able to make
+these tools more discoverable.
+
+142
+00:09:19,092 --> 00:09:23,463
+Since the center area is customizable,
+we can include a large set of controls
+
+143
+00:09:23,497 --> 00:09:28,068
+without worrying about filling the UI
+with less commonly used ones.
+
+144
+00:09:28,101 --> 00:09:32,973
+Each person can tailor the bar's contents
+to fit their workflow.
+
+145
+00:09:33,006 --> 00:09:37,878
+The first step in enabling customization
+is specifying a customizationIdentifier
+
+146
+00:09:37,911 --> 00:09:39,880
+on the navigation item.
+
+147
+00:09:41,181 --> 00:09:46,019
+Next, we'll define the center items
+as UIBarButtonItemGroups.
+
+148
+00:09:46,053 --> 00:09:50,424
+Groups are an existing concept
+that's been extended to UINavigationBar
+
+149
+00:09:50,457 --> 00:09:54,962
+and enhanced to support
+customization in iOS 16.
+
+150
+00:09:54,995 --> 00:09:59,499
+This screenshot shows the set of
+center items we'd like to show by default.
+
+151
+00:09:59,533 --> 00:10:01,835
+The synchronize scrolling button
+all the way on the left
+
+152
+00:10:01,869 --> 00:10:04,872
+provides an important function
+that can't be reached
+
+153
+00:10:04,905 --> 00:10:07,374
+by any other means,
+
+154
+00:10:07,407 --> 00:10:09,977
+so it makes sense to place it
+in a fixed group
+
+155
+00:10:10,010 --> 00:10:15,682
+using UIBarButtonItem's
+new creatingFixedGroup() function.
+
+156
+00:10:15,716 --> 00:10:20,087
+Fixed groups are not customizable
+and cannot be moved by the user.
+
+157
+00:10:22,022 --> 00:10:25,993
+The add link button, on the other hand,
+doesn't provide critical functionality,
+
+158
+00:10:26,026 --> 00:10:30,531
+and the same task can be achieved
+by typing link tags in the editor,
+
+159
+00:10:30,564 --> 00:10:36,470
+so we'll use creatingOptionalGroup
+to create a completely customizable item.
+
+160
+00:10:36,503 --> 00:10:39,773
+And we'll give it a unique
+customizationIdentifier
+
+161
+00:10:39,806 --> 00:10:43,544
+so the customization is persisted
+across app launches.
+
+162
+00:10:45,112 --> 00:10:47,848
+We'll follow a similar process
+to define the remaining items
+
+163
+00:10:47,881 --> 00:10:51,385
+in the default set,
+then move on to lower priority items
+
+164
+00:10:51,418 --> 00:10:54,488
+that don't need to be available
+by default.
+
+165
+00:10:54,521 --> 00:10:58,392
+One such item is the text format group,
+which includes the bold,
+
+166
+00:10:58,425 --> 00:11:00,761
+italics, and underline items.
+
+167
+00:11:01,995 --> 00:11:04,231
+It's not important enough
+to show by default,
+
+168
+00:11:04,264 --> 00:11:08,836
+but we want it in the customization
+popover so it can be dragged into the bar.
+
+169
+00:11:10,470 --> 00:11:13,540
+To achieve this,
+we'll use UIBarButtonItemGroup's
+
+170
+00:11:13,574 --> 00:11:18,812
+optionalGroup initializer with
+isInDefaultCustomization set to false.
+
+171
+00:11:21,248 --> 00:11:24,218
+We'll also be sure to give the group
+a representative item
+
+172
+00:11:24,251 --> 00:11:26,353
+so it has a title in the popover,
+
+173
+00:11:26,386 --> 00:11:28,388
+and has a compact representation
+
+174
+00:11:28,422 --> 00:11:31,692
+that it can be collapsed to
+when the bar runs out of space.
+
+175
+00:11:33,227 --> 00:11:35,662
+Back on the iPad,
+the center items we defined
+
+176
+00:11:35,696 --> 00:11:38,465
+show up in the center of the bar.
+
+177
+00:11:38,498 --> 00:11:40,734
+If I click the newly added More button,
+
+178
+00:11:40,767 --> 00:11:44,705
+a menu shows up
+with a Customize Toolbar action.
+
+179
+00:11:44,738 --> 00:11:48,108
+And if I click that,
+the customization mode is activated.
+
+180
+00:11:49,376 --> 00:11:53,847
+The sync scrolling button that we marked
+as fixed is de-emphasized and static,
+
+181
+00:11:53,881 --> 00:11:58,318
+while all the other items lift and shake
+to show that they're customizable.
+
+182
+00:12:00,220 --> 00:12:04,258
+Optional items like the Format group
+show up in the popover
+
+183
+00:12:04,291 --> 00:12:06,393
+and can be dragged into the bar.
+
+184
+00:12:09,596 --> 00:12:12,499
+When we run the app on a Mac,
+we find that the center items
+
+185
+00:12:12,533 --> 00:12:16,837
+have been converted to fully customizable
+macOS toolbar buttons.
+
+186
+00:12:19,106 --> 00:12:24,378
+Before we move on, let's go back to
+the iPad for a minute and resize the app.
+
+187
+00:12:24,411 --> 00:12:27,080
+Now that we have less space available
+in the toolbar,
+
+188
+00:12:27,114 --> 00:12:30,684
+the center items are no longer visible.
+
+189
+00:12:30,717 --> 00:12:34,821
+UIKit automatically handles
+showing and hiding center items
+
+190
+00:12:34,855 --> 00:12:37,691
+in response to the available space.
+
+191
+00:12:37,724 --> 00:12:42,462
+Any items that don't fit
+are displayed in the overflow menu.
+
+192
+00:12:42,496 --> 00:12:45,332
+Standard bar button items
+are automatically converted
+
+193
+00:12:45,365 --> 00:12:47,401
+to their menu representation,
+
+194
+00:12:47,434 --> 00:12:52,873
+but we're also able to provide
+a custom menu representation if we like.
+
+195
+00:12:52,906 --> 00:12:56,877
+Since UIKit has no insight
+into the purpose of a custom view item,
+
+196
+00:12:56,910 --> 00:13:00,047
+our slider item
+isn't automatically translated.
+
+197
+00:13:00,080 --> 00:13:03,317
+We'll need to manually
+specify a menu representation.
+
+198
+00:13:04,751 --> 00:13:06,086
+Here's our slider item.
+
+199
+00:13:06,119 --> 00:13:08,722
+It's a single bar button item
+with a custom view,
+
+200
+00:13:08,755 --> 00:13:12,426
+wrapped in an optional bar button group.
+
+201
+00:13:12,459 --> 00:13:15,162
+To provide the core functionality
+of the slider,
+
+202
+00:13:15,195 --> 00:13:19,867
+we'll define the menu representation
+as a UIMenu with Decrease,
+
+203
+00:13:19,900 --> 00:13:22,603
+Reset, and Increase actions.
+
+204
+00:13:25,038 --> 00:13:28,642
+Using UIMenu's
+new preferredElementSize property,
+
+205
+00:13:28,675 --> 00:13:33,313
+we can give the menu a more
+compact side by side appearance.
+
+206
+00:13:35,516 --> 00:13:38,585
+And using the
+new keepsMenuPresented attribute,
+
+207
+00:13:38,619 --> 00:13:42,489
+we can keep the menu presented
+after each action is performed,
+
+208
+00:13:42,523 --> 00:13:45,092
+allowing the font size to be changed
+multiple times
+
+209
+00:13:45,125 --> 00:13:48,929
+without dismissing
+and re-presenting the menu.
+
+210
+00:13:48,962 --> 00:13:51,331
+Let's run this on the iPad again.
+
+211
+00:13:51,365 --> 00:13:54,001
+Now when we bring up the overflow menu,
+
+212
+00:13:54,034 --> 00:13:58,739
+the slider appears as an inline menu
+with three side-by-side actions,
+
+213
+00:13:58,772 --> 00:14:01,175
+covering the full functionality
+of the slider.
+
+214
+00:14:02,576 --> 00:14:05,445
+Since the small element size
+doesn't exist on the Mac,
+
+215
+00:14:05,479 --> 00:14:09,716
+the actions will appear
+as standard macOS menu items.
+
+216
+00:14:09,750 --> 00:14:12,986
+And that's it for UI organization
+and customization.
+
+217
+00:14:13,020 --> 00:14:16,023
+Next, let's look into speeding up
+some workflows in the app
+
+218
+00:14:16,056 --> 00:14:19,259
+using new collection view and menu API.
+
+219
+00:14:19,293 --> 00:14:22,396
+Our app has a table of contents sidebar
+that can be used
+
+220
+00:14:22,429 --> 00:14:27,401
+to quickly navigate the document
+or take action on top level tags.
+
+221
+00:14:27,434 --> 00:14:31,371
+Prior to iOS 16,
+adding the ability to edit multiple items
+
+222
+00:14:31,405 --> 00:14:34,775
+would've likely meant implementing
+a distinct edit mode,
+
+223
+00:14:34,808 --> 00:14:37,911
+with bulk actions relegated
+to buttons in a toolbar.
+
+224
+00:14:40,914 --> 00:14:44,718
+iOS 16 introduces a new design
+for multi-item menus
+
+225
+00:14:44,751 --> 00:14:49,122
+with a flock of items that clearly
+communicates which items the menu affects
+
+226
+00:14:49,156 --> 00:14:53,460
+and provides a direct transition
+to a multi-item drag.
+
+227
+00:14:53,493 --> 00:14:57,464
+In a desktop class iPad app,
+this new menu design is best paired
+
+228
+00:14:57,497 --> 00:15:00,734
+with a lighter weight selection style.
+
+229
+00:15:00,767 --> 00:15:03,637
+"Lightweight" here
+means selecting multiple items
+
+230
+00:15:03,670 --> 00:15:06,540
+without kicking the collection view
+into an edit mode
+
+231
+00:15:06,573 --> 00:15:09,610
+or making significant changes
+to the app's UI.
+
+232
+00:15:09,643 --> 00:15:15,082
+We can achieve this and enable
+keyboard focus using existing API.
+
+233
+00:15:15,115 --> 00:15:18,285
+First, we'll set
+allowsMultipleSelection to true.
+
+234
+00:15:21,121 --> 00:15:25,626
+Then we'll enable keyboard focus
+by setting allowsFocus to true.
+
+235
+00:15:28,128 --> 00:15:33,600
+And we'll allow focus to drive selection
+by setting selectionFollowsFocus to true.
+
+236
+00:15:36,270 --> 00:15:39,306
+If we run this on our iPad,
+we immediately notice
+
+237
+00:15:39,339 --> 00:15:41,775
+that as each item is added
+to the selection,
+
+238
+00:15:41,808 --> 00:15:44,211
+it still fires its selection action,
+
+239
+00:15:44,244 --> 00:15:46,580
+causing the editor view to scroll.
+
+240
+00:15:46,613 --> 00:15:49,650
+Let's head back to our code and
+figure out what's going on.
+
+241
+00:15:51,285 --> 00:15:52,286
+There it is!
+
+242
+00:15:52,319 --> 00:15:54,855
+The code in didSelectItemAtIndexPath
+
+243
+00:15:54,888 --> 00:15:57,724
+tries to disallow scrolling
+while in edit mode
+
+244
+00:15:57,758 --> 00:16:01,695
+by checking
+the collectionView's isEditing property.
+
+245
+00:16:01,728 --> 00:16:05,098
+Now that we allow multiple
+selection outside of edit mode,
+
+246
+00:16:05,132 --> 00:16:08,001
+this code runs for every selection.
+
+247
+00:16:08,035 --> 00:16:11,972
+We can fix this using a new
+UICollectionViewDelegate method.
+
+248
+00:16:12,005 --> 00:16:16,510
+We'll implement
+performPrimaryActionForItemAtIndexPath
+
+249
+00:16:16,543 --> 00:16:21,215
+and just move our scrolling code
+to this new function.
+
+250
+00:16:21,248 --> 00:16:24,251
+Since this function is only called
+when a single item is tapped
+
+251
+00:16:24,284 --> 00:16:26,420
+and the collection view is not editing,
+
+252
+00:16:26,453 --> 00:16:29,089
+we no longer need the check for edit mode.
+
+253
+00:16:31,658 --> 00:16:34,795
+And since we don't have
+any selection related behavior,
+
+254
+00:16:34,828 --> 00:16:39,333
+we can remove our implementation
+of did select item at indexPath.
+
+255
+00:16:43,237 --> 00:16:46,874
+Back on the iPad,
+selecting multiple items no longer scrolls
+
+256
+00:16:46,907 --> 00:16:50,177
+to the corresponding text
+in the editor view.
+
+257
+00:16:50,210 --> 00:16:53,080
+With that done,
+let's actually add support for the menu.
+
+258
+00:16:55,382 --> 00:17:00,554
+In iPadOS 16, UICollectionViewDelegate's
+existing single item menu method
+
+259
+00:17:00,587 --> 00:17:02,256
+is deprecated.
+
+260
+00:17:02,289 --> 00:17:08,328
+Its replacement supports displaying menus
+for anywhere from zero to many items.
+
+261
+00:17:08,362 --> 00:17:11,298
+The number of items in the given
+indexPaths array
+
+262
+00:17:11,331 --> 00:17:13,500
+depends on how many items are selected,
+
+263
+00:17:13,534 --> 00:17:15,636
+and where the menu is invoked.
+
+264
+00:17:17,271 --> 00:17:22,042
+If the array is empty, then the menu was
+invoked in the blank space between cells.
+
+265
+00:17:25,012 --> 00:17:26,914
+If it has a single indexPath,
+
+266
+00:17:26,947 --> 00:17:30,150
+then it was invoked on an item
+that is either deselected
+
+267
+00:17:30,184 --> 00:17:32,386
+or is the sole selected one.
+
+268
+00:17:35,088 --> 00:17:37,824
+If it has more than one item,
+then the menu was invoked
+
+269
+00:17:37,858 --> 00:17:41,461
+on an item that is part
+of a multiple selection.
+
+270
+00:17:44,031 --> 00:17:47,668
+If I head back to the iPad,
+select the top four items again,
+
+271
+00:17:47,701 --> 00:17:50,103
+and two-finger click
+one of the selected items,
+
+272
+00:17:50,137 --> 00:17:52,706
+a new multi-item menu comes up.
+
+273
+00:17:56,343 --> 00:17:58,111
+When I do the same thing on a Mac,
+
+274
+00:17:58,145 --> 00:18:01,248
+a ring is drawn around the selected cells
+to highlight them.
+
+275
+00:18:02,783 --> 00:18:04,685
+With multi-item menus done,
+
+276
+00:18:04,718 --> 00:18:07,321
+let's look into enhancing
+the text editing experience
+
+277
+00:18:07,354 --> 00:18:10,624
+using the new Find and Replace
+and edit menu features.
+
+278
+00:18:10,657 --> 00:18:13,660
+Our app uses a UITextView for its editor
+
+279
+00:18:13,694 --> 00:18:17,931
+and doesn't require
+any custom Find and Replace behavior,
+
+280
+00:18:17,965 --> 00:18:21,602
+so all we need to do
+to enable the default system functionality
+
+281
+00:18:21,635 --> 00:18:26,807
+is set the text view's
+isFindInteractionEnabled property to true.
+
+282
+00:18:26,840 --> 00:18:29,743
+With that set,
+hitting Command+F while editing text
+
+283
+00:18:29,776 --> 00:18:31,979
+brings up the Find and Replace UI.
+
+284
+00:18:33,180 --> 00:18:37,084
+Adding custom actions to the text view's
+edit menu doesn't take much,
+
+285
+00:18:37,117 --> 00:18:40,988
+and can enable
+some great quick editing features.
+
+286
+00:18:41,021 --> 00:18:44,057
+We'll just implement
+the new UITextViewDelegate method
+
+287
+00:18:44,091 --> 00:18:48,495
+edit menu for text in range
+suggested actions.
+
+288
+00:18:48,529 --> 00:18:52,699
+In the implementation,
+we can construct and return a UIMenu
+
+289
+00:18:52,733 --> 00:18:55,636
+that combines custom actions,
+like this Hide action,
+
+290
+00:18:55,669 --> 00:18:57,204
+with the system menu.
+
+291
+00:18:59,907 --> 00:19:01,308
+And this is the result. W
+
+292
+00:19:01,341 --> 00:19:04,011
+hen I select some text
+and bring up the edit menu,
+
+293
+00:19:04,044 --> 00:19:08,615
+both our custom actions and
+the system-provided ones are displayed.
+
+294
+00:19:08,649 --> 00:19:11,952
+For more information about
+Find and Replace and the edit menu,
+
+295
+00:19:11,985 --> 00:19:16,223
+check out “Adopt desktop class
+editing interactions.”
+
+296
+00:19:16,256 --> 00:19:17,090
+And that's it!
+
+297
+00:19:17,124 --> 00:19:20,127
+With these few changes,
+we've taken some great basic steps
+
+298
+00:19:20,160 --> 00:19:22,496
+towards making our app desktop class
+
+299
+00:19:22,529 --> 00:19:25,599
+and translating it seamlessly to the Mac.
+
+300
+00:19:25,632 --> 00:19:28,435
+Use the APIs offered in iPadOS 16
+
+301
+00:19:28,468 --> 00:19:31,338
+to take your own app
+through a similar process.
+
+302
+00:19:31,371 --> 00:19:35,642
+Start by choosing a navigation style
+that fits your app.
+
+303
+00:19:35,676 --> 00:19:39,947
+Enhance document workflows with
+document properties and the title menu.
+
+304
+00:19:39,980 --> 00:19:45,452
+And surface important functionality and
+provide customizability with center items.
+
+305
+00:19:45,485 --> 00:19:49,289
+Enable quickly acting on multiple
+items with multi-item menus.
+
+306
+00:19:49,323 --> 00:19:53,093
+And enhance your app's text editing
+experience using Find and Replace
+
+307
+00:19:53,126 --> 00:19:54,795
+and the new edit menu.
+
+308
+00:19:54,828 --> 00:19:58,031
+Whether you're building a new app
+or updating an existing one,
+
+309
+00:19:58,065 --> 00:20:01,668
+I can't wait to use the apps you build
+with these new tools.
+
+310
+00:20:01,702 --> 00:20:04,171
+Thanks for watching.
+

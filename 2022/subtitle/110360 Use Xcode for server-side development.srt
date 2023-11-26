@@ -1,0 +1,1430 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,643 --> 00:00:11,178
+Hello!
+My name is Tom,
+
+3
+00:00:11,211 --> 00:00:13,614
+and I'm part of the Swift team at Apple.
+
+4
+00:00:13,647 --> 00:00:18,752
+Today I'd like to share what it takes to
+extend an iOS application into the cloud.
+
+5
+00:00:18,785 --> 00:00:22,456
+Many of our applications start out
+focusing on a single device,
+
+6
+00:00:22,489 --> 00:00:24,558
+usually the iPhone.
+
+7
+00:00:24,591 --> 00:00:27,661
+As usage grows,
+we find ourselves wanting to bring it
+
+8
+00:00:27,694 --> 00:00:30,430
+to additional devices like the Mac,
+the watch,
+
+9
+00:00:30,464 --> 00:00:33,667
+or other Apple platforms and devices.
+
+10
+00:00:33,700 --> 00:00:38,572
+Xcode helps us organize and build
+our application for these platforms.
+
+11
+00:00:38,605 --> 00:00:40,941
+We can share code using packages
+
+12
+00:00:40,974 --> 00:00:43,477
+while embracing the unique aspects
+of each device
+
+13
+00:00:43,510 --> 00:00:47,014
+in the platform specific application code.
+
+14
+00:00:47,047 --> 00:00:49,483
+As systems continue to grow and evolve,
+
+15
+00:00:49,516 --> 00:00:52,452
+applications often need to complement
+the client application
+
+16
+00:00:52,486 --> 00:00:54,288
+with a server component.
+
+17
+00:00:54,321 --> 00:00:57,157
+These server components enable
+the client application
+
+18
+00:00:57,191 --> 00:00:59,826
+to extend their functionality
+into the cloud.
+
+19
+00:00:59,860 --> 00:01:01,361
+For example,
+
+20
+00:01:01,395 --> 00:01:04,097
+offload tasks that can be done
+in the background,
+
+21
+00:01:04,131 --> 00:01:06,600
+offload tasks
+that are computational heavy,
+
+22
+00:01:06,633 --> 00:01:11,672
+or tasks that require access to data
+that is not available on the device.
+
+23
+00:01:11,705 --> 00:01:14,007
+Often, server components need to be built
+
+24
+00:01:14,041 --> 00:01:18,045
+using different tools and methodologies
+from their client counterparts,
+
+25
+00:01:18,078 --> 00:01:21,748
+creating duplication of effort
+and integration challenges.
+
+26
+00:01:21,782 --> 00:01:24,318
+Using Swift for
+building server components
+
+27
+00:01:24,351 --> 00:01:26,320
+help bridge this technology gap,
+
+28
+00:01:26,353 --> 00:01:30,324
+providing a familiar environment
+across the stack.
+
+29
+00:01:30,357 --> 00:01:33,193
+Let's see what building a server
+application in Swift looks like.
+
+30
+00:01:34,161 --> 00:01:38,465
+Server applications are modeled
+as Swift packages.
+
+31
+00:01:38,498 --> 00:01:40,901
+The package defines an executable target
+
+32
+00:01:40,934 --> 00:01:43,837
+that maps the application entry point.
+
+33
+00:01:43,871 --> 00:01:46,974
+To make the application
+into a web application,
+
+34
+00:01:47,007 --> 00:01:49,610
+we can add a dependency
+on a web framework
+
+35
+00:01:49,643 --> 00:01:54,715
+that helps us structure our code
+and provides basic utilities like routing.
+
+36
+00:01:54,748 --> 00:01:57,851
+In this example,
+we use the Vapor web framework,
+
+37
+00:01:57,885 --> 00:02:01,588
+an open source community project
+popular for building web services.
+
+38
+00:02:03,290 --> 00:02:05,559
+As with other Swift based executables,
+
+39
+00:02:05,592 --> 00:02:10,364
+the program's entry point is best modeled
+using the @main annotation.
+
+40
+00:02:10,397 --> 00:02:12,165
+To integrate the web framework,
+
+41
+00:02:12,199 --> 00:02:15,669
+we add the relevant bootstrap code
+to the main function.
+
+42
+00:02:15,702 --> 00:02:21,141
+The Application type used in this example
+is provided by the Vapor web framework.
+
+43
+00:02:21,175 --> 00:02:23,410
+With the basic bootstrapping in place,
+
+44
+00:02:23,443 --> 00:02:26,213
+we can make our application
+do something useful.
+
+45
+00:02:26,246 --> 00:02:31,285
+For example, let's add code to greet users
+making a request to the server.
+
+46
+00:02:31,318 --> 00:02:35,088
+We use the web framework to define
+an HTTP endpoint
+
+47
+00:02:35,122 --> 00:02:38,959
+and point it to a method
+that provides the greeting.
+
+48
+00:02:38,992 --> 00:02:42,930
+Taking a step further,
+we add a second HTTP endpoint,
+
+49
+00:02:42,963 --> 00:02:46,366
+this one handling an HTTP post request,
+
+50
+00:02:46,400 --> 00:02:50,571
+and echoing the content
+of the request body back to the caller.
+
+51
+00:02:50,604 --> 00:02:52,573
+Let's see this in action.
+
+52
+00:02:52,606 --> 00:02:55,642
+Here we have our server application
+in Xcode.
+
+53
+00:02:55,676 --> 00:02:57,244
+Since we're just getting started,
+
+54
+00:02:57,277 --> 00:03:01,281
+we can run the server locally
+on our own machine to test things out.
+
+55
+00:03:01,315 --> 00:03:03,784
+To run it locally,
+we pick the "MyServer" scheme
+
+56
+00:03:03,817 --> 00:03:07,421
+that was generated for us by Xcode,
+use the “My Mac" as the destination,
+
+57
+00:03:07,454 --> 00:03:08,722
+and hit "run".
+
+58
+00:03:17,231 --> 00:03:18,699
+Once the application has launched,
+
+59
+00:03:18,732 --> 00:03:23,036
+we can use Xcode console to examine
+log messages emitted by the server.
+
+60
+00:03:23,070 --> 00:03:25,339
+In this case,
+we can see that the server started
+
+61
+00:03:25,372 --> 00:03:31,712
+and listening on the localhost address
+(127.0.0.1) port 8080.
+
+62
+00:03:31,745 --> 00:03:34,481
+We can use this information
+to test our server.
+
+63
+00:03:34,515 --> 00:03:35,883
+Let's switch over to the terminal,
+
+64
+00:03:35,916 --> 00:03:39,086
+and make a request
+to the advertised server address.
+
+65
+00:03:39,119 --> 00:03:43,857
+We use a utility called "curl"
+to make the request.
+
+66
+00:03:43,891 --> 00:03:46,660
+Use our first endpoint.
+
+67
+00:03:48,562 --> 00:03:51,398
+And our second one.
+
+68
+00:03:51,431 --> 00:03:54,067
+Pass in some data to echo.
+
+69
+00:03:59,239 --> 00:04:01,008
+Nice!
+
+70
+00:04:01,041 --> 00:04:03,443
+Using the terminal sure was fun,
+
+71
+00:04:03,477 --> 00:04:08,182
+but what we really want to know is
+how to call our server from an iOS app.
+
+72
+00:04:08,215 --> 00:04:09,883
+Let's dig into that.
+
+73
+00:04:09,917 --> 00:04:12,619
+Here is an example
+of a Swift data structure
+
+74
+00:04:12,653 --> 00:04:15,756
+we can use to abstract the interaction
+with the server.
+
+75
+00:04:15,789 --> 00:04:20,194
+We model the server APIs as async methods
+on our abstraction,
+
+76
+00:04:20,227 --> 00:04:23,530
+because networking is
+inherently asynchronous.
+
+77
+00:04:23,564 --> 00:04:25,399
+We use URLSession
+
+78
+00:04:25,432 --> 00:04:27,701
+to make an asynchronous request
+
+79
+00:04:27,734 --> 00:04:32,573
+then parse the server response
+and finally return it to the caller.
+
+80
+00:04:32,606 --> 00:04:35,809
+In this case,
+the server response is a plain string,
+
+81
+00:04:35,843 --> 00:04:39,213
+but in reality,
+it is likely to be more sophisticated.
+
+82
+00:04:39,246 --> 00:04:43,083
+For example,
+the response may be encoded in JSON,
+
+83
+00:04:43,116 --> 00:04:47,254
+in which case we can decode it using
+Swift's Codable system.
+
+84
+00:04:47,287 --> 00:04:50,390
+Let's put this all together in Xcode.
+
+85
+00:04:50,424 --> 00:04:52,926
+We are using an Xcode workspace
+to build and test
+
+86
+00:04:52,960 --> 00:04:55,996
+the iOS and server applications
+side by side.
+
+87
+00:04:56,029 --> 00:05:00,801
+We already have the iOS application
+server abstraction ready to go.
+
+88
+00:05:00,834 --> 00:05:04,605
+Let's change the default SwiftUI
+ContentView to fetch the server greeting
+
+89
+00:05:04,638 --> 00:05:07,074
+using the code we put together.
+
+90
+00:05:07,107 --> 00:05:10,410
+First we create a state variable
+called serverGreeting.
+
+91
+00:05:13,180 --> 00:05:17,150
+Next, we bind the serverGreeting
+to the Text display.
+
+92
+00:05:21,221 --> 00:05:24,024
+Finally,
+we add a task to call the server API,
+
+93
+00:05:24,057 --> 00:05:25,392
+and set the state.
+
+94
+00:05:27,794 --> 00:05:31,164
+With the code ready, we can run
+the application in the simulator.
+
+95
+00:05:31,198 --> 00:05:34,201
+We pick the "MyApp" scheme,
+
+96
+00:05:34,234 --> 00:05:38,172
+a simulator,
+
+97
+00:05:38,205 --> 00:05:41,175
+and hit "run".
+
+98
+00:05:42,176 --> 00:05:44,411
+Oh, no! We got an error!
+
+99
+00:05:44,444 --> 00:05:48,148
+Hmm, this seems to be
+some sort of a connection error.
+
+100
+00:05:48,182 --> 00:05:49,650
+The address seems right,
+
+101
+00:05:49,683 --> 00:05:52,786
+so we must have forgotten
+to start the local server.
+
+102
+00:05:52,819 --> 00:05:55,189
+Let's switch back to Xcode,
+pick the server scheme,
+
+103
+00:05:55,222 --> 00:05:56,723
+and run the server.
+
+104
+00:06:07,100 --> 00:06:11,805
+Now, let's restart our application,
+
+105
+00:06:11,839 --> 00:06:13,040
+cross our fingers...
+
+106
+00:06:14,975 --> 00:06:16,710
+And whoo-hoo! It worked!
+
+107
+00:06:16,743 --> 00:06:18,679
+To complete this part of the demo,
+
+108
+00:06:18,712 --> 00:06:21,381
+let's deploy our application to the cloud.
+
+109
+00:06:21,415 --> 00:06:24,885
+There are many cloud providers
+to choose from, including AWS,
+
+110
+00:06:24,918 --> 00:06:28,222
+Google Cloud, Azure, Heroku,
+and many others.
+
+111
+00:06:28,255 --> 00:06:31,058
+In this example, we will use Heroku.
+
+112
+00:06:31,091 --> 00:06:34,294
+Heroku has a convenient
+git push to deploy system
+
+113
+00:06:34,328 --> 00:06:36,864
+for small projects like this
+demo application.
+
+114
+00:06:36,897 --> 00:06:39,700
+Let's switch over to the terminal
+to kick off a deployment.
+
+115
+00:06:39,733 --> 00:06:42,503
+After setting up our account,
+and configuring our application
+
+116
+00:06:42,536 --> 00:06:46,473
+with the Heroku service, we can git push
+our code to the Heroku remote.
+
+117
+00:06:48,542 --> 00:06:56,550
+[silence while typing]
+
+118
+00:07:01,021 --> 00:07:02,723
+And off it goes!
+
+119
+00:07:02,756 --> 00:07:07,427
+Heroku uses a technology called buildpacks
+to compile the application remotely,
+
+120
+00:07:07,461 --> 00:07:11,298
+then deploys the binary artifacts
+to an ephemeral host.
+
+121
+00:07:11,331 --> 00:07:13,834
+Heroku swift buildpack was built
+by members
+
+122
+00:07:13,867 --> 00:07:15,836
+of the Swift open source community,
+
+123
+00:07:15,869 --> 00:07:19,006
+and it is available
+for all Swift on Server users.
+
+124
+00:07:19,039 --> 00:07:21,942
+With our application deployed,
+we can test it using curl,
+
+125
+00:07:21,975 --> 00:07:24,144
+as we have done with our local server.
+
+126
+00:07:24,178 --> 00:07:26,046
+Let's test the first endpoint.
+
+127
+00:07:28,248 --> 00:07:30,717
+Copy the address here.
+
+128
+00:07:37,658 --> 00:07:39,593
+And our second one.
+
+129
+00:07:42,596 --> 00:07:45,632
+This time, we'll send a different payload.
+
+130
+00:07:51,939 --> 00:07:55,042
+Sweet,
+our application was successfully deployed!
+
+131
+00:07:55,075 --> 00:07:58,545
+Before we continue, let's pause here
+and review the main takeaways
+
+132
+00:07:58,579 --> 00:08:00,581
+from this part of the talk.
+
+133
+00:08:00,614 --> 00:08:04,218
+If you're already using Swift
+to build iOS or macOS Applications,
+
+134
+00:08:04,251 --> 00:08:08,121
+you could also be using it for
+developing the server side of the system.
+
+135
+00:08:08,155 --> 00:08:12,125
+Xcode helps us develop and debug
+the different components of the system,
+
+136
+00:08:12,159 --> 00:08:15,829
+both the client and the server,
+all in one Workspace.
+
+137
+00:08:15,863 --> 00:08:18,098
+And finally,
+you have a choice of cloud providers
+
+138
+00:08:18,131 --> 00:08:20,834
+for deploying
+Swift based server applications.
+
+139
+00:08:20,868 --> 00:08:23,804
+Additional information about deploying
+to these cloud platforms
+
+140
+00:08:23,837 --> 00:08:26,240
+can be found
+on the Swift Server documentation
+
+141
+00:08:26,273 --> 00:08:28,075
+at swift.org.
+
+142
+00:08:28,108 --> 00:08:30,110
+Now that we have seen a basic setup,
+
+143
+00:08:30,143 --> 00:08:33,247
+let's look at a more real example–
+Food Truck!
+
+144
+00:08:33,280 --> 00:08:36,717
+You've probably seen this application
+used in many of our sessions.
+
+145
+00:08:36,750 --> 00:08:39,720
+Let's peek under the hood
+and see how data is managed.
+
+146
+00:08:39,753 --> 00:08:43,690
+Hmm, looks like the donut list
+is hard coded.
+
+147
+00:08:43,724 --> 00:08:47,294
+This means that users of the application
+may see a different menu of donuts
+
+148
+00:08:47,327 --> 00:08:49,630
+from what is actually available.
+
+149
+00:08:49,663 --> 00:08:52,599
+While this may be useful
+for a small Food Truck operation,
+
+150
+00:08:52,633 --> 00:08:55,335
+one that can make
+any kind of donut on the spot,
+
+151
+00:08:55,369 --> 00:08:57,871
+we want to build a donuts empire
+
+152
+00:08:57,905 --> 00:09:01,909
+where the menu is centralized and
+the trucks are all about customer service.
+
+153
+00:09:01,942 --> 00:09:05,045
+Let's design how our centralized
+Food Truck system may look like.
+
+154
+00:09:06,213 --> 00:09:10,417
+We are starting out with our iOS app,
+with its in-memory storage.
+
+155
+00:09:10,450 --> 00:09:14,154
+To centralize the menu, we can extract
+the storage from the iOS app
+
+156
+00:09:14,188 --> 00:09:16,423
+and move it to the server.
+
+157
+00:09:16,456 --> 00:09:19,626
+This will allow all users of the app
+to share the same storage,
+
+158
+00:09:19,660 --> 00:09:22,396
+and thus, the same donuts menu.
+
+159
+00:09:22,429 --> 00:09:25,399
+Similar to the example
+in the first part of the talk,
+
+160
+00:09:25,432 --> 00:09:28,869
+our server will expose an HTTP based API.
+
+161
+00:09:28,902 --> 00:09:32,806
+The iOS app will use an abstraction
+for working with these APIs,
+
+162
+00:09:32,840 --> 00:09:35,209
+then tie them back together
+to the presentation tier,
+
+163
+00:09:35,242 --> 00:09:37,978
+in this example, SwiftUI.
+
+164
+00:09:38,011 --> 00:09:39,880
+Our design is complete.
+
+165
+00:09:39,913 --> 00:09:42,482
+Time to write some sweet code.
+
+166
+00:09:42,516 --> 00:09:45,219
+You can follow along by downloading
+the Food Truck sample app
+
+167
+00:09:45,252 --> 00:09:47,888
+from the developer resource kit.
+
+168
+00:09:47,921 --> 00:09:51,058
+We start building our Server
+with an application skeleton,
+
+169
+00:09:51,091 --> 00:09:55,229
+then define an HTTP endpoint
+for the "donuts" web API,
+
+170
+00:09:55,262 --> 00:09:59,533
+and point it to the "listDonuts" method
+on our server abstraction.
+
+171
+00:09:59,566 --> 00:10:03,704
+You may have noticed that the API returns
+a Response of type Donuts
+
+172
+00:10:03,737 --> 00:10:08,375
+and that Response.Donuts conforms
+to a protocol called Content.
+
+173
+00:10:08,408 --> 00:10:11,078
+The Content protocol
+is defined by the web framework
+
+174
+00:10:11,111 --> 00:10:15,516
+and helps us encode the response
+as JSON on the wire.
+
+175
+00:10:15,549 --> 00:10:18,185
+You may have also noticed
+that the API includes an array
+
+176
+00:10:18,218 --> 00:10:21,989
+of a mysterious Model.Donut,
+which we have yet to define
+
+177
+00:10:22,022 --> 00:10:25,058
+So here it is,
+our data model in all of its glory:
+
+178
+00:10:25,092 --> 00:10:29,129
+Donut, Dough, Glaze, and Topping.
+
+179
+00:10:29,162 --> 00:10:30,964
+One interesting point to make here
+
+180
+00:10:30,998 --> 00:10:34,968
+is that we copied the definition
+of this model from our Food Truck iOS app,
+
+181
+00:10:35,002 --> 00:10:38,972
+as we need the data models of the server
+and the client to roughly align.
+
+182
+00:10:39,006 --> 00:10:43,210
+Another interesting point is the
+conformance to the Encodable protocol.
+
+183
+00:10:43,243 --> 00:10:46,547
+This is required so that our server
+can encode the model objects
+
+184
+00:10:46,580 --> 00:10:49,049
+as JSON over the wire.
+
+185
+00:10:49,082 --> 00:10:51,485
+With the data model
+and basic APIs in place,
+
+186
+00:10:51,518 --> 00:10:54,855
+we can expand our logic
+to include a storage abstraction.
+
+187
+00:10:54,888 --> 00:10:58,892
+The storage will provide the Application
+with the list of available donuts.
+
+188
+00:10:58,926 --> 00:11:01,929
+At this point, we should have
+a fully functional server.
+
+189
+00:11:01,962 --> 00:11:04,298
+But wait!
+Our donuts menu is empty!
+
+190
+00:11:04,331 --> 00:11:07,467
+Where should we get
+the our centralized menu from?
+
+191
+00:11:07,501 --> 00:11:12,072
+Storage is always an interesting topic
+when designing server side applications.
+
+192
+00:11:12,105 --> 00:11:13,807
+There are several strategies
+to choose from,
+
+193
+00:11:13,841 --> 00:11:15,976
+depending on the use case.
+
+194
+00:11:16,009 --> 00:11:19,947
+If the application data is static
+or changes very slowly and manually,
+
+195
+00:11:19,980 --> 00:11:22,983
+files on disk may provide
+a good enough solution.
+
+196
+00:11:23,016 --> 00:11:25,819
+For user-centric data or global datasets,
+
+197
+00:11:25,853 --> 00:11:29,857
+iCloud provides a set of APIs that you can
+use directly from the iOS application,
+
+198
+00:11:29,890 --> 00:11:32,192
+without deploying a dedicated server.
+
+199
+00:11:32,226 --> 00:11:34,795
+When dealing with dynamic
+or transactional data,
+
+200
+00:11:34,828 --> 00:11:37,965
+databases provide an excellent solution.
+
+201
+00:11:37,998 --> 00:11:40,200
+There is a variety of database
+technologies available
+
+202
+00:11:40,234 --> 00:11:42,202
+for server-side applications.
+
+203
+00:11:42,236 --> 00:11:45,072
+Each technology is designed
+for specific performance,
+
+204
+00:11:45,105 --> 00:11:48,041
+data consistency,
+and data modeling needs.
+
+205
+00:11:48,075 --> 00:11:50,611
+Over the years,
+the Swift open source community
+
+206
+00:11:50,644 --> 00:11:53,180
+developed database drivers
+that help interact natively
+
+207
+00:11:53,213 --> 00:11:55,682
+with most databases technologies.
+
+208
+00:11:55,716 --> 00:11:58,585
+Partial list includes Postgres, MySQL,
+
+209
+00:11:58,619 --> 00:12:03,156
+MongoDB, Redis, DynamoDB,
+and many others.
+
+210
+00:12:03,190 --> 00:12:05,192
+For the purposes of simplifying this demo,
+
+211
+00:12:05,225 --> 00:12:09,162
+we will only demonstrate
+a static file storage strategy,
+
+212
+00:12:09,196 --> 00:12:11,365
+but you can learn more
+about using databases
+
+213
+00:12:11,398 --> 00:12:14,601
+on the Swift Server documentation
+at swift.org.
+
+214
+00:12:14,635 --> 00:12:17,504
+Since we are using
+a static file storage strategy,
+
+215
+00:12:17,538 --> 00:12:21,642
+we start off by creating a JSON file
+that captures the donut menu.
+
+216
+00:12:21,675 --> 00:12:23,310
+After creating this file,
+
+217
+00:12:23,343 --> 00:12:25,445
+we can make it accessible
+to the application
+
+218
+00:12:25,479 --> 00:12:28,382
+using SwiftPM's resources support.
+
+219
+00:12:28,415 --> 00:12:33,053
+With that in place, it is time to make our
+storage abstraction more sophisticated.
+
+220
+00:12:33,086 --> 00:12:36,056
+Namely, we add a "load" method.
+
+221
+00:12:36,089 --> 00:12:38,458
+This method finds the resource file path
+
+222
+00:12:38,492 --> 00:12:41,628
+using SwiftPM's
+generated resource accessor,
+
+223
+00:12:41,662 --> 00:12:46,867
+then uses FileManager APIs to load
+the content of the file into memory.
+
+224
+00:12:46,900 --> 00:12:48,735
+Finally, we use JSONDecoder
+
+225
+00:12:48,769 --> 00:12:53,574
+to decode the JSON content
+into the server application data model.
+
+226
+00:12:53,607 --> 00:12:57,811
+One interesting change is that
+Storage is now defined as an actor.
+
+227
+00:12:57,845 --> 00:13:02,549
+We chose to use an actor because Storage
+now has a mutable "donuts" variable,
+
+228
+00:13:02,583 --> 00:13:07,421
+and which the "load" and "listDonuts"
+methods might access concurrently.
+
+229
+00:13:07,454 --> 00:13:10,624
+Actors,
+which were first introduced in Swift 5.5,
+
+230
+00:13:10,657 --> 00:13:13,660
+help us avoid data races
+and deal with shared mutable state
+
+231
+00:13:13,694 --> 00:13:16,563
+in a safe but easy way.
+
+232
+00:13:16,597 --> 00:13:18,465
+Prior to the introduction of actors,
+
+233
+00:13:18,498 --> 00:13:21,068
+we would have needed to remember
+and add synchronization blocks
+
+234
+00:13:21,101 --> 00:13:25,272
+when accessing mutable state
+using APIs such as Locks or Queues.
+
+235
+00:13:25,305 --> 00:13:28,942
+With the storage updates done,
+we can tie it all together.
+
+236
+00:13:28,976 --> 00:13:31,278
+We add a "bootstrap" method
+to our server abstraction
+
+237
+00:13:31,311 --> 00:13:33,213
+and load the storage from there.
+
+238
+00:13:33,247 --> 00:13:37,084
+Then we wire up the bootstrap
+to the executables entry point.
+
+239
+00:13:37,117 --> 00:13:42,322
+Note that since storage is now an actor,
+we access it in an async context.
+
+240
+00:13:42,356 --> 00:13:43,423
+Our server is ready.
+
+241
+00:13:43,457 --> 00:13:45,959
+Let's switch over to the client side.
+
+242
+00:13:45,993 --> 00:13:48,896
+We start by adding a Server abstraction
+
+243
+00:13:48,929 --> 00:13:52,032
+that will help us encapsulate
+the server APIs.
+
+244
+00:13:52,065 --> 00:13:55,335
+We use URLSession to make the HTTP request
+
+245
+00:13:55,369 --> 00:13:58,005
+and a JSONDecoder
+to decode the server response
+
+246
+00:13:58,038 --> 00:14:02,142
+and transform it from JSON into our iOS
+application model.
+
+247
+00:14:02,176 --> 00:14:05,145
+At this point,
+we can remove the hard coded menu
+
+248
+00:14:05,179 --> 00:14:08,415
+and replace it with an asynchronous fetch
+from the server.
+
+249
+00:14:08,448 --> 00:14:12,553
+Finally, we make the call to the server
+from the ContentView load task.
+
+250
+00:14:12,586 --> 00:14:14,121
+Time to test!
+
+251
+00:14:14,154 --> 00:14:17,090
+This time,
+let's not forget to start the server.
+
+252
+00:14:17,124 --> 00:14:19,326
+We'll select
+the "FoodTruckServer" scheme here.
+
+253
+00:14:19,359 --> 00:14:20,661
+Hit run.
+
+254
+00:14:24,298 --> 00:14:26,233
+And with the application running,
+
+255
+00:14:26,266 --> 00:14:30,237
+let's jump on the terminal
+and see that we can access the APIs.
+
+256
+00:14:33,473 --> 00:14:35,309
+Copy the address again.
+
+257
+00:14:37,110 --> 00:14:39,513
+This time, we're going to use
+a utility called jq
+
+258
+00:14:39,546 --> 00:14:43,517
+to print the JSON output more nicely.
+
+259
+00:14:43,550 --> 00:14:44,818
+This looks pretty good.
+
+260
+00:14:46,286 --> 00:14:48,755
+All right, time to test with our App.
+
+261
+00:14:49,957 --> 00:14:52,359
+Switch to Xcode.
+
+262
+00:14:52,392 --> 00:14:56,129
+Pick the Food Truck scheme here.
+
+263
+00:14:56,163 --> 00:14:57,898
+Simulator.
+
+264
+00:14:57,931 --> 00:14:59,466
+And run it.
+
+265
+00:15:01,969 --> 00:15:03,237
+And there we have it,
+
+266
+00:15:03,270 --> 00:15:05,372
+the three donuts
+from our centralized menu.
+
+267
+00:15:05,405 --> 00:15:08,442
+We can cross reference that
+with what we see from the server.
+
+268
+00:15:08,475 --> 00:15:09,877
+Let's switch back to the terminal.
+
+269
+00:15:09,910 --> 00:15:15,315
+To make the comparison easy, we will use
+jq to query just the name of the donuts.
+
+270
+00:15:26,827 --> 00:15:29,763
+Deep space, Chocolate 2,
+Coffee Caramel–
+
+271
+00:15:29,796 --> 00:15:32,332
+exactly what we expected.
+
+272
+00:15:32,366 --> 00:15:34,234
+That was amazing!
+
+273
+00:15:34,268 --> 00:15:36,069
+But we can do even better.
+
+274
+00:15:36,103 --> 00:15:38,805
+As it stands,
+our server and client applications
+
+275
+00:15:38,839 --> 00:15:41,642
+both have identical copies
+of the data model code.
+
+276
+00:15:41,675 --> 00:15:44,778
+We can avoid repetition
+and make serialization safer,
+
+277
+00:15:44,811 --> 00:15:48,615
+by sharing the model
+across the iOS and server applications.
+
+278
+00:15:48,649 --> 00:15:51,718
+Let's review how to set this up
+at a high level.
+
+279
+00:15:51,752 --> 00:15:55,722
+First, we create another package
+for a library named "Shared"
+
+280
+00:15:55,756 --> 00:15:58,058
+and add it to the Xcode workspace.
+
+281
+00:15:58,091 --> 00:16:01,395
+We can then move the data model code to
+the Shared package,
+
+282
+00:16:01,428 --> 00:16:05,032
+add Shared as a dependency
+of the server application,
+
+283
+00:16:05,065 --> 00:16:07,467
+and as a dependency of the iOS
+application,
+
+284
+00:16:07,501 --> 00:16:10,304
+using the Target Frameworks
+and Libraries settings.
+
+285
+00:16:10,337 --> 00:16:13,040
+At which point,
+we can refactor our client code
+
+286
+00:16:13,073 --> 00:16:15,309
+to use the shared model
+
+287
+00:16:15,342 --> 00:16:18,178
+and do the same
+
+288
+00:16:18,212 --> 00:16:19,580
+to the server code.
+
+289
+00:16:22,282 --> 00:16:24,751
+Things look much nicer now.
+
+290
+00:16:24,785 --> 00:16:29,256
+Before we conclude, here are some ideas of
+where we can take the application next.
+
+291
+00:16:29,289 --> 00:16:32,192
+To take full advantage of the fact
+that we have a centralized server,
+
+292
+00:16:32,226 --> 00:16:37,931
+we are likely to want and define APIs for
+adding, editing, or deleting donuts from the menu.
+
+293
+00:16:37,965 --> 00:16:42,369
+This will require that we move our storage
+from a static file to a database.
+
+294
+00:16:42,402 --> 00:16:46,473
+With a database in place, we can also
+implement buying and ordering APIs.
+
+295
+00:16:46,507 --> 00:16:50,110
+Such APIs can help us
+monetize our donut business.
+
+296
+00:16:50,143 --> 00:16:51,645
+They also provide a signal,
+
+297
+00:16:51,678 --> 00:16:54,314
+which we can use to implement
+dynamic pricing,
+
+298
+00:16:54,348 --> 00:16:58,018
+like sales and discounts
+for those donuts that are less popular.
+
+299
+00:16:58,051 --> 00:17:00,754
+The opportunities are endless.
+
+300
+00:17:00,787 --> 00:17:03,156
+To wrap up,
+in this session we have seen
+
+301
+00:17:03,190 --> 00:17:05,659
+that Swift is a general purpose language,
+
+302
+00:17:05,692 --> 00:17:08,362
+useful for both client and server
+applications,
+
+303
+00:17:08,395 --> 00:17:10,931
+sharing code between the server
+and client applications
+
+304
+00:17:10,964 --> 00:17:14,668
+can reduce boilerplate
+and make our system serialization safer,
+
+305
+00:17:14,701 --> 00:17:18,872
+URLSession is a key tool for interacting
+with the server asynchronously,
+
+306
+00:17:18,906 --> 00:17:21,909
+and finally, Xcode is
+a powerful development environment
+
+307
+00:17:21,942 --> 00:17:24,311
+for the entire system.
+
+308
+00:17:24,344 --> 00:17:25,913
+Thank you so much for watching,
+
+309
+00:17:25,946 --> 00:17:28,248
+and enjoy the rest of the conference.
+

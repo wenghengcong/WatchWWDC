@@ -1,0 +1,1029 @@
+1
+00:00:00,267 --> 00:00:03,670
+♪ Mellow instrumental
+hip-hip music ♪
+
+2
+00:00:03,670 --> 00:00:09,710
+♪
+
+3
+00:00:09,710 --> 00:00:12,746
+Hello, and welcome to "What's
+New in App Store Connect."
+
+4
+00:00:12,746 --> 00:00:14,815
+My name's Will Averill,
+and I'm an engineering manager
+
+5
+00:00:14,815 --> 00:00:17,150
+on the App Store Connect team.
+
+6
+00:00:17,150 --> 00:00:20,053
+App Store Connect has grown
+considerably over the years.
+
+7
+00:00:20,053 --> 00:00:22,489
+You use it to create,
+manage, and grow your apps
+
+8
+00:00:22,489 --> 00:00:25,425
+on the App Store
+across all of our platforms.
+
+9
+00:00:25,425 --> 00:00:27,895
+And we continue to bring new
+features to App Store Connect
+
+10
+00:00:27,895 --> 00:00:33,500
+on web, our iOS and iPadOS app,
+and the App Store Connect API.
+
+11
+00:00:33,500 --> 00:00:36,637
+Just last year, we launched
+a bunch of great new features.
+
+12
+00:00:36,637 --> 00:00:39,273
+You've probably heard all about
+things like in-app events,
+
+13
+00:00:39,273 --> 00:00:41,942
+custom product pages,
+and TestFlight for Mac.
+
+14
+00:00:41,942 --> 00:00:43,744
+So instead,
+let me quickly highlight
+
+15
+00:00:43,744 --> 00:00:46,546
+a couple recent updates
+you might have missed.
+
+16
+00:00:46,546 --> 00:00:48,916
+In TestFlight, we made
+managing your build's
+
+17
+00:00:48,916 --> 00:00:51,518
+associated tester groups easier.
+
+18
+00:00:51,518 --> 00:00:54,721
+With just one click, you can
+now quickly add or remove
+
+19
+00:00:54,721 --> 00:00:56,290
+a tester group to a build
+
+20
+00:00:56,290 --> 00:00:59,493
+directly from the Versions
+or Build Groups tab.
+
+21
+00:00:59,493 --> 00:01:02,162
+We also heard your feedback
+loud and clear,
+
+22
+00:01:02,162 --> 00:01:04,798
+so we made an update
+allowing you to transfer apps
+
+23
+00:01:04,798 --> 00:01:06,867
+that use Apple Wallet.
+
+24
+00:01:06,867 --> 00:01:09,603
+And finally, to facilitate
+the submission process
+
+25
+00:01:09,603 --> 00:01:11,972
+for in-app events,
+custom product pages,
+
+26
+00:01:11,972 --> 00:01:13,840
+and product page optimization,
+
+27
+00:01:13,840 --> 00:01:17,044
+we launched the enhanced
+App Store submission experience.
+
+28
+00:01:17,044 --> 00:01:19,179
+This is one the biggest
+enhancements we've made
+
+29
+00:01:19,179 --> 00:01:20,714
+to the submission workflow,
+
+30
+00:01:20,714 --> 00:01:24,184
+so let's explore this together
+in a bit more detail.
+
+31
+00:01:24,184 --> 00:01:27,054
+First, you're now able
+to group multiple items
+
+32
+00:01:27,054 --> 00:01:29,323
+into a single submission.
+
+33
+00:01:29,323 --> 00:01:31,224
+Additionally --
+in most cases --
+
+34
+00:01:31,224 --> 00:01:34,861
+you can choose to submit
+without a new app version.
+
+35
+00:01:34,861 --> 00:01:37,864
+And we introduced
+a dedicated App Review page
+
+36
+00:01:37,864 --> 00:01:39,999
+where you can manage
+in-progress submissions,
+
+37
+00:01:39,999 --> 00:01:41,535
+communicate with App Review,
+
+38
+00:01:41,535 --> 00:01:44,471
+and even view recently
+completed submissions.
+
+39
+00:01:44,471 --> 00:01:46,440
+Let's start by talking
+about what it means
+
+40
+00:01:46,440 --> 00:01:49,242
+to group items
+in a review submission.
+
+41
+00:01:49,242 --> 00:01:51,478
+Say we have a number
+of custom product pages
+
+42
+00:01:51,478 --> 00:01:54,781
+or any other review items
+we want to publish to the store.
+
+43
+00:01:54,781 --> 00:01:56,650
+Since review items
+can only be submitted
+
+44
+00:01:56,650 --> 00:01:58,518
+as part of a review submission,
+
+45
+00:01:58,518 --> 00:02:01,154
+the first step is
+to add them to one.
+
+46
+00:02:01,154 --> 00:02:03,290
+Think of a review submission
+as the vehicle
+
+47
+00:02:03,290 --> 00:02:06,893
+that carries review items
+to and from App Review.
+
+48
+00:02:06,893 --> 00:02:10,397
+Now, a review submission only
+needs one item to be submitted,
+
+49
+00:02:10,397 --> 00:02:12,399
+but the advantage
+to grouping several items
+
+50
+00:02:12,399 --> 00:02:14,868
+is they are all reviewed
+in context together.
+
+51
+00:02:14,868 --> 00:02:17,871
+This helps ensure a consistent
+and efficient review.
+
+52
+00:02:17,871 --> 00:02:19,806
+In fact, all review submissions
+
+53
+00:02:19,806 --> 00:02:22,209
+are typically reviewed
+within 24 hours,
+
+54
+00:02:22,209 --> 00:02:26,113
+regardless of the number
+or type of review items.
+
+55
+00:02:26,113 --> 00:02:28,048
+After review,
+each item in the submission
+
+56
+00:02:28,048 --> 00:02:30,784
+will be marked as
+accepted or rejected.
+
+57
+00:02:30,784 --> 00:02:32,052
+It's very important
+to understand
+
+58
+00:02:32,052 --> 00:02:34,321
+that no review
+items are approved
+
+59
+00:02:34,321 --> 00:02:37,591
+until all items in the review
+submission are accepted.
+
+60
+00:02:37,591 --> 00:02:39,493
+So let's look at two ways
+to move forward
+
+61
+00:02:39,493 --> 00:02:42,529
+with a review submission
+that has rejected items.
+
+62
+00:02:42,529 --> 00:02:45,832
+The first option is to edit any
+of these rejected review items
+
+63
+00:02:45,832 --> 00:02:47,534
+and then resubmit.
+
+64
+00:02:47,534 --> 00:02:49,936
+If those items
+now come back accepted,
+
+65
+00:02:49,936 --> 00:02:51,671
+the review submission
+is complete
+
+66
+00:02:51,671 --> 00:02:52,839
+and every item is approved
+
+67
+00:02:52,839 --> 00:02:55,675
+and able to be published
+to the App Store.
+
+68
+00:02:55,675 --> 00:02:57,210
+The other option
+is to simply remove
+
+69
+00:02:57,210 --> 00:02:59,913
+any rejected items
+from the submission.
+
+70
+00:02:59,913 --> 00:03:01,515
+This leaves
+the review submission
+
+71
+00:03:01,515 --> 00:03:03,083
+with only approved items,
+
+72
+00:03:03,083 --> 00:03:06,119
+once again completing
+the review process.
+
+73
+00:03:06,119 --> 00:03:08,789
+However, keep in mind
+that any removed items
+
+74
+00:03:08,789 --> 00:03:11,992
+will need to be resubmitted
+as a part of a new submission
+
+75
+00:03:11,992 --> 00:03:14,227
+in order to become approved.
+
+76
+00:03:14,227 --> 00:03:15,495
+And before I move on,
+
+77
+00:03:15,495 --> 00:03:17,431
+let me specify that
+review submission items
+
+78
+00:03:17,431 --> 00:03:20,133
+can be app versions,
+in-app events,
+
+79
+00:03:20,133 --> 00:03:24,438
+custom product pages, or
+product page optimization tests.
+
+80
+00:03:24,438 --> 00:03:26,773
+Now, let's take a look
+at how you're able to submit
+
+81
+00:03:26,773 --> 00:03:28,742
+without a new app version.
+
+82
+00:03:28,742 --> 00:03:30,944
+To understand how this works,
+
+83
+00:03:30,944 --> 00:03:32,379
+let's discuss
+a few more specifics
+
+84
+00:03:32,379 --> 00:03:34,714
+about review submissions.
+
+85
+00:03:34,714 --> 00:03:39,486
+First, each submission
+has an associated platform.
+
+86
+00:03:39,486 --> 00:03:41,455
+In addition,
+each platform supports
+
+87
+00:03:41,455 --> 00:03:44,024
+a specific set of review items.
+
+88
+00:03:44,024 --> 00:03:46,526
+Although, as you can see,
+most items are reviewed
+
+89
+00:03:46,526 --> 00:03:49,930
+and grouped as part
+of an iOS submission.
+
+90
+00:03:49,930 --> 00:03:52,933
+And lastly, you can have one
+in-progress review submission
+
+91
+00:03:52,933 --> 00:03:54,367
+per platform.
+
+92
+00:03:54,367 --> 00:03:56,503
+In this example,
+you can see we're working
+
+93
+00:03:56,503 --> 00:03:59,272
+towards submitting all three
+versions of our app.
+
+94
+00:03:59,272 --> 00:04:01,341
+But, let's go ahead
+and take a closer look
+
+95
+00:04:01,341 --> 00:04:04,177
+at the iOS review submission.
+
+96
+00:04:04,177 --> 00:04:06,780
+App Review reviews
+all items in a submission
+
+97
+00:04:06,780 --> 00:04:10,650
+against an app version to ensure
+everything is consistent.
+
+98
+00:04:10,650 --> 00:04:12,752
+If there's an app version
+in the submission,
+
+99
+00:04:12,752 --> 00:04:15,088
+that becomes the version
+used for review.
+
+100
+00:04:15,088 --> 00:04:16,590
+But like I mentioned earlier,
+
+101
+00:04:16,590 --> 00:04:20,427
+you can submit without adding a
+new version to your submission.
+
+102
+00:04:20,427 --> 00:04:22,929
+To do this requires
+a previously approved version
+
+103
+00:04:22,929 --> 00:04:24,030
+of your app.
+
+104
+00:04:24,030 --> 00:04:25,565
+Of course,
+once submitted,
+
+105
+00:04:25,565 --> 00:04:28,835
+items will be reviewed
+against this version.
+
+106
+00:04:28,835 --> 00:04:31,171
+This means you're able
+to submit in-app events,
+
+107
+00:04:31,171 --> 00:04:34,541
+custom product pages and
+product page optimization tests
+
+108
+00:04:34,541 --> 00:04:37,511
+anytime after your first
+iOS version is approved,
+
+109
+00:04:37,511 --> 00:04:40,447
+without needing
+a new app binary.
+
+110
+00:04:40,447 --> 00:04:43,016
+So now that I've explained
+how this experience works,
+
+111
+00:04:43,016 --> 00:04:44,317
+let me show you
+where the dedicated
+
+112
+00:04:44,317 --> 00:04:47,821
+App Review submission page
+lives in App Store Connect.
+
+113
+00:04:47,821 --> 00:04:49,856
+Once you've logged in
+and selected an app,
+
+114
+00:04:49,856 --> 00:04:53,326
+click the App Review link
+on the left nav menu.
+
+115
+00:04:53,326 --> 00:04:55,629
+This is the App Review page
+
+116
+00:04:55,629 --> 00:04:58,532
+where you can manage
+your entire review workflow.
+
+117
+00:04:58,532 --> 00:05:00,734
+Here, you can see an overview
+of your submissions
+
+118
+00:05:00,734 --> 00:05:04,171
+and click into any of them
+for a more detailed look.
+
+119
+00:05:04,171 --> 00:05:06,873
+Now obviously,
+using the web UI is great,
+
+120
+00:05:06,873 --> 00:05:08,775
+but wouldn't it be nice
+to submit and track
+
+121
+00:05:08,775 --> 00:05:11,378
+submission status on the go?
+
+122
+00:05:11,378 --> 00:05:12,746
+That's why we're excited
+to share
+
+123
+00:05:12,746 --> 00:05:14,915
+that we've brought the
+enhanced submission experience
+
+124
+00:05:14,915 --> 00:05:20,520
+to App Store Connect on iPadOS
+and iOS with this week's update.
+
+125
+00:05:20,520 --> 00:05:21,888
+You'll now be able to submit
+
+126
+00:05:21,888 --> 00:05:24,457
+any of your Ready for Review
+submissions to App Review
+
+127
+00:05:24,457 --> 00:05:27,327
+from anywhere,
+with just one tap.
+
+128
+00:05:27,327 --> 00:05:28,628
+Once submitted,
+
+129
+00:05:28,628 --> 00:05:31,965
+you can track the progress
+of your review submissions.
+
+130
+00:05:31,965 --> 00:05:34,868
+And you can opt in
+to receive timely notifications
+
+131
+00:05:34,868 --> 00:05:37,370
+about status updates
+
+132
+00:05:37,370 --> 00:05:41,608
+as well as manage your
+submission by removing items,
+
+133
+00:05:41,608 --> 00:05:46,213
+viewing rejection reasons,
+and replying to App Review.
+
+134
+00:05:46,213 --> 00:05:48,949
+So that's the enhanced
+App Store submission experience,
+
+135
+00:05:48,949 --> 00:05:50,951
+available now
+on App Store Connect
+
+136
+00:05:50,951 --> 00:05:53,853
+for iPadOS and iOS.
+
+137
+00:05:53,853 --> 00:05:55,388
+Let's shift gears a bit
+and focus on
+
+138
+00:05:55,388 --> 00:05:57,224
+the App Store Connect API
+
+139
+00:05:57,224 --> 00:05:59,559
+which represents a great way
+for you to customize
+
+140
+00:05:59,559 --> 00:06:01,928
+and automate your app workflows.
+
+141
+00:06:01,928 --> 00:06:04,664
+Best of all, we're always
+working to add new capabilities
+
+142
+00:06:04,664 --> 00:06:06,633
+to the API.
+
+143
+00:06:06,633 --> 00:06:10,370
+Last year, we added support
+for App Clips, Xcode Cloud,
+
+144
+00:06:10,370 --> 00:06:12,772
+in-app events,
+custom product pages,
+
+145
+00:06:12,772 --> 00:06:14,641
+product page optimization,
+
+146
+00:06:14,641 --> 00:06:17,043
+and even the enhanced App Store
+submission experience
+
+147
+00:06:17,043 --> 00:06:18,511
+I just described.
+
+148
+00:06:18,511 --> 00:06:20,413
+And this year is no different.
+
+149
+00:06:20,413 --> 00:06:23,283
+With our huge 2.0 release
+coming this summer,
+
+150
+00:06:23,283 --> 00:06:25,685
+we're expanding the number
+of resources in the API
+
+151
+00:06:25,685 --> 00:06:27,721
+by 60 percent.
+
+152
+00:06:27,721 --> 00:06:28,955
+In this summer's release,
+
+153
+00:06:28,955 --> 00:06:30,790
+we're adding some
+great new functionality
+
+154
+00:06:30,790 --> 00:06:32,859
+that has been heavily requested.
+
+155
+00:06:32,859 --> 00:06:35,562
+Beginning with
+a comprehensive set of APIs
+
+156
+00:06:35,562 --> 00:06:37,664
+to manage your entire
+in-app purchase
+
+157
+00:06:37,664 --> 00:06:39,933
+and subscription lifecycle.
+
+158
+00:06:39,933 --> 00:06:41,935
+We started by breaking
+subscriptions
+
+159
+00:06:41,935 --> 00:06:43,770
+into their own resource
+
+160
+00:06:43,770 --> 00:06:47,607
+and giving you full control
+to create, edit, or delete
+
+161
+00:06:47,607 --> 00:06:50,710
+any of your in-app purchases
+or subscriptions.
+
+162
+00:06:50,710 --> 00:06:54,881
+You'll also be able to manage
+pricing, submit for review,
+
+163
+00:06:54,881 --> 00:06:57,851
+and create special offers
+and promo codes.
+
+164
+00:06:57,851 --> 00:06:59,653
+We can't wait to see
+how you take advantage
+
+165
+00:06:59,653 --> 00:07:02,122
+of this new opportunity
+to automate your in-app purchase
+
+166
+00:07:02,122 --> 00:07:04,491
+and subscription workflows.
+
+167
+00:07:04,491 --> 00:07:05,759
+We're also adding the ability
+
+168
+00:07:05,759 --> 00:07:08,862
+to fetch and respond
+to your app's customer reviews.
+
+169
+00:07:08,862 --> 00:07:10,697
+The goal here
+is to allow you to build
+
+170
+00:07:10,697 --> 00:07:14,267
+some great custom workflows
+around customer interaction.
+
+171
+00:07:14,267 --> 00:07:16,536
+And lastly, we're adding
+additional reporting data
+
+172
+00:07:16,536 --> 00:07:19,439
+to the power and performance
+metrics and diagnostics APIs
+
+173
+00:07:19,439 --> 00:07:21,141
+for app hangs.
+
+174
+00:07:21,141 --> 00:07:23,576
+Identifying and eliminating
+hangs in your app
+
+175
+00:07:23,576 --> 00:07:25,612
+is a great way
+to increase performance
+
+176
+00:07:25,612 --> 00:07:28,014
+and improve user experience.
+
+177
+00:07:28,014 --> 00:07:30,317
+But until now,
+you could only view metrics
+
+178
+00:07:30,317 --> 00:07:33,186
+like your app's hang rate
+through the API.
+
+179
+00:07:33,186 --> 00:07:34,988
+That changes this summer
+as we're adding
+
+180
+00:07:34,988 --> 00:07:38,325
+a new diagnostic type
+for app hangs.
+
+181
+00:07:38,325 --> 00:07:39,626
+You'll be able use this type
+
+182
+00:07:39,626 --> 00:07:42,362
+with the existing
+diagnostic signatures resource
+
+183
+00:07:42,362 --> 00:07:43,863
+to discover the places
+in your app
+
+184
+00:07:43,863 --> 00:07:46,032
+that contribute most to hangs.
+
+185
+00:07:46,032 --> 00:07:48,001
+Not only that,
+but you'll also be able to see
+
+186
+00:07:48,001 --> 00:07:50,470
+detailed stack traces
+for these hang signatures
+
+187
+00:07:50,470 --> 00:07:53,707
+through the diagnostic logs
+relationship.
+
+188
+00:07:53,707 --> 00:07:55,842
+I've just barely scratched
+the surface here,
+
+189
+00:07:55,842 --> 00:07:58,178
+so if you'd like to learn more
+about how these APIs work
+
+190
+00:07:58,178 --> 00:08:00,914
+or how to use this data
+to discover additional insights
+
+191
+00:08:00,914 --> 00:08:02,282
+into your app's behavior,
+
+192
+00:08:02,282 --> 00:08:05,085
+definitely check out
+these two related sessions.
+
+193
+00:08:05,085 --> 00:08:08,722
+Overall, the App Store Connect
+API 2.0 release
+
+194
+00:08:08,722 --> 00:08:10,757
+represents a major milestone.
+
+195
+00:08:10,757 --> 00:08:14,361
+After four years of development,
+we've fully embraced REST APIs
+
+196
+00:08:14,361 --> 00:08:17,097
+as the future of
+App Store Connect automation.
+
+197
+00:08:17,097 --> 00:08:19,432
+As a result,
+we'll begin to decommission
+
+198
+00:08:19,432 --> 00:08:21,735
+the XML feed this fall.
+
+199
+00:08:21,735 --> 00:08:25,171
+Therefore, we highly encourage
+you to align your integration
+
+200
+00:08:25,171 --> 00:08:28,007
+with the App Store Connect API
+moving forward.
+
+201
+00:08:28,007 --> 00:08:30,443
+In summary, we recommend
+taking full advantage
+
+202
+00:08:30,443 --> 00:08:32,512
+of the enhanced App Store
+submission experience
+
+203
+00:08:32,512 --> 00:08:35,615
+in order streamline
+your review process.
+
+204
+00:08:35,615 --> 00:08:38,184
+Also, be sure to download
+the latest release
+
+205
+00:08:38,184 --> 00:08:41,221
+of App Store Connect
+for iOS and iPadOS,
+
+206
+00:08:41,221 --> 00:08:43,857
+which adds support for the
+enhanced submission experience
+
+207
+00:08:43,857 --> 00:08:46,393
+and several other updates.
+
+208
+00:08:46,393 --> 00:08:49,162
+And finally, we're adding
+a bunch of new capabilities
+
+209
+00:08:49,162 --> 00:08:50,730
+to the App Store Connect API
+
+210
+00:08:50,730 --> 00:08:53,400
+with the 2.0 release
+this summer.
+
+211
+00:08:53,400 --> 00:08:56,503
+We strongly suggest working
+to integrate with our API,
+
+212
+00:08:56,503 --> 00:08:59,305
+especially as we begin
+to decommission the XML feed
+
+213
+00:08:59,305 --> 00:09:01,040
+later this fall.
+
+214
+00:09:01,040 --> 00:09:03,209
+As always, we look forward
+to hearing your feedback
+
+215
+00:09:03,209 --> 00:09:06,379
+and hope you have a great WWDC!
+
+216
+00:09:06,379 --> 00:09:07,881
+Thanks for watching.
+
+217
+00:09:07,881 --> 00:09:12,051
+♪
+

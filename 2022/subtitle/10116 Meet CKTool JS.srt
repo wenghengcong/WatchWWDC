@@ -1,0 +1,1331 @@
+1
+00:00:00,367 --> 00:00:06,373
+[upbeat music]
+
+2
+00:00:09,309 --> 00:00:13,447
+- Hi! I'm Kent and I'm an
+engineer on the CloudKit team.
+
+3
+00:00:13,480 --> 00:00:16,650
+I'm excited to introduce
+a new library that you can use
+
+4
+00:00:16,683 --> 00:00:18,285
+to access CloudKit.
+
+5
+00:00:18,318 --> 00:00:21,188
+First, I'll cover
+how to configure this new library.
+
+6
+00:00:21,221 --> 00:00:23,323
+And then you'll learn
+how to manage your schema,
+
+7
+00:00:23,357 --> 00:00:27,127
+as well as how to access
+user data with CKTool JS.
+
+8
+00:00:27,160 --> 00:00:28,595
+Let's begin!
+
+9
+00:00:29,830 --> 00:00:31,732
+CloudKit is a persistence technology
+
+10
+00:00:31,765 --> 00:00:35,469
+that lets you store your app's data
+in iCloud within containers.
+
+11
+00:00:35,502 --> 00:00:39,072
+By using CloudKit in your app,
+you can also have your data
+
+12
+00:00:39,106 --> 00:00:41,742
+stay up to date across devices
+and on the web.
+
+13
+00:00:42,576 --> 00:00:44,044
+For building your apps,
+
+14
+00:00:44,077 --> 00:00:48,348
+you can access iCloud storage using
+the CloudKit framework on Apple platforms
+
+15
+00:00:48,382 --> 00:00:51,185
+or CloudKit JS on the web.
+
+16
+00:00:51,218 --> 00:00:56,990
+To implement automation and tooling,
+Xcode provides cktool for use on macOS.
+
+17
+00:00:57,024 --> 00:01:00,260
+And now you have a new way to automate
+changes and interact with iCloud,
+
+18
+00:01:00,294 --> 00:01:02,129
+using CKTool JS.
+
+19
+00:01:03,597 --> 00:01:06,366
+CKTool JS lets you perform
+the same operations
+
+20
+00:01:06,400 --> 00:01:10,337
+as the cktool command-line utility
+introduced in Xcode 13
+
+21
+00:01:10,370 --> 00:01:13,140
+and supports similar use cases.
+
+22
+00:01:13,173 --> 00:01:17,377
+In fact, CKTool JS is used to
+implement features in CloudKit Console
+
+23
+00:01:17,411 --> 00:01:20,080
+such as adding record types
+and querying records.
+
+24
+00:01:21,215 --> 00:01:23,817
+With CKTool JS,
+you can manage your app containers
+
+25
+00:01:23,851 --> 00:01:25,886
+and perform schema operations,
+
+26
+00:01:25,919 --> 00:01:29,256
+such as resetting and applying
+updates to your schema.
+
+27
+00:01:29,289 --> 00:01:31,725
+This is something that you couldn't
+do from JavaScript before.
+
+28
+00:01:33,393 --> 00:01:37,664
+CKTool JS lets you fetch existing
+records using their unique identifier
+
+29
+00:01:37,698 --> 00:01:39,566
+or through complex queries.
+
+30
+00:01:39,600 --> 00:01:43,237
+And it lets you create new records
+and update them.
+
+31
+00:01:43,270 --> 00:01:47,140
+CKTool JS ships with strict
+type definitions for TypeScript.
+
+32
+00:01:47,174 --> 00:01:49,810
+These type definitions enable
+compile-time checking
+
+33
+00:01:49,843 --> 00:01:52,546
+that flags incorrect
+usage of the client library
+
+34
+00:01:52,579 --> 00:01:55,782
+and it enables code completion
+in supported IDEs.
+
+35
+00:01:55,816 --> 00:01:58,886
+You'll find editing CKTool JS
+code easier because of this.
+
+36
+00:02:00,587 --> 00:02:02,656
+Additionally,
+this new library ships with support
+
+37
+00:02:02,689 --> 00:02:05,325
+for both Node.js
+and browsers out of the box.
+
+38
+00:02:05,359 --> 00:02:09,429
+CKTool JS is distributed
+as a set of npm packages,
+
+39
+00:02:09,463 --> 00:02:13,934
+which allows you to integrate it as
+part of your JavaScript build pipeline.
+
+40
+00:02:13,967 --> 00:02:17,971
+Doing so enables features such
+as tree-shaking and bundling.
+
+41
+00:02:18,005 --> 00:02:20,908
+You can also
+track updates to these packages
+
+42
+00:02:20,941 --> 00:02:24,578
+because their release history
+is transparently available from npm.
+
+43
+00:02:26,013 --> 00:02:29,816
+The following packages are part
+of the CKTool JS distribution.
+
+44
+00:02:29,850 --> 00:02:30,684
+Note that these packages
+are within the @apple scope
+
+45
+00:02:33,153 --> 00:02:38,825
+and follow the convention of using
+cktool. at the start of the name.
+
+46
+00:02:38,859 --> 00:02:42,896
+The main package that you'll use
+is cktool.database.
+
+47
+00:02:42,930 --> 00:02:44,798
+To enable communication with iCloud,
+
+48
+00:02:44,831 --> 00:02:48,535
+you'll also need to use one other package
+for your target platform,
+
+49
+00:02:48,569 --> 00:02:52,172
+cktool.target.nodejs
+for Node.js
+
+50
+00:02:52,206 --> 00:02:56,143
+or cktool.target.browser
+for web browsers.
+
+51
+00:02:57,144 --> 00:03:01,949
+cktool.database automatically
+pulls in three more packages--
+
+52
+00:03:01,982 --> 00:03:06,353
+cktool.core, cktool.api.base,
+
+53
+00:03:06,386 --> 00:03:10,490
+and cktool.api.database.
+
+54
+00:03:10,524 --> 00:03:15,362
+Since CKTool JS communicates directly
+with iCloud, it must first be authorized.
+
+55
+00:03:15,395 --> 00:03:18,165
+Depending on the operation
+that you want to call,
+
+56
+00:03:18,198 --> 00:03:21,368
+you'll either need
+a management token or a user token.
+
+57
+00:03:21,401 --> 00:03:24,404
+Both kinds of tokens are
+obtainable from CloudKit Console.
+
+58
+00:03:25,772 --> 00:03:28,876
+Management tokens are used to
+access management operations
+
+59
+00:03:28,909 --> 00:03:31,712
+and are scoped to a team and user.
+
+60
+00:03:31,745 --> 00:03:36,717
+Such operations include enabling schema
+import and export, schema validation,
+
+61
+00:03:36,750 --> 00:03:39,353
+and resetting the container to production.
+
+62
+00:03:39,386 --> 00:03:42,856
+User tokens are scoped to teams
+and containers and enable access
+
+63
+00:03:42,890 --> 00:03:45,993
+to private user data
+within those containers.
+
+64
+00:03:46,026 --> 00:03:49,196
+To learn how to obtain these
+authorization tokens as well as
+
+65
+00:03:49,229 --> 00:03:52,866
+continuous integration with CloudKit,
+check out
+
+66
+00:03:52,900 --> 00:03:56,770
+"Automate CloudKit tests with cktool and
+declarative schema" from WWDC21.
+
+67
+00:03:58,472 --> 00:04:01,575
+Any time you want to use
+CKTool JS in your scripts,
+
+68
+00:04:01,608 --> 00:04:03,944
+you'll first need to configure it for use.
+
+69
+00:04:03,977 --> 00:04:06,713
+But before
+I dive into configuring CKTool JS,
+
+70
+00:04:06,747 --> 00:04:09,917
+I'll do a quick review of what
+makes up a CloudKit schema.
+
+71
+00:04:09,950 --> 00:04:13,086
+In CloudKit,
+data is stored in a structured way.
+
+72
+00:04:13,120 --> 00:04:17,991
+Data that has the same kinds of
+values are stored together as records.
+
+73
+00:04:18,025 --> 00:04:20,894
+Records are instances of record types,
+
+74
+00:04:20,928 --> 00:04:23,597
+and the properties of a record
+that a record type describes
+
+75
+00:04:23,630 --> 00:04:25,365
+are known as fields.
+
+76
+00:04:25,399 --> 00:04:29,269
+In addition to your user-defined fields,
+CloudKit adds system fields
+
+77
+00:04:29,303 --> 00:04:32,005
+such as recordName,
+which is the ID of the record.
+
+78
+00:04:32,039 --> 00:04:35,876
+I'll use examples from a coin collection
+app I've been working on.
+
+79
+00:04:35,909 --> 00:04:39,179
+I want to store a collection of countries,
+so I have a record type
+
+80
+00:04:39,213 --> 00:04:42,516
+to describe what kinds of properties
+I need to store for them.
+
+81
+00:04:42,549 --> 00:04:45,052
+I'm storing names and ISO codes,
+
+82
+00:04:45,085 --> 00:04:47,554
+and I'm naming the record type,
+"Countries."
+
+83
+00:04:47,588 --> 00:04:49,489
+ISO codes uniquely identify a country,
+
+84
+00:04:49,523 --> 00:04:52,025
+so it's important
+to include them in my record type.
+
+85
+00:04:53,160 --> 00:04:55,796
+I create some records of
+type Countries to store this information
+
+86
+00:04:55,829 --> 00:04:57,397
+along with their names.
+
+87
+00:04:58,732 --> 00:05:01,335
+I also have a record type
+for coins of particular countries,
+
+88
+00:05:01,368 --> 00:05:03,704
+and I want to relate them to one another.
+
+89
+00:05:03,737 --> 00:05:08,175
+The Coins record type stores the
+relationship from a coin to its country.
+
+90
+00:05:10,244 --> 00:05:13,514
+Record types and relationships
+combine to make a schema.
+
+91
+00:05:13,547 --> 00:05:15,816
+I can consider the current
+state of these elements
+
+92
+00:05:15,849 --> 00:05:18,685
+to be the current version of my schema.
+
+93
+00:05:18,719 --> 00:05:21,321
+As you develop your apps,
+you'll evolve your schema,
+
+94
+00:05:21,355 --> 00:05:24,825
+and over the lifetime of your app,
+you'll likely have several versions of it.
+
+95
+00:05:26,326 --> 00:05:29,129
+While my app's schema describes
+the structure of the data
+
+96
+00:05:29,162 --> 00:05:33,767
+I want to store in iCloud, my app
+container is where that data is stored.
+
+97
+00:05:33,800 --> 00:05:38,739
+A container has a unique identifier
+and is associated with a developer team.
+
+98
+00:05:38,772 --> 00:05:43,243
+There are two environments to keep
+in mind when working with CloudKit.
+
+99
+00:05:43,277 --> 00:05:46,013
+The development environment
+is a safe place to make changes
+
+100
+00:05:46,046 --> 00:05:47,881
+without disrupting users.
+
+101
+00:05:47,915 --> 00:05:51,552
+This is where you should be testing
+and developing changes to your schema.
+
+102
+00:05:51,585 --> 00:05:53,720
+When users interact with your app,
+
+103
+00:05:53,754 --> 00:05:56,323
+they'll be interacting with
+the production environment.
+
+104
+00:05:56,356 --> 00:05:59,693
+The production environment
+contains the live data for your app.
+
+105
+00:05:59,726 --> 00:06:02,729
+Now that I've reviewed
+how CloudKit stores data,
+
+106
+00:06:02,763 --> 00:06:05,465
+I'll cover how to configure CKTool JS.
+
+107
+00:06:05,499 --> 00:06:07,901
+Because CKTool JS talks with iCloud,
+
+108
+00:06:07,935 --> 00:06:09,870
+you'll need to gather
+a few pieces of information
+
+109
+00:06:09,903 --> 00:06:12,306
+so that it knows how to work
+with the right container
+
+110
+00:06:12,339 --> 00:06:14,708
+and that your script
+is authorized to do so.
+
+111
+00:06:15,909 --> 00:06:18,378
+You'll need your team ID
+and the container ID
+
+112
+00:06:18,412 --> 00:06:20,614
+for the container you want to work with.
+
+113
+00:06:20,647 --> 00:06:23,417
+You'll need a management token
+in order to work with schemas,
+
+114
+00:06:23,450 --> 00:06:26,987
+and if your script will access data,
+you'll need a user token as well.
+
+115
+00:06:27,020 --> 00:06:30,724
+All these values can be
+obtained from CloudKit Console.
+
+116
+00:06:30,757 --> 00:06:34,294
+You'll also need to specify which
+environment, development or production,
+
+117
+00:06:34,328 --> 00:06:35,762
+your script will run in.
+
+118
+00:06:35,796 --> 00:06:38,665
+I'll use development
+as an example going forward.
+
+119
+00:06:38,699 --> 00:06:43,437
+Anytime you configure CKTool JS for use,
+you'll need these values.
+
+120
+00:06:43,470 --> 00:06:46,640
+For my examples,
+I'm writing scripts for Node.js.
+
+121
+00:06:46,673 --> 00:06:51,512
+You import objects and functions
+from CKTool JS in order to use them.
+
+122
+00:06:51,545 --> 00:06:56,250
+In this case, you can import these
+symbols using CommonJS require statements.
+
+123
+00:06:56,283 --> 00:06:59,086
+Once you've gathered
+your configuration information,
+
+124
+00:06:59,119 --> 00:07:02,089
+you'll create objects
+to hold that information.
+
+125
+00:07:02,122 --> 00:07:04,291
+To store your auth tokens,
+you create an object
+
+126
+00:07:04,324 --> 00:07:08,462
+to hold your management token and,
+if you have one, your user token.
+
+127
+00:07:08,495 --> 00:07:12,199
+Since teamId, containerId
+and environment are common values
+
+128
+00:07:12,232 --> 00:07:17,304
+that are passed to CKTool JS, you can
+create an object to hold these values.
+
+129
+00:07:17,337 --> 00:07:20,908
+You instantiate a Configuration
+object that tells CKTool JS
+
+130
+00:07:20,941 --> 00:07:26,280
+how to talk with iCloud by using the
+createConfiguration factory function.
+
+131
+00:07:26,313 --> 00:07:28,815
+createConfiguration is platform-specific.
+
+132
+00:07:28,849 --> 00:07:32,052
+In this case, it'll return an
+appropriate configuration for Node.js,
+
+133
+00:07:32,085 --> 00:07:35,589
+since that's the function that
+was imported from the target package.
+
+134
+00:07:35,622 --> 00:07:40,227
+You then pass the configuration object
+and the security object declared earlier
+
+135
+00:07:40,260 --> 00:07:42,696
+to initialize an API object.
+
+136
+00:07:42,729 --> 00:07:47,334
+API objects contain asynchronous methods
+that allow you to talk to iCloud.
+
+137
+00:07:47,367 --> 00:07:51,104
+You've now completed the steps
+to use CKTool JS in your scripts.
+
+138
+00:07:51,138 --> 00:07:54,508
+Let's learn about how you
+can use CKTool JS
+
+139
+00:07:54,541 --> 00:07:56,944
+to manage your container's schema.
+
+140
+00:07:56,977 --> 00:08:00,214
+In my app,
+I want to store information such as
+
+141
+00:08:00,247 --> 00:08:02,616
+an American dime issued in 2007.
+
+142
+00:08:02,649 --> 00:08:05,285
+This coin
+is composed of copper and nickel
+
+143
+00:08:05,319 --> 00:08:08,889
+and the value stamped on it
+is 1/10th of an American dollar.
+
+144
+00:08:08,922 --> 00:08:11,258
+After thinking
+about how to store this data,
+
+145
+00:08:11,291 --> 00:08:12,860
+I decided to store information
+
+146
+00:08:12,893 --> 00:08:14,461
+about the coin's composition
+
+147
+00:08:14,494 --> 00:08:16,129
+as records separate from
+
+148
+00:08:16,163 --> 00:08:18,332
+the other details about the coin.
+
+149
+00:08:18,365 --> 00:08:20,367
+So I store the copper percentage
+for the dime
+
+150
+00:08:20,400 --> 00:08:22,002
+and its nickel percentage
+
+151
+00:08:22,035 --> 00:08:23,804
+in separate records.
+
+152
+00:08:24,371 --> 00:08:26,173
+I identified two record types
+
+153
+00:08:26,206 --> 00:08:28,308
+that I want in my container's schema.
+
+154
+00:08:28,342 --> 00:08:31,111
+Coins, which stores its country reference,
+
+155
+00:08:31,144 --> 00:08:33,080
+issue year, and nominal value.
+
+156
+00:08:33,113 --> 00:08:35,148
+And a Components record type
+
+157
+00:08:35,182 --> 00:08:37,451
+that stores a reference to a coin
+it describes
+
+158
+00:08:37,484 --> 00:08:40,220
+and the material
+and its percentage in the coin.
+
+159
+00:08:40,254 --> 00:08:43,023
+Now that I've determined
+the schema for my app,
+
+160
+00:08:43,056 --> 00:08:46,827
+I can create a text file in
+CloudKit Schema Language to describe it.
+
+161
+00:08:46,860 --> 00:08:50,931
+The convention is to use the
+.ckdb extension for your schema file.
+
+162
+00:08:52,099 --> 00:08:54,368
+For more information about
+CloudKit Schema Language,
+
+163
+00:08:54,401 --> 00:08:59,540
+refer to "Integrating a Text-Based Schema
+into Your Workflow" documentation article.
+
+164
+00:09:00,941 --> 00:09:05,712
+The schema file you create for your
+container can be applied using CKTool JS.
+
+165
+00:09:05,746 --> 00:09:07,581
+Before you apply a new schema,
+
+166
+00:09:07,614 --> 00:09:10,184
+you'll typically reset the
+container's development schema
+
+167
+00:09:10,217 --> 00:09:12,386
+to match the one in production.
+
+168
+00:09:12,419 --> 00:09:15,289
+You can do this with the
+resetToProduction method.
+
+169
+00:09:15,322 --> 00:09:18,525
+You call this method by passing
+the defaultArgs object
+
+170
+00:09:18,559 --> 00:09:20,861
+that you declared earlier.
+
+171
+00:09:20,894 --> 00:09:24,665
+If your schema isn't in production,
+all record types are deleted.
+
+172
+00:09:24,698 --> 00:09:26,800
+Otherwise,
+this will revert the development schema
+
+173
+00:09:26,834 --> 00:09:29,536
+to the state
+of the production environment.
+
+174
+00:09:29,570 --> 00:09:33,607
+Note that this is an asynchronous call,
+so this method returns a promise object.
+
+175
+00:09:35,509 --> 00:09:37,611
+CKTool JS has methods that let you
+
+176
+00:09:37,644 --> 00:09:39,980
+export and import your container's schema.
+
+177
+00:09:40,013 --> 00:09:43,250
+The exportSchema and importSchema
+methods let you do this
+
+178
+00:09:43,283 --> 00:09:46,253
+and are named from
+the perspective of the container.
+
+179
+00:09:46,286 --> 00:09:48,889
+So you download a schema to be exported
+
+180
+00:09:48,922 --> 00:09:51,425
+from the container using exportSchema,
+
+181
+00:09:51,458 --> 00:09:53,894
+and you upload a schema to be imported
+
+182
+00:09:53,927 --> 00:09:56,597
+into the container using importSchema.
+
+183
+00:09:56,630 --> 00:09:58,265
+Together, these allow you
+
+184
+00:09:58,298 --> 00:10:00,400
+to manage your schema's evolution.
+
+185
+00:10:01,668 --> 00:10:05,405
+You can create a help function
+to apply the schema to the container.
+
+186
+00:10:05,439 --> 00:10:08,876
+First, import the File object
+from CKTool JS,
+
+187
+00:10:08,909 --> 00:10:12,479
+then import the fs and
+path modules from Node.js.
+
+188
+00:10:12,513 --> 00:10:16,149
+Now define an asynchronous
+function that will do the following:
+
+189
+00:10:16,183 --> 00:10:19,786
+It reads the schema file's
+contents into a Node.js buffer.
+
+190
+00:10:19,820 --> 00:10:23,390
+It creates
+a CKTool JS File instance for upload.
+
+191
+00:10:23,423 --> 00:10:28,395
+Finally, it uploads the file's contents
+to the server using importSchema.
+
+192
+00:10:28,428 --> 00:10:31,231
+Note that the defaultArgs object
+that was declared earlier
+
+193
+00:10:31,265 --> 00:10:33,901
+is passed to importSchema.
+
+194
+00:10:33,934 --> 00:10:35,502
+Now you can put it together.
+
+195
+00:10:35,536 --> 00:10:39,072
+Because resetToProduction and the
+helper function used to import a schema
+
+196
+00:10:39,106 --> 00:10:42,943
+are asynchronous, you need to ensure
+that they run in the correct order.
+
+197
+00:10:42,976 --> 00:10:45,345
+To do that you chain the promises.
+
+198
+00:10:45,379 --> 00:10:48,482
+If an error occurs,
+the promise will reject.
+
+199
+00:10:48,515 --> 00:10:52,286
+In addition to the management
+capabilities that CKTool JS has,
+
+200
+00:10:52,319 --> 00:10:55,789
+it also allows you to work
+with reading and writing data.
+
+201
+00:10:55,822 --> 00:10:59,593
+Field values that are used in
+CKTool JS records
+
+202
+00:10:59,626 --> 00:11:01,929
+are type and ranged checked
+on the client side
+
+203
+00:11:01,962 --> 00:11:03,864
+before they're sent to the server.
+
+204
+00:11:03,897 --> 00:11:07,000
+If the value passed in
+is not the right kind of value
+
+205
+00:11:07,034 --> 00:11:09,369
+or is outside of
+the allowed range of the value,
+
+206
+00:11:09,403 --> 00:11:11,271
+an exception will be thrown.
+
+207
+00:11:11,305 --> 00:11:14,808
+For large numbers that can't be
+represented natively in JavaScript,
+
+208
+00:11:14,842 --> 00:11:18,412
+there are CKTool JS types
+that are used instead.
+
+209
+00:11:18,445 --> 00:11:22,683
+For example,
+to coerce a number to a CKTool JS Int64,
+
+210
+00:11:22,716 --> 00:11:25,986
+you use the toInt64 function.
+
+211
+00:11:26,019 --> 00:11:28,455
+To coerce a number to
+a Double floating point value,
+
+212
+00:11:28,488 --> 00:11:30,924
+you use the toDouble function.
+
+213
+00:11:30,958 --> 00:11:33,594
+If you're writing TypeScript,
+the compiler will flag
+
+214
+00:11:33,627 --> 00:11:37,064
+incorrect value type usages if these
+coercion functions are not used.
+
+215
+00:11:38,332 --> 00:11:40,868
+Field values in CKTool JS records
+
+216
+00:11:40,901 --> 00:11:44,171
+are created using field
+value factory functions.
+
+217
+00:11:44,204 --> 00:11:47,708
+For a coin issued in 2007,
+I'd pass that value
+
+218
+00:11:47,741 --> 00:11:51,979
+to the makeRecordFieldValue.int64
+factory function
+
+219
+00:11:52,012 --> 00:11:56,049
+in order to create a record field value
+that contains an Int64.
+
+220
+00:11:56,083 --> 00:11:59,620
+In general, if a factory function
+can't create a record field value
+
+221
+00:11:59,653 --> 00:12:02,489
+from the value passed in,
+it'll throw an exception.
+
+222
+00:12:03,790 --> 00:12:06,627
+Here, I've created an object
+to hold common values
+
+223
+00:12:06,660 --> 00:12:09,263
+that I send to methods
+that work with records.
+
+224
+00:12:09,296 --> 00:12:12,866
+Since containerId, environment,
+databaseType and zoneName
+
+225
+00:12:12,900 --> 00:12:17,271
+are often required, I'm including those
+in this databaseArgs object.
+
+226
+00:12:17,304 --> 00:12:21,275
+To query for records,
+I use the queryRecords method.
+
+227
+00:12:21,308 --> 00:12:24,444
+To make this easier,
+I create a helper function
+
+228
+00:12:24,478 --> 00:12:28,949
+that finds a country matching
+its unique 3 character ISO code.
+
+229
+00:12:28,982 --> 00:12:32,519
+In this case, I pass the contents
+of the databaseArgs object,
+
+230
+00:12:32,553 --> 00:12:35,956
+in addition to
+a body that contains the query.
+
+231
+00:12:35,989 --> 00:12:39,793
+For the query object,
+I'm specifying the recordType value
+
+232
+00:12:39,826 --> 00:12:42,496
+as well as a single filter object.
+
+233
+00:12:42,529 --> 00:12:46,433
+The filter object describes a
+query where the country's isoCode3
+
+234
+00:12:46,466 --> 00:12:50,037
+is equal to the one
+this function is seeking.
+
+235
+00:12:50,070 --> 00:12:52,639
+If successful,
+the collection of found records
+
+236
+00:12:52,673 --> 00:12:56,410
+will be in the
+response.result.records property.
+
+237
+00:12:56,443 --> 00:12:58,679
+I return the
+first object from this collection.
+
+238
+00:12:59,847 --> 00:13:04,351
+To make converting raw values into
+field values that createRecord can use,
+
+239
+00:13:04,384 --> 00:13:08,689
+I have a helper function called
+makeCoinFieldValues to do this.
+
+240
+00:13:08,722 --> 00:13:12,993
+For each raw property for my coin
+that I want to convert to field values,
+
+241
+00:13:13,026 --> 00:13:16,830
+I call the appropriate
+RecordFieldValue factory function.
+
+242
+00:13:16,864 --> 00:13:20,234
+For the country field, however,
+I need to create a reference.
+
+243
+00:13:20,267 --> 00:13:23,070
+I use the passed-in country
+record name to make a reference
+
+244
+00:13:23,103 --> 00:13:26,340
+from this coin record
+to the corresponding country record.
+
+245
+00:13:27,608 --> 00:13:31,612
+Here, I create a helper function
+that takes coin record field values
+
+246
+00:13:31,645 --> 00:13:34,982
+and sends the
+createRecord request to the server.
+
+247
+00:13:35,015 --> 00:13:37,918
+In this function,
+I'm passing the content of databaseArgs
+
+248
+00:13:37,951 --> 00:13:40,354
+declared earlier and a body.
+
+249
+00:13:40,387 --> 00:13:43,957
+The body dictionary contains
+the recordType and field values.
+
+250
+00:13:43,991 --> 00:13:47,694
+If successful,
+response.result.record is returned.
+
+251
+00:13:48,862 --> 00:13:51,999
+Before calling the helper function,
+I need to fetch the correct
+
+252
+00:13:52,032 --> 00:13:55,435
+country record that will be
+referenced from this coin.
+
+253
+00:13:55,469 --> 00:13:58,772
+I use the country query function
+defined earlier.
+
+254
+00:13:58,805 --> 00:14:03,810
+I then call coinCreateRecord by
+passing it a field values dictionary
+
+255
+00:14:03,844 --> 00:14:06,880
+which is created with the
+makeCoinFieldValues helper function
+
+256
+00:14:06,914 --> 00:14:08,682
+that I wrote earlier.
+
+257
+00:14:08,715 --> 00:14:11,952
+The raw coin values are passed
+to that helper function.
+
+258
+00:14:11,985 --> 00:14:15,622
+This will asynchronously create
+the record and return the new record.
+
+259
+00:14:17,157 --> 00:14:20,327
+To update a record,
+use the updateRecord method.
+
+260
+00:14:20,360 --> 00:14:24,431
+I create a helper function that
+updates a coin matching the record name
+
+261
+00:14:24,464 --> 00:14:27,201
+with the fields passed to this helper.
+
+262
+00:14:27,234 --> 00:14:32,139
+I then call updateRecord with the contents
+of the databaseArgs object, recordName,
+
+263
+00:14:32,172 --> 00:14:36,977
+and a body that contains the record type
+and the new record's field values.
+
+264
+00:14:37,010 --> 00:14:39,346
+If successful,
+the updated record will be in the
+
+265
+00:14:39,379 --> 00:14:44,084
+response.result.record property,
+which I return from the helper function.
+
+266
+00:14:45,319 --> 00:14:49,056
+To update the coin record I created
+earlier, I call this helper function
+
+267
+00:14:49,089 --> 00:14:52,759
+passing in its record name
+and field values to update.
+
+268
+00:14:52,793 --> 00:14:55,696
+The field values are created
+with makeCoinFieldValues.
+
+269
+00:14:57,030 --> 00:15:02,002
+To delete a record, I call the async
+deleteRecord method on the API object.
+
+270
+00:15:02,035 --> 00:15:04,338
+I pass in the contents of
+the databaseArgs object
+
+271
+00:15:04,371 --> 00:15:07,040
+as well as the recordName
+of the record to delete.
+
+272
+00:15:07,074 --> 00:15:10,310
+I hope you've enjoyed
+getting to know CKTool JS.
+
+273
+00:15:10,344 --> 00:15:12,145
+Try it out for yourself:
+
+274
+00:15:12,179 --> 00:15:16,016
+Configure CKTool JS for your automation
+and tooling purposes.
+
+275
+00:15:16,049 --> 00:15:17,818
+Reset and import your schemas
+
+276
+00:15:17,851 --> 00:15:20,487
+as well as read and write
+your data using JavaScript.
+
+277
+00:15:20,521 --> 00:15:24,157
+For usage of CKTool JS in
+continuous integration scenarios,
+
+278
+00:15:24,191 --> 00:15:27,060
+check out
+the CloudKit sample repo on GitHub.
+
+279
+00:15:27,094 --> 00:15:32,633
+And for more detailed documentation, check
+out CKTool JS on developer.apple.com.
+
+280
+00:15:32,666 --> 00:15:37,037
+Thanks for joining me today,
+and enjoy the rest of WWDC22.
+

@@ -1,0 +1,1060 @@
+1
+00:00:00,334 --> 00:00:06,340
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,710 --> 00:00:11,612
+Hi, my name's Philippe.
+
+3
+00:00:11,645 --> 00:00:15,148
+Swift has a growing catalog
+of open source packages.
+
+4
+00:00:15,182 --> 00:00:18,352
+I am pleased to introduce you to one
+of the newest additions:
+
+5
+00:00:18,385 --> 00:00:20,354
+Swift Async Algorithms.
+
+6
+00:00:20,387 --> 00:00:23,090
+This package is
+alongside the other packages,
+
+7
+00:00:23,123 --> 00:00:26,493
+like Swift Collections
+and Swift Algorithms.
+
+8
+00:00:26,527 --> 00:00:29,997
+The Swift Async Algorithms package
+is a set of algorithms
+
+9
+00:00:30,030 --> 00:00:35,435
+specifically focused on processing values
+over time using AsyncSequence.
+
+10
+00:00:35,469 --> 00:00:37,171
+But before we get into it,
+
+11
+00:00:37,204 --> 00:00:40,207
+let's take a brief moment
+to recap AsyncSequence.
+
+12
+00:00:40,240 --> 00:00:43,644
+AsyncSequence is a protocol
+that lets you describe values
+
+13
+00:00:43,677 --> 00:00:45,612
+produced asynchronously.
+
+14
+00:00:45,646 --> 00:00:50,817
+Basically, it's just like Sequence,
+but has two key differences.
+
+15
+00:00:50,851 --> 00:00:54,288
+The next function
+from its iterator is asynchronous,
+
+16
+00:00:54,321 --> 00:00:58,325
+being that it can deliver values
+using Swift concurrency.
+
+17
+00:00:58,358 --> 00:01:03,297
+It also lets you handle any potential
+failures using Swift's throw effect.
+
+18
+00:01:03,330 --> 00:01:06,233
+And just like sequence,
+you can iterate it,
+
+19
+00:01:06,266 --> 00:01:09,002
+using the for-await-in syntax.
+
+20
+00:01:09,036 --> 00:01:11,905
+In short, if you know how to use Sequence,
+
+21
+00:01:11,939 --> 00:01:15,409
+you already know how to use AsyncSequence.
+
+22
+00:01:15,442 --> 00:01:19,847
+Now, when AsyncSequence was introduced,
+we added in almost all the tools
+
+23
+00:01:19,880 --> 00:01:23,984
+you would expect to find with Sequence
+right there with the async versions.
+
+24
+00:01:24,017 --> 00:01:29,990
+You have algorithms like map,
+filter, reduce, and more.
+
+25
+00:01:30,023 --> 00:01:33,861
+The Swift Async Algorithms package
+takes this a step further
+
+26
+00:01:33,894 --> 00:01:37,664
+by incorporating more advanced algorithms,
+as well as interoperating
+
+27
+00:01:37,698 --> 00:01:41,535
+with clocks to give you
+some really powerful stuff.
+
+28
+00:01:41,568 --> 00:01:45,305
+This is an open source package
+of AsyncSequence algorithms
+
+29
+00:01:45,339 --> 00:01:48,008
+that augment Swift concurrency.
+
+30
+00:01:48,041 --> 00:01:51,011
+Last year we introduced
+the Swift Algorithms package.
+
+31
+00:01:51,044 --> 00:01:53,680
+To demonstrate the uses
+of those algorithms,
+
+32
+00:01:53,714 --> 00:01:55,115
+we made a messaging app.
+
+33
+00:01:55,148 --> 00:01:58,485
+This was a great example of some
+of the rich and powerful things
+
+34
+00:01:58,519 --> 00:02:00,454
+you can do with that package.
+
+35
+00:02:00,487 --> 00:02:03,457
+We decided there were a number
+of really good opportunities
+
+36
+00:02:03,490 --> 00:02:07,661
+to take advantage of migrating the app
+to use Swift concurrency.
+
+37
+00:02:07,694 --> 00:02:10,998
+To highlight just a few
+of the asynchronous algorithms,
+
+38
+00:02:11,031 --> 00:02:13,834
+I'm gonna take you through some
+of the things that we used
+
+39
+00:02:13,867 --> 00:02:16,036
+and how they work.
+
+40
+00:02:16,069 --> 00:02:18,972
+First off, we have a family
+of algorithms for working
+
+41
+00:02:19,006 --> 00:02:21,675
+with multiple input AsyncSequences.
+
+42
+00:02:21,708 --> 00:02:27,581
+These are algorithms focused on combining
+AsyncSequences together in different ways.
+
+43
+00:02:27,614 --> 00:02:30,083
+But they all share one characteristic:
+
+44
+00:02:30,117 --> 00:02:35,822
+They take multiple input AsyncSequences
+and produce one output AsyncSequence.
+
+45
+00:02:36,857 --> 00:02:40,260
+One you might
+already be familiar with is Zip.
+
+46
+00:02:40,294 --> 00:02:44,064
+The Zip algorithm takes
+multiple inputs and iterates them
+
+47
+00:02:44,097 --> 00:02:48,101
+such that it produces a tuple
+of the results from each of the bases.
+
+48
+00:02:48,135 --> 00:02:52,539
+Each of the inputs to Zip are the bases
+that the Zip is constructed from.
+
+49
+00:02:52,573 --> 00:02:56,276
+The asynchronous Zip algorithm works
+just like the Zip algorithm
+
+50
+00:02:56,310 --> 00:02:57,744
+in the standard library,
+
+51
+00:02:57,778 --> 00:03:00,347
+but it iterates each
+of the bases concurrently
+
+52
+00:03:00,380 --> 00:03:04,785
+and rethrows errors if a failure occurs
+on iterating any of them.
+
+53
+00:03:04,818 --> 00:03:07,187
+Now, accomplishing
+that concurrent iteration
+
+54
+00:03:07,221 --> 00:03:10,424
+with rethrowing errors
+can be rather involved.
+
+55
+00:03:10,457 --> 00:03:13,460
+But the Swift Async Algorithms package
+took care of all of that
+
+56
+00:03:13,493 --> 00:03:15,629
+for us in our messaging app.
+
+57
+00:03:15,662 --> 00:03:17,297
+We previously had a lot of code
+
+58
+00:03:17,331 --> 00:03:19,900
+coordinating asynchronously
+generating previews
+
+59
+00:03:19,933 --> 00:03:22,469
+of video recordings
+and transcoding video
+
+60
+00:03:22,503 --> 00:03:26,673
+into multiple sizes for efficient storage
+and transmission.
+
+61
+00:03:26,707 --> 00:03:31,211
+By using Zip we can ensure
+that the transcoded video gets a preview
+
+62
+00:03:31,245 --> 00:03:33,213
+when we send it off to the server.
+
+63
+00:03:33,247 --> 00:03:36,416
+Since Zip is concurrent,
+neither the transcoding
+
+64
+00:03:36,450 --> 00:03:39,152
+or the preview will delay each other.
+
+65
+00:03:39,186 --> 00:03:40,988
+But this goes a bit further.
+
+66
+00:03:41,021 --> 00:03:43,924
+Zip itself has no preference on which side
+
+67
+00:03:43,957 --> 00:03:48,095
+produced a value first or not,
+so a video could be produced first
+
+68
+00:03:48,128 --> 00:03:51,098
+or a preview,
+and no matter which side it is,
+
+69
+00:03:51,131 --> 00:03:54,968
+it will await for the other
+to send a complete tuple.
+
+70
+00:03:55,002 --> 00:03:58,505
+We can await the pairs
+such that they can be uploaded together
+
+71
+00:03:58,539 --> 00:04:04,044
+because Zip awaits each side concurrently
+to construct a tuple of the values.
+
+72
+00:04:04,077 --> 00:04:07,714
+We came to the conclusion
+that modeling our incoming messages
+
+73
+00:04:07,748 --> 00:04:10,717
+as an AsyncSequence
+made a lot of sense.
+
+74
+00:04:10,751 --> 00:04:14,421
+So we decided to use AsyncStream
+to handle those messages
+
+75
+00:04:14,454 --> 00:04:17,157
+since it preserves order
+and turns our callbacks
+
+76
+00:04:17,191 --> 00:04:20,093
+into an AsyncSequence of messages.
+
+77
+00:04:20,127 --> 00:04:23,130
+One of the requested features
+we needed to tackle is
+
+78
+00:04:23,163 --> 00:04:25,532
+that we wanted
+to support multiple accounts.
+
+79
+00:04:25,566 --> 00:04:30,304
+So each account creates an AsyncStream
+of incoming messages,
+
+80
+00:04:30,337 --> 00:04:31,939
+but when implementing this,
+
+81
+00:04:31,972 --> 00:04:36,844
+we need to handle them all together
+as one singular AsyncSequence.
+
+82
+00:04:36,877 --> 00:04:41,715
+This means we needed an algorithm
+for merging those AsyncSequences together.
+
+83
+00:04:41,748 --> 00:04:47,421
+Thankfully the Swift Async Algorithms
+package has an algorithm for exactly that,
+
+84
+00:04:47,454 --> 00:04:49,957
+aptly named "Merge."
+
+85
+00:04:49,990 --> 00:04:54,194
+It works similarly to Zip in the regards
+that it concurrently iterates
+
+86
+00:04:54,228 --> 00:04:58,565
+multiple AsyncSequences.
+But instead of creating paired tuples,
+
+87
+00:04:58,599 --> 00:05:01,735
+it requires the bases
+to share the same element type
+
+88
+00:05:01,768 --> 00:05:04,137
+and merges the base AsyncSequences
+
+89
+00:05:04,171 --> 00:05:08,141
+into one singular AsyncSequence
+of those elements.
+
+90
+00:05:08,175 --> 00:05:12,346
+Merge works by taking
+the first element produced by any
+
+91
+00:05:12,379 --> 00:05:13,914
+of the sides when iterated.
+
+92
+00:05:13,947 --> 00:05:18,318
+It keeps iterating until there
+are no more values that could be produced,
+
+93
+00:05:18,352 --> 00:05:23,357
+specifically when all base AsyncSequences
+return nil from their iterator.
+
+94
+00:05:23,390 --> 00:05:27,861
+If any of the bases produces an error,
+the other iterations are cancelled.
+
+95
+00:05:27,895 --> 00:05:33,400
+This lets us take the AsyncSequences
+of messages and merge them.
+
+96
+00:05:33,433 --> 00:05:38,338
+These combining algorithms work
+concurrently on when values are produced,
+
+97
+00:05:38,372 --> 00:05:43,076
+but sometimes it is useful to
+actually interact with time itself.
+
+98
+00:05:43,110 --> 00:05:47,481
+The Swift Async Algorithms package
+brings in a family of algorithms
+
+99
+00:05:47,514 --> 00:05:51,919
+to work with time by leveraging
+the new Clock API in Swift.
+
+100
+00:05:51,952 --> 00:05:55,455
+Time itself can be
+a really complex subject,
+
+101
+00:05:55,489 --> 00:05:58,959
+and new in Swift (5.7) are a set of APIs
+
+102
+00:05:58,992 --> 00:06:01,495
+to make that safe and consistent:
+
+103
+00:06:01,528 --> 00:06:04,565
+Clock, Instant, and Duration.
+
+104
+00:06:06,433 --> 00:06:09,236
+The Clock protocol defines two primitives,
+
+105
+00:06:09,269 --> 00:06:11,605
+a way to wake up after a given instant
+
+106
+00:06:11,638 --> 00:06:13,740
+and a way to produce a concept of now.
+
+107
+00:06:13,774 --> 00:06:15,876
+There are a few built in clocks.
+
+108
+00:06:15,909 --> 00:06:17,811
+Two of the more common ones are
+
+109
+00:06:17,845 --> 00:06:20,280
+the ContinuousClock
+and the SuspendingClock.
+
+110
+00:06:20,314 --> 00:06:24,885
+You can use the ContinuousClock
+to measure time just like a stopwatch,
+
+111
+00:06:24,918 --> 00:06:28,655
+where time progresses no matter
+the state of the thing being measured.
+
+112
+00:06:28,689 --> 00:06:32,593
+The SuspendingClock, on the other hand,
+does what its name implies;
+
+113
+00:06:32,626 --> 00:06:35,462
+it suspends
+when the machine is put to sleep.
+
+114
+00:06:35,495 --> 00:06:40,400
+We used the new clock API in our app
+to migrate from existing callback events
+
+115
+00:06:40,434 --> 00:06:45,672
+to clock sleep function to handle
+dismissing alerts after a deadline.
+
+116
+00:06:45,706 --> 00:06:49,943
+We were able to create the deadline
+by adding a duration value
+
+117
+00:06:49,977 --> 00:06:55,249
+that indicated specifically the number
+of seconds we wanted to delay.
+
+118
+00:06:55,282 --> 00:06:58,785
+Clock also has some handy methods
+to measure the elapsed duration
+
+119
+00:06:58,819 --> 00:07:00,454
+of execution of work.
+
+120
+00:07:00,487 --> 00:07:03,891
+Here we have those two common clocks
+I mentioned earlier,
+
+121
+00:07:03,924 --> 00:07:06,493
+the SuspendingClock
+and ContinuousClock.
+
+122
+00:07:07,494 --> 00:07:09,363
+Below are displays showing
+
+123
+00:07:09,396 --> 00:07:11,031
+the potential elapsed duration
+
+124
+00:07:11,064 --> 00:07:12,699
+of work being measured.
+
+125
+00:07:12,733 --> 00:07:16,170
+The key difference
+between these two clocks
+
+126
+00:07:16,203 --> 00:07:19,373
+comes from its behavior
+when the machine is asleep.
+
+127
+00:07:20,440 --> 00:07:24,244
+For long running work like these,
+the work can be paused,
+
+128
+00:07:24,278 --> 00:07:25,812
+just as we did here,
+
+129
+00:07:25,846 --> 00:07:30,083
+but when we resume the execution,
+
+130
+00:07:30,117 --> 00:07:32,286
+the ContinuousClock has progressed
+
+131
+00:07:32,319 --> 00:07:33,887
+while the machine was asleep,
+
+132
+00:07:33,921 --> 00:07:36,390
+but the SuspendingClock did not.
+
+133
+00:07:36,423 --> 00:07:39,426
+Commonly, this difference
+can be the key detail
+
+134
+00:07:39,459 --> 00:07:42,829
+to make sure things like animations
+work as expected
+
+135
+00:07:42,863 --> 00:07:45,999
+by suspending the timing of the execution.
+
+136
+00:07:46,033 --> 00:07:49,536
+If you need to interact with time
+in relation to the machine,
+
+137
+00:07:49,570 --> 00:07:52,873
+like for animations,
+use the SuspendingClock.
+
+138
+00:07:53,907 --> 00:07:57,110
+Measuring tasks in relation
+to the human in front of the device
+
+139
+00:07:57,144 --> 00:07:59,813
+is better suited for the ContinuousClock.
+
+140
+00:07:59,847 --> 00:08:03,116
+So if you need to delay
+by an absolute duration,
+
+141
+00:08:03,150 --> 00:08:07,788
+something relative to humans,
+use the ContinuousClock.
+
+142
+00:08:07,821 --> 00:08:12,292
+The Swift Async Algorithms package
+uses these new Clock, Instant,
+
+143
+00:08:12,326 --> 00:08:16,263
+and Duration types to build
+generic algorithms for dealing
+
+144
+00:08:16,296 --> 00:08:21,001
+with many of the concepts of how events
+are processed with regards to time.
+
+145
+00:08:21,034 --> 00:08:24,404
+In our messaging app,
+we found these really helpful
+
+146
+00:08:24,438 --> 00:08:27,508
+for providing precise control over events.
+
+147
+00:08:27,541 --> 00:08:32,412
+It let us rate limit interactions
+and efficiently buffer messages.
+
+148
+00:08:33,347 --> 00:08:36,483
+Perhaps the most prominent area
+that we utilized time
+
+149
+00:08:36,517 --> 00:08:38,352
+was searching messages.
+
+150
+00:08:38,385 --> 00:08:42,289
+We created a controller
+that manages a channel of results.
+
+151
+00:08:42,322 --> 00:08:47,661
+The channel marshals search results
+from the search task back to our UI.
+
+152
+00:08:47,694 --> 00:08:51,598
+The search task itself needed
+to have some specific characteristics
+
+153
+00:08:51,632 --> 00:08:53,333
+with regards to time.
+
+154
+00:08:53,367 --> 00:08:58,105
+We wanted to make sure to rate limit
+searching sent messages on the server.
+
+155
+00:08:59,740 --> 00:09:03,177
+The algorithm Debounce
+awaits a quiescence period
+
+156
+00:09:03,210 --> 00:09:06,547
+before it emits the next values
+when iterated.
+
+157
+00:09:06,580 --> 00:09:10,784
+It means that events can come in fast,
+but we want to make sure to wait
+
+158
+00:09:10,817 --> 00:09:14,588
+for a quiet period
+before dealing with values.
+
+159
+00:09:14,621 --> 00:09:18,025
+When user input from a search field
+is changed rapidly,
+
+160
+00:09:18,058 --> 00:09:19,793
+we don't want the search controller
+
+161
+00:09:19,826 --> 00:09:22,796
+to fire off a search request
+for each change.
+
+162
+00:09:22,829 --> 00:09:26,133
+Instead, we want to make sure
+to wait for a quiet period
+
+163
+00:09:26,166 --> 00:09:29,670
+when we're certain typing was likely
+to be done.
+
+164
+00:09:29,703 --> 00:09:33,740
+By default, the Debounce algorithm
+will use the ContinuousClock.
+
+165
+00:09:33,774 --> 00:09:37,077
+In this case, we can debounce
+the input such that it awaits
+
+166
+00:09:37,110 --> 00:09:40,581
+a specified duration
+while nothing has occurred.
+
+167
+00:09:40,614 --> 00:09:43,951
+Clocks and durations are
+not just used for debouncing,
+
+168
+00:09:43,984 --> 00:09:46,420
+but they're used
+for other algorithms too.
+
+169
+00:09:46,453 --> 00:09:49,122
+One area that we found
+that was really useful
+
+170
+00:09:49,156 --> 00:09:52,626
+was sending batches
+of messages to the server.
+
+171
+00:09:52,659 --> 00:09:54,795
+In the Swift algorithms package,
+
+172
+00:09:54,828 --> 00:09:57,998
+there's a set
+of algorithms to chunk values.
+
+173
+00:09:58,031 --> 00:10:01,034
+The Swift Async Algorithms package
+offers those,
+
+174
+00:10:01,068 --> 00:10:03,003
+but also adds a set of versions
+
+175
+00:10:03,036 --> 00:10:06,406
+that interoperate
+with clocks and durations.
+
+176
+00:10:06,440 --> 00:10:10,244
+The family of chunking algorithms allow
+for control over chunks by count,
+
+177
+00:10:10,277 --> 00:10:12,713
+by time, or by content.
+
+178
+00:10:12,746 --> 00:10:16,517
+If an error occurs in any of these,
+that error is rethrown,
+
+179
+00:10:16,550 --> 00:10:19,853
+so our code is safe
+when it comes to failures.
+
+180
+00:10:20,821 --> 00:10:24,691
+We used the "chunked(by:)" API
+to ensure that chunks of messages
+
+181
+00:10:24,725 --> 00:10:28,529
+are serialized and sent off
+by a certain elapsed duration.
+
+182
+00:10:28,562 --> 00:10:33,667
+That way, our server gets
+efficient packets sent from the clients.
+
+183
+00:10:33,700 --> 00:10:37,037
+We were able to use this API
+to build batches of messages
+
+184
+00:10:37,070 --> 00:10:39,506
+every 500 milliseconds.
+
+185
+00:10:39,540 --> 00:10:43,777
+That way, if someone's really excited
+and typing really fast,
+
+186
+00:10:43,810 --> 00:10:47,014
+the requests sent
+to the server are grouped up.
+
+187
+00:10:47,047 --> 00:10:49,783
+When working with collections
+and sequence,
+
+188
+00:10:49,816 --> 00:10:54,621
+it's often useful and performant
+to lazily process elements.
+
+189
+00:10:54,655 --> 00:10:58,559
+AsyncSequence works much
+like how the lazy algorithms work
+
+190
+00:10:58,592 --> 00:11:00,794
+in the Swift standard library.
+
+191
+00:11:00,827 --> 00:11:04,831
+But just like those lazy algorithms,
+there are often times where you need
+
+192
+00:11:04,865 --> 00:11:08,202
+to move back
+into the world of collections.
+
+193
+00:11:08,235 --> 00:11:12,005
+The Swift Async Algorithms package
+offers a set of initializers
+
+194
+00:11:12,039 --> 00:11:15,342
+for constructing collections
+using AsyncSequence.
+
+195
+00:11:15,375 --> 00:11:19,246
+These let you build up dictionaries,
+sets, or arrays
+
+196
+00:11:19,279 --> 00:11:23,183
+with input AsyncSequences
+that are known to be finite.
+
+197
+00:11:23,217 --> 00:11:26,820
+The collection initializers
+let us build in conversions
+
+198
+00:11:26,854 --> 00:11:31,825
+right into our initialization of messages
+and keep our data types as Array.
+
+199
+00:11:31,859 --> 00:11:34,962
+This was really useful
+since we had numerous features
+
+200
+00:11:34,995 --> 00:11:38,398
+that really could use some updating
+to use Swift concurrency.
+
+201
+00:11:38,432 --> 00:11:41,268
+And by keeping
+our existing data structures,
+
+202
+00:11:41,301 --> 00:11:44,304
+we can migrate parts
+of our app incrementally
+
+203
+00:11:44,338 --> 00:11:46,974
+and where it makes sense.
+
+204
+00:11:47,007 --> 00:11:49,910
+So far,
+we've just gone over just a handful
+
+205
+00:11:49,943 --> 00:11:52,579
+of the highlights
+of Swift Async Algorithms package.
+
+206
+00:11:52,613 --> 00:11:54,047
+There are a whole lot more
+
+207
+00:11:54,081 --> 00:11:55,849
+than just what we've covered today.
+
+208
+00:11:55,883 --> 00:12:01,855
+We have algorithms ranging
+from combining multiple AsyncSequences,
+
+209
+00:12:01,889 --> 00:12:05,425
+rate limiting by time,
+
+210
+00:12:05,459 --> 00:12:08,061
+breaking things into chunks,
+
+211
+00:12:08,095 --> 00:12:10,764
+but those were just the highlights
+that we ended up
+
+212
+00:12:10,797 --> 00:12:13,233
+using extensively in our app.
+
+213
+00:12:13,267 --> 00:12:16,436
+This package has a lot more
+than just those.
+
+214
+00:12:16,470 --> 00:12:19,139
+It ranges from buffering,
+
+215
+00:12:19,173 --> 00:12:23,610
+reducing, joining,
+
+216
+00:12:23,644 --> 00:12:27,848
+to injecting values intermittently,
+and more.
+
+217
+00:12:27,881 --> 00:12:31,818
+The Swift Async Algorithms package
+takes the set of algorithms
+
+218
+00:12:31,852 --> 00:12:35,889
+for dealing with things over time
+and expands it to a wide range
+
+219
+00:12:35,923 --> 00:12:39,526
+of advanced functionality
+that can help you in your apps.
+
+220
+00:12:39,560 --> 00:12:40,928
+Try it out.
+
+221
+00:12:40,961 --> 00:12:44,198
+We're really excited
+to discover what you build with these,
+
+222
+00:12:44,231 --> 00:12:46,400
+and that excitement is shared.
+
+223
+00:12:46,433 --> 00:12:50,437
+This package is being developed
+in the open with you.
+
+224
+00:12:50,470 --> 00:12:53,173
+Thanks for watching,
+and enjoy the rest of the conference.
+
+225
+00:12:53,207 --> 00:12:58,345
+♪ instrumental hip hop music ♪
+

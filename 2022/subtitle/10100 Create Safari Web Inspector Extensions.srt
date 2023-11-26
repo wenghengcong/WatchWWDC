@@ -1,0 +1,1347 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:13,080
+Hello, I'm Devin Rousso,
+an engineer on the WebKit team,
+
+3
+00:00:13,113 --> 00:00:16,250
+and I'm here today to share with you
+the exciting new opportunity
+
+4
+00:00:16,283 --> 00:00:19,186
+to create extensions
+for Safari's Web Inspector.
+
+5
+00:00:19,219 --> 00:00:22,589
+Web Inspector is the primary
+developer tool for debugging web content
+
+6
+00:00:22,623 --> 00:00:24,791
+on all of Apple's platforms.
+
+7
+00:00:24,825 --> 00:00:29,162
+It already has a ton of built-in
+functionality for debugging websites,
+
+8
+00:00:29,196 --> 00:00:31,231
+but there are often areas
+of web development
+
+9
+00:00:31,265 --> 00:00:35,102
+that are difficult to build into
+a generalized developer tool.
+
+10
+00:00:35,135 --> 00:00:38,038
+Maybe you're debugging
+a popular JavaScript library,
+
+11
+00:00:38,071 --> 00:00:41,375
+or you just need something more specific
+to what you're working on.
+
+12
+00:00:41,408 --> 00:00:44,077
+Web Inspector extensions
+are a fantastic solution
+
+13
+00:00:44,111 --> 00:00:46,313
+for these personal workflow scenarios.
+
+14
+00:00:47,381 --> 00:00:51,818
+By utilizing cross-browser web extensions
+and the DevTools APIs,
+
+15
+00:00:51,852 --> 00:00:56,456
+you can now add your own tabs
+in Web Inspector in Safari 16.
+
+16
+00:00:56,490 --> 00:00:59,793
+Let's take a quick look
+at a Web Inspector extension in action,
+
+17
+00:00:59,826 --> 00:01:02,162
+and then I'll show you
+how you can build your own.
+
+18
+00:01:02,196 --> 00:01:05,265
+First I'll open Safari's
+extension preferences.
+
+19
+00:01:07,701 --> 00:01:10,070
+And enable a Web Inspector extension.
+
+20
+00:01:10,103 --> 00:01:13,807
+Then I'll close Safari's extension
+preferences and inspect the page.
+
+21
+00:01:15,409 --> 00:01:19,046
+I'll do that from the Develop menu,
+Show Web Inspector.
+
+22
+00:01:19,079 --> 00:01:22,416
+In Web Inspector,
+not only can I see the many built-in tabs
+
+23
+00:01:22,449 --> 00:01:23,951
+like the Elements Tab,
+
+24
+00:01:23,984 --> 00:01:28,121
+but also the tab for the Web Inspector
+extension I just enabled.
+
+25
+00:01:28,155 --> 00:01:30,591
+Because we've just enabled
+this extension, however,
+
+26
+00:01:30,624 --> 00:01:34,628
+we first have to give it permission
+to work with the currently inspected page.
+
+27
+00:01:34,661 --> 00:01:37,965
+I have the same permission
+duration options as other extensions
+
+28
+00:01:37,998 --> 00:01:39,700
+outside of Web Inspector,
+
+29
+00:01:39,733 --> 00:01:42,336
+so for now
+let's give it access for one day.
+
+30
+00:01:42,369 --> 00:01:45,839
+This Open Graph extension is
+what I'll be building in this session.
+
+31
+00:01:45,873 --> 00:01:49,810
+It displays the common social media
+metadata that most websites put
+
+32
+00:01:49,843 --> 00:01:52,012
+on their pages
+for use by link previews
+
+33
+00:01:52,045 --> 00:01:54,882
+in Messages and other social media sites.
+
+34
+00:01:54,915 --> 00:01:58,552
+Now that we've gotten a quick look
+at what a Web Inspector extension can do,
+
+35
+00:01:58,585 --> 00:02:00,687
+let's talk about how they're built.
+
+36
+00:02:00,721 --> 00:02:03,757
+Like other Safari Web Extensions,
+Web Inspector extensions
+
+37
+00:02:03,790 --> 00:02:06,527
+are distributed via an app
+in the App Store.
+
+38
+00:02:07,961 --> 00:02:11,798
+To build your own Web Inspector extension,
+you will need to have Xcode,
+
+39
+00:02:11,832 --> 00:02:15,936
+Apple's app creation tool
+for building Mac and iOS apps.
+
+40
+00:02:15,969 --> 00:02:19,273
+Xcode also comes with project templates
+to help jumpstart
+
+41
+00:02:19,306 --> 00:02:21,408
+making a new Safari extension app.
+
+42
+00:02:21,441 --> 00:02:23,777
+If you already have
+an existing web extension
+
+43
+00:02:23,810 --> 00:02:25,512
+you've created for another browser,
+
+44
+00:02:25,546 --> 00:02:28,815
+you can also use
+Xcode's bundled conversion tool.
+
+45
+00:02:28,849 --> 00:02:32,219
+Simply run safari-web-extension-converter
+from the Terminal,
+
+46
+00:02:32,252 --> 00:02:34,621
+passing a path
+to your extension's directory
+
+47
+00:02:34,655 --> 00:02:37,491
+that contains the manifest.json file.
+
+48
+00:02:37,524 --> 00:02:40,527
+A full app project will then be created
+for your extension
+
+49
+00:02:40,561 --> 00:02:42,029
+that is ready to build and run.
+
+50
+00:02:43,197 --> 00:02:44,932
+For more information on this tool,
+
+51
+00:02:44,965 --> 00:02:48,836
+check out Meet Safari Web Extensions
+from WWDC 2020,
+
+52
+00:02:48,869 --> 00:02:50,971
+as well as the online documentation.
+
+53
+00:02:51,004 --> 00:02:56,476
+So today I'm going to go over the basic
+structure of a Web Inspector extension,
+
+54
+00:02:56,510 --> 00:03:00,147
+cover how to best evaluate code
+in that extension,
+
+55
+00:03:00,180 --> 00:03:03,650
+and discuss some good
+best practices for your users.
+
+56
+00:03:03,684 --> 00:03:05,118
+Let's get started.
+
+57
+00:03:06,653 --> 00:03:11,024
+Web Inspector extensions are structured
+just like other Safari Web Extensions,
+
+58
+00:03:11,058 --> 00:03:14,928
+with a toolbar icon, background page,
+content scripts, and more,
+
+59
+00:03:14,962 --> 00:03:18,432
+but they also have
+a dedicated devtools background page.
+
+60
+00:03:18,465 --> 00:03:21,068
+Let's take a look at how that works
+in practice.
+
+61
+00:03:21,101 --> 00:03:23,403
+The structure
+of a typical Safari Web Extension
+
+62
+00:03:23,437 --> 00:03:26,473
+begins with a manifest file
+that declares the basic details
+
+63
+00:03:26,507 --> 00:03:30,944
+about the extension, like the name,
+icons, descriptions, and more.
+
+64
+00:03:30,978 --> 00:03:34,882
+It can declare a background page
+to handle all the behind-the-scenes logic
+
+65
+00:03:34,915 --> 00:03:36,450
+of your extension,
+
+66
+00:03:36,483 --> 00:03:40,287
+and can also declare any content scripts
+used to inject functionality
+
+67
+00:03:40,320 --> 00:03:43,790
+into web pages visited by the user.
+
+68
+00:03:43,824 --> 00:03:47,794
+For Web Inspector extensions,
+a couple other pages enter the mix.
+
+69
+00:03:47,828 --> 00:03:50,898
+First there is a required
+devtools background page
+
+70
+00:03:50,931 --> 00:03:54,401
+for the behind-the-scenes logic
+of your Web Inspector extension.
+
+71
+00:03:54,434 --> 00:03:58,338
+This page has access
+to the unique devtools APIs
+
+72
+00:03:58,372 --> 00:04:01,775
+and only a limited set
+of content script APIs.
+
+73
+00:04:01,808 --> 00:04:06,113
+From this devtools background page
+you can create devtools tab pages
+
+74
+00:04:06,146 --> 00:04:08,215
+that will be shown in Web Inspector.
+
+75
+00:04:08,248 --> 00:04:11,485
+But all of that is just for
+a single Web Inspector.
+
+76
+00:04:11,518 --> 00:04:15,422
+If there are multiple Web Inspectors,
+each has its own instance
+
+77
+00:04:15,455 --> 00:04:17,758
+of this same devtools background page,
+
+78
+00:04:17,791 --> 00:04:21,762
+staying alive for the duration
+that the related Web Inspector is open.
+
+79
+00:04:21,795 --> 00:04:24,932
+As such,
+you might also have multiple instances
+
+80
+00:04:24,965 --> 00:04:27,701
+of each devtools tab page as well.
+
+81
+00:04:27,734 --> 00:04:30,103
+Let's take a look
+at how this structure looks in practice,
+
+82
+00:04:30,137 --> 00:04:33,607
+and start building my Open Graph
+Web Inspector extension.
+
+83
+00:04:34,708 --> 00:04:37,544
+I'll start by creating a new project
+in Xcode.
+
+84
+00:04:41,081 --> 00:04:45,219
+The project type I'm going to create
+is a Safari Extension App.
+
+85
+00:04:45,252 --> 00:04:48,755
+I only really need macOS,
+but I'm going to leave it as is,
+
+86
+00:04:48,789 --> 00:04:52,392
+in multiplatform, in case I want to add
+iOS functionality in the future.
+
+87
+00:04:52,426 --> 00:04:56,496
+I'm going to name this "Open Graph",
+and keep the rest of the defaults.
+
+88
+00:04:56,530 --> 00:05:00,300
+Note that you need to pick a team
+and bundle identifier
+
+89
+00:05:00,334 --> 00:05:02,970
+based on the Apple developer account
+you're using.
+
+90
+00:05:03,003 --> 00:05:05,672
+And finally,
+I'm going to save this on the Desktop.
+
+91
+00:05:07,474 --> 00:05:11,979
+Now I have a generic Safari Web Extension
+project, ready for me to modify.
+
+92
+00:05:12,012 --> 00:05:14,681
+I am first taken
+to the manifest.json file,
+
+93
+00:05:14,715 --> 00:05:18,151
+which is the root configuration file
+for every web extension.
+
+94
+00:05:18,185 --> 00:05:22,422
+The manifest file references the other
+resources that make up your extension–
+
+95
+00:05:22,456 --> 00:05:26,693
+localizations, images,
+pages, scripts, styles, and more.
+
+96
+00:05:26,727 --> 00:05:30,330
+For my Web Inspector extension,
+I won't need some of these files,
+
+97
+00:05:30,364 --> 00:05:33,867
+like the background page,
+content scripts, or popup,
+
+98
+00:05:33,901 --> 00:05:36,303
+so I'm going to delete them from
+the manifest
+
+99
+00:05:36,336 --> 00:05:38,772
+and from the entire project.
+
+100
+00:05:42,543 --> 00:05:46,313
+Okay, let's start making this
+a Web Inspector extension.
+
+101
+00:05:46,346 --> 00:05:50,184
+To do that I need to add
+a devtools background page to the manifest
+
+102
+00:05:50,217 --> 00:05:52,386
+and create a corresponding file for it,
+
+103
+00:05:52,419 --> 00:05:55,722
+as well as a JavaScript file
+I'm going to use inside it.
+
+104
+00:05:55,756 --> 00:05:58,926
+I'm going to go to File - New - File...
+
+105
+00:06:01,762 --> 00:06:04,765
+And scroll down
+to find the Empty file template.
+
+106
+00:06:12,773 --> 00:06:16,176
+I'm going to call this file
+"devtools_background.html"
+
+107
+00:06:16,210 --> 00:06:18,679
+to match the name I used in the manifest.
+
+108
+00:06:20,848 --> 00:06:24,318
+The location is already set
+to be right next to my other resources
+
+109
+00:06:24,351 --> 00:06:28,589
+and part of the correct targets,
+so I don't need to change anything here.
+
+110
+00:06:31,325 --> 00:06:35,329
+I'll repeat the same steps again
+with the JavaScript file...
+
+111
+00:06:40,968 --> 00:06:44,338
+…which I'll call "devtools_background.js".
+
+112
+00:06:48,375 --> 00:06:52,679
+Finally, I need to include the JavaScript
+file in my devtools background page.
+
+113
+00:06:54,314 --> 00:06:57,985
+Remember, this page gets created
+when Web Inspector opens,
+
+114
+00:06:58,018 --> 00:07:02,189
+and is responsible for creating the custom
+tabs that appear in Web Inspector.
+
+115
+00:07:02,222 --> 00:07:04,191
+I almost always want to create a tab
+
+116
+00:07:04,224 --> 00:07:07,294
+so that, if needed,
+the permissions I saw earlier
+
+117
+00:07:07,327 --> 00:07:09,997
+will be displayed to my users
+right there in-line,
+
+118
+00:07:10,030 --> 00:07:11,598
+instead of in some other place.
+
+119
+00:07:11,632 --> 00:07:15,502
+This devtools panels create API
+takes three simple arguments.
+
+120
+00:07:15,536 --> 00:07:18,539
+The first is the name of the tab.
+
+121
+00:07:18,572 --> 00:07:21,074
+For that,
+I am using the localization method
+
+122
+00:07:21,108 --> 00:07:23,977
+to look up the localized name
+of my extension.
+
+123
+00:07:24,011 --> 00:07:26,947
+The next argument is the icon path to use.
+
+124
+00:07:26,980 --> 00:07:31,018
+Note that this should be a vector image
+to smoothly scale to any size
+
+125
+00:07:31,051 --> 00:07:33,921
+if the user chooses
+to zoom their user interface.
+
+126
+00:07:33,954 --> 00:07:37,758
+But in order to use this icon, I need to
+make sure it's part of my project,
+
+127
+00:07:37,791 --> 00:07:40,827
+along with all of the other icons
+I need for my extension.
+
+128
+00:07:40,861 --> 00:07:44,965
+The icons in the "images" folder are still
+the defaults from the project template.
+
+129
+00:07:44,998 --> 00:07:47,534
+So let's delete these from the project.
+
+130
+00:07:50,838 --> 00:07:53,373
+And replace them with some icons
+I created earlier...
+
+131
+00:07:57,277 --> 00:08:02,115
+…including the "logo.svg" I am trying to
+use when creating the devtools tab.
+
+132
+00:08:04,751 --> 00:08:08,522
+Now that this is here, I'll go back
+to the devtools background script.
+
+133
+00:08:10,624 --> 00:08:14,595
+The third argument is the HTML used
+by the tab in Web Inspector.
+
+134
+00:08:14,628 --> 00:08:16,496
+And just like
+with the images a moment ago,
+
+135
+00:08:16,530 --> 00:08:19,566
+I need to create this page
+before I can use it.
+
+136
+00:08:26,740 --> 00:08:29,643
+I'll name this "devtools_tab.html"
+
+137
+00:08:29,676 --> 00:08:32,179
+to match the name I gave the API.
+
+138
+00:08:36,450 --> 00:08:39,019
+Unlike the devtools background page,
+however,
+
+139
+00:08:39,052 --> 00:08:42,756
+this devtools tab page
+will actually be shown to the user,
+
+140
+00:08:42,789 --> 00:08:47,194
+so this time I'll create both
+a JavaScript and CSS file.
+
+141
+00:08:55,836 --> 00:08:59,640
+I'll name the JavaScript file
+"devtools_tab.js"...
+
+142
+00:09:03,443 --> 00:09:06,947
+…and the CSS file "devtools_tab.css".
+
+143
+00:09:08,615 --> 00:09:10,817
+It's great that I've already set up
+this structure,
+
+144
+00:09:10,851 --> 00:09:13,787
+but for now I'll just add the usual
+"Hello World"
+
+145
+00:09:13,820 --> 00:09:15,822
+to make sure that things
+are working correctly.
+
+146
+00:09:15,856 --> 00:09:18,859
+But don't worry, we'll dive deeper
+into this a little bit later,
+
+147
+00:09:18,892 --> 00:09:22,129
+because first,
+we still have a few more icons to replace
+
+148
+00:09:22,162 --> 00:09:25,232
+to make sure this extension
+has a consistent look.
+
+149
+00:09:25,265 --> 00:09:28,569
+First we need to replace
+the default large icon...
+
+150
+00:09:31,238 --> 00:09:33,140
+…by deleting it...
+
+151
+00:09:35,275 --> 00:09:37,644
+…and dragging my large icon in its place.
+
+152
+00:09:41,348 --> 00:09:44,017
+Since this large icon
+is part of the app, however,
+
+153
+00:09:44,051 --> 00:09:46,520
+I need to add it to the right target.
+
+154
+00:09:50,557 --> 00:09:53,727
+The remaining icons are all part
+of the Assets catalog,
+
+155
+00:09:53,760 --> 00:09:56,530
+specifically the AppIcon set.
+
+156
+00:09:59,900 --> 00:10:03,670
+I've already prepared these icons,
+so I'll just paste them in.
+
+157
+00:10:03,704 --> 00:10:07,241
+And with that, I think we've replaced
+all of the default icons,
+
+158
+00:10:07,274 --> 00:10:08,976
+so I'm now going to run my extension.
+
+159
+00:10:09,009 --> 00:10:13,347
+Note that this may take a few seconds
+the first time the project is built.
+
+160
+00:10:20,354 --> 00:10:21,622
+And there it is!
+
+161
+00:10:21,655 --> 00:10:24,091
+Most of this UI
+is from the Xcode template,
+
+162
+00:10:24,124 --> 00:10:27,895
+but I do correctly see
+my icon instead of the default one.
+
+163
+00:10:27,928 --> 00:10:30,964
+Once we've launched
+the Safari extension app at least once,
+
+164
+00:10:30,998 --> 00:10:33,233
+we can close it,
+as the app doesn't need to be running
+
+165
+00:10:33,267 --> 00:10:34,902
+anymore for Safari to pick it up.
+
+166
+00:10:39,373 --> 00:10:41,508
+But before I can see it in Safari,
+however,
+
+167
+00:10:41,542 --> 00:10:44,611
+I have to Allow Unsigned Extensions
+in the Develop menu
+
+168
+00:10:44,645 --> 00:10:47,514
+as this is a locally built unsigned app.
+
+169
+00:10:47,548 --> 00:10:49,950
+Now, in Safari's Extensions preferences,
+
+170
+00:10:49,983 --> 00:10:53,520
+I can see Open Graph.
+I'll turn it on.
+
+171
+00:10:53,554 --> 00:10:56,790
+I'm going to open a Safari tab
+and browse to apple.com
+
+172
+00:10:56,823 --> 00:10:59,026
+so that I can try my extension.
+
+173
+00:10:59,059 --> 00:11:02,596
+And already we can see
+that my icon is in the toolbar.
+
+174
+00:11:04,031 --> 00:11:06,834
+And my extension tab
+is now in the tab bar.
+
+175
+00:11:06,867 --> 00:11:09,369
+Switching to it,
+
+176
+00:11:09,403 --> 00:11:12,239
+we can see the same permission prompt we
+saw earlier.
+
+177
+00:11:12,272 --> 00:11:14,508
+This permission prompt
+is automatically shown
+
+178
+00:11:14,541 --> 00:11:16,944
+if permissions are needed
+by the extension.
+
+179
+00:11:16,977 --> 00:11:20,414
+Just like earlier,
+I'll allow it for one day.
+
+180
+00:11:21,682 --> 00:11:25,219
+And there's the "Hello World"
+I added to the devtools tab page earlier.
+
+181
+00:11:25,252 --> 00:11:30,457
+Those are the basics of how to create
+a Web Inspector extension for Safari 16.
+
+182
+00:11:30,490 --> 00:11:31,825
+Let's recap.
+
+183
+00:11:31,859 --> 00:11:36,063
+I declared the devtools background page
+and added it to my Xcode project.
+
+184
+00:11:36,096 --> 00:11:39,733
+From there, I was able to create
+a new tab in Web Inspector
+
+185
+00:11:39,766 --> 00:11:41,335
+to show my custom tooling.
+
+186
+00:11:41,368 --> 00:11:45,305
+And finally, I've started considering
+the permissions my extension needs.
+
+187
+00:11:45,339 --> 00:11:49,443
+For a Web Inspector extension,
+this often boils down to evaluating code
+
+188
+00:11:49,476 --> 00:11:52,446
+in the inspected page,
+usually to extract some data
+
+189
+00:11:52,479 --> 00:11:54,448
+for display inside of Web Inspector.
+
+190
+00:11:54,481 --> 00:11:58,252
+Web Extensions already have
+a number of ways to evaluate code.
+
+191
+00:11:58,285 --> 00:11:59,987
+For Web Inspector extensions,
+
+192
+00:12:00,020 --> 00:12:02,322
+there is another API
+that is the preferred method
+
+193
+00:12:02,356 --> 00:12:05,392
+of evaluating scripts
+inside the inspected page.
+
+194
+00:12:05,425 --> 00:12:10,631
+Let's take a look at this API and see how
+I can use it for my OpenGraph extension.
+
+195
+00:12:10,664 --> 00:12:14,735
+This devtools extension API to evaluate
+JavaScript in the inspected window
+
+196
+00:12:14,768 --> 00:12:17,171
+is the best way to get quick results.
+
+197
+00:12:17,204 --> 00:12:20,407
+It will automatically target the page
+associated with the Web Inspector
+
+198
+00:12:20,440 --> 00:12:22,476
+your extension is running in.
+
+199
+00:12:22,509 --> 00:12:27,447
+Remember, the user could be inspecting
+multiple pages at the same time.
+
+200
+00:12:27,481 --> 00:12:30,050
+There are also some useful options
+for this API
+
+201
+00:12:30,083 --> 00:12:32,452
+that can help you get the right results.
+
+202
+00:12:32,486 --> 00:12:35,889
+By default the expression given
+to this API is evaluated
+
+203
+00:12:35,923 --> 00:12:39,893
+in the context of the main frame
+of the inspected page.
+
+204
+00:12:39,927 --> 00:12:42,162
+But you can use the frameURL option
+
+205
+00:12:42,196 --> 00:12:45,465
+to specify evaluation
+inside a different frame.
+
+206
+00:12:45,499 --> 00:12:48,035
+This is needed when your extension
+needs to extract data
+
+207
+00:12:48,068 --> 00:12:50,971
+from one of many possible sub-frames
+in the page.
+
+208
+00:12:51,004 --> 00:12:54,842
+For my OpenGraph extension,
+I only need to worry about the main frame,
+
+209
+00:12:54,875 --> 00:12:56,543
+but I recommend you keep this in mind
+
+210
+00:12:56,577 --> 00:12:59,880
+when evaluating scripts
+for your Web Inspector extensions.
+
+211
+00:12:59,913 --> 00:13:02,983
+Let's take a look at how I can use
+this function in my extension
+
+212
+00:13:03,016 --> 00:13:05,853
+to get and display data
+from the inspected page.
+
+213
+00:13:05,886 --> 00:13:09,790
+I'll start by replacing the placeholder
+"Hello World" I added earlier
+
+214
+00:13:09,823 --> 00:13:14,094
+with HTML that actually loads
+my CSS and JavaScript files.
+
+215
+00:13:18,398 --> 00:13:22,503
+Then I'll add some basic CSS
+to give my devtools tab a nice style.
+
+216
+00:13:24,071 --> 00:13:27,674
+I want to make sure that my devtools tab
+fits in with the rest of Web Inspector,
+
+217
+00:13:27,708 --> 00:13:31,578
+so I've declared
+a root `color-scheme` property
+
+218
+00:13:31,612 --> 00:13:36,083
+that will make my devtools tab match the
+appearance of the rest of Web Inspector.
+
+219
+00:13:36,116 --> 00:13:41,054
+I am using a system font family
+and inheriting the font size,
+
+220
+00:13:41,088 --> 00:13:44,725
+and matching the colors
+of more important text.
+
+221
+00:13:44,758 --> 00:13:48,529
+As far as functionality,
+
+222
+00:13:48,562 --> 00:13:50,264
+I'll start by adding some text
+
+223
+00:13:50,297 --> 00:13:53,834
+in case the page doesn't have
+any opengraph metadata.
+
+224
+00:13:53,867 --> 00:13:57,971
+Note that I can use web extension
+localized strings in Web Inspector
+
+225
+00:13:58,005 --> 00:14:00,474
+just like I can anywhere else
+in a web extension.
+
+226
+00:14:00,507 --> 00:14:04,478
+But in order to do so, I need to add
+that same localized string identifier
+
+227
+00:14:04,511 --> 00:14:06,380
+to the localized strings file.
+
+228
+00:14:07,514 --> 00:14:09,783
+Next,
+
+229
+00:14:09,816 --> 00:14:13,687
+I'll create the JavaScript
+I'll provide to the powerful devtools
+
+230
+00:14:13,720 --> 00:14:15,789
+inspectedWindow eval API,
+
+231
+00:14:15,822 --> 00:14:18,192
+which lets me evaluate it
+in the inspected page.
+
+232
+00:14:18,225 --> 00:14:21,428
+In this case,
+I want to query the inspected page's DOM
+
+233
+00:14:21,461 --> 00:14:24,097
+for some common opengraph metadata,
+
+234
+00:14:24,131 --> 00:14:28,836
+specifically the title, description...
+
+235
+00:14:30,737 --> 00:14:33,607
+…and image,
+
+236
+00:14:33,640 --> 00:14:37,344
+as well as the current ready state
+of the inspected page's document,
+
+237
+00:14:37,377 --> 00:14:41,815
+bundling it all together to send back
+to the devtools page via the return value.
+
+238
+00:14:41,849 --> 00:14:45,152
+Once that's done,
+I can grab the HTML element
+
+239
+00:14:45,185 --> 00:14:48,488
+that corresponds
+to each of these properties
+
+240
+00:14:48,522 --> 00:14:51,992
+and configure them so that they show
+the data that was gathered.
+
+241
+00:14:54,261 --> 00:14:58,699
+And if the document isn't quite ready yet,
+I can try again after a short delay.
+
+242
+00:15:00,434 --> 00:15:03,837
+I also want to redo all of this
+every time the inspected page navigates,
+
+243
+00:15:03,871 --> 00:15:07,074
+so I'll add a listener
+for devtools network onNavigated.
+
+244
+00:15:15,916 --> 00:15:19,653
+This all looks great,
+so I'll build again to test it.
+
+245
+00:15:26,126 --> 00:15:30,297
+Now, whenever I open Web Inspector or
+navigate with Web Inspector already open,
+
+246
+00:15:30,330 --> 00:15:34,968
+I can see the opengraph title,
+description, and image of every page.
+
+247
+00:15:35,002 --> 00:15:38,305
+And that's a simple example of
+how to use some of the many new
+
+248
+00:15:38,338 --> 00:15:41,275
+and powerful Web Inspector extension APIs.
+
+249
+00:15:41,308 --> 00:15:44,378
+My OpenGraph extension
+is coming along very nicely.
+
+250
+00:15:44,411 --> 00:15:47,414
+My Web Inspector extension's
+devtools tab page
+
+251
+00:15:47,447 --> 00:15:50,684
+is now able to evaluate
+in the inspected page.
+
+252
+00:15:50,717 --> 00:15:54,221
+I'm able to take the result data
+and process it
+
+253
+00:15:54,254 --> 00:15:57,491
+to display it in a user friendly format
+for quick access.
+
+254
+00:15:57,524 --> 00:16:00,761
+So what are some great ways to make
+great user experiences
+
+255
+00:16:00,794 --> 00:16:02,729
+when creating a Web Inspector extension?
+
+256
+00:16:02,763 --> 00:16:07,301
+Always create devtools tab pages
+from the devtools background page.
+
+257
+00:16:07,334 --> 00:16:11,572
+This way, the user can see where
+these tabs will appear in Web Inspector,
+
+258
+00:16:11,605 --> 00:16:15,075
+and any appropriate permission prompting
+will be shown in-line.
+
+259
+00:16:15,108 --> 00:16:17,744
+Instead of asking
+for specific host permissions,
+
+260
+00:16:17,778 --> 00:16:19,880
+try to use the activeTab permission
+
+261
+00:16:19,913 --> 00:16:22,816
+to keep Web Inspector extensions
+as targeted as possible.
+
+262
+00:16:22,850 --> 00:16:25,719
+And make sure to use
+the CSS color-scheme property
+
+263
+00:16:25,752 --> 00:16:28,422
+or the web extension devtools theme APIs
+
+264
+00:16:28,455 --> 00:16:30,657
+to match the overall theme
+of Web Inspector.
+
+265
+00:16:30,691 --> 00:16:34,161
+So today I showed you at how to create
+entirely new debugging tools
+
+266
+00:16:34,194 --> 00:16:36,096
+with Web Inspector extensions
+
+267
+00:16:36,129 --> 00:16:39,399
+and covered some great best practices
+to keep in mind while doing so.
+
+268
+00:16:39,433 --> 00:16:42,603
+You're welcome to download
+the OpenGraph Web Inspector extension
+
+269
+00:16:42,636 --> 00:16:44,271
+in this session's related resources
+
+270
+00:16:44,304 --> 00:16:46,473
+if you want to take a closer look
+for yourself.
+
+271
+00:16:48,275 --> 00:16:50,444
+We're super interested
+in hearing your thoughts,
+
+272
+00:16:50,477 --> 00:16:54,481
+so please file bugs and feature requests
+using the Feedback Assistant,
+
+273
+00:16:54,515 --> 00:16:58,385
+or come chat with us
+on the Safari developer forums.
+
+274
+00:16:58,418 --> 00:17:01,421
+And even consider joining
+the WebExtensions community group
+
+275
+00:17:01,455 --> 00:17:04,057
+to help shape the future
+of web extensions.
+
+276
+00:17:05,325 --> 00:17:09,096
+And also, make sure to check out
+What's new in Safari Web Extensions,
+
+277
+00:17:09,129 --> 00:17:13,433
+and the documentation online,
+to learn more about what's new this year.
+
+278
+00:17:13,467 --> 00:17:16,603
+I really hope you've enjoyed learning
+about the amazing new ability
+
+279
+00:17:16,637 --> 00:17:19,072
+to create custom tooling
+within Web Inspector.
+
+280
+00:17:19,106 --> 00:17:22,876
+We can't wait to see what awesome
+Web Inspector extensions you'll create,
+
+281
+00:17:22,910 --> 00:17:26,280
+and look forward to all the ways
+you'll push the bounds of what's possible.
+
+282
+00:17:26,313 --> 00:17:27,748
+Thank you so much for listening,
+
+283
+00:17:27,781 --> 00:17:30,751
+and I hope you have
+a fantastic rest of your WWDC.  ♪ ♪
+

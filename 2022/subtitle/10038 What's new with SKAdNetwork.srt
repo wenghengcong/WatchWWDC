@@ -1,0 +1,1398 @@
+1
+00:00:00,334 --> 00:00:06,340
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,743 --> 00:00:13,146
+Hello and welcome to WWDC.
+
+3
+00:00:13,180 --> 00:00:17,751
+I’m Nikhil and today, I’ll share with you
+the changes coming to SKAdNetwork.
+
+4
+00:00:17,784 --> 00:00:19,653
+Before diving into the future,
+
+5
+00:00:19,686 --> 00:00:23,590
+let’s remember where we are
+and how we got here.
+
+6
+00:00:23,624 --> 00:00:28,061
+At Apple, we believe privacy is
+a fundamental human right
+
+7
+00:00:28,095 --> 00:00:32,733
+and protecting it is woven
+into everything we do here.
+
+8
+00:00:32,766 --> 00:00:36,236
+Which is why we created SKAdNetwork.
+
+9
+00:00:36,270 --> 00:00:41,642
+SKAdNetwork is Apple’s privacy-preserving
+install attribution system.
+
+10
+00:00:41,675 --> 00:00:44,478
+Attribution data is sent back
+to the advertiser
+
+11
+00:00:44,511 --> 00:00:47,948
+while preserving the user’s privacy.
+
+12
+00:00:47,981 --> 00:00:51,118
+SKAdNetwork involves three actors:
+
+13
+00:00:51,151 --> 00:00:56,056
+ad networks, publisher apps,
+and advertiser apps.
+
+14
+00:00:56,089 --> 00:01:00,928
+Let's also define some terms
+used commonly within SKAdNetwork.
+
+15
+00:01:00,961 --> 00:01:02,429
+Impression:
+
+16
+00:01:02,462 --> 00:01:06,099
+an impression in the context
+of this discussion is input
+
+17
+00:01:06,133 --> 00:01:09,603
+from the publisher app to SKAdNetwork.
+
+18
+00:01:09,636 --> 00:01:10,804
+Engagement:
+
+19
+00:01:10,838 --> 00:01:15,375
+an engagement happens when the user
+interacts with the advertiser app.
+
+20
+00:01:15,409 --> 00:01:18,145
+The advertiser app captures
+these engagements
+
+21
+00:01:18,178 --> 00:01:21,849
+in the form of conversion value updates.
+
+22
+00:01:21,882 --> 00:01:26,720
+And finally, conversions,
+which are also called postbacks.
+
+23
+00:01:26,753 --> 00:01:31,792
+The postback contains attribution data
+which is sent to the ad network.
+
+24
+00:01:31,825 --> 00:01:35,229
+The attribution data provides a signal
+to the ad network
+
+25
+00:01:35,262 --> 00:01:39,766
+that this was a successful conversion
+of the original ad.
+
+26
+00:01:39,800 --> 00:01:45,005
+The ad network generates a signed
+impression for the advertiser app.
+
+27
+00:01:45,038 --> 00:01:50,110
+The publisher app uses this impression
+and displays this ad.
+
+28
+00:01:50,143 --> 00:01:54,815
+The user then taps the ad
+and installs the app.
+
+29
+00:01:54,848 --> 00:01:56,517
+When launched for the first time,
+
+30
+00:01:56,550 --> 00:02:00,654
+the app calls an API
+to signal the conversion.
+
+31
+00:02:00,687 --> 00:02:05,025
+The app can then repeatedly call this API
+to update the conversion value
+
+32
+00:02:05,058 --> 00:02:10,330
+and capture various levels of engagement
+and return on ad spent.
+
+33
+00:02:10,364 --> 00:02:13,166
+Once the timer expires,
+we send the postback
+
+34
+00:02:13,200 --> 00:02:16,703
+containing the attribution data
+to the ad network.
+
+35
+00:02:17,704 --> 00:02:22,342
+Taking a quick look at the version history
+for SKAdNetwork.
+
+36
+00:02:22,376 --> 00:02:28,682
+SKAdNetwork 2.0 introduced
+privacy-preserving ad attribution.
+
+37
+00:02:28,715 --> 00:02:34,421
+2.2 enabled publisher apps
+to show custom ads.
+
+38
+00:02:34,454 --> 00:02:39,726
+3.0 added postbacks
+for non-winning impressions.
+
+39
+00:02:39,760 --> 00:02:45,199
+And in iOS 15.0, we introduced
+postback copies for developers
+
+40
+00:02:45,232 --> 00:02:48,802
+for all versions of SKAdNetwork.
+
+41
+00:02:49,269 --> 00:02:53,407
+For more on the history of SKAdNetwork,
+refer to the session
+
+42
+00:02:53,440 --> 00:02:58,412
+"Meet privacy-preserving ad attribution"
+from WWDC 2021.
+
+43
+00:02:59,413 --> 00:03:05,519
+Now let’s talk about the future,
+SKAdNetwork 4.0.
+
+44
+00:03:05,552 --> 00:03:08,522
+Let’s have a look at the new features.
+
+45
+00:03:08,555 --> 00:03:12,326
+We are going to start by looking at
+a few changes to the API
+
+46
+00:03:12,359 --> 00:03:16,230
+designed to provide more data
+to advertisers.
+
+47
+00:03:16,263 --> 00:03:20,601
+Following this, we will look at
+the conversion side of things.
+
+48
+00:03:20,634 --> 00:03:25,205
+We will then move on to attribution
+for ads on the web,
+
+49
+00:03:25,239 --> 00:03:30,511
+and wrap up by talking about
+SKAdNetwork testability.
+
+50
+00:03:30,544 --> 00:03:34,615
+Hierarchical IDs and conversion values
+are the first new feature
+
+51
+00:03:34,648 --> 00:03:37,951
+coming to SKAdNetwork 4.0.
+
+52
+00:03:38,785 --> 00:03:44,024
+Before diving into the new feature,
+I would like to define crowd anonymity.
+
+53
+00:03:44,057 --> 00:03:49,229
+Crowd anonymity is the term we use
+to refer to the privacy-preserving way
+
+54
+00:03:49,263 --> 00:03:53,433
+in which SKAdNetwork delivers
+attribution data.
+
+55
+00:03:53,467 --> 00:03:56,470
+Counts of installs determine
+the level of privacy
+
+56
+00:03:56,503 --> 00:04:00,140
+assured to the person using your app.
+
+57
+00:04:00,174 --> 00:04:03,510
+At the lower end,
+we send less attribution data
+
+58
+00:04:03,544 --> 00:04:06,113
+to the advertiser in the postback.
+
+59
+00:04:06,146 --> 00:04:11,018
+When the install count is low,
+we take extra steps to protect privacy
+
+60
+00:04:11,051 --> 00:04:15,122
+by limiting the trackable information
+sent back.
+
+61
+00:04:15,155 --> 00:04:16,924
+As the count scales up
+
+62
+00:04:16,957 --> 00:04:20,561
+and the user’s uniqueness starts
+to blend into the crowd,
+
+63
+00:04:20,594 --> 00:04:23,330
+we send more data back.
+
+64
+00:04:23,363 --> 00:04:26,366
+Finally, as the count reaches
+the highest tier,
+
+65
+00:04:26,400 --> 00:04:32,005
+we are able to send the most data back
+while still preserving privacy.
+
+66
+00:04:32,039 --> 00:04:37,411
+In SKAdNetwork 4.0,
+we have a way to send more data
+
+67
+00:04:37,444 --> 00:04:41,548
+while retaining our privacy protections.
+
+68
+00:04:41,582 --> 00:04:45,919
+For this, we are changing
+the campaign identifier field.
+
+69
+00:04:45,953 --> 00:04:49,356
+At present, this is a 2 digit field.
+
+70
+00:04:49,389 --> 00:04:52,893
+We will increase the range
+of this field to 4 digits
+
+71
+00:04:52,926 --> 00:04:56,463
+and rename it to source identifier.
+
+72
+00:04:56,496 --> 00:05:00,133
+The new name reflects our way
+of thinking about this field
+
+73
+00:05:00,167 --> 00:05:04,471
+as being capable of representing
+anything you choose to use it for
+
+74
+00:05:04,505 --> 00:05:08,208
+and not solely for identifying campaigns.
+
+75
+00:05:09,209 --> 00:05:11,411
+Though this is a single number,
+
+76
+00:05:11,445 --> 00:05:15,249
+we encourage thinking about it
+as three hierarchical numbers,
+
+77
+00:05:15,282 --> 00:05:19,319
+a 2, 3, and 4 digit number.
+
+78
+00:05:19,353 --> 00:05:21,788
+Thinking about the source identifier field
+
+79
+00:05:21,822 --> 00:05:24,691
+as a hierarchical set of numbers
+is helpful
+
+80
+00:05:24,725 --> 00:05:28,428
+in ascribing meaning to
+the different numbers.
+
+81
+00:05:28,462 --> 00:05:33,433
+As an example, the 2 digits
+could represent the ad campaign,
+
+82
+00:05:33,467 --> 00:05:38,138
+the 3rd could represent
+the bucketed location of the user,
+
+83
+00:05:38,172 --> 00:05:42,776
+and the 4th could stand for
+ad placement on screen.
+
+84
+00:05:42,809 --> 00:05:47,714
+Alternatively, the 2 digits
+could stand for treatments,
+
+85
+00:05:47,748 --> 00:05:51,785
+the 3rd digit could represent
+bucketed time of day,
+
+86
+00:05:51,818 --> 00:05:56,123
+and the 4th digit could stands
+for the size of the ad shown.
+
+87
+00:05:56,156 --> 00:05:58,492
+These are simply examples,
+
+88
+00:05:58,525 --> 00:06:02,796
+and ultimately, what we wanted here
+was to open this field up to you
+
+89
+00:06:02,829 --> 00:06:05,666
+to use as best fits your need.
+
+90
+00:06:05,699 --> 00:06:08,802
+Continuing the theme
+of providing more data,
+
+91
+00:06:08,836 --> 00:06:12,105
+the conversion value is also changing.
+
+92
+00:06:12,139 --> 00:06:15,709
+Currently this is a 6 bit value.
+
+93
+00:06:15,742 --> 00:06:21,915
+With SKAdNetwork 4.0,
+we are introducing two conversion values:
+
+94
+00:06:21,949 --> 00:06:25,853
+a fine-grained value
+and a coarse-grained value.
+
+95
+00:06:25,886 --> 00:06:29,690
+The fine-grained value is the same
+as the conversion value today.
+
+96
+00:06:29,723 --> 00:06:34,127
+The coarse-grained value can assume
+one of three values.
+
+97
+00:06:34,161 --> 00:06:37,264
+Considering a conversion value of high 42,
+
+98
+00:06:37,297 --> 00:06:41,034
+where high is the coarse value
+and 42 is the fine value,
+
+99
+00:06:41,068 --> 00:06:44,304
+the install count required
+to receive the coarse value
+
+100
+00:06:44,338 --> 00:06:48,242
+is lower than that needed
+for the fine value.
+
+101
+00:06:48,275 --> 00:06:53,547
+Consequently, apps will receive the former
+much faster than the latter.
+
+102
+00:06:53,580 --> 00:06:58,952
+Note however, that only one of these
+will be sent back to the advertiser.
+
+103
+00:06:58,986 --> 00:07:02,890
+Let us take a look at how crowd anonymity
+affects these new fields.
+
+104
+00:07:04,224 --> 00:07:09,663
+Using our earlier example of 5739
+as the source identifier,
+
+105
+00:07:09,696 --> 00:07:11,865
+at the low end of crowd anonymity,
+
+106
+00:07:11,899 --> 00:07:16,737
+you can expect to receive the 2 digit
+component of the source identifier,
+
+107
+00:07:16,770 --> 00:07:19,806
+which in this case is 39.
+
+108
+00:07:19,840 --> 00:07:24,678
+At the medium level, you can expect
+to receive the 3 digit component.
+
+109
+00:07:24,711 --> 00:07:27,548
+And at the highest level,
+you can expect to receive
+
+110
+00:07:27,581 --> 00:07:31,752
+the full 4 digit source identifier back.
+
+111
+00:07:31,785 --> 00:07:34,154
+As the crowd anonymity level increases,
+
+112
+00:07:34,188 --> 00:07:38,926
+more digits of the source identifier
+are sent back.
+
+113
+00:07:38,959 --> 00:07:44,064
+And taking our earlier example of high 42
+for the conversion value,
+
+114
+00:07:44,097 --> 00:07:46,233
+at the low end of crowd anonymity,
+
+115
+00:07:46,266 --> 00:07:50,938
+you will not receive a conversion value
+in your postback.
+
+116
+00:07:50,971 --> 00:07:54,975
+At the medium level, you will receive
+the coarse conversion value.
+
+117
+00:07:55,008 --> 00:07:56,276
+And at the highest level,
+
+118
+00:07:56,310 --> 00:08:01,148
+you will receive the fine-grained
+conversion value in your postback.
+
+119
+00:08:01,181 --> 00:08:07,421
+As the crowd anonymity increases,
+the conversion value returned changes.
+
+120
+00:08:07,454 --> 00:08:10,290
+Let’s take a look at the API changes.
+
+121
+00:08:10,324 --> 00:08:15,562
+If you are using instances
+of SKAdImpression to show your ads,
+
+122
+00:08:15,596 --> 00:08:22,035
+you can set the new sourceIdentifier
+property on the SKAdImpression instance.
+
+123
+00:08:23,036 --> 00:08:26,240
+If you are setting your impression
+via a dictionary,
+
+124
+00:08:26,273 --> 00:08:32,846
+you can set the sourceIdentifier value
+using the new source identifier key.
+
+125
+00:08:33,847 --> 00:08:39,319
+For advertised apps, you will call the new
+updatePostbackConversionValue method
+
+126
+00:08:39,353 --> 00:08:43,190
+which has been changed to now take
+a coarse-grained conversion value
+
+127
+00:08:43,223 --> 00:08:47,494
+in addition to the fine-grained
+conversion value as shown here.
+
+128
+00:08:47,528 --> 00:08:51,965
+We recommend that you use the completion
+handler to do any follow up tasks
+
+129
+00:08:51,999 --> 00:08:56,069
+after updating your postback’s
+conversion values.
+
+130
+00:08:56,103 --> 00:08:59,673
+Here are some recommendations on adopting
+the new hierarchical IDs
+
+131
+00:08:59,706 --> 00:09:02,476
+and conversion values API.
+
+132
+00:09:02,509 --> 00:09:05,846
+Different portions of
+the source identifier will be returned
+
+133
+00:09:05,879 --> 00:09:08,949
+depending on
+the privacy level of the install.
+
+134
+00:09:08,982 --> 00:09:14,288
+Consider this when composing
+source identifiers for your impressions.
+
+135
+00:09:14,321 --> 00:09:18,659
+Coarse conversion values are at
+a much lower granularity
+
+136
+00:09:18,692 --> 00:09:20,527
+than fine conversion values.
+
+137
+00:09:20,561 --> 00:09:25,199
+Consider this when ascribing meaning
+to their values.
+
+138
+00:09:25,232 --> 00:09:29,136
+Conversion values can increase
+or decrease.
+
+139
+00:09:29,169 --> 00:09:32,139
+And finally,
+when making changes to your server
+
+140
+00:09:32,172 --> 00:09:35,876
+to process SKAdNetwork 4.0 postbacks,
+
+141
+00:09:35,909 --> 00:09:39,613
+make them capable of parsing
+the new source identifiers
+
+142
+00:09:39,646 --> 00:09:42,449
+and coarse conversion values.
+
+143
+00:09:42,482 --> 00:09:46,220
+That wraps up our introduction to
+hierarchical IDs and conversion values,
+
+144
+00:09:46,253 --> 00:09:51,258
+providing more data to advertisers
+while retaining our privacy protections.
+
+145
+00:09:51,291 --> 00:09:57,898
+Let’s focus on another critical area
+of the attribution flow, conversions.
+
+146
+00:09:57,931 --> 00:10:01,835
+SKAdNetwork today uses
+a single conversion model.
+
+147
+00:10:03,103 --> 00:10:06,673
+From the time of install,
+we update the conversion value
+
+148
+00:10:06,707 --> 00:10:09,610
+to capture various user engagements.
+
+149
+00:10:09,643 --> 00:10:12,112
+And after a certain amount of time
+elapses,
+
+150
+00:10:12,145 --> 00:10:15,549
+we send the postback to the ad network.
+
+151
+00:10:15,582 --> 00:10:18,018
+Let’s have a look at an example.
+
+152
+00:10:18,051 --> 00:10:19,720
+Let’s use Food Truck.
+
+153
+00:10:19,753 --> 00:10:22,623
+Food Truck puts you in control
+of your food truck.
+
+154
+00:10:22,656 --> 00:10:27,761
+Customize, control, and create
+your own unique donut delivery experience.
+
+155
+00:10:27,794 --> 00:10:29,663
+As Food Truck’s developer,
+
+156
+00:10:29,696 --> 00:10:33,467
+I want to know the value
+of my advertising spend.
+
+157
+00:10:33,500 --> 00:10:37,938
+As an example of this,
+when the user starts Food Truck,
+
+158
+00:10:37,971 --> 00:10:41,508
+I will update the conversion value
+to mark this.
+
+159
+00:10:41,542 --> 00:10:44,411
+Once they pick up their first batch
+for delivery,
+
+160
+00:10:44,444 --> 00:10:47,614
+I update the conversion value again.
+
+161
+00:10:47,648 --> 00:10:52,853
+Due to this batch of donuts requiring
+a certain amount of time to age,
+
+162
+00:10:52,886 --> 00:10:55,789
+the user waits.
+
+163
+00:10:55,822 --> 00:10:58,926
+Somewhere in the aging time,
+the conversion is sent
+
+164
+00:10:58,959 --> 00:11:03,997
+in the form a postback to both
+the ad network and optionally to me.
+
+165
+00:11:04,031 --> 00:11:07,868
+However, when the user finally delivers
+the donut,
+
+166
+00:11:07,901 --> 00:11:12,773
+I will have no way of measuring this
+or any further user actions
+
+167
+00:11:12,806 --> 00:11:16,844
+since the postback has already been sent.
+
+168
+00:11:16,877 --> 00:11:21,181
+In other words, re-engagement is lost.
+
+169
+00:11:21,215 --> 00:11:24,451
+This is what we are changing.
+
+170
+00:11:24,484 --> 00:11:30,290
+We are moving from a single postback
+to three postbacks.
+
+171
+00:11:30,324 --> 00:11:33,227
+The postbacks are tied to
+definite time windows
+
+172
+00:11:33,260 --> 00:11:36,463
+and are sent at the end of those windows.
+
+173
+00:11:36,496 --> 00:11:39,466
+Let’s revisit the earlier example.
+
+174
+00:11:39,499 --> 00:11:42,503
+As before, the user starts Food Truck
+
+175
+00:11:42,536 --> 00:11:47,441
+and proceeds to pick the first batch up
+for delivery.
+
+176
+00:11:47,474 --> 00:11:52,513
+The first postback’s time window elapses
+and we send it out.
+
+177
+00:11:52,546 --> 00:11:54,748
+The user delivers the donuts.
+
+178
+00:11:54,781 --> 00:11:57,784
+Whereas earlier,
+this would not have been captured,
+
+179
+00:11:57,818 --> 00:12:01,588
+now we find ourselves in
+the second postback’s time window.
+
+180
+00:12:01,622 --> 00:12:05,259
+We update the conversion value
+to capture this.
+
+181
+00:12:05,292 --> 00:12:10,664
+The second postback’s time window
+passes and we send it out.
+
+182
+00:12:10,697 --> 00:12:15,769
+Using the tools in the app,
+the user creates a brand new donut recipe
+
+183
+00:12:15,802 --> 00:12:19,339
+and then heads out again
+to deliver a fresh batch.
+
+184
+00:12:19,373 --> 00:12:24,011
+The third window elapses
+and the third postback is sent out.
+
+185
+00:12:24,044 --> 00:12:27,247
+There are more opportunities to measure
+the value of the conversion
+
+186
+00:12:27,281 --> 00:12:30,484
+and to receive these measurements
+more often.
+
+187
+00:12:30,517 --> 00:12:33,820
+A few points to note about
+multiple conversions:
+
+188
+00:12:33,854 --> 00:12:37,691
+Only the first postback will get
+the fine conversion value.
+
+189
+00:12:37,724 --> 00:12:42,462
+The additional postbacks can carry
+the coarse conversion value.
+
+190
+00:12:42,496 --> 00:12:47,034
+Only the winner and developer
+will receive the additional postbacks.
+
+191
+00:12:47,067 --> 00:12:53,307
+Next, let’s review SKAdNetwork
+attributions for ads on the web.
+
+192
+00:12:53,340 --> 00:13:00,047
+We know that publisher apps show ads
+which open product pages in the App Store.
+
+193
+00:13:00,080 --> 00:13:04,017
+The App Store, in turn, works with
+SKAdNetwork to attribute installs
+
+194
+00:13:05,519 --> 00:13:10,324
+while providing the privacy protections
+that our users rely on.
+
+195
+00:13:10,357 --> 00:13:15,329
+We want to extend the same privacy
+to ads shown on web pages.
+
+196
+00:13:15,362 --> 00:13:18,265
+Let’s take a look at how this will work.
+
+197
+00:13:18,298 --> 00:13:22,503
+The user taps on a link for an ad
+in Safari.
+
+198
+00:13:22,536 --> 00:13:28,842
+Safari launches the App Store and lands on
+the product page for the advertised app.
+
+199
+00:13:28,876 --> 00:13:30,744
+Two things happen here.
+
+200
+00:13:30,777 --> 00:13:35,015
+The App Store fetches the ad impression
+from the ad network server,
+
+201
+00:13:35,048 --> 00:13:39,019
+and the user installs the app.
+
+202
+00:13:39,052 --> 00:13:42,289
+Following this, everything flows
+as it does today,
+
+203
+00:13:42,322 --> 00:13:47,561
+and eventually,
+SKAdNetwork sends the postback out.
+
+204
+00:13:47,594 --> 00:13:50,964
+Let’s have a look at
+how the link is composed.
+
+205
+00:13:50,998 --> 00:13:56,803
+The href portion contains the App Store
+link for the app being advertised.
+
+206
+00:13:56,837 --> 00:14:00,541
+The attributionDestination tells Apple
+where to fetch
+
+207
+00:14:00,574 --> 00:14:03,510
+the signed ad impression from.
+
+208
+00:14:03,544 --> 00:14:07,114
+And the attributionSourceNonce
+helps the ad network find
+
+209
+00:14:07,147 --> 00:14:09,917
+the exact ad impression to send back.
+
+210
+00:14:11,318 --> 00:14:15,022
+Note that this link can be served
+on first party sites
+
+211
+00:14:15,055 --> 00:14:18,792
+and in embedded cross site iframes.
+
+212
+00:14:18,825 --> 00:14:22,763
+Let’s take a closer look at
+the URL construction.
+
+213
+00:14:22,796 --> 00:14:28,936
+We extract the eTLD+1 component
+from the attribution destination.
+
+214
+00:14:28,969 --> 00:14:32,039
+To this, we then add
+the well-known qualifier
+
+215
+00:14:32,072 --> 00:14:34,608
+and two more path components.
+
+216
+00:14:34,641 --> 00:14:39,580
+This gives us the URL to which
+we will make the HTTP POST request
+
+217
+00:14:39,613 --> 00:14:42,749
+to get the signed impression.
+
+218
+00:14:42,783 --> 00:14:47,521
+Note that the protocol and
+highlighted path components are fixed.
+
+219
+00:14:47,554 --> 00:14:53,060
+You, the ad network, decide the value
+of the host component.
+
+220
+00:14:54,061 --> 00:14:58,232
+SKAdNetwork will make an HTTP POST request
+
+221
+00:14:58,265 --> 00:15:01,635
+to the URL constructed as just discussed.
+
+222
+00:15:01,668 --> 00:15:05,138
+The POST body will be JSON.
+
+223
+00:15:05,172 --> 00:15:10,277
+You will recognize the source_nonce as
+being the same as in the original ad link.
+
+224
+00:15:10,310 --> 00:15:13,580
+This value is what the ad network
+will use to identify
+
+225
+00:15:13,614 --> 00:15:16,750
+the signed impression it wants to serve.
+
+226
+00:15:17,751 --> 00:15:22,422
+Let’s look at what we expect to receive
+from this POST request.
+
+227
+00:15:22,456 --> 00:15:28,061
+This is a signed impression,
+ready for consumption by SKAdNetwork.
+
+228
+00:15:28,095 --> 00:15:31,231
+Note the source domain field
+in the impression.
+
+229
+00:15:31,265 --> 00:15:34,468
+This is the link analog
+of the source app ID
+
+230
+00:15:34,501 --> 00:15:38,772
+in the app driven SKAdNetwork flow.
+
+231
+00:15:38,805 --> 00:15:43,810
+Looking at how to get started using this
+new entry into the SKAdNetwork system,
+
+232
+00:15:43,844 --> 00:15:46,513
+ad networks have to do the following:
+
+233
+00:15:46,547 --> 00:15:52,486
+Create the uniquely identifiable parts
+of the link and the link itself.
+
+234
+00:15:52,519 --> 00:15:56,123
+Expose an endpoint capable of serving
+signed impressions
+
+235
+00:15:56,156 --> 00:15:59,660
+at the location constructed
+as we discussed before.
+
+236
+00:15:59,693 --> 00:16:02,863
+Update your postback servers
+to parse and understand
+
+237
+00:16:02,896 --> 00:16:05,532
+the new optional source domain field.
+
+238
+00:16:05,566 --> 00:16:09,036
+For webpages that want to use the links
+to SKAdNetwork,
+
+239
+00:16:09,069 --> 00:16:14,341
+simply embed the ad links provided to you
+by your ad network.
+
+240
+00:16:14,374 --> 00:16:19,913
+That was an introduction to SKAdNetwork
+attribution for ads on the web.
+
+241
+00:16:19,947 --> 00:16:23,817
+We are incredibly excited to see
+this feature being adopted
+
+242
+00:16:23,851 --> 00:16:28,021
+across the wider advertising ecosystem.
+
+243
+00:16:28,055 --> 00:16:34,595
+Next, we will go over how you can test
+your SKAdNetwork implementations.
+
+244
+00:16:34,628 --> 00:16:40,133
+At a high level, SKAdNetwork deals
+with impressions and postbacks.
+
+245
+00:16:40,167 --> 00:16:45,072
+From working with our developer community
+we know that on the side of impressions,
+
+246
+00:16:45,105 --> 00:16:49,643
+signing and configuring
+have been points of friction.
+
+247
+00:16:49,676 --> 00:16:54,848
+And with postbacks, receiving and
+validating them in a test-friendly manner
+
+248
+00:16:54,882 --> 00:16:57,451
+has been an area for improvement.
+
+249
+00:16:57,484 --> 00:17:01,355
+To help improve the developer experience
+with SKAdNetwork,
+
+250
+00:17:01,388 --> 00:17:08,095
+we released SKAdNetwork
+testability changes in Xcode 13.3.
+
+251
+00:17:08,128 --> 00:17:12,132
+This is available as a unit testing
+framework within StoreKitTest
+
+252
+00:17:12,165 --> 00:17:15,035
+that a lot of you have already been using
+
+253
+00:17:15,068 --> 00:17:19,540
+for testing various parts
+of your StoreKit implementations.
+
+254
+00:17:19,573 --> 00:17:23,076
+Let’s take a look at
+validating an impression.
+
+255
+00:17:23,110 --> 00:17:28,515
+You create and configure an instance
+of SKAdImpression.
+
+256
+00:17:28,549 --> 00:17:32,386
+You supply the public key counterpart
+of the private key
+
+257
+00:17:32,419 --> 00:17:34,922
+used to generate the signature,
+
+258
+00:17:34,955 --> 00:17:40,427
+and then you call the validate method
+on the SKAdTestSession instance.
+
+259
+00:17:40,460 --> 00:17:43,397
+This will validate your impression and
+throw an error
+
+260
+00:17:43,430 --> 00:17:49,369
+if either the impression is misconfigured
+or the signature is invalid.
+
+261
+00:17:49,403 --> 00:17:53,006
+The other main area to test is
+the receipt of postbacks.
+
+262
+00:17:53,040 --> 00:17:54,808
+There are 2 steps here.
+
+263
+00:17:54,842 --> 00:17:59,746
+Step 1: adding the test postback
+to your test session.
+
+264
+00:17:59,780 --> 00:18:03,150
+You will create an instance
+of SKAdTestPostback
+
+265
+00:18:03,183 --> 00:18:07,621
+and configure it with the values you want
+in your postback.
+
+266
+00:18:07,654 --> 00:18:10,390
+Pay special note to the postback URL,
+
+267
+00:18:10,424 --> 00:18:13,961
+since this is where your postback
+will be sent to.
+
+268
+00:18:13,994 --> 00:18:18,465
+This can point to
+a remote or a local server.
+
+269
+00:18:18,498 --> 00:18:20,801
+You will then add this to
+your test session
+
+270
+00:18:20,834 --> 00:18:25,739
+using the setPostbacks method
+on SKAdTestSession.
+
+271
+00:18:25,772 --> 00:18:29,776
+Step 2 is to actually send
+the postback out.
+
+272
+00:18:29,810 --> 00:18:33,413
+All you need to do here is to call
+the flushPostbacks method
+
+273
+00:18:33,447 --> 00:18:37,718
+on SKAdTestSession
+and your postback will be off on it’s way.
+
+274
+00:18:38,919 --> 00:18:43,357
+Note that SKAdTestSession will send
+your postback over the network
+
+275
+00:18:43,390 --> 00:18:47,628
+to the server you specified
+when composing your postback.
+
+276
+00:18:47,661 --> 00:18:52,866
+These are a few things coming to
+SKAdNetwork testability later this year:
+
+277
+00:18:52,900 --> 00:18:56,170
+Support for the new
+source identifier field.
+
+278
+00:18:56,203 --> 00:18:59,873
+Support for fine
+and coarse conversion values.
+
+279
+00:18:59,907 --> 00:19:03,043
+Support for testing multiple conversions.
+
+280
+00:19:03,076 --> 00:19:08,015
+And that was a quick look at
+the SKAdNetwork testability changes
+
+281
+00:19:08,048 --> 00:19:11,919
+that were first available in Xcode 13.3.
+
+282
+00:19:11,952 --> 00:19:15,656
+Today, we talked about hierarchical IDs
+and conversion values,
+
+283
+00:19:15,689 --> 00:19:19,359
+aiming to get more data to you sooner.
+
+284
+00:19:19,393 --> 00:19:22,029
+And then we talked about
+multiple conversions,
+
+285
+00:19:22,062 --> 00:19:26,366
+allowing you to measure re-engagement
+over a longer period.
+
+286
+00:19:26,400 --> 00:19:29,703
+Then we talked about
+link-driven attribution
+
+287
+00:19:29,736 --> 00:19:32,873
+and how we are adding
+a bridge to SKAdNetwork,
+
+288
+00:19:32,906 --> 00:19:36,476
+bringing with it
+the same privacy protections.
+
+289
+00:19:36,510 --> 00:19:42,115
+And we finished by talking about
+SKAdNetwork testability in Xcode.
+
+290
+00:19:42,149 --> 00:19:47,754
+And that wraps up our journey
+through SKAdNetwork 4.0.
+
+291
+00:19:47,788 --> 00:19:51,592
+In closing, everything we build is driven
+by feedback
+
+292
+00:19:51,625 --> 00:19:54,428
+from our amazing community of developers.
+
+293
+00:19:54,461 --> 00:19:58,332
+It has been incredibly fulfilling
+and humbling to hear about
+
+294
+00:19:58,365 --> 00:20:04,338
+your experiences building a privacy first
+ad experience for our users.
+
+295
+00:20:04,371 --> 00:20:06,373
+Thank you.
+
+296
+00:20:06,406 --> 00:20:10,410
+♪ ♪
+

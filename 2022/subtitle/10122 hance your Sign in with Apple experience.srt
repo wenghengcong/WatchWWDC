@@ -1,0 +1,2173 @@
+1
+00:00:01,468 --> 00:00:07,474
+[spacey music]
+
+2
+00:00:10,010 --> 00:00:12,145
+Ram: Hi.
+My name is Ram.
+
+3
+00:00:12,179 --> 00:00:15,115
+I'm an engineer
+on the account experiences team.
+
+4
+00:00:15,148 --> 00:00:17,150
+I'll be joined by my colleague Patrick
+
+5
+00:00:17,184 --> 00:00:18,919
+to talk about how you can enhance
+
+6
+00:00:18,952 --> 00:00:22,022
+your Sign in with Apple experience
+for your app.
+
+7
+00:00:22,055 --> 00:00:25,492
+Since Sign in with Apple was introduced
+in iOS 13,
+
+8
+00:00:25,526 --> 00:00:29,796
+people love the fast, easy account setup
+and sign-in.
+
+9
+00:00:29,830 --> 00:00:32,499
+With just a few lines of code,
+you can enable
+
+10
+00:00:32,533 --> 00:00:34,468
+quick, one-tap account setup
+
+11
+00:00:34,501 --> 00:00:37,070
+with no forms or passwords.
+
+12
+00:00:37,104 --> 00:00:39,406
+Every Sign in with Apple account
+is protected
+
+13
+00:00:39,439 --> 00:00:42,176
+by a strong two-factor authentication
+
+14
+00:00:42,209 --> 00:00:46,180
+that is already used to secure
+the user's Apple ID.
+
+15
+00:00:46,213 --> 00:00:48,448
+If you need to communicate
+with your users,
+
+16
+00:00:48,482 --> 00:00:51,084
+Sign in with Apple provides you
+with an email address
+
+17
+00:00:51,118 --> 00:00:52,619
+that just works.
+
+18
+00:00:52,653 --> 00:00:55,989
+There is no additional verification
+required.
+
+19
+00:00:56,023 --> 00:00:58,425
+Sign in with Apple also provides
+an indicator
+
+20
+00:00:58,458 --> 00:01:01,495
+for how likely the user is indeed real.
+
+21
+00:01:01,528 --> 00:01:04,498
+This can help you combat fraud.
+
+22
+00:01:04,531 --> 00:01:09,002
+And Sign in with Apple works everywhere,
+including your managed Apple IDs
+
+23
+00:01:09,036 --> 00:01:11,672
+that you use for work and school.
+
+24
+00:01:11,705 --> 00:01:16,143
+To learn more about how you can integrate
+your app with work and school accounts,
+
+25
+00:01:16,176 --> 00:01:20,714
+check out the session "Discover Sign in
+with Apple at Work & School."
+
+26
+00:01:20,747 --> 00:01:24,918
+In this session, we are going to talk
+about how you can enhance and streamline
+
+27
+00:01:24,952 --> 00:01:26,720
+your Sign in with Apple experience.
+
+28
+00:01:27,621 --> 00:01:31,225
+First, I will discuss how you can prevent
+account duplication
+
+29
+00:01:31,258 --> 00:01:34,862
+by checking for existing credentials
+in your app.
+
+30
+00:01:34,895 --> 00:01:39,867
+Next, I'll take a deep dive
+into the Apple ID credential,
+
+31
+00:01:39,900 --> 00:01:44,004
+and then, I'll talk about some of the ways
+you can monitor credential changes
+
+32
+00:01:44,037 --> 00:01:47,941
+and discuss how to handle scenarios
+like account deletion.
+
+33
+00:01:47,975 --> 00:01:51,645
+And finally, Patrick will discuss
+how to integrate Sign in with Apple
+
+34
+00:01:51,678 --> 00:01:54,248
+on the web and other platforms.
+
+35
+00:01:54,281 --> 00:01:56,149
+Let's get started.
+
+36
+00:01:56,183 --> 00:01:59,920
+Sign in with Apple is
+a convenient and secure alternative
+
+37
+00:01:59,953 --> 00:02:03,590
+to traditional username-
+and-password-based authentication,
+
+38
+00:02:03,624 --> 00:02:07,728
+but your users could still have accounts
+that are unlocked with passwords.
+
+39
+00:02:07,761 --> 00:02:10,564
+So if your user already has an account
+that works for them,
+
+40
+00:02:10,597 --> 00:02:13,934
+it is important not to create
+a second account for your app.
+
+41
+00:02:14,902 --> 00:02:18,105
+I'll explore how you can guide someone
+to make the right decision
+
+42
+00:02:18,138 --> 00:02:19,173
+while signing in.
+
+43
+00:02:20,207 --> 00:02:24,545
+This is Juice, a sample app
+that uses Sign in with Apple.
+
+44
+00:02:24,578 --> 00:02:27,614
+You can find its source code
+in the related links for this video.
+
+45
+00:02:28,949 --> 00:02:33,554
+You can sign in to Juice either using
+traditional email and password
+
+46
+00:02:33,587 --> 00:02:36,490
+or using Sign in with Apple.
+
+47
+00:02:36,523 --> 00:02:39,426
+If your user has either
+of these credentials already,
+
+48
+00:02:39,459 --> 00:02:43,430
+it is in your hands to help them
+sign into the right account.
+
+49
+00:02:43,463 --> 00:02:46,567
+To start with, be sure to implement
+password autofill
+
+50
+00:02:46,600 --> 00:02:48,702
+so that existing password credentials
+
+51
+00:02:48,735 --> 00:02:51,071
+are displayed on the keyboard
+for your login screen.
+
+52
+00:02:52,139 --> 00:02:56,109
+This way, the user can autofill
+the credential with just one tap.
+
+53
+00:02:57,244 --> 00:02:59,413
+Also, you should provide your users
+
+54
+00:02:59,446 --> 00:03:01,648
+to upgrade their password-based accounts
+
+55
+00:03:01,682 --> 00:03:03,717
+to Sign in with Apple.
+
+56
+00:03:03,750 --> 00:03:06,386
+Once upgraded, your users
+will get an account
+
+57
+00:03:06,420 --> 00:03:08,222
+that has security built in,
+
+58
+00:03:08,255 --> 00:03:11,391
+and they have one less password
+to remember.
+
+59
+00:03:11,425 --> 00:03:14,161
+This is implemented
+using the Account Authentication
+
+60
+00:03:14,194 --> 00:03:16,697
+Modification Extension.
+
+61
+00:03:16,730 --> 00:03:21,368
+The extension-based API provides
+seamless experience for your users
+
+62
+00:03:21,401 --> 00:03:23,070
+to upgrade the way they sign in
+
+63
+00:03:23,103 --> 00:03:24,371
+using Sign in with Apple.
+
+64
+00:03:25,372 --> 00:03:26,507
+For more information
+
+65
+00:03:26,540 --> 00:03:29,776
+on providing security upgrades
+for your users' accounts,
+
+66
+00:03:29,810 --> 00:03:33,046
+check out the docs
+"Get the most out of Sign in with Apple"
+
+67
+00:03:33,080 --> 00:03:35,215
+and "One-tap account security upgrades."
+
+68
+00:03:36,850 --> 00:03:38,986
+Apart from providing password autofill,
+
+69
+00:03:39,019 --> 00:03:40,554
+you can go a step further
+
+70
+00:03:40,587 --> 00:03:42,422
+by presenting existing credentials
+
+71
+00:03:42,456 --> 00:03:44,858
+as soon as your app launches.
+
+72
+00:03:44,892 --> 00:03:46,994
+This way, your users can sign in
+
+73
+00:03:47,027 --> 00:03:48,328
+using the right account
+
+74
+00:03:48,362 --> 00:03:50,163
+even before they reach the login screen.
+
+75
+00:03:50,764 --> 00:03:54,801
+The Authentication Services API
+is really flexible this way.
+
+76
+00:03:54,835 --> 00:03:56,904
+Besides allowing a user to create
+
+77
+00:03:56,937 --> 00:03:58,839
+a Sign in with Apple credential,
+
+78
+00:03:58,872 --> 00:04:01,608
+the API can also present
+existing credentials,
+
+79
+00:04:01,642 --> 00:04:03,644
+including password-based credentials.
+
+80
+00:04:04,711 --> 00:04:06,747
+Adopting this is really easy.
+
+81
+00:04:06,780 --> 00:04:10,450
+Let me take you through some code
+on how to achieve this.
+
+82
+00:04:10,484 --> 00:04:13,620
+If you're already using
+the Authentication Services API,
+
+83
+00:04:13,654 --> 00:04:15,622
+this code should be very familiar.
+
+84
+00:04:16,623 --> 00:04:20,661
+You start by creating an instance
+of ASAuthorizationController
+
+85
+00:04:20,694 --> 00:04:24,164
+and include both
+ASAuthorizationAppleIDProvider
+
+86
+00:04:24,198 --> 00:04:27,100
+as well as
+an ASAuthorizationPasswordProvider
+
+87
+00:04:27,134 --> 00:04:29,670
+in the authorization request array.
+
+88
+00:04:29,703 --> 00:04:32,339
+Then you'll need to set up a delegate
+and an object
+
+89
+00:04:32,372 --> 00:04:34,741
+to help with presenting the interface.
+
+90
+00:04:34,775 --> 00:04:37,444
+And finally, you'll need to call
+performRequests
+
+91
+00:04:37,477 --> 00:04:40,948
+with the option
+preferImmediatelyAvailableCredentials
+
+92
+00:04:40,981 --> 00:04:43,183
+on your authorization controller.
+
+93
+00:04:43,217 --> 00:04:46,420
+This option is new on iOS 16.
+
+94
+00:04:46,453 --> 00:04:49,223
+It tells the system
+that you only want credentials
+
+95
+00:04:49,256 --> 00:04:52,125
+that are immediately available
+on the device.
+
+96
+00:04:52,159 --> 00:04:54,995
+It is intended specifically to be called
+on app launch.
+
+97
+00:04:56,463 --> 00:04:59,032
+If you want to support
+previous iOS versions,
+
+98
+00:04:59,066 --> 00:05:01,368
+you can use performRequests.
+
+99
+00:05:01,401 --> 00:05:02,903
+When you do this,
+
+100
+00:05:02,936 --> 00:05:06,673
+you will be presented with a list
+of existing credentials.
+
+101
+00:05:06,707 --> 00:05:07,975
+Your user can now select
+
+102
+00:05:08,008 --> 00:05:11,912
+either an existing
+Sign in with Apple credential
+
+103
+00:05:11,945 --> 00:05:15,048
+or an existing password credential.
+
+104
+00:05:15,082 --> 00:05:17,551
+After the user has selected a credential,
+
+105
+00:05:17,584 --> 00:05:19,186
+the system will call
+
+106
+00:05:19,219 --> 00:05:21,054
+didCompleteWithAuthorization
+
+107
+00:05:21,088 --> 00:05:24,491
+on the ASAuthorizationController delegate.
+
+108
+00:05:24,525 --> 00:05:26,994
+If the user chose
+a Sign in with Apple account,
+
+109
+00:05:27,027 --> 00:05:29,596
+you continue with the appleIDCredential.
+
+110
+00:05:29,630 --> 00:05:32,165
+If the user chose
+a password-based account,
+
+111
+00:05:32,199 --> 00:05:35,402
+you sign in with the passwordCredential
+returned.
+
+112
+00:05:35,435 --> 00:05:37,871
+If the user has no existing credential,
+
+113
+00:05:37,905 --> 00:05:39,806
+the API will not present the user
+
+114
+00:05:39,840 --> 00:05:42,109
+to create a Sign in with Apple account.
+
+115
+00:05:42,142 --> 00:05:46,547
+Instead, the system will call
+didCompleteWithError.
+
+116
+00:05:46,580 --> 00:05:49,950
+You should fall back to showing
+standard login flows in such scenarios.
+
+117
+00:05:50,884 --> 00:05:54,121
+By the way, the same
+Authentication Services API
+
+118
+00:05:54,154 --> 00:05:57,324
+also works seamlessly for passkeys.
+
+119
+00:05:57,357 --> 00:05:59,059
+To learn more about passkeys,
+
+120
+00:05:59,092 --> 00:06:03,163
+a next-generation authentication
+technology to replace passwords,
+
+121
+00:06:03,197 --> 00:06:05,732
+check out the session "Meet passkeys."
+
+122
+00:06:05,766 --> 00:06:07,668
+With just a few lines of code,
+
+123
+00:06:07,701 --> 00:06:08,969
+you can take full advantage
+
+124
+00:06:09,002 --> 00:06:11,038
+of the sign-in experience.
+
+125
+00:06:11,071 --> 00:06:13,640
+You can now help your users
+select the right account,
+
+126
+00:06:13,674 --> 00:06:16,210
+and hopefully, this prevents
+duplicate accounts
+
+127
+00:06:16,243 --> 00:06:18,312
+from being created in your system.
+
+128
+00:06:19,346 --> 00:06:22,983
+Next, I'd like to take you on a deep dive
+on Apple ID credential.
+
+129
+00:06:24,451 --> 00:06:28,088
+As you know, the response you get
+after a successful authorization
+
+130
+00:06:28,121 --> 00:06:29,690
+using Sign in with Apple
+
+131
+00:06:29,723 --> 00:06:33,994
+is an ASAuthorizationAppleIDCredential
+object.
+
+132
+00:06:34,027 --> 00:06:36,396
+It contains values like user,
+
+133
+00:06:36,430 --> 00:06:39,867
+fullName, email, realUserStatus,
+
+134
+00:06:39,900 --> 00:06:42,402
+identityToken, and authorizationCode.
+
+135
+00:06:43,270 --> 00:06:45,806
+I'll cover each of them briefly.
+
+136
+00:06:45,839 --> 00:06:49,510
+User is a unique and stable identifier.
+
+137
+00:06:49,543 --> 00:06:51,912
+It is the same identifier
+across all the apps
+
+138
+00:06:51,945 --> 00:06:53,213
+in your developer team.
+
+139
+00:06:54,281 --> 00:06:58,252
+Use this to uniquely identify
+users in your system.
+
+140
+00:06:58,285 --> 00:07:01,088
+You should ask for fullName
+only if you need it.
+
+141
+00:07:01,121 --> 00:07:05,492
+If requested, your users can share
+any name they want.
+
+142
+00:07:05,526 --> 00:07:07,427
+If you want to communicate
+with your users,
+
+143
+00:07:07,461 --> 00:07:09,663
+you should ask for the email.
+
+144
+00:07:09,696 --> 00:07:12,299
+When requested, your users
+have two options
+
+145
+00:07:12,332 --> 00:07:14,701
+to share their email address.
+
+146
+00:07:14,735 --> 00:07:19,173
+One option is to share the email
+associated with their Apple ID.
+
+147
+00:07:19,206 --> 00:07:23,277
+The other option is to use
+the "hide my email" feature.
+
+148
+00:07:23,310 --> 00:07:27,114
+This creates a hidden email address
+that routes to their inbox.
+
+149
+00:07:27,981 --> 00:07:30,751
+It is a two-way relay,
+so it can handle replies, too.
+
+150
+00:07:31,919 --> 00:07:34,221
+Regardless of which option is chosen,
+
+151
+00:07:34,254 --> 00:07:36,890
+the email address
+has been previously verified by Apple,
+
+152
+00:07:36,924 --> 00:07:38,592
+and it is ready to use.
+
+153
+00:07:38,625 --> 00:07:42,262
+Also, not all accounts have
+an associated email,
+
+154
+00:07:42,296 --> 00:07:44,198
+so be prepared to handle scenarios
+
+155
+00:07:44,231 --> 00:07:45,999
+where there is no value for email,
+
+156
+00:07:46,033 --> 00:07:47,334
+even if you requested it.
+
+157
+00:07:48,368 --> 00:07:51,071
+RealUserStatus is
+a high-confidence indicator
+
+158
+00:07:51,104 --> 00:07:53,807
+on how likely the user is real.
+
+159
+00:07:53,841 --> 00:07:56,577
+It is calculated
+using on-device machine learning,
+
+160
+00:07:56,610 --> 00:07:59,479
+account history, and hardware attestation
+
+161
+00:07:59,513 --> 00:08:01,815
+whilst preserving the user's privacy.
+
+162
+00:08:01,849 --> 00:08:04,518
+There's three types for realUserStatus.
+
+163
+00:08:04,551 --> 00:08:08,755
+"Likely real" means the user appears
+to be a real person.
+
+164
+00:08:08,789 --> 00:08:10,891
+Provide this user
+with the best experience,
+
+165
+00:08:10,924 --> 00:08:13,393
+such as skipping
+additional fraud verification checks
+
+166
+00:08:13,427 --> 00:08:15,696
+like CAPTCHAs.
+
+167
+00:08:15,729 --> 00:08:17,998
+"Unknown" is when the system
+hasn't determined
+
+168
+00:08:18,031 --> 00:08:20,400
+whether the user is a real person.
+
+169
+00:08:20,434 --> 00:08:24,071
+Trust this user as you would
+for any account with limited information
+
+170
+00:08:24,104 --> 00:08:27,207
+that requires
+additional verification steps.
+
+171
+00:08:27,241 --> 00:08:29,710
+The user could still be real,
+so do not block them
+
+172
+00:08:29,743 --> 00:08:30,744
+from using your app.
+
+173
+00:08:31,745 --> 00:08:35,115
+And finally, "unsupported"
+means the system is not capable
+
+174
+00:08:35,148 --> 00:08:36,717
+of this determination.
+
+175
+00:08:37,284 --> 00:08:39,887
+I should take a moment to call out
+that the properties
+
+176
+00:08:39,920 --> 00:08:43,190
+like fullName, email,
+and realUserStatus
+
+177
+00:08:43,223 --> 00:08:46,627
+are only returned when an account
+is created for the very first time.
+
+178
+00:08:47,761 --> 00:08:50,430
+They're not returned
+upon subsequent sign-ins,
+
+179
+00:08:50,464 --> 00:08:54,635
+so make sure to securely cache
+properties like fullName and email
+
+180
+00:08:54,668 --> 00:08:58,205
+until you can verify that an account
+has been created in your system.
+
+181
+00:08:59,339 --> 00:09:02,109
+The identityToken is a JSON web token
+
+182
+00:09:02,142 --> 00:09:03,610
+that contains most of the data
+
+183
+00:09:03,644 --> 00:09:05,112
+that the app server needs,
+
+184
+00:09:05,145 --> 00:09:07,581
+including the user information.
+
+185
+00:09:07,614 --> 00:09:10,317
+This is an industry-standard approach
+to authentication.
+
+186
+00:09:11,084 --> 00:09:15,822
+The JSON web token, or JWT,
+consists of three parts:
+
+187
+00:09:15,856 --> 00:09:19,459
+a base-64 URL encoded header,
+
+188
+00:09:19,493 --> 00:09:23,197
+a base-64 URL encoded payload,
+
+189
+00:09:23,230 --> 00:09:25,232
+and a signature signed by Apple.
+
+190
+00:09:26,033 --> 00:09:28,702
+You should verify the signature
+with Apple's public key
+
+191
+00:09:28,735 --> 00:09:31,872
+to ensure that the response
+has not been tampered with
+
+192
+00:09:31,905 --> 00:09:35,008
+and is indeed from Apple ID servers.
+
+193
+00:09:35,042 --> 00:09:36,577
+It is also equally important
+
+194
+00:09:36,610 --> 00:09:40,047
+that your app server checks
+the validity of the token.
+
+195
+00:09:40,080 --> 00:09:41,882
+Once you decode the payload,
+
+196
+00:09:41,915 --> 00:09:46,453
+you should verify the issuer is
+appleid.apple.com,
+
+197
+00:09:46,486 --> 00:09:51,558
+verify the audience field
+is your app's bundle identifier,
+
+198
+00:09:51,592 --> 00:09:55,462
+then make sure the expiry timestamp
+is greater than the current time
+
+199
+00:09:55,495 --> 00:09:58,332
+so that you know the token is valid.
+
+200
+00:09:58,365 --> 00:10:01,802
+Subject will be your user identifier.
+
+201
+00:10:01,835 --> 00:10:04,438
+If you requested
+for the user's email address,
+
+202
+00:10:04,471 --> 00:10:06,440
+it will also be included.
+
+203
+00:10:06,473 --> 00:10:09,176
+You can also find the realUserStatus.
+
+204
+00:10:09,209 --> 00:10:11,545
+The value will be 0 for "unsupported,"
+
+205
+00:10:11,578 --> 00:10:15,249
+1 for "unknown," 2 for "likely real."
+
+206
+00:10:15,282 --> 00:10:17,851
+And finally, verify that the nonce
+is the same
+
+207
+00:10:17,885 --> 00:10:21,421
+as the one generated prior to the creation
+of the authorization request.
+
+208
+00:10:22,656 --> 00:10:24,324
+For more information on nonce
+
+209
+00:10:24,358 --> 00:10:26,927
+and how to secure
+your authorization process
+
+210
+00:10:26,960 --> 00:10:28,595
+to mitigate replay attacks,
+
+211
+00:10:28,629 --> 00:10:31,498
+check out the session "Get the most
+out of Sign in with Apple."
+
+212
+00:10:32,599 --> 00:10:36,236
+AuthorizationCode is
+a short-lived, single-use token
+
+213
+00:10:36,270 --> 00:10:38,272
+that you can provide Apple ID servers
+
+214
+00:10:38,305 --> 00:10:40,107
+in exchange for refresh tokens.
+
+215
+00:10:40,974 --> 00:10:43,410
+If your systems already use open standards
+
+216
+00:10:43,443 --> 00:10:44,511
+like OAuth 2.0,
+
+217
+00:10:44,545 --> 00:10:46,079
+this might be familiar for you.
+
+218
+00:10:46,813 --> 00:10:48,649
+To generate a refresh token,
+
+219
+00:10:48,682 --> 00:10:52,486
+you should send a post request
+to the auth/token endpoint.
+
+220
+00:10:53,287 --> 00:10:56,123
+You pass on the client ID
+and the client secret
+
+221
+00:10:56,156 --> 00:10:59,092
+along with the authorization code
+that you just received.
+
+222
+00:10:59,126 --> 00:11:02,196
+A detailed description on how to create
+the client secret
+
+223
+00:11:02,229 --> 00:11:05,065
+is available
+in the Apple Developer documentation.
+
+224
+00:11:05,098 --> 00:11:06,633
+In the response,
+
+225
+00:11:06,667 --> 00:11:09,636
+you will get a refresh token,
+an access token,
+
+226
+00:11:09,670 --> 00:11:11,471
+and a new identity token
+
+227
+00:11:11,505 --> 00:11:14,374
+similar to the one you received earlier.
+
+228
+00:11:14,408 --> 00:11:16,610
+If you have an expired access token,
+
+229
+00:11:16,643 --> 00:11:18,078
+you can use the refresh token
+
+230
+00:11:18,111 --> 00:11:19,813
+to obtain a new access token
+
+231
+00:11:19,847 --> 00:11:22,316
+using the same endpoint.
+
+232
+00:11:22,349 --> 00:11:24,818
+You can also continue to use
+the same refresh token
+
+233
+00:11:24,852 --> 00:11:27,554
+until it gets invalidated.
+
+234
+00:11:27,588 --> 00:11:29,690
+The refresh token could get invalidated
+
+235
+00:11:29,723 --> 00:11:31,658
+if the token verification fails
+
+236
+00:11:31,692 --> 00:11:34,628
+or if there are changes
+around your user's session.
+
+237
+00:11:35,762 --> 00:11:37,331
+Speaking of user session,
+
+238
+00:11:37,364 --> 00:11:40,300
+next, I’ll talk about handling
+and monitoring changes
+
+239
+00:11:40,334 --> 00:11:42,269
+around the credential state.
+
+240
+00:11:42,936 --> 00:11:44,972
+After verifying the identity token,
+
+241
+00:11:45,005 --> 00:11:47,808
+your app is responsible for managing
+the user session.
+
+242
+00:11:48,942 --> 00:11:52,913
+There are various scenarios
+that can trigger user session changes.
+
+243
+00:11:52,946 --> 00:11:57,918
+For example, a user could stop using
+Apple ID with your app from Settings,
+
+244
+00:11:57,951 --> 00:12:00,754
+or they could have been signed out
+of the device.
+
+245
+00:12:01,455 --> 00:12:03,690
+To handle session changes gracefully,
+
+246
+00:12:03,724 --> 00:12:06,827
+call the getCredentialState(forUserID:)
+
+247
+00:12:06,860 --> 00:12:10,364
+on the ASAuthorizationAppleIDProvider.
+
+248
+00:12:10,397 --> 00:12:12,566
+This API is recommended to be called
+
+249
+00:12:12,599 --> 00:12:14,535
+as soon as your app launches
+
+250
+00:12:14,568 --> 00:12:18,372
+or at any point where you wish to check
+the state.
+
+251
+00:12:18,405 --> 00:12:21,808
+You should also observe
+for credentialRevokedNotification
+
+252
+00:12:21,842 --> 00:12:25,179
+so that your app is notified
+when the credential is revoked.
+
+253
+00:12:25,212 --> 00:12:27,481
+If you observe any change in the state,
+
+254
+00:12:27,514 --> 00:12:30,083
+you should assume that a different user
+has signed in
+
+255
+00:12:30,117 --> 00:12:32,853
+and sign the current user out of the app.
+
+256
+00:12:32,886 --> 00:12:34,421
+If you have an app server,
+
+257
+00:12:34,454 --> 00:12:37,891
+you should subscribe
+to server-to-server notifications.
+
+258
+00:12:37,925 --> 00:12:39,927
+Your server will receive important updates
+
+259
+00:12:39,960 --> 00:12:42,563
+about your users and their accounts.
+
+260
+00:12:42,596 --> 00:12:45,132
+Notifications are sent to each group
+of apps
+
+261
+00:12:45,165 --> 00:12:47,134
+for the following scenarios:
+
+262
+00:12:47,167 --> 00:12:51,805
+when the user disables or enables
+their mail forwarding preference;
+
+263
+00:12:51,839 --> 00:12:55,309
+when the user stops using their Apple ID
+with your app;
+
+264
+00:12:55,342 --> 00:12:58,378
+or when the user permanently deletes
+their Apple ID.
+
+265
+00:12:59,179 --> 00:13:01,448
+To start receiving notifications,
+
+266
+00:13:01,481 --> 00:13:03,784
+you should first register an endpoint URL
+
+267
+00:13:03,817 --> 00:13:06,220
+in the Apple Developer portal.
+
+268
+00:13:06,253 --> 00:13:08,856
+All events arrive
+at the same endpoint URL.
+
+269
+00:13:09,756 --> 00:13:14,127
+The events are sent as JSON web tokens
+signed by Apple.
+
+270
+00:13:14,161 --> 00:13:16,430
+If mail forwarding is disabled,
+
+271
+00:13:16,463 --> 00:13:18,398
+in the payload of the JWT,
+
+272
+00:13:18,432 --> 00:13:20,934
+you will receive an email-disabled event.
+
+273
+00:13:23,070 --> 00:13:26,206
+When the user stops using
+their Apple ID with your app,
+
+274
+00:13:26,240 --> 00:13:28,308
+you will get a consent-revoked event.
+
+275
+00:13:29,276 --> 00:13:32,212
+It is important to invalidate
+any active user session
+
+276
+00:13:32,246 --> 00:13:33,347
+when you get this event.
+
+277
+00:13:34,515 --> 00:13:36,850
+And if the user deletes their Apple ID,
+
+278
+00:13:36,884 --> 00:13:39,353
+you will get an account-delete event.
+
+279
+00:13:39,386 --> 00:13:42,990
+Again, be sure to invalidate
+any active user session
+
+280
+00:13:43,023 --> 00:13:45,392
+and update their accounts
+according to your process.
+
+281
+00:13:46,527 --> 00:13:49,663
+Now I'd like to focus on account deletion.
+
+282
+00:13:49,696 --> 00:13:52,065
+Accounts are part of our identities,
+
+283
+00:13:52,099 --> 00:13:55,836
+and we use them to manage some
+of our most personal and private data.
+
+284
+00:13:55,869 --> 00:13:58,038
+Someone might want to delete
+their account,
+
+285
+00:13:58,071 --> 00:14:00,140
+and you need to support this
+in your app.
+
+286
+00:14:01,241 --> 00:14:03,610
+You should provide a way
+to initiate account deletion
+
+287
+00:14:03,644 --> 00:14:04,678
+from your app,
+
+288
+00:14:04,711 --> 00:14:06,346
+and it is your responsibility
+
+289
+00:14:06,380 --> 00:14:08,315
+to manage the entire deletion process.
+
+290
+00:14:09,516 --> 00:14:10,984
+If you have an app server
+
+291
+00:14:11,018 --> 00:14:13,020
+that stores user information,
+
+292
+00:14:13,053 --> 00:14:15,055
+typically, the app notifies the server
+
+293
+00:14:15,088 --> 00:14:17,191
+to delete user accounts.
+
+294
+00:14:17,224 --> 00:14:19,393
+Now, you can include Sign in with Apple as
+
+295
+00:14:19,426 --> 00:14:22,296
+part of your deletion process.
+
+296
+00:14:22,329 --> 00:14:24,698
+This is done using a new REST endpoint
+
+297
+00:14:24,731 --> 00:14:26,333
+that your server can use
+
+298
+00:14:26,366 --> 00:14:29,603
+to delete an account associated
+with your app.
+
+299
+00:14:29,636 --> 00:14:31,805
+Let me briefly take you through this API.
+
+300
+00:14:32,673 --> 00:14:34,675
+In order to delete an account,
+
+301
+00:14:34,708 --> 00:14:37,344
+you must have either a valid refresh token
+
+302
+00:14:37,377 --> 00:14:40,380
+or a valid access token for the user.
+
+303
+00:14:40,414 --> 00:14:42,316
+If you don't have either of the tokens,
+
+304
+00:14:42,349 --> 00:14:46,253
+you can generate using
+the auth/token endpoint.
+
+305
+00:14:46,286 --> 00:14:48,155
+Once you have either of the tokens,
+
+306
+00:14:48,188 --> 00:14:50,924
+you can use the auth/revoke endpoint
+
+307
+00:14:50,958 --> 00:14:53,126
+with the required parameters.
+
+308
+00:14:53,160 --> 00:14:54,795
+When using the refresh token,
+
+309
+00:14:54,828 --> 00:14:57,564
+set the token type to REFRESH_TOKEN.
+
+310
+00:14:58,765 --> 00:15:01,168
+If you want to delete
+using the access token,
+
+311
+00:15:01,201 --> 00:15:04,004
+set the token type to ACCESS_TOKEN.
+
+312
+00:15:04,838 --> 00:15:06,740
+If you get a successful response,
+
+313
+00:15:06,773 --> 00:15:09,376
+the tokens and the user's active sessions
+
+314
+00:15:09,409 --> 00:15:11,078
+will be instantly invalidated.
+
+315
+00:15:12,079 --> 00:15:14,982
+Once deleted,
+the user returning to your app
+
+316
+00:15:15,015 --> 00:15:16,783
+and using Sign in with Apple
+
+317
+00:15:16,817 --> 00:15:18,252
+will have an experience similar
+
+318
+00:15:18,285 --> 00:15:20,354
+to when they first created the account
+with the app.
+
+319
+00:15:21,522 --> 00:15:23,090
+With that, I will sign out
+
+320
+00:15:23,123 --> 00:15:25,259
+and pass it on to my colleague Patrick
+
+321
+00:15:25,292 --> 00:15:27,561
+to discuss how you can use
+Sign in with Apple
+
+322
+00:15:27,594 --> 00:15:29,363
+on the web and other platforms.
+
+323
+00:15:30,731 --> 00:15:31,965
+Patrick: Thank you, Ram!
+
+324
+00:15:31,999 --> 00:15:34,801
+People love how Sign in with Apple
+works seamlessly
+
+325
+00:15:34,835 --> 00:15:37,137
+across all of Apple's platforms.
+
+326
+00:15:37,171 --> 00:15:38,939
+But it doesn’t stop there.
+
+327
+00:15:38,972 --> 00:15:43,510
+Sign in with Apple also works seamlessly
+on the web and other platforms.
+
+328
+00:15:43,544 --> 00:15:47,047
+Let’s discuss how you can enhance
+your Sign in with Apple experience
+
+329
+00:15:47,080 --> 00:15:49,449
+to support the web and other platforms.
+
+330
+00:15:50,918 --> 00:15:55,956
+We have an existing iOS app that Ram
+introduced to you earlier, called Juice.
+
+331
+00:15:55,989 --> 00:15:58,425
+We’d like to bring Juice
+to even more users
+
+332
+00:15:58,458 --> 00:16:00,694
+by expanding to the web.
+
+333
+00:16:00,727 --> 00:16:03,063
+Let’s begin by discussing how to group
+
+334
+00:16:03,096 --> 00:16:04,665
+our similar apps together.
+
+335
+00:16:05,832 --> 00:16:08,702
+It is recommended that you group
+related apps together
+
+336
+00:16:08,735 --> 00:16:11,405
+to streamline the user experience.
+
+337
+00:16:11,438 --> 00:16:13,173
+By grouping related apps together,
+
+338
+00:16:13,207 --> 00:16:15,943
+your users only need to provide
+their consent once
+
+339
+00:16:15,976 --> 00:16:17,811
+to share their information with your app.
+
+340
+00:16:18,846 --> 00:16:22,549
+For example, your app may be available
+on iOS and macOS
+
+341
+00:16:22,583 --> 00:16:25,519
+but use different bundle identifiers
+for each platform.
+
+342
+00:16:26,220 --> 00:16:28,555
+It’s recommended that you group
+these apps together.
+
+343
+00:16:29,156 --> 00:16:31,525
+When using Sign in with Apple, your users
+
+344
+00:16:31,558 --> 00:16:33,894
+will see the App Icon for the app you set
+
+345
+00:16:33,927 --> 00:16:35,095
+as the primary app.
+
+346
+00:16:35,796 --> 00:16:38,966
+Let’s discover how you can configure
+a Services ID
+
+347
+00:16:38,999 --> 00:16:41,635
+to support Sign in with Apple
+on your website.
+
+348
+00:16:42,436 --> 00:16:45,839
+To begin, log into the Apple Developer Portal
+
+349
+00:16:45,873 --> 00:16:49,376
+and navigate to "Certificates,
+Identifiers & Profiles."
+
+350
+00:16:51,011 --> 00:16:53,914
+Select the radio button
+next to Services IDs
+
+351
+00:16:53,947 --> 00:16:55,315
+and then click "Continue."
+
+352
+00:16:56,884 --> 00:16:58,719
+Enter a description for your Service.
+
+353
+00:16:59,987 --> 00:17:02,589
+Enter a unique identifier for your Service
+
+354
+00:17:02,623 --> 00:17:03,590
+and click Continue.
+
+355
+00:17:04,825 --> 00:17:07,528
+Click on the checkbox
+next to Sign in with Apple
+
+356
+00:17:07,561 --> 00:17:09,363
+and then click the Configure button.
+
+357
+00:17:10,264 --> 00:17:13,300
+On the Web Authentication Configuration
+screen,
+
+358
+00:17:13,333 --> 00:17:16,370
+select a Primary App ID
+from the drop-down menu.
+
+359
+00:17:17,504 --> 00:17:20,440
+Next, input the domains and subdomains
+
+360
+00:17:20,474 --> 00:17:24,211
+your website will use to support
+Sign in with Apple.
+
+361
+00:17:24,244 --> 00:17:27,080
+Last, enter a redirect URL for Apple
+
+362
+00:17:27,114 --> 00:17:30,250
+to redirect your user back to your app
+or website
+
+363
+00:17:30,284 --> 00:17:32,686
+after a successful authorization.
+
+364
+00:17:32,719 --> 00:17:33,854
+That’s it!
+
+365
+00:17:33,887 --> 00:17:35,489
+You’ve configured a Services ID
+
+366
+00:17:35,522 --> 00:17:37,958
+to support Sign in with Apple
+on your website.
+
+367
+00:17:38,692 --> 00:17:40,727
+You’ll need a button to show users
+
+368
+00:17:40,761 --> 00:17:42,563
+your website supports Sign in with Apple.
+
+369
+00:17:43,530 --> 00:17:46,900
+Apple provides
+a highly configurable button API
+
+370
+00:17:46,934 --> 00:17:49,536
+to generate Sign in with Apple
+button images.
+
+371
+00:17:50,537 --> 00:17:53,507
+Use this to customize
+and embed your button of choice
+
+372
+00:17:53,540 --> 00:17:56,176
+in your app or website.
+
+373
+00:17:56,210 --> 00:17:59,680
+Sign in with Apple JS
+is a simple Javascript framework
+
+374
+00:17:59,713 --> 00:18:03,417
+that makes integrating Sign in with Apple
+even easier on the web.
+
+375
+00:18:04,117 --> 00:18:06,253
+In your application or website,
+
+376
+00:18:06,286 --> 00:18:08,655
+start by including the Sign in with Apple
+
+377
+00:18:08,689 --> 00:18:10,324
+JavaScript framework.
+
+378
+00:18:10,357 --> 00:18:13,660
+This simple API will allow you
+to authenticate your users
+
+379
+00:18:13,694 --> 00:18:16,196
+and obtain different assets,
+
+380
+00:18:16,230 --> 00:18:18,365
+like the Sign in with Apple button
+
+381
+00:18:18,398 --> 00:18:21,735
+that you can create
+with just one simple DIV.
+
+382
+00:18:21,768 --> 00:18:25,105
+You can also customize the button to fit
+your app or website
+
+383
+00:18:25,138 --> 00:18:27,107
+by modifying the properties of the button.
+
+384
+00:18:28,108 --> 00:18:31,278
+For example, with the current properties,
+
+385
+00:18:31,311 --> 00:18:33,647
+you’ll get a white
+"Sign in with Apple" button
+
+386
+00:18:33,680 --> 00:18:36,116
+with a border and a default corner radius.
+
+387
+00:18:37,084 --> 00:18:39,353
+By changing the data-color property,
+
+388
+00:18:39,386 --> 00:18:41,855
+we can choose a different background color
+for the button.
+
+389
+00:18:42,789 --> 00:18:45,459
+If we change the data type to "continue",
+
+390
+00:18:45,492 --> 00:18:47,327
+the button text will update to show
+
+391
+00:18:47,361 --> 00:18:48,729
+"Continue with Apple."
+
+392
+00:18:49,763 --> 00:18:52,599
+Alternatively, you can create
+a logo-only button
+
+393
+00:18:52,633 --> 00:18:55,502
+by setting the data mode property
+to logo-only.
+
+394
+00:18:56,403 --> 00:18:59,173
+The Sign in with Apple Javascript
+Button API
+
+395
+00:18:59,206 --> 00:19:02,442
+provides even more customizable
+properties.
+
+396
+00:19:02,476 --> 00:19:05,179
+You can refer
+to the Sign in with Apple button resource
+
+397
+00:19:05,212 --> 00:19:07,314
+to easily configure these many options.
+
+398
+00:19:08,515 --> 00:19:10,417
+If you’d prefer to use a REST API
+
+399
+00:19:10,450 --> 00:19:12,519
+to generate
+your Sign in with Apple button,
+
+400
+00:19:12,553 --> 00:19:14,855
+you can use one
+of the Apple ID button endpoints
+
+401
+00:19:14,888 --> 00:19:16,623
+to generate a button.
+
+402
+00:19:16,657 --> 00:19:19,193
+There are separate endpoints
+for center-aligned,
+
+403
+00:19:19,226 --> 00:19:21,128
+left-aligned, and logo buttons.
+
+404
+00:19:22,062 --> 00:19:25,365
+You can customize the button by using
+query parameters.
+
+405
+00:19:25,399 --> 00:19:26,967
+In this example request,
+
+406
+00:19:27,000 --> 00:19:29,436
+I customize
+a white Sign in with Apple button
+
+407
+00:19:29,469 --> 00:19:30,804
+with a border.
+
+408
+00:19:30,838 --> 00:19:34,908
+I receive a response
+with the customized button as a PNG image.
+
+409
+00:19:34,942 --> 00:19:38,178
+Now that you have personalized
+your Sign in with Apple button,
+
+410
+00:19:38,212 --> 00:19:40,380
+it's time to authenticate your user.
+
+411
+00:19:41,215 --> 00:19:43,450
+You’ll need to send
+an authorization request
+
+412
+00:19:43,483 --> 00:19:46,620
+with the required parameters to Apple.
+
+413
+00:19:46,653 --> 00:19:48,255
+These are the parameters you need
+
+414
+00:19:48,288 --> 00:19:50,791
+in order to successfully log in a user.
+
+415
+00:19:52,059 --> 00:19:55,896
+Since you have already implemented
+Sign in with Apple on an Apple platform,
+
+416
+00:19:55,929 --> 00:19:57,798
+these parameters are very familiar.
+
+417
+00:19:59,032 --> 00:20:01,802
+First, we’ll need to set the “clientID”.
+
+418
+00:20:01,835 --> 00:20:03,504
+This will be the Services ID
+
+419
+00:20:03,537 --> 00:20:05,806
+that you created
+on the Apple Developer Portal
+
+420
+00:20:05,839 --> 00:20:07,074
+for your app or website.
+
+421
+00:20:08,075 --> 00:20:12,012
+Next, if your app or website requires
+email or name,
+
+422
+00:20:12,045 --> 00:20:13,914
+fill in the "scope" parameter.
+
+423
+00:20:13,947 --> 00:20:18,519
+If you are requesting multiple scopes,
+use a space to separate each scope.
+
+424
+00:20:19,419 --> 00:20:22,823
+It is important that you only request
+the data you need.
+
+425
+00:20:23,891 --> 00:20:26,593
+The “redirectURI” parameter
+is where you will add
+
+426
+00:20:26,627 --> 00:20:28,729
+the URL you registered previously
+
+427
+00:20:28,762 --> 00:20:30,831
+on the Apple Developer Portal
+
+428
+00:20:30,864 --> 00:20:34,201
+and informs Apple where to direct the user
+to on your website.
+
+429
+00:20:35,369 --> 00:20:38,739
+You can also add a “state”
+and “nonce” to secure your request.
+
+430
+00:20:40,040 --> 00:20:42,776
+And finally,
+with the "usePopup" parameter,
+
+431
+00:20:42,809 --> 00:20:44,945
+you can choose to display the login screen
+
+432
+00:20:44,978 --> 00:20:46,747
+in a separate pop-up window
+
+433
+00:20:46,780 --> 00:20:48,815
+or have the existing window
+
+434
+00:20:48,849 --> 00:20:50,817
+redirect to the Apple Sign in website.
+
+435
+00:20:51,418 --> 00:20:53,187
+If someone is using Safari,
+
+436
+00:20:53,220 --> 00:20:55,956
+they’ll see a native screen like this one
+providing them
+
+437
+00:20:55,989 --> 00:20:58,926
+a first-class experience to sign into
+your website.
+
+438
+00:20:59,660 --> 00:21:03,530
+After the Apple ID server
+processes the authorization request,
+
+439
+00:21:03,564 --> 00:21:04,965
+you’ll receive a DOM event
+
+440
+00:21:04,998 --> 00:21:07,434
+containing the results
+of the authorization.
+
+441
+00:21:08,268 --> 00:21:11,538
+To handle a success response,
+add an event listener
+
+442
+00:21:11,572 --> 00:21:14,708
+for "AppleIDSignInOnSuccess."
+
+443
+00:21:16,176 --> 00:21:19,112
+To handle a failure response,
+add an event listener
+
+444
+00:21:19,146 --> 00:21:22,216
+for "AppleIDSignInOnFailure."
+
+445
+00:21:23,784 --> 00:21:25,719
+If the authorization was a success,
+
+446
+00:21:25,752 --> 00:21:29,156
+you’ll receive a response that contains
+the authorization code,
+
+447
+00:21:29,189 --> 00:21:30,724
+the identity token,
+
+448
+00:21:30,757 --> 00:21:33,393
+and the user information if requested.
+
+449
+00:21:33,427 --> 00:21:36,029
+This is similar to the response
+you are already used to
+
+450
+00:21:36,063 --> 00:21:37,831
+on Apple platforms.
+
+451
+00:21:37,865 --> 00:21:40,834
+If you’d prefer to use a REST API
+to integrate directly
+
+452
+00:21:40,868 --> 00:21:42,369
+with Apple ID servers,
+
+453
+00:21:42,402 --> 00:21:45,539
+direct the authorization request
+to the authorize endpoint
+
+454
+00:21:45,572 --> 00:21:47,841
+with the required parameters.
+
+455
+00:21:47,875 --> 00:21:49,877
+If the authorization is successful,
+
+456
+00:21:49,910 --> 00:21:52,746
+you’ll get a response that contains
+the authorization code,
+
+457
+00:21:52,779 --> 00:21:54,181
+the identity token,
+
+458
+00:21:54,214 --> 00:21:56,283
+and the user information.
+
+459
+00:21:56,316 --> 00:21:57,484
+This is very similar
+
+460
+00:21:57,518 --> 00:22:00,954
+to the response you're already used to
+on Apple platforms.
+
+461
+00:22:00,988 --> 00:22:01,922
+That’s it!
+
+462
+00:22:01,955 --> 00:22:04,725
+You’ve successfully adopted
+Sign in with Apple on your website!
+
+463
+00:22:05,392 --> 00:22:09,563
+To wrap up, I’d like to highlight
+some important things to keep in mind
+
+464
+00:22:09,596 --> 00:22:11,398
+while implementing Sign in with Apple.
+
+465
+00:22:12,533 --> 00:22:16,036
+Unless your app requires
+significant account-based features,
+
+466
+00:22:16,069 --> 00:22:19,039
+let people use your app without a login.
+
+467
+00:22:19,072 --> 00:22:21,141
+For example, you may allow a user
+
+468
+00:22:21,175 --> 00:22:23,243
+to purchase an item using Apple Pay
+
+469
+00:22:23,277 --> 00:22:26,880
+and then optionally offer them to tie
+their purchase to an account
+
+470
+00:22:26,914 --> 00:22:28,448
+after the purchase is complete.
+
+471
+00:22:29,249 --> 00:22:33,520
+Offer existing users the ability
+to upgrade the security of their account
+
+472
+00:22:33,554 --> 00:22:37,024
+by switching away from username
+and password authentication
+
+473
+00:22:37,057 --> 00:22:38,258
+to Sign in with Apple.
+
+474
+00:22:39,226 --> 00:22:42,563
+If you just need a unique identifier
+to identify the user,
+
+475
+00:22:42,596 --> 00:22:44,298
+don't collect name or email.
+
+476
+00:22:44,831 --> 00:22:47,668
+And if you do collect email
+through Sign In with Apple,
+
+477
+00:22:47,701 --> 00:22:50,103
+make sure that you respect
+the user's choice.
+
+478
+00:22:50,671 --> 00:22:52,906
+You should not prompt
+for an additional email.
+
+479
+00:22:54,041 --> 00:22:56,109
+It’s important to implement
+Sign in with Apple
+
+480
+00:22:56,143 --> 00:22:59,580
+across all of the platforms your app
+or website is available.
+
+481
+00:23:00,214 --> 00:23:02,482
+Your users may use multiple platforms,
+
+482
+00:23:02,516 --> 00:23:05,385
+and they will expect to use
+Sign in with Apple everywhere.
+
+483
+00:23:06,153 --> 00:23:09,823
+We’re really excited to see what you do
+with Sign in with Apple in your apps,
+
+484
+00:23:09,857 --> 00:23:11,959
+and we look forward to your feedback.
+
+485
+00:23:11,992 --> 00:23:14,828
+Thank you for watching,
+and enjoy the rest of WWDC!
+
+486
+00:23:14,862 --> 00:23:17,831
+[music]
+

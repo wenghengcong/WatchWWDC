@@ -1,0 +1,1527 @@
+1
+00:00:00,434 --> 00:00:06,440
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,309 --> 00:00:13,747
+Well, greetings and welcome to "Get more
+mileage out of your app with CarPlay."
+
+3
+00:00:13,780 --> 00:00:18,018
+My name is André, and I'll be
+driving you through the session today.
+
+4
+00:00:19,553 --> 00:00:24,525
+As you know, CarPlay is the smarter,
+safer way to use your iPhone in the car.
+
+5
+00:00:24,558 --> 00:00:30,163
+Today's session is all about your
+apps and how to enable them in CarPlay.
+
+6
+00:00:30,197 --> 00:00:34,334
+We'll start with a quick refresher
+on the types of apps that are supported,
+
+7
+00:00:34,368 --> 00:00:38,672
+then talk about some new app types
+we are enabling this year,
+
+8
+00:00:38,705 --> 00:00:42,242
+and finally go over
+a new tool we have made available
+
+9
+00:00:42,276 --> 00:00:45,245
+to support the development of your apps.
+
+10
+00:00:45,279 --> 00:00:50,184
+We'll finish today with an important
+new feature specific to navigation apps.
+
+11
+00:00:50,217 --> 00:00:53,220
+Without further ado,
+let's get right into it!
+
+12
+00:00:55,155 --> 00:01:00,327
+One of the most fundamental things about
+CarPlay is that it is built for drivers.
+
+13
+00:01:00,360 --> 00:01:04,932
+People who are actively driving
+are the primary users you should consider
+
+14
+00:01:04,965 --> 00:01:06,867
+when building your app.
+
+15
+00:01:06,900 --> 00:01:12,272
+As a result, you should only enable use
+cases that are relevant while driving,
+
+16
+00:01:12,306 --> 00:01:17,377
+and you should omit any use cases
+that people shouldn't do while driving.
+
+17
+00:01:17,411 --> 00:01:20,881
+Things like one time configuration,
+signing in to your app,
+
+18
+00:01:20,914 --> 00:01:24,952
+or reading terms and conditions,
+are things that are better to do before
+
+19
+00:01:24,985 --> 00:01:29,289
+or after driving, so they shouldn't
+appear in your app's CarPlay UI.
+
+20
+00:01:30,490 --> 00:01:34,828
+Note that an entitlement is needed
+for your app to appear in CarPlay.
+
+21
+00:01:34,862 --> 00:01:38,699
+You can request the entitlement
+on the Apple CarPlay developer website
+
+22
+00:01:38,732 --> 00:01:42,402
+based on the type of app
+you'd like to make available.
+
+23
+00:01:42,436 --> 00:01:47,541
+Here are the types of apps
+we support in CarPlay today.
+
+24
+00:01:47,574 --> 00:01:52,112
+These cover a wide number of tasks
+drivers may want to do while driving,
+
+25
+00:01:52,145 --> 00:01:55,482
+but we've heard from many of
+you that there are even more
+
+26
+00:01:55,516 --> 00:01:59,219
+driving-relevant apps
+you'd like to enable.
+
+27
+00:01:59,253 --> 00:02:03,156
+I'm happy to announce we are adding
+two new types to our list this year,
+
+28
+00:02:03,190 --> 00:02:06,326
+Fueling and Driving Task apps.
+
+29
+00:02:06,360 --> 00:02:09,630
+We'll go over
+these in more detail shortly,
+
+30
+00:02:09,663 --> 00:02:14,301
+but first, let's take a quick pit stop
+and talk a bit about Templates.
+
+31
+00:02:14,334 --> 00:02:18,005
+Templates are how apps in
+CarPlay present their UI.
+
+32
+00:02:18,038 --> 00:02:22,242
+Your app supplies the data,
+and the system draws the UI
+
+33
+00:02:22,276 --> 00:02:25,279
+onto the vehicle's display on your behalf.
+
+34
+00:02:25,312 --> 00:02:28,949
+This system of templates is
+simple for your app to adopt
+
+35
+00:02:28,982 --> 00:02:32,519
+and has several benefits,
+including helping steer your app
+
+36
+00:02:32,553 --> 00:02:35,355
+towards making it
+appropriate for the road.
+
+37
+00:02:35,389 --> 00:02:38,392
+You don't have to worry
+about things like font sizes,
+
+38
+00:02:38,425 --> 00:02:42,462
+the templates help you ensure
+your UI is of low complexity,
+
+39
+00:02:42,496 --> 00:02:47,601
+and finally, the UI of your app is
+consistent with other apps in CarPlay,
+
+40
+00:02:47,634 --> 00:02:52,105
+making it easier for your users
+to quickly take actions in it as needed.
+
+41
+00:02:52,139 --> 00:02:56,643
+Just as important, the templates take
+care of making sure your app's UI
+
+42
+00:02:56,677 --> 00:03:00,714
+works great in any car that supports
+CarPlay, regardless of the size of
+
+43
+00:03:00,747 --> 00:03:04,651
+the screen or the type of
+input device used in the car.
+
+44
+00:03:04,685 --> 00:03:08,488
+You may still want to test
+your app in different configurations,
+
+45
+00:03:08,522 --> 00:03:11,592
+and we'll talk more about
+testing later on in the session,
+
+46
+00:03:11,625 --> 00:03:16,663
+but suffice it to say, the templates
+take care of most of the work for you.
+
+47
+00:03:16,697 --> 00:03:19,499
+You have several templates to choose
+from when building your app.
+
+48
+00:03:19,533 --> 00:03:23,036
+From the grid template showing
+an array of buttons,
+
+49
+00:03:23,070 --> 00:03:25,472
+to the list template showing a table,
+
+50
+00:03:25,506 --> 00:03:31,178
+these templates should be familiar to
+you, both as a developer, and an iOS user.
+
+51
+00:03:31,211 --> 00:03:34,882
+Most importantly,
+they will be familiar to your users
+
+52
+00:03:34,915 --> 00:03:38,986
+driving with CarPlay as
+they appear all throughout CarPlay.
+
+53
+00:03:39,019 --> 00:03:43,223
+We spoke just before about the different
+types of apps we support in CarPlay.
+
+54
+00:03:43,257 --> 00:03:49,196
+Some of these templates are more relevant
+to some of those types than others.
+
+55
+00:03:49,229 --> 00:03:53,667
+This chart helps you understand
+which templates your app can use,
+
+56
+00:03:53,700 --> 00:03:55,769
+depending on which type it is.
+
+57
+00:03:55,802 --> 00:04:01,708
+I realize trying to read this is a bit
+like taking a DMV eye exam, but fear not,
+
+58
+00:04:01,742 --> 00:04:07,014
+you'll find this exact chart in
+our developer documentation online.
+
+59
+00:04:07,047 --> 00:04:11,118
+The thing to take away here now
+is that the templates your app can use
+
+60
+00:04:11,151 --> 00:04:13,253
+depend on its type.
+
+61
+00:04:13,287 --> 00:04:16,490
+Only templates that are
+relevant and appropriate
+
+62
+00:04:16,523 --> 00:04:19,793
+for a particular app type are permitted.
+
+63
+00:04:19,826 --> 00:04:23,330
+Now that we've talked about templates,
+let's take a closer look at the
+
+64
+00:04:23,363 --> 00:04:26,667
+new app types
+we are launching with iOS 16.
+
+65
+00:04:26,700 --> 00:04:30,604
+First let's talk about
+the new Fueling app type.
+
+66
+00:04:31,972 --> 00:04:37,211
+As you may remember, in iOS 14 we
+launched support for EV Charging apps.
+
+67
+00:04:37,244 --> 00:04:40,948
+These apps aren't just for
+finding locations of EV chargers,
+
+68
+00:04:40,981 --> 00:04:45,953
+they do more than that - for example,
+they may help the user connect to
+
+69
+00:04:45,986 --> 00:04:48,589
+the right
+charging station and start it up.
+
+70
+00:04:48,622 --> 00:04:52,025
+We've heard from many developers
+that this type of functionality
+
+71
+00:04:52,059 --> 00:04:56,196
+would be great for more
+than just electric vehicles.
+
+72
+00:04:56,230 --> 00:05:00,634
+Whether it is traditional gasoline-enabled
+cars or alternative fuel vehicles,
+
+73
+00:05:00,667 --> 00:05:06,273
+this new category enables you to
+support CarPlay in your fueling app.
+
+74
+00:05:06,306 --> 00:05:09,443
+Note that many users use
+navigation apps to find and drive
+
+75
+00:05:09,476 --> 00:05:12,546
+to particular locations,
+so your fueling app should enable
+
+76
+00:05:12,579 --> 00:05:17,351
+more functionality in its CarPlay UI
+than simply finding a location.
+
+77
+00:05:17,384 --> 00:05:19,887
+A great example
+of what your app could enable is,
+
+78
+00:05:19,920 --> 00:05:22,656
+for instance, starting up a gas pump.
+
+79
+00:05:22,689 --> 00:05:27,528
+Now, let's talk about Driving Task
+applications.
+
+80
+00:05:27,561 --> 00:05:30,964
+Driving Task is a new type
+of CarPlay app
+
+81
+00:05:30,998 --> 00:05:36,003
+designed to enable
+a wider variety of very simple apps.
+
+82
+00:05:36,036 --> 00:05:40,073
+Keep in mind the primary purpose
+of these apps must be to enable tasks
+
+83
+00:05:40,107 --> 00:05:44,511
+people need to do while driving--
+it's for tasks that actually help with
+
+84
+00:05:44,545 --> 00:05:47,814
+the drive, not just a task
+to be done while you drive.
+
+85
+00:05:49,349 --> 00:05:53,187
+Some examples of apps that
+would fall under this type include apps
+
+86
+00:05:53,220 --> 00:05:58,825
+to help control car accessories,
+apps that provide driving or road status
+
+87
+00:05:58,859 --> 00:06:05,165
+and information, and apps to help with
+tasks at the start and end of a drive.
+
+88
+00:06:05,199 --> 00:06:08,202
+Let's take a look at some more
+concrete examples of these.
+
+89
+00:06:09,670 --> 00:06:13,707
+First, here we have a road
+status app that can inform users
+
+90
+00:06:13,740 --> 00:06:16,677
+about important road information.
+
+91
+00:06:16,710 --> 00:06:21,181
+This app was built using the
+CPPointOfInterestTemplate.
+
+92
+00:06:21,215 --> 00:06:24,184
+Keep in mind,
+a user using this app is driving,
+
+93
+00:06:24,218 --> 00:06:28,956
+so an app like this should provide
+a very short list of important items
+
+94
+00:06:28,989 --> 00:06:31,225
+near where the user is located.
+
+95
+00:06:31,258 --> 00:06:34,828
+This is not intended for apps helping users
+do full route planning
+
+96
+00:06:34,862 --> 00:06:36,697
+ahead of a drive.
+
+97
+00:06:38,465 --> 00:06:43,136
+In this app, here's what a user
+sees when they select a location.
+
+98
+00:06:43,170 --> 00:06:47,341
+Note that the amount of space for text
+is intentionally limited to keep this
+
+99
+00:06:47,374 --> 00:06:51,879
+information glanceable, so you should be
+concise in the language you choose here.
+
+100
+00:06:54,181 --> 00:06:58,819
+Next, let's look at an application
+designed to control a car accessory--
+
+101
+00:06:58,852 --> 00:07:01,855
+in this case a trailer controller.
+
+102
+00:07:01,889 --> 00:07:06,693
+This app uses the CPInformationTemplate
+to provide basic information on a
+
+103
+00:07:06,727 --> 00:07:12,900
+connected accessory, as well as a couple
+of buttons for the user to take actions.
+
+104
+00:07:12,933 --> 00:07:17,871
+Note that in this example,
+this is the app's entire UI in CarPlay.
+
+105
+00:07:17,905 --> 00:07:20,073
+There are no other screens!
+
+106
+00:07:20,107 --> 00:07:23,110
+Of course, the app has plenty
+of other functionality,
+
+107
+00:07:23,143 --> 00:07:26,980
+for instance, the ability to
+manage paired accessories,
+
+108
+00:07:27,014 --> 00:07:30,884
+but any functionality that
+isn't needed for driving is simply
+
+109
+00:07:30,918 --> 00:07:34,755
+not included
+in the CarPlay UI for that app.
+
+110
+00:07:34,788 --> 00:07:38,225
+Users are best served doing
+non-driving tasks using the
+
+111
+00:07:38,258 --> 00:07:42,362
+app's primary UI on iPhone
+when they're out of the vehicle.
+
+112
+00:07:44,031 --> 00:07:49,870
+Finally, let's look at a couple
+examples using the CPGridTemplate.
+
+113
+00:07:49,903 --> 00:07:53,974
+This is an extremely simple
+app that has two buttons - that's it!
+
+114
+00:07:54,007 --> 00:07:56,543
+And lets the users keep track
+of their miles
+
+115
+00:07:56,577 --> 00:07:59,546
+as either personal or business miles.
+
+116
+00:07:59,580 --> 00:08:03,283
+This app fits the new
+Driving Task app type perfectly,
+
+117
+00:08:03,317 --> 00:08:07,921
+as it enables a very simple task
+that users need to do while driving,
+
+118
+00:08:07,955 --> 00:08:11,658
+without enabling
+any other non-critical tasks.
+
+119
+00:08:11,692 --> 00:08:14,695
+Simple, and to the point.
+
+120
+00:08:14,728 --> 00:08:18,765
+Just to show you that this style
+of UI can serve multiple types of apps,
+
+121
+00:08:18,799 --> 00:08:23,170
+here's another example
+with a near identical UI.
+
+122
+00:08:23,203 --> 00:08:28,108
+This is an express lane toll transponder
+app that uses the CPGridTemplate
+
+123
+00:08:28,141 --> 00:08:32,479
+to let users choose
+how many occupants are in the car.
+
+124
+00:08:32,513 --> 00:08:36,383
+It meets the exact same goals
+as the previous example and is
+
+125
+00:08:36,416 --> 00:08:39,019
+another perfect Driving Task app.
+
+126
+00:08:40,287 --> 00:08:42,990
+To recap, when designing
+your Driving Task app,
+
+127
+00:08:43,023 --> 00:08:46,627
+definitely consider making a
+single screen app that provides
+
+128
+00:08:46,660 --> 00:08:50,130
+the minimum functionality
+your users need while driving
+
+129
+00:08:50,163 --> 00:08:54,801
+and only enable tasks that can
+be accomplished in a few seconds.
+
+130
+00:08:54,835 --> 00:08:59,072
+You should avoid enabling complex
+or infrequent use cases.
+
+131
+00:08:59,106 --> 00:09:04,044
+A great example of this is first time
+set up or detailed configuration.
+
+132
+00:09:04,077 --> 00:09:07,080
+And finally, you should not
+add functionality to your app
+
+133
+00:09:07,114 --> 00:09:11,151
+that isn't needed while driving,
+even if it's car-related.
+
+134
+00:09:11,185 --> 00:09:13,921
+The kitchen sink, this is not.
+
+135
+00:09:13,954 --> 00:09:16,657
+And that's it on Driving Task apps.
+
+136
+00:09:16,690 --> 00:09:21,795
+Now let's shift gears a bit and
+talk about how to test your CarPlay app.
+
+137
+00:09:21,828 --> 00:09:25,098
+We'll review the different ways
+in which you can go about this,
+
+138
+00:09:25,132 --> 00:09:29,102
+and I'll introduce a new tool
+called CarPlay Simulator.
+
+139
+00:09:29,136 --> 00:09:32,840
+As a developer, you have a few
+different tools at your disposal
+
+140
+00:09:32,873 --> 00:09:36,276
+to test your CarPlay-enabled app.
+
+141
+00:09:36,310 --> 00:09:42,282
+First, you can use the Xcode simulator,
+which has a built-in CarPlay window.
+
+142
+00:09:42,316 --> 00:09:46,320
+If you're already using the Xcode
+simulator to test the rest of your app,
+
+143
+00:09:46,353 --> 00:09:50,991
+this is a great way to quickly
+test your CarPlay UI, too.
+
+144
+00:09:51,024 --> 00:09:54,161
+Second,
+for testing your app on a real iPhone,
+
+145
+00:09:54,194 --> 00:09:58,332
+you can, of course, connect your phone
+to a real CarPlay-enabled vehicle,
+
+146
+00:09:58,365 --> 00:10:00,601
+or an aftermarket head unit.
+
+147
+00:10:00,634 --> 00:10:04,204
+Until recently,
+this was the only way to test your app's
+
+148
+00:10:04,238 --> 00:10:08,675
+CarPlay UI running on a real iPhone,
+but I'm happy to report
+
+149
+00:10:08,709 --> 00:10:13,013
+we have a third option for you now
+that may just become your favorite--
+
+150
+00:10:13,046 --> 00:10:14,948
+the CarPlay Simulator!
+
+151
+00:10:14,982 --> 00:10:18,752
+Let's look at this in more detail.
+
+152
+00:10:18,785 --> 00:10:20,821
+So what is it?
+
+153
+00:10:20,854 --> 00:10:24,491
+CarPlay Simulator is a
+stand-alone Mac application that
+
+154
+00:10:24,525 --> 00:10:27,027
+replicates a CarPlay environment.
+
+155
+00:10:27,060 --> 00:10:30,597
+You simply download the
+"Additional Tools for Xcode" package
+
+156
+00:10:30,631 --> 00:10:34,168
+on the Apple developer website,
+run the app,
+
+157
+00:10:34,201 --> 00:10:38,472
+and connect your iPhone
+to your Mac using a cable.
+
+158
+00:10:38,505 --> 00:10:41,375
+CarPlay will start on the phone
+and run just the same
+
+159
+00:10:41,408 --> 00:10:44,811
+as if you had it connected to a real car.
+
+160
+00:10:44,845 --> 00:10:48,048
+So what's the big deal,
+and why would you want to use this?
+
+161
+00:10:48,081 --> 00:10:50,050
+Well, there are several benefits.
+
+162
+00:10:51,852 --> 00:10:54,888
+First of all, when you are using
+CarPlay Simulator,
+
+163
+00:10:54,922 --> 00:10:57,090
+CarPlay is actually
+running on your iPhone
+
+164
+00:10:57,124 --> 00:11:00,460
+the same way it would be in a real car.
+
+165
+00:11:00,494 --> 00:11:03,363
+This means you can test your
+app running on your phone without
+
+166
+00:11:03,397 --> 00:11:06,400
+constantly having to run back
+and forth to your parking spot
+
+167
+00:11:06,433 --> 00:11:10,404
+or having to buy an aftermarket head unit.
+
+168
+00:11:10,437 --> 00:11:14,641
+Another huge benefit is that because
+your phone is connected to your Mac
+
+169
+00:11:14,675 --> 00:11:18,178
+when you're using CarPlay Simulator,
+you can use all of the other
+
+170
+00:11:18,212 --> 00:11:21,615
+fantastic developer tools
+on your Mac simultaneously,
+
+171
+00:11:21,648 --> 00:11:26,854
+whether it is debugging in Xcode
+or tuning performance in Instruments.
+
+172
+00:11:26,887 --> 00:11:30,224
+Similarly on the iOS side of things,
+because your app is running
+
+173
+00:11:30,257 --> 00:11:34,928
+on an actual iPhone, you have access to
+complete iPhone functionality.
+
+174
+00:11:34,962 --> 00:11:39,299
+Some scenarios cannot be tested
+without either a real CarPlay system,
+
+175
+00:11:39,333 --> 00:11:41,568
+or now, CarPlay Simulator.
+
+176
+00:11:43,470 --> 00:11:46,740
+A great example is testing that
+your navigation app's voice instructions
+
+177
+00:11:46,773 --> 00:11:51,979
+correctly mix with a car's
+native audio source, like FM radio.
+
+178
+00:11:52,012 --> 00:11:55,349
+You can now test this
+at the convenience of your desk.
+
+179
+00:11:56,950 --> 00:11:59,686
+Last but not least,
+you can use CarPlay Simulator
+
+180
+00:11:59,720 --> 00:12:02,756
+to test multiple different
+configurations of cars, too,
+
+181
+00:12:02,789 --> 00:12:06,593
+for example,
+cars with different display sizes.
+
+182
+00:12:06,627 --> 00:12:10,197
+Let's see what CarPlay Simulator
+looks like in action.
+
+183
+00:12:10,230 --> 00:12:11,832
+So here it is.
+
+184
+00:12:11,865 --> 00:12:14,835
+As you can see, the CarPlay
+display from the connected iPhone
+
+185
+00:12:14,868 --> 00:12:18,639
+appears right in the app,
+alongside several controls.
+
+186
+00:12:18,672 --> 00:12:22,643
+Let's go through what some of these do.
+
+187
+00:12:22,676 --> 00:12:25,312
+At the bottom of the screen
+are buttons that simulate
+
+188
+00:12:25,345 --> 00:12:28,916
+various different hard keys
+and knob controls in a car.
+
+189
+00:12:31,018 --> 00:12:34,321
+You can also click directly in
+the CarPlay view to simulate a touch
+
+190
+00:12:34,354 --> 00:12:36,123
+in touchscreen vehicles.
+
+191
+00:12:38,192 --> 00:12:41,295
+At the top of the window
+we have some quick controls.
+
+192
+00:12:41,328 --> 00:12:45,032
+The limit UI button allows you
+to simulate when a car in motion
+
+193
+00:12:45,065 --> 00:12:48,535
+requests for CarPlay
+to limit certain content on screen,
+
+194
+00:12:48,569 --> 00:12:53,140
+which, for example, could shorten
+the contents of lists in an audio app.
+
+195
+00:12:55,576 --> 00:12:59,079
+The next two buttons are to
+simulate when a car requests dark
+
+196
+00:12:59,112 --> 00:13:02,916
+or light appearance for UI and map
+content, respectively.
+
+197
+00:13:04,952 --> 00:13:08,322
+The last button lets you quickly
+simulate disconnecting
+
+198
+00:13:08,355 --> 00:13:11,491
+and reconnecting your phone to CarPlay.
+
+199
+00:13:11,525 --> 00:13:13,927
+Because your phone will still
+remain connected to your Mac
+
+200
+00:13:13,961 --> 00:13:17,431
+when you use this button,
+you can use it to debug CarPlay
+
+201
+00:13:17,464 --> 00:13:20,567
+reconnection scenarios
+in your app using Xcode.
+
+202
+00:13:22,870 --> 00:13:25,572
+But what about
+that first button that I skipped?
+
+203
+00:13:25,606 --> 00:13:29,409
+As you might have guessed,
+this will pop up a secondary window
+
+204
+00:13:29,443 --> 00:13:32,346
+with more advanced functionality.
+
+205
+00:13:32,379 --> 00:13:34,815
+Let's take a look
+at those advanced features now.
+
+206
+00:13:36,817 --> 00:13:40,354
+In the General tab,
+you're able to choose the display size
+
+207
+00:13:40,387 --> 00:13:43,657
+for the main CarPlay display.
+
+208
+00:13:43,690 --> 00:13:47,027
+If your application UI is composed
+only of templates,
+
+209
+00:13:47,060 --> 00:13:51,064
+you can try different sizes
+to see what your UI will look like
+
+210
+00:13:51,098 --> 00:13:54,835
+in different cars, but as we talked
+about before,
+
+211
+00:13:54,868 --> 00:13:58,305
+the system will make sure
+everything works great regardless.
+
+212
+00:13:58,338 --> 00:14:00,674
+If your app is a navigation app, however,
+
+213
+00:14:00,707 --> 00:14:04,178
+it's critically important that you
+try different sizes and aspect ratios
+
+214
+00:14:04,211 --> 00:14:07,714
+to ensure your map drawing code
+works correctly.
+
+215
+00:14:07,748 --> 00:14:10,918
+Here are some recommended display
+sizes to test with your app.
+
+216
+00:14:10,951 --> 00:14:14,855
+Let's take
+a look at the Cluster Display tab.
+
+217
+00:14:14,888 --> 00:14:17,090
+As you will see here,
+you are able to simulate cars
+
+218
+00:14:17,124 --> 00:14:20,160
+with a second display
+in the instrument cluster!
+
+219
+00:14:20,194 --> 00:14:24,965
+Simply check the box to enable it,
+restart the session,
+
+220
+00:14:24,998 --> 00:14:27,434
+and a second window will appear
+for the instrument cluster
+
+221
+00:14:27,467 --> 00:14:30,470
+alongside the primary display.
+
+222
+00:14:30,504 --> 00:14:34,775
+Again,
+this is most relevant to navigation apps.
+
+223
+00:14:34,808 --> 00:14:39,112
+The instrument cluster display is used
+to display either a map or turn card
+
+224
+00:14:39,146 --> 00:14:43,750
+for the driver right in their field of
+view in the car's instrument cluster.
+
+225
+00:14:43,784 --> 00:14:46,119
+We'll chat more about the
+instrument cluster in a second,
+
+226
+00:14:46,153 --> 00:14:50,057
+but that's a quick tour of
+the new CarPlay Simulator app.
+
+227
+00:14:50,090 --> 00:14:53,460
+We hope you find it as useful as we do!
+
+228
+00:14:53,493 --> 00:14:58,498
+We just saw how CarPlay can now draw
+a live map in the instrument cluster.
+
+229
+00:14:58,532 --> 00:15:00,634
+But what about your navigation app?
+
+230
+00:15:00,667 --> 00:15:05,038
+How can you add - and test -
+instrument cluster support in your app?
+
+231
+00:15:05,072 --> 00:15:07,174
+Let's take a look.
+
+232
+00:15:07,207 --> 00:15:10,844
+You may remember that back in iOS 13,
+we added APIs
+
+233
+00:15:10,878 --> 00:15:14,982
+to enable navigation apps to
+appear in the CarPlay Dashboard.
+
+234
+00:15:15,015 --> 00:15:17,885
+To do this, you edited your app's
+Info.plist
+
+235
+00:15:17,918 --> 00:15:22,489
+to declare support for Dashboard
+and implemented the required delegates.
+
+236
+00:15:22,523 --> 00:15:27,261
+The delegates notify your app when it is
+appearing and disappearing in Dashboard,
+
+237
+00:15:27,294 --> 00:15:33,200
+and also pass over a UIWindow to your
+app in which to draw your map content.
+
+238
+00:15:33,233 --> 00:15:34,968
+It's easy.
+
+239
+00:15:35,002 --> 00:15:37,037
+If you've already done this,
+then the great news is
+
+240
+00:15:37,070 --> 00:15:39,706
+adding instrument cluster support
+will be a piece of cake,
+
+241
+00:15:39,740 --> 00:15:42,709
+as it follows the exact same pattern.
+
+242
+00:15:42,743 --> 00:15:49,049
+Let's look at how I did this in my
+own navigation test app, Space Roads.
+
+243
+00:15:49,082 --> 00:15:51,552
+I edited my Info.plist to declare support
+
+244
+00:15:51,585 --> 00:15:55,756
+for the instrument cluster
+navigation scene
+
+245
+00:15:55,789 --> 00:15:59,493
+and added the required
+Scene Session Role.
+
+246
+00:15:59,526 --> 00:16:01,528
+Then, I implemented my
+
+247
+00:16:01,562 --> 00:16:05,365
+CPTemplateApplicationInstrumentCluster
+Scene delegate
+
+248
+00:16:05,399 --> 00:16:10,170
+as well as my
+CPInstrumentClusterControllerDelegate.
+
+249
+00:16:10,204 --> 00:16:13,307
+These will both give you a window
+in which to draw your content
+
+250
+00:16:13,340 --> 00:16:17,811
+as well as notify you when the
+instrument cluster starts and finishes,
+
+251
+00:16:17,845 --> 00:16:20,681
+making your instrument cluster view
+visible.
+
+252
+00:16:20,714 --> 00:16:23,283
+That's all it takes to have
+your map appear live
+
+253
+00:16:23,317 --> 00:16:26,253
+in the car's instrument cluster!
+
+254
+00:16:26,286 --> 00:16:29,690
+While this is all very similar to
+implementing Dashboard support,
+
+255
+00:16:29,723 --> 00:16:34,361
+there are a few more considerations
+specific to the instrument cluster.
+
+256
+00:16:34,394 --> 00:16:40,734
+First of all, the instrument cluster may
+allow users to zoom the map in and out.
+
+257
+00:16:40,767 --> 00:16:44,137
+It's your responsibility to
+implement this in your app using the
+
+258
+00:16:44,171 --> 00:16:48,075
+CPInstrumentClusterControllerDelegate.
+
+259
+00:16:48,108 --> 00:16:51,111
+Similarly, if your app includes
+a compass or speed limit,
+
+260
+00:16:51,144 --> 00:16:53,680
+the corresponding delegates
+will tell your app
+
+261
+00:16:53,714 --> 00:16:57,017
+when it is appropriate
+to draw them or not.
+
+262
+00:16:57,050 --> 00:17:01,722
+Finally, note that your instrument
+cluster view may be partially obscured
+
+263
+00:17:01,755 --> 00:17:05,092
+by other elements
+in the car's instrument cluster.
+
+264
+00:17:05,125 --> 00:17:10,063
+Of course, iOS already has a first class
+mechanism for dealing with such a thing,
+
+265
+00:17:10,097 --> 00:17:11,832
+safe areas!
+
+266
+00:17:11,865 --> 00:17:15,636
+You can override
+viewSafeAreaInsetsDidChange
+
+267
+00:17:15,669 --> 00:17:19,006
+on your view controller to
+know when the safe area changes,
+
+268
+00:17:19,039 --> 00:17:22,843
+and use the safeAreaLayoutGuide
+on your cluster view
+
+269
+00:17:22,876 --> 00:17:28,448
+to keep critical content in the area of
+the view guaranteed to be visible.
+
+270
+00:17:28,482 --> 00:17:31,385
+If you have a blue route line
+showing the user's location,
+
+271
+00:17:31,418 --> 00:17:34,121
+for instance,
+you'd want to ensure the critical parts
+
+272
+00:17:34,154 --> 00:17:36,957
+are contained within the safe area.
+
+273
+00:17:36,990 --> 00:17:41,795
+We just saw some new features for you
+as a developer building CarPlay apps,
+
+274
+00:17:41,828 --> 00:17:44,865
+and we saw a
+new tool for you to test your apps.
+
+275
+00:17:44,898 --> 00:17:47,367
+Let's take a look at it in action.
+
+276
+00:17:47,401 --> 00:17:51,972
+First, I'm going to start here on my Mac,
+showing you CarPlay Simulator.
+
+277
+00:17:52,005 --> 00:17:55,642
+I have the app running,
+and I'll simply connect my phone.
+
+278
+00:18:02,716 --> 00:18:05,152
+And voilà, here it is running CarPlay.
+
+279
+00:18:05,185 --> 00:18:09,356
+Let's see how CarPlay Simulator
+can help you when testing your apps.
+
+280
+00:18:09,389 --> 00:18:13,827
+Even if your app is primarily template
+based, you can use it to make sure
+
+281
+00:18:13,861 --> 00:18:18,899
+the artwork in your app works great
+in both light and dark appearances.
+
+282
+00:18:18,932 --> 00:18:21,568
+Let me run the Express Lane app...
+
+283
+00:18:24,137 --> 00:18:26,273
+And I can use the button in the toolbar
+
+284
+00:18:26,306 --> 00:18:30,277
+to toggle between light and dark
+appearances.
+
+285
+00:18:30,310 --> 00:18:35,048
+Notice how my app has provided
+different artwork for both styles.
+
+286
+00:18:35,082 --> 00:18:38,552
+Looks great.
+
+287
+00:18:38,585 --> 00:18:42,523
+Now let's switch over to Space Roads,
+a navigation test app I've written.
+
+288
+00:18:44,658 --> 00:18:47,895
+I'll use the main configuration panel
+
+289
+00:18:47,928 --> 00:18:51,798
+to try my map drawing code
+at a different screen size.
+
+290
+00:18:57,804 --> 00:19:01,074
+And finally, I will enable
+the instrument cluster display
+
+291
+00:19:01,108 --> 00:19:03,844
+to test the instrument cluster support.
+
+292
+00:19:08,081 --> 00:19:09,716
+Here it is. It works great!
+
+293
+00:19:10,617 --> 00:19:14,755
+Earlier, I fully tested my apps
+in CarPlay Simulator, so now,
+
+294
+00:19:14,788 --> 00:19:18,458
+I have full confidence
+they will work great in a real car.
+
+295
+00:19:18,492 --> 00:19:20,360
+Let's give it a try!
+
+296
+00:19:20,394 --> 00:19:23,297
+Alright, here we are in my car,
+and as you can see,
+
+297
+00:19:23,330 --> 00:19:26,466
+I have my phone connected to the
+vehicle and running CarPlay.
+
+298
+00:19:27,868 --> 00:19:31,772
+First, let's try running my
+connected trailer controller app
+
+299
+00:19:31,805 --> 00:19:36,310
+so I can show you how templates have
+taken care of making the app work great
+
+300
+00:19:36,343 --> 00:19:38,345
+in a knob enabled vehicle.
+
+301
+00:19:40,247 --> 00:19:44,184
+This particular vehicle has both a touch
+screen and a knob controller,
+
+302
+00:19:44,218 --> 00:19:47,621
+but many users like to use
+the knob controller while driving,
+
+303
+00:19:47,654 --> 00:19:51,758
+so it's important for apps
+to work great using the knob.
+
+304
+00:19:51,792 --> 00:19:54,661
+As you can see,
+I have full access to the buttons
+
+305
+00:19:54,695 --> 00:19:57,998
+in my app here,
+and the best part is, I didn't have to do
+
+306
+00:19:58,031 --> 00:20:01,435
+anything special - the
+templates did all the work for me!
+
+307
+00:20:03,971 --> 00:20:07,975
+Next, let's switch over to my
+navigation app, Space Roads.
+
+308
+00:20:08,008 --> 00:20:10,911
+We'll launch the app...
+
+309
+00:20:10,944 --> 00:20:14,781
+and we'll start navigation...
+
+310
+00:20:14,815 --> 00:20:16,750
+and then I press go.
+
+311
+00:20:16,783 --> 00:20:18,352
+Boom!
+
+312
+00:20:18,385 --> 00:20:22,055
+My app now shows a live map view
+on both the center console
+
+313
+00:20:22,089 --> 00:20:24,658
+and in the instrument cluster!
+
+314
+00:20:24,691 --> 00:20:29,429
+It's great having the live map
+right in my line of sight as a driver.
+
+315
+00:20:29,463 --> 00:20:33,800
+I'm certain drivers using
+your navigation app will love it, too.
+
+316
+00:20:33,834 --> 00:20:35,802
+Well, that's all I have for you today.
+
+317
+00:20:35,836 --> 00:20:40,407
+For more information, be sure to check out
+the CarPlay developer portal
+
+318
+00:20:40,440 --> 00:20:44,011
+at developer.apple.com/carplay
+
+319
+00:20:44,044 --> 00:20:47,114
+Thank you, and happy roads, everyone!   ♪♪
+

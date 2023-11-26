@@ -1,0 +1,3616 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,011
+Gabriel Ting:
+Hello, and welcome to our session,
+
+3
+00:00:11,044 --> 00:00:14,214
+"Explore in-app purchase
+integration and migration."
+
+4
+00:00:14,248 --> 00:00:17,584
+This session is divided into two parts:
+one dedicated to migrating
+
+5
+00:00:17,618 --> 00:00:20,287
+to the App Store Server API,
+and one dedicated to migrating
+
+6
+00:00:20,320 --> 00:00:22,956
+to App Store Server Notifications
+Version 2.
+
+7
+00:00:22,990 --> 00:00:24,458
+My name is Gabriel, and I am discussing
+
+8
+00:00:24,491 --> 00:00:27,628
+how to migrate
+to the App Store Server API.
+
+9
+00:00:27,661 --> 00:00:29,830
+Alex Baker: My name is Alex,
+and I will walk you through
+
+10
+00:00:29,863 --> 00:00:33,200
+migrating to App Store
+Server Notifications Version 2.
+
+11
+00:00:33,233 --> 00:00:36,670
+Gabriel: Let's first begin with a brief
+introduction of the App Store Server API
+
+12
+00:00:36,703 --> 00:00:38,639
+and App Store Server Notifications.
+
+13
+00:00:38,672 --> 00:00:42,342
+We introduced the App Store Server API
+last year as a powerful, secure,
+
+14
+00:00:42,376 --> 00:00:45,946
+and efficient way to obtain data
+and perform operations from your server.
+
+15
+00:00:45,979 --> 00:00:48,482
+We aim to give you
+just the data that you need,
+
+16
+00:00:48,515 --> 00:00:51,885
+signed in the JSON Web Signature
+or JWS format,
+
+17
+00:00:51,919 --> 00:00:55,022
+so that you can verify that the data
+you receive is untampered with,
+
+18
+00:00:55,055 --> 00:00:58,125
+intended for you,
+and signed by the App Store.
+
+19
+00:00:58,158 --> 00:01:00,894
+For example,
+one of our App Store Server API endpoints,
+
+20
+00:01:00,928 --> 00:01:03,864
+the Get Transaction History endpoint,
+in combination with the new
+
+21
+00:01:03,897 --> 00:01:07,134
+filter and sort features,
+allow you to fetch any set of transactions
+
+22
+00:01:07,167 --> 00:01:10,337
+that you specify,
+with just an originalTransactionId.
+
+23
+00:01:10,370 --> 00:01:13,473
+On the pane of
+App Store Server Notifications Version 2,
+
+24
+00:01:13,507 --> 00:01:16,944
+with the increased number of states
+of a subscription that can be represented,
+
+25
+00:01:16,977 --> 00:01:19,012
+Notifications Version 2 will update you
+
+26
+00:01:19,046 --> 00:01:22,416
+of all possible states of a subscription,
+in real time.
+
+27
+00:01:22,449 --> 00:01:25,152
+We aim to proactively provide
+all the information that you need
+
+28
+00:01:25,185 --> 00:01:27,454
+to know about what's going on
+with your subscribers,
+
+29
+00:01:27,487 --> 00:01:29,990
+without having to ask us
+for the information.
+
+30
+00:01:30,023 --> 00:01:33,427
+Alex will walk you through this
+more in his portion of this session.
+
+31
+00:01:33,460 --> 00:01:36,363
+If using these features with ease
+and efficacy interests you,
+
+32
+00:01:36,396 --> 00:01:37,731
+this session is for you.
+
+33
+00:01:37,764 --> 00:01:41,068
+We will walk you through how to get
+started using the App Store Server API
+
+34
+00:01:41,101 --> 00:01:43,570
+and App Store Server Notifications
+Version 2,
+
+35
+00:01:43,604 --> 00:01:46,840
+as well as some migration tips
+and best practices.
+
+36
+00:01:46,874 --> 00:01:48,642
+For additional information
+on each of these,
+
+37
+00:01:48,675 --> 00:01:51,612
+please refer to these
+additional sessions listed below.
+
+38
+00:01:53,080 --> 00:01:57,551
+So let's get started discussing
+migrating to the App Store Server API.
+
+39
+00:01:57,584 --> 00:02:02,422
+First off, we will be discussing how
+to start using the App Store Server API.
+
+40
+00:02:02,456 --> 00:02:06,960
+Second, we will dive into some
+of the details of signing JSON Web Tokens.
+
+41
+00:02:06,994 --> 00:02:09,696
+Third, we will demonstrate
+how to verify signed transactions
+
+42
+00:02:09,730 --> 00:02:13,166
+you receive from the App Store
+are genuine.
+
+43
+00:02:13,200 --> 00:02:16,103
+Finally, we will discuss how to migrate
+from verifyReceipt
+
+44
+00:02:16,136 --> 00:02:19,106
+to the App Store Server API.
+
+45
+00:02:19,139 --> 00:02:20,474
+Let's get started.
+
+46
+00:02:20,507 --> 00:02:23,143
+First, let's get into talking about
+how to use the App Store Server API
+
+47
+00:02:23,177 --> 00:02:27,247
+with different versions of StoreKit,
+first with just original StoreKit,
+
+48
+00:02:27,281 --> 00:02:30,651
+then with just StoreKit 2,
+then discussing methods to support both
+
+49
+00:02:30,684 --> 00:02:34,821
+simultaneously for both clients using
+iOS versions that support StoreKit 2,
+
+50
+00:02:34,855 --> 00:02:38,358
+namely those on iOS 15 or greater,
+and those that do not.
+
+51
+00:02:39,092 --> 00:02:41,128
+First off,
+let's take a look at what requests
+
+52
+00:02:41,161 --> 00:02:43,630
+to the App Store Server API look like.
+
+53
+00:02:43,664 --> 00:02:47,701
+We see that the five APIs listed here
+utilize originalTransactionId
+
+54
+00:02:47,734 --> 00:02:49,102
+as a path parameter.
+
+55
+00:02:49,136 --> 00:02:51,471
+This allows you to easily call these APIs
+
+56
+00:02:51,505 --> 00:02:54,474
+using the originalTransactionIds
+that you receive from receipts,
+
+57
+00:02:54,508 --> 00:02:58,345
+signed transactions,
+signed renewals, and notifications.
+
+58
+00:02:58,378 --> 00:03:00,881
+Next is the Look Up Order ID endpoint.
+
+59
+00:03:00,914 --> 00:03:04,017
+This endpoint instead uses
+the orderId provided by a customer
+
+60
+00:03:04,051 --> 00:03:05,819
+for support queries.
+
+61
+00:03:05,853 --> 00:03:09,089
+This is so that you can better assist
+with questions directly from the customer,
+
+62
+00:03:09,122 --> 00:03:13,026
+as the customer is provided an orderId
+in customer receipts for each transaction,
+
+63
+00:03:13,060 --> 00:03:16,029
+but is not provided
+an originalTransactionId.
+
+64
+00:03:16,063 --> 00:03:18,765
+This ensures that you can
+directly respond to customer inquiries
+
+65
+00:03:18,799 --> 00:03:21,635
+with data customers have on hand.
+
+66
+00:03:21,668 --> 00:03:24,271
+The last endpoints listed here
+are notification related,
+
+67
+00:03:24,304 --> 00:03:27,307
+which Alex will touch on
+in his portion of this session.
+
+68
+00:03:28,442 --> 00:03:31,778
+Next, let's look at where you can get
+the originalTransactionIds from
+
+69
+00:03:31,812 --> 00:03:33,413
+in Original StoreKit.
+
+70
+00:03:33,447 --> 00:03:36,116
+When you call verifyReceipt
+with the unified app receipt,
+
+71
+00:03:36,149 --> 00:03:39,853
+the originalTransactionId you'll use
+when calling the App Store Server API
+
+72
+00:03:39,887 --> 00:03:41,455
+comes back in the in_app field
+
+73
+00:03:41,488 --> 00:03:44,358
+in the receipts for each of
+the transactions this user purchased,
+
+74
+00:03:44,391 --> 00:03:48,262
+as well as in the latest_receipt_info
+and pending_renewal_info.
+
+75
+00:03:48,295 --> 00:03:51,498
+Now that we know how to get
+the originalTransactionId
+
+76
+00:03:51,532 --> 00:03:54,668
+from Original StoreKit transactions,
+let's look at the whole flow
+
+77
+00:03:54,701 --> 00:03:57,638
+between a customer,
+the App Store Server, and your server.
+
+78
+00:03:59,173 --> 00:04:02,609
+First, obtain the app receipt
+on your server.
+
+79
+00:04:02,643 --> 00:04:06,580
+Next, take the app receipt and call
+verifyReceipt with it from your server.
+
+80
+00:04:08,549 --> 00:04:11,018
+This will return the decoded receipt.
+
+81
+00:04:11,051 --> 00:04:14,555
+From the decoded receipt,
+gather all of the originalTransactionIds
+
+82
+00:04:14,588 --> 00:04:17,624
+in precisely the same ways
+I previously showed.
+
+83
+00:04:17,658 --> 00:04:20,661
+Next, you can call
+the Get Transaction History endpoint
+
+84
+00:04:20,694 --> 00:04:24,331
+with any one of the gathered
+originalTransactionIds, which will return
+
+85
+00:04:24,364 --> 00:04:27,835
+the history of transactions
+for this user as signed transactions.
+
+86
+00:04:27,868 --> 00:04:31,171
+These transactions include
+non-consumables, refunded consumables,
+
+87
+00:04:31,205 --> 00:04:34,575
+non-renewing subscriptions,
+and auto-renewing subscriptions.
+
+88
+00:04:34,608 --> 00:04:38,712
+Then, if you want to get the latest signed
+transaction and signed renewal information
+
+89
+00:04:38,745 --> 00:04:43,083
+for a specific subscription, call
+the Get All Subscription Statuses endpoint
+
+90
+00:04:43,116 --> 00:04:45,953
+with the corresponding
+originalTransactionId.
+
+91
+00:04:45,986 --> 00:04:48,388
+This will return all of the signed
+transactions and renewals
+
+92
+00:04:48,422 --> 00:04:52,526
+for the subscription that corresponds
+to the given originalTransactionId.
+
+93
+00:04:52,559 --> 00:04:55,796
+Next, let's look at where
+the originalTransactionId is
+
+94
+00:04:55,829 --> 00:04:58,031
+in the case of StoreKit 2 transactions.
+
+95
+00:04:58,065 --> 00:05:01,435
+This is the code on the client
+to obtain an originalTransactionId
+
+96
+00:05:01,468 --> 00:05:03,003
+from a transaction.
+
+97
+00:05:03,036 --> 00:05:05,038
+On devices that support StoreKit 2–
+
+98
+00:05:05,072 --> 00:05:08,242
+namely devices that are on
+iOS 15 or later–
+
+99
+00:05:08,275 --> 00:05:11,278
+you can get
+the originalID property on a verified,
+
+100
+00:05:11,311 --> 00:05:15,082
+decoded transaction
+to get the originalTransactionId.
+
+101
+00:05:15,115 --> 00:05:19,920
+Now, looking at the server side, here is
+an example of a signed JWS transaction,
+
+102
+00:05:19,953 --> 00:05:24,057
+which is the data type that you receive
+in signed transactions and signed renewals
+
+103
+00:05:24,091 --> 00:05:28,195
+from the App Store Server API
+and App Store Server Notifications.
+
+104
+00:05:28,228 --> 00:05:32,132
+Here, we see that originalTransactionId
+is a top level field.
+
+105
+00:05:34,434 --> 00:05:37,204
+Next, let's look at the whole flow
+between a customer,
+
+106
+00:05:37,237 --> 00:05:41,275
+the App Store Server, and your server
+for StoreKit 2 transactions.
+
+107
+00:05:41,308 --> 00:05:44,478
+First, take the signed transaction
+on the device.
+
+108
+00:05:44,511 --> 00:05:48,081
+With StoreKit 2,
+you can verify this transaction on-device.
+
+109
+00:05:48,115 --> 00:05:51,185
+Using the on-device status listener,
+transaction listener,
+
+110
+00:05:51,218 --> 00:05:54,488
+or last transaction will keep you
+updated on latest transactions,
+
+111
+00:05:54,521 --> 00:05:58,492
+cancellations, and refunds, which can then
+be sent to your server for record-keeping.
+
+112
+00:05:58,525 --> 00:06:01,061
+For example, these are updated
+on subscription renewals,
+
+113
+00:06:01,094 --> 00:06:04,231
+subscription offer redemptions,
+expirations, and more.
+
+114
+00:06:05,532 --> 00:06:07,367
+Send the transaction to your server.
+
+115
+00:06:07,401 --> 00:06:09,970
+In combination
+with App Store Server Notifications,
+
+116
+00:06:10,003 --> 00:06:12,439
+which Alex will dive more into
+in the following section,
+
+117
+00:06:12,472 --> 00:06:15,108
+you can keep up-to-date
+with the latest status and state
+
+118
+00:06:15,142 --> 00:06:19,479
+of a subscription without having
+to call the App Store Server API.
+
+119
+00:06:19,513 --> 00:06:22,516
+When you do need to perform
+an operation on a subscription,
+
+120
+00:06:22,549 --> 00:06:25,452
+such as extending
+the renewal date of a subscription,
+
+121
+00:06:25,485 --> 00:06:29,423
+you can use the originalTransactionId
+from the signed transaction to call
+
+122
+00:06:29,456 --> 00:06:33,293
+corresponding endpoints
+and get back the data that you need.
+
+123
+00:06:33,327 --> 00:06:36,196
+Now that we've seen how to use
+the App Store Server API
+
+124
+00:06:36,230 --> 00:06:39,433
+with original StoreKit and StoreKit 2,
+let's talk about how to support
+
+125
+00:06:39,466 --> 00:06:42,336
+both StoreKit and StoreKit 2.
+
+126
+00:06:42,369 --> 00:06:44,605
+You can take advantage
+of the App Store Server API
+
+127
+00:06:44,638 --> 00:06:47,241
+without fully adopting StoreKit 2.
+
+128
+00:06:47,274 --> 00:06:50,077
+As shown previously,
+you can get the originalTransactionId
+
+129
+00:06:50,110 --> 00:06:52,779
+from a receipt in Original StoreKit.
+
+130
+00:06:52,813 --> 00:06:57,651
+You can also get the originalTransactionID
+in StoreKit 2 from a JWS transaction.
+
+131
+00:06:59,386 --> 00:07:04,258
+You can also use the App Store Server API
+independently of any other APIs.
+
+132
+00:07:04,291 --> 00:07:07,928
+It is not tied to using a specific version
+of other APIs.
+
+133
+00:07:07,961 --> 00:07:09,963
+In terms of App Store
+Server Notifications,
+
+134
+00:07:09,997 --> 00:07:13,567
+it can be used with either version 1
+or version 2 notifications.
+
+135
+00:07:13,600 --> 00:07:16,670
+We do recommend using version 2
+because it notifies you of changes
+
+136
+00:07:16,703 --> 00:07:21,241
+to subscriptions as they occur,
+uses the secure JWS format, and more,
+
+137
+00:07:21,275 --> 00:07:24,945
+which Alex will dive into more
+in his part of this session.
+
+138
+00:07:24,978 --> 00:07:27,648
+However, you can use
+the App Store Server API separately,
+
+139
+00:07:27,681 --> 00:07:31,218
+with version 1 notifications
+or without notifications at all.
+
+140
+00:07:31,251 --> 00:07:34,688
+Next, let's discuss how you can
+process new purchases
+
+141
+00:07:34,721 --> 00:07:38,292
+after you completed the migration steps
+I previously walked through.
+
+142
+00:07:38,325 --> 00:07:41,728
+To support new purchases
+on devices using original StoreKit,
+
+143
+00:07:41,762 --> 00:07:45,299
+you can take new receipts as they come,
+sending them to your server,
+
+144
+00:07:45,332 --> 00:07:48,202
+and do precisely the same steps
+as I previously showed,
+
+145
+00:07:48,235 --> 00:07:50,637
+while collecting new data along the way–
+
+146
+00:07:50,671 --> 00:07:52,806
+call verifyReceipt with the new receipts,
+
+147
+00:07:52,840 --> 00:07:57,277
+and get the decoded receipt with the new
+originalTransactionId in latest_receipt,
+
+148
+00:07:57,311 --> 00:08:01,148
+correlate those originalTransactionIds
+with other originalTransactionIds
+
+149
+00:08:01,181 --> 00:08:03,050
+in the in_app section of the receipt
+
+150
+00:08:03,083 --> 00:08:06,019
+to group together
+your transaction information.
+
+151
+00:08:06,053 --> 00:08:08,722
+Then, you can take
+the new originalTransactionId,
+
+152
+00:08:08,755 --> 00:08:11,325
+and call the App Store Server API
+as needed,
+
+153
+00:08:11,358 --> 00:08:14,561
+such as if you need to call
+the Get All Subscription Statuses endpoint
+
+154
+00:08:14,595 --> 00:08:17,998
+to get you the latest status
+of the corresponding subscription.
+
+155
+00:08:18,031 --> 00:08:20,968
+Now that we've covered
+how to use the App Store Server API
+
+156
+00:08:21,001 --> 00:08:23,437
+with both Original StoreKit
+and StoreKit 2,
+
+157
+00:08:23,470 --> 00:08:26,673
+let's dive into some of the details
+of signing JSON Web Tokens,
+
+158
+00:08:26,707 --> 00:08:29,776
+a requirement
+to call the App Store Server API.
+
+159
+00:08:29,810 --> 00:08:33,514
+In order to authenticate
+that your developer account is the caller
+
+160
+00:08:33,547 --> 00:08:36,583
+of the App Store Server API,
+we use JSON Web Tokens,
+
+161
+00:08:36,617 --> 00:08:39,887
+also known as JWTs,
+to authenticate requests.
+
+162
+00:08:39,920 --> 00:08:42,256
+This token must be included
+in every request
+
+163
+00:08:42,289 --> 00:08:45,559
+as an authorization header
+in calls from your server.
+
+164
+00:08:45,592 --> 00:08:49,429
+A JWT consists of a header,
+a payload, and signature.
+
+165
+00:08:49,463 --> 00:08:54,001
+Next, we'll go into how to construct
+a JWT specific to your application.
+
+166
+00:08:55,068 --> 00:08:57,871
+Here, we can see
+how a JSON Web Token is composed,
+
+167
+00:08:57,905 --> 00:09:00,541
+as well as the structure
+of the header and payload.
+
+168
+00:09:00,574 --> 00:09:04,778
+The token itself can be broken
+into three parts, separated by periods:
+
+169
+00:09:04,811 --> 00:09:09,016
+the base 64 encoded header,
+the base 64 encoded payload,
+
+170
+00:09:09,049 --> 00:09:11,952
+and then the signature,
+which is composed of the base 64
+
+171
+00:09:11,985 --> 00:09:16,690
+encoded header and payload,
+signed using your signing secret.
+
+172
+00:09:16,723 --> 00:09:19,593
+The header is composed of these fields
+that contain metadata
+
+173
+00:09:19,626 --> 00:09:21,929
+about how to sign your data.
+
+174
+00:09:21,962 --> 00:09:24,598
+One of the important fields here
+is the key ID,
+
+175
+00:09:24,631 --> 00:09:27,501
+which is your private key ID
+in App Store Connect.
+
+176
+00:09:27,534 --> 00:09:31,038
+This needs to match the key
+you use to sign the JWT.
+
+177
+00:09:32,706 --> 00:09:34,741
+The payload contains
+additional information
+
+178
+00:09:34,775 --> 00:09:37,411
+about your specific application.
+
+179
+00:09:37,444 --> 00:09:40,314
+Please refer to the article
+"Creating API Keys to Use
+
+180
+00:09:40,347 --> 00:09:43,684
+With the App Store Server API"
+for additional information and guidance
+
+181
+00:09:43,717 --> 00:09:46,553
+on how to obtain your API Key.
+
+182
+00:09:46,587 --> 00:09:48,388
+For details on each of these fields,
+
+183
+00:09:48,422 --> 00:09:52,025
+please refer to the article
+"Generating Tokens for API Requests."
+
+184
+00:09:53,260 --> 00:09:57,030
+Once you have the header and payload
+with all the appropriate information,
+
+185
+00:09:57,064 --> 00:09:58,699
+next you will sign the JWT
+
+186
+00:09:58,732 --> 00:10:01,969
+using the certificate
+that corresponds to the keyId.
+
+187
+00:10:02,002 --> 00:10:06,340
+Here is the core pseudocode
+that you can use, regardless of language.
+
+188
+00:10:06,373 --> 00:10:09,209
+First, make sure that you have
+the private key that corresponds
+
+189
+00:10:09,243 --> 00:10:12,679
+to the key id provided
+in the header that we just looked at.
+
+190
+00:10:12,713 --> 00:10:16,383
+Then, call the signing function
+that your JWT library exposes
+
+191
+00:10:16,416 --> 00:10:19,119
+with your private key, header,
+and payload.
+
+192
+00:10:19,152 --> 00:10:21,522
+Since the header contains
+the signing algorithm,
+
+193
+00:10:21,555 --> 00:10:25,158
+the JWT library signs it
+according to the provided algorithm.
+
+194
+00:10:27,127 --> 00:10:31,298
+Finally, here is an example usage of this
+token when authenticating a cURL call
+
+195
+00:10:31,331 --> 00:10:34,434
+to the Get All Subscription Statuses
+endpoint.
+
+196
+00:10:34,468 --> 00:10:36,870
+Replace $\{token\}
+and $\{originalTransactionId\}
+
+197
+00:10:36,904 --> 00:10:38,906
+with the values of the token you generated
+
+198
+00:10:38,939 --> 00:10:41,909
+and your desired originalTransactionId,
+respectively.
+
+199
+00:10:41,942 --> 00:10:45,479
+Next, let's talk about how to verify
+that the signed transactions
+
+200
+00:10:45,512 --> 00:10:49,316
+you receive are for you
+and signed by the App Store.
+
+201
+00:10:49,349 --> 00:10:51,552
+Signed transactions are, in essence,
+
+202
+00:10:51,585 --> 00:10:54,454
+JavaScript Object Notation,
+or JSON objects
+
+203
+00:10:54,488 --> 00:10:57,157
+that are cryptographically signed
+such that if they are tampered with
+
+204
+00:10:57,191 --> 00:11:00,494
+between the App Store and your server,
+you can detect it.
+
+205
+00:11:00,527 --> 00:11:04,831
+Signed transactions are signed in
+the JSON Web Signature, or JWS format.
+
+206
+00:11:04,865 --> 00:11:09,303
+The signed transactions that the App Store
+sends you will arrive in the JWS format.
+
+207
+00:11:09,336 --> 00:11:12,906
+By verifying the JWSs you receive,
+you will verify that the data
+
+208
+00:11:12,940 --> 00:11:16,810
+came from the App Store,
+and the contents are untampered with.
+
+209
+00:11:16,844 --> 00:11:20,514
+Now, let's look at how to verify
+a signed transaction.
+
+210
+00:11:20,547 --> 00:11:23,183
+First, base 64 decode the header.
+
+211
+00:11:23,217 --> 00:11:27,721
+Then, one can determine what signing
+algorithm to use via the alg claim.
+
+212
+00:11:27,754 --> 00:11:31,425
+This will be used
+as part of verifying the JWS.
+
+213
+00:11:31,458 --> 00:11:34,928
+The certificate chain in the x5c claim
+is issued by Apple,
+
+214
+00:11:34,962 --> 00:11:37,464
+and validation of the claim
+indicates that the data is
+
+215
+00:11:37,497 --> 00:11:39,900
+properly signed and untampered with.
+
+216
+00:11:39,933 --> 00:11:42,302
+Please refer to the App Store
+developer documentation
+
+217
+00:11:42,336 --> 00:11:46,773
+for further information
+on how to verify JWSs.
+
+218
+00:11:46,807 --> 00:11:50,344
+In essence,
+the x5c chain is a chain of certificates.
+
+219
+00:11:50,377 --> 00:11:53,413
+Successful verification
+of the certificate chain tells you
+
+220
+00:11:53,447 --> 00:11:57,351
+that the data can be trusted
+and that the data is signed by Apple.
+
+221
+00:11:57,384 --> 00:12:01,421
+Order matters for the certificate chain.
+First comes the root certificate.
+
+222
+00:12:01,455 --> 00:12:04,391
+This root certificate may be followed
+by additional certificates,
+
+223
+00:12:04,424 --> 00:12:08,028
+where each of these certificates
+are signed by the previous certificate.
+
+224
+00:12:08,061 --> 00:12:12,065
+I will refer to the last certificate
+in the chain as the leaf certificate.
+
+225
+00:12:13,467 --> 00:12:16,503
+The first certificate is referred to
+as the root certificate
+
+226
+00:12:16,537 --> 00:12:18,105
+and is self-signed.
+
+227
+00:12:18,138 --> 00:12:20,908
+This certificate should match
+the root certificate you obtain
+
+228
+00:12:20,941 --> 00:12:22,743
+from Apple's Certificate Authority.
+
+229
+00:12:22,776 --> 00:12:27,014
+If the certificates do not match,
+the chain should not be trusted.
+
+230
+00:12:27,047 --> 00:12:29,683
+The leaf certificate,
+the last certificate in the chain,
+
+231
+00:12:29,716 --> 00:12:33,020
+is the certificate
+that is used to sign the JWS.
+
+232
+00:12:33,053 --> 00:12:35,489
+Here is an example of what the header
+
+233
+00:12:35,522 --> 00:12:38,692
+of a JWS the App Store sends
+may look like.
+
+234
+00:12:38,725 --> 00:12:42,296
+First is the algorithm
+used to sign the JWS.
+
+235
+00:12:42,329 --> 00:12:47,334
+Next is the x5c certificate chain,
+with the certificates listed in order.
+
+236
+00:12:48,168 --> 00:12:51,972
+Now, let's look at what generating
+an x5c certificate chain looks like
+
+237
+00:12:52,005 --> 00:12:53,941
+from a high-level overview.
+
+238
+00:12:53,974 --> 00:12:57,711
+We start off with the root certificate
+from Apple's Certificate Authority.
+
+239
+00:12:57,744 --> 00:13:02,216
+Then, the root certificate is used to sign
+the intermediate signing certificate.
+
+240
+00:13:02,249 --> 00:13:07,020
+The intermediate signing certificate
+is then used to sign the leaf certificate.
+
+241
+00:13:08,455 --> 00:13:12,426
+Now that we've covered what generating
+an x5c certificate chain looks like,
+
+242
+00:13:12,459 --> 00:13:14,828
+let's look at what verifying
+a chain looks like.
+
+243
+00:13:14,862 --> 00:13:17,631
+Starting at the leaf certificate,
+we ensure that it was signed
+
+244
+00:13:17,664 --> 00:13:20,467
+by the intermediate signing certificate.
+
+245
+00:13:20,501 --> 00:13:23,170
+Then we ensure
+that the intermediate signing certificate
+
+246
+00:13:23,203 --> 00:13:25,439
+was signed by the root certificate.
+
+247
+00:13:25,472 --> 00:13:27,140
+Additionally,
+the root certificate should match
+
+248
+00:13:27,174 --> 00:13:29,810
+the one from
+the Apple Certificate Authority.
+
+249
+00:13:29,843 --> 00:13:31,845
+If all of these steps are successful,
+
+250
+00:13:31,879 --> 00:13:35,516
+then the entire chain
+is verified as legitimate.
+
+251
+00:13:35,549 --> 00:13:38,919
+Let's talk about a method
+to verify the certificate chain.
+
+252
+00:13:38,952 --> 00:13:43,657
+Here is a command to verify
+the x5c certificate chain using OpenSSL.
+
+253
+00:13:43,690 --> 00:13:46,727
+Breaking this into pieces,
+the command verify, broadly speaking,
+
+254
+00:13:46,760 --> 00:13:49,830
+allows you to pass in
+certificates for verification.
+
+255
+00:13:49,863 --> 00:13:53,267
+The flag trusted allows you to provide
+a certificate to trust–
+
+256
+00:13:53,300 --> 00:13:57,738
+in other words, a certificate that will be
+used to verify the following certificates.
+
+257
+00:13:57,771 --> 00:14:00,574
+in this case, we are passing in
+the root certificate you obtained
+
+258
+00:14:00,607 --> 00:14:04,344
+from the Apple Certificate Authority,
+and thus can be trusted.
+
+259
+00:14:04,378 --> 00:14:07,381
+We'll use this
+to verify the WWDR certificate,
+
+260
+00:14:07,414 --> 00:14:09,416
+the next certificate in the chain.
+
+261
+00:14:10,951 --> 00:14:14,955
+The untrusted flag allows you
+to provide the certificate or certificates
+
+262
+00:14:14,988 --> 00:14:18,892
+that you wish to verify
+using the certificate that you trust.
+
+263
+00:14:18,926 --> 00:14:21,728
+Here, we first pass in
+the WWDR certificate
+
+264
+00:14:21,762 --> 00:14:25,666
+from the Apple Certificate Authority,
+which is signed by the root certificate.
+
+265
+00:14:25,699 --> 00:14:29,937
+This should match the second certificate
+in the x5c chain.
+
+266
+00:14:29,970 --> 00:14:33,240
+And finally, the leaf certificate here
+is the last certificate,
+
+267
+00:14:33,273 --> 00:14:36,743
+which is signed
+by the previous certificate.
+
+268
+00:14:36,777 --> 00:14:41,215
+In the case of a successful verification,
+a success code is returned.
+
+269
+00:14:41,248 --> 00:14:44,551
+You may then proceed
+to use the decoded information.
+
+270
+00:14:44,585 --> 00:14:46,787
+In the case
+of an unsuccessful verification,
+
+271
+00:14:46,820 --> 00:14:49,389
+determine the issue
+based on the returned error code.
+
+272
+00:14:49,423 --> 00:14:53,927
+If not possible to verify, this data may
+be tampered with and should not be used.
+
+273
+00:14:53,961 --> 00:14:56,496
+Please refer to the App Store
+developer documentation
+
+274
+00:14:56,530 --> 00:15:01,602
+for complete instructions on verifying
+an x5c certificate chain using OpenSSL.
+
+275
+00:15:02,402 --> 00:15:06,840
+Here is some pseudocode for how one might
+go about verifying a signed transaction.
+
+276
+00:15:06,874 --> 00:15:10,210
+First, obtain the JWS you wish to verify.
+
+277
+00:15:10,244 --> 00:15:14,448
+Then, take the certificate your JWS
+library requires for verification.
+
+278
+00:15:14,481 --> 00:15:17,417
+Call the verify function
+of your JWS library,
+
+279
+00:15:17,451 --> 00:15:19,520
+using the appropriate certificate.
+
+280
+00:15:19,553 --> 00:15:22,756
+The certificate that signs
+the JWS is the leaf certificate,
+
+281
+00:15:22,789 --> 00:15:25,826
+though some libraries require
+passing in the entire chain.
+
+282
+00:15:27,828 --> 00:15:31,865
+In the case that the call succeeded,
+then you can proceed on with your tasks.
+
+283
+00:15:31,899 --> 00:15:35,502
+In the case that this was the result
+of a call to the App Store Server API,
+
+284
+00:15:35,536 --> 00:15:38,238
+then you can proceed
+to store the validated data.
+
+285
+00:15:38,272 --> 00:15:41,408
+As for the case of notifications,
+Alex will go more into this
+
+286
+00:15:41,441 --> 00:15:44,211
+in his portion of this session.
+
+287
+00:15:44,244 --> 00:15:48,115
+In the case that the JWS cannot
+be validated, do not use the JWS.
+
+288
+00:15:48,148 --> 00:15:52,319
+This may mean that it has been tampered
+with or was not sent by the App Store.
+
+289
+00:15:52,352 --> 00:15:57,024
+Alex will dive more into how to better
+ensure security when using notifications.
+
+290
+00:15:57,057 --> 00:15:59,326
+Please refer to the App Store
+developer documentation
+
+291
+00:15:59,359 --> 00:16:03,764
+for complete instructions
+on verifying and handling a JWS.
+
+292
+00:16:04,498 --> 00:16:08,068
+Now, let's review some use cases
+for migration from verifyReceipt
+
+293
+00:16:08,101 --> 00:16:10,437
+to the App Store Server API.
+
+294
+00:16:10,470 --> 00:16:13,207
+First, let's look at the case
+where you want to check
+
+295
+00:16:13,240 --> 00:16:16,009
+what the latest status is
+for any given subscriber.
+
+296
+00:16:16,043 --> 00:16:20,347
+This keeps you up to date with
+any changes to an individual subscription.
+
+297
+00:16:20,380 --> 00:16:22,716
+Previously,
+to obtain the most up-to-date status
+
+298
+00:16:22,749 --> 00:16:25,519
+of a subscriber,
+one had to call verifyReceipt
+
+299
+00:16:25,552 --> 00:16:28,188
+and determine the status
+of the subscription based on fields
+
+300
+00:16:28,222 --> 00:16:32,192
+such as expiration intent,
+grace_period_expires_date, et cetera.
+
+301
+00:16:32,226 --> 00:16:36,330
+Now, with the App Store Server API,
+the Get All Subscription Statuses endpoint
+
+302
+00:16:36,363 --> 00:16:38,966
+can be called to obtain
+the latest status of a subscription,
+
+303
+00:16:38,999 --> 00:16:41,335
+with a status field containing
+the current status,
+
+304
+00:16:41,368 --> 00:16:43,103
+as well as the latest, most up-to-date
+
+305
+00:16:43,136 --> 00:16:45,873
+signed transaction
+and renewal information.
+
+306
+00:16:45,906 --> 00:16:48,575
+Let's look at a flow
+of how you could execute on this.
+
+307
+00:16:48,609 --> 00:16:51,545
+First, for any decoded receipt
+that you have, you can obtain
+
+308
+00:16:51,578 --> 00:16:55,716
+the originalTransactionIds from it
+just in the way that I showed previously.
+
+309
+00:16:55,749 --> 00:16:58,752
+Then, you can call
+the Get All Subscription Statuses endpoint
+
+310
+00:16:58,785 --> 00:17:01,989
+for that originalTransactionId,
+which will return the latest
+
+311
+00:17:02,022 --> 00:17:04,825
+signed transactions
+and renewals for that transaction.
+
+312
+00:17:04,858 --> 00:17:08,562
+Next, let's look at the case
+of obtaining the latest transactions.
+
+313
+00:17:08,595 --> 00:17:12,466
+Obtaining the latest transactions
+informs you of what a user has purchased,
+
+314
+00:17:12,499 --> 00:17:16,904
+what has renewed, if there are any changes
+to a user's subscription, and more.
+
+315
+00:17:16,937 --> 00:17:19,940
+Previously, to obtain
+the latest transactions for a user,
+
+316
+00:17:19,973 --> 00:17:21,742
+one had to call verifyReceipt
+
+317
+00:17:21,775 --> 00:17:24,778
+and use the in_app array
+and examine latest_receipt_info,
+
+318
+00:17:24,811 --> 00:17:27,915
+which contained all of
+the transactions for a user.
+
+319
+00:17:27,948 --> 00:17:31,118
+With the App Store Server API,
+to obtain the latest transactions,
+
+320
+00:17:31,151 --> 00:17:33,887
+the Get Transaction History endpoint
+allows you to fetch
+
+321
+00:17:33,921 --> 00:17:36,423
+the full purchase history for a user.
+
+322
+00:17:36,456 --> 00:17:40,160
+Furthermore, pagination combined
+with the new filter and sort features
+
+323
+00:17:40,194 --> 00:17:43,897
+that is covered in the WWDC22 talk,
+"What's new with in-app purchase,"
+
+324
+00:17:43,931 --> 00:17:47,601
+ensures that you can efficiently fetch
+precisely the data that you need.
+
+325
+00:17:48,902 --> 00:17:51,004
+Let's look at a flow
+of what this may entail.
+
+326
+00:17:51,038 --> 00:17:53,874
+With any originalTransactionId
+belonging to that user,
+
+327
+00:17:53,907 --> 00:17:56,710
+you can call
+the Get Transaction History endpoint,
+
+328
+00:17:56,743 --> 00:17:59,479
+which will return the history
+of transactions for this user
+
+329
+00:17:59,513 --> 00:18:04,518
+as signed transactions, filtered, sorted,
+and paginated to your specifications.
+
+330
+00:18:06,153 --> 00:18:09,189
+Finally, let’s look at the case
+of adopting appAccountToken.
+
+331
+00:18:09,223 --> 00:18:12,226
+The appAccountToken field
+allows you to provide a UUID
+
+332
+00:18:12,259 --> 00:18:15,762
+that associates a StoreKit 2 transaction
+with a user.
+
+333
+00:18:15,796 --> 00:18:18,098
+Then, on signed transactions,
+signed renewals,
+
+334
+00:18:18,131 --> 00:18:22,336
+and notifications for that transaction,
+the appAccountToken will appear.
+
+335
+00:18:22,369 --> 00:18:25,806
+Previously, there was not support for
+appAccountToken with original StoreKit, ,
+
+336
+00:18:25,839 --> 00:18:28,976
+as it was a feature
+that was new to StoreKit2.
+
+337
+00:18:29,009 --> 00:18:33,380
+Now, we added support for supplying
+a UUID in the field applicationUsername
+
+338
+00:18:33,413 --> 00:18:36,016
+in Original StoreKit
+to support compatibility
+
+339
+00:18:36,049 --> 00:18:38,118
+with Original StoreKit clients.
+
+340
+00:18:38,151 --> 00:18:40,888
+Under this condition,
+that UUID will support
+
+341
+00:18:40,921 --> 00:18:43,457
+all the functionality
+that appAccountToken does.
+
+342
+00:18:43,490 --> 00:18:47,728
+The appAccountToken then comes back in
+verifyReceipt for Original StoreKit users,
+
+343
+00:18:47,761 --> 00:18:51,231
+and also appears for both
+Original StoreKit and StoreKit 2 users
+
+344
+00:18:51,265 --> 00:18:53,267
+in calls to the App Store Server API
+
+345
+00:18:53,300 --> 00:18:55,903
+and notifications
+from App Store Server Notifications.
+
+346
+00:18:56,670 --> 00:18:59,706
+That's it for the App Store Server API
+portion of this session.
+
+347
+00:18:59,740 --> 00:19:04,511
+Next, here's Alex to cover migrating to
+App Store Server Notifications Version 2.
+
+348
+00:19:04,545 --> 00:19:05,479
+Alex: Thanks, Gabriel.
+
+349
+00:19:05,512 --> 00:19:07,848
+My name is Alex,
+and I'm excited to be here today
+
+350
+00:19:07,881 --> 00:19:11,518
+to discuss
+App Store Server Notifications Version 2.
+
+351
+00:19:11,552 --> 00:19:15,789
+First, we'll be covering how to get
+started with version 2 notifications.
+
+352
+00:19:15,822 --> 00:19:21,395
+Next, how version 2 notifications differ
+and build upon other models available.
+
+353
+00:19:21,428 --> 00:19:24,898
+Third, we'll talk about recovering
+in the case of missed notifications
+
+354
+00:19:24,932 --> 00:19:29,102
+and some of the new resources
+available to help accomplish this task.
+
+355
+00:19:29,136 --> 00:19:32,606
+Last, how notifications can provide
+insight into customer behavior
+
+356
+00:19:32,639 --> 00:19:34,842
+and create additional opportunities
+for being informed
+
+357
+00:19:34,875 --> 00:19:37,377
+about the subscription lifecycle.
+
+358
+00:19:37,411 --> 00:19:40,681
+Let's go over a brief introduction
+into what notifications are
+
+359
+00:19:40,714 --> 00:19:42,616
+and who can use them.
+
+360
+00:19:42,649 --> 00:19:45,419
+App Store Server Notifications
+are messages we send you
+
+361
+00:19:45,452 --> 00:19:48,989
+whenever certain actions
+are taken by users of your app.
+
+362
+00:19:49,022 --> 00:19:52,025
+These notifications broadly fall
+into two categories,
+
+363
+00:19:52,059 --> 00:19:54,428
+subscription updates and refund updates,
+
+364
+00:19:54,461 --> 00:19:57,564
+although we're always working
+to cover additional scenarios.
+
+365
+00:19:57,598 --> 00:20:00,868
+We provide these notifications
+to help fill in gaps into user actions
+
+366
+00:20:00,901 --> 00:20:03,504
+that may not be available
+to you in the app.
+
+367
+00:20:03,537 --> 00:20:06,640
+As an example,
+one of our most common use cases
+
+368
+00:20:06,673 --> 00:20:08,408
+is the renewal of a subscription.
+
+369
+00:20:08,442 --> 00:20:12,012
+A user may not be in the app
+when this transaction becomes available.
+
+370
+00:20:12,045 --> 00:20:15,015
+App Store Server Notifications
+help account for this issue
+
+371
+00:20:15,048 --> 00:20:17,618
+by proactively sending
+the latest transaction information
+
+372
+00:20:17,651 --> 00:20:20,654
+directly to your servers
+when the subscription renews.
+
+373
+00:20:20,687 --> 00:20:24,558
+Version 2 notifications share many
+similarities with the StoreKit 2 model
+
+374
+00:20:24,591 --> 00:20:27,828
+and the App Store Server API
+you just heard about from Gabriel.
+
+375
+00:20:27,861 --> 00:20:31,465
+However, while they work well together,
+they are all independent tools
+
+376
+00:20:31,498 --> 00:20:33,567
+that can be adopted at different times.
+
+377
+00:20:33,600 --> 00:20:36,403
+Most importantly,
+you can continue to support clients
+
+378
+00:20:36,436 --> 00:20:40,107
+where StoreKit 2 is not available,
+pre iOS-15 clients,
+
+379
+00:20:40,140 --> 00:20:43,377
+while utilizing
+Version 2 Server Notifications.
+
+380
+00:20:43,410 --> 00:20:46,213
+We've worked to make
+Version 2 notifications one of our most
+
+381
+00:20:46,246 --> 00:20:49,316
+in-depth and flexible tools
+for providing information
+
+382
+00:20:49,349 --> 00:20:52,553
+about a user throughout
+the entire subscription lifecycle.
+
+383
+00:20:52,586 --> 00:20:54,855
+We'll go more in-depth in this
+later in the presentation,
+
+384
+00:20:54,888 --> 00:20:58,559
+but notifications provide information
+that is almost impossible to capture
+
+385
+00:20:58,592 --> 00:21:01,295
+for actions taken outside of the app.
+
+386
+00:21:01,328 --> 00:21:03,664
+I hope I've interested you
+in the concept of notifications
+
+387
+00:21:03,697 --> 00:21:06,867
+and Version 2 notifications in particular.
+
+388
+00:21:06,900 --> 00:21:09,069
+Before we go further,
+while this presentation
+
+389
+00:21:09,102 --> 00:21:11,471
+walks you through getting started
+and best practices
+
+390
+00:21:11,505 --> 00:21:14,508
+for receiving notifications,
+it doesn't tell the whole story.
+
+391
+00:21:14,541 --> 00:21:16,443
+Please refer to these recent videos
+for more information
+
+392
+00:21:16,476 --> 00:21:20,447
+about notifications and how they can
+meet various use cases.
+
+393
+00:21:20,480 --> 00:21:23,116
+Let's look at getting
+Version 2 notifications set up.
+
+394
+00:21:23,150 --> 00:21:25,152
+We're going to walk through
+how to set up your notifications
+
+395
+00:21:25,185 --> 00:21:27,621
+all the way to receiving your first one.
+
+396
+00:21:27,654 --> 00:21:32,092
+First, go to your app's page
+in App Store Connect.
+
+397
+00:21:32,125 --> 00:21:37,064
+Scrolling down, you will see a section
+for App Store Server Notifications.
+
+398
+00:21:37,097 --> 00:21:41,101
+Here you'll see options
+for both production and sandbox.
+
+399
+00:21:41,134 --> 00:21:43,704
+Each environment can contain
+a separate URL
+
+400
+00:21:43,737 --> 00:21:47,107
+and a separate notification version.
+
+401
+00:21:47,140 --> 00:21:50,711
+Here is an example of the options page
+for production settings.
+
+402
+00:21:50,744 --> 00:21:53,480
+Sandbox settings are exactly the same.
+
+403
+00:21:53,514 --> 00:21:57,184
+We recommend, especially if you are
+a Version 1 notification user,
+
+404
+00:21:57,217 --> 00:22:01,555
+that you first try Version 2 notifications
+in the sandbox environment.
+
+405
+00:22:01,588 --> 00:22:04,591
+This is a great place
+to become comfortable with notifications
+
+406
+00:22:04,625 --> 00:22:07,528
+without impacting your production setup.
+
+407
+00:22:07,561 --> 00:22:11,198
+Select the Set Up Sandbox button,
+provide your server's URL,
+
+408
+00:22:11,231 --> 00:22:13,834
+and select Version 2 Notifications.
+
+409
+00:22:15,169 --> 00:22:18,005
+Before triggering notifications,
+confirm you have a valid
+
+410
+00:22:18,038 --> 00:22:21,108
+HTTPS certificate
+for your server endpoint.
+
+411
+00:22:21,141 --> 00:22:25,245
+Also confirm you have allowed
+Apple's public IPs access to your server.
+
+412
+00:22:25,279 --> 00:22:27,848
+Some of the most common failures
+when setting up notifications
+
+413
+00:22:27,881 --> 00:22:30,050
+relate to firewalls and certificates.
+
+414
+00:22:30,083 --> 00:22:33,420
+These are also great to check if you
+suddenly stop receiving notifications
+
+415
+00:22:33,453 --> 00:22:36,423
+as an initial troubleshooting step.
+
+416
+00:22:36,456 --> 00:22:39,393
+Now you are ready to receive
+your first notification.
+
+417
+00:22:39,426 --> 00:22:41,628
+In Sandbox, notifications can be triggered
+
+418
+00:22:41,662 --> 00:22:44,898
+by a variety of actions,
+like buying an in-app subscription.
+
+419
+00:22:44,932 --> 00:22:47,134
+However, for ease of use while testing,
+
+420
+00:22:47,167 --> 00:22:49,403
+we recommend triggering
+a notification using the new
+
+421
+00:22:49,436 --> 00:22:54,007
+Request a Test Notification endpoint,
+part of the App Store Server API.
+
+422
+00:22:54,041 --> 00:22:57,110
+This endpoint helps to automate
+the notification testing process.
+
+423
+00:22:57,144 --> 00:22:59,613
+After triggering the Request
+a Test Notification endpoint,
+
+424
+00:22:59,646 --> 00:23:02,583
+you should expect to see
+a notification arrive soon.
+
+425
+00:23:02,616 --> 00:23:04,685
+If you are having issues
+receiving notifications,
+
+426
+00:23:04,718 --> 00:23:07,554
+please refer the to new
+Get Test Notification Status endpoint,
+
+427
+00:23:07,588 --> 00:23:10,991
+which can provide a brief status about why
+the notification failed to be delivered.
+
+428
+00:23:11,024 --> 00:23:14,194
+For example,
+a status like SSL_ISSUE would be
+
+429
+00:23:14,228 --> 00:23:17,831
+a clue to double-check
+your HTTPS certificates.
+
+430
+00:23:17,865 --> 00:23:20,267
+We recommend
+triggering a test notification
+
+431
+00:23:20,300 --> 00:23:22,536
+whenever you are performing
+a configuration change.
+
+432
+00:23:22,569 --> 00:23:25,272
+This is a great way to confirm
+you can still receive notifications
+
+433
+00:23:25,305 --> 00:23:26,907
+after the change.
+
+434
+00:23:26,940 --> 00:23:30,811
+Now, let's move on to understanding
+the notification you've just received.
+
+435
+00:23:32,179 --> 00:23:34,515
+Just like transactions
+we saw earlier from Gabriel,
+
+436
+00:23:34,548 --> 00:23:37,885
+notifications are also in the JWS format.
+
+437
+00:23:37,918 --> 00:23:42,322
+Let's go over how to decode
+and verify a notification payload.
+
+438
+00:23:42,356 --> 00:23:44,625
+First, when receiving a notification,
+
+439
+00:23:44,658 --> 00:23:49,263
+you'll want to extract
+the signedPayload field of the JSON body.
+
+440
+00:23:49,296 --> 00:23:52,866
+Next, you'll perform the exact same steps
+Gabriel walked you through earlier
+
+441
+00:23:52,900 --> 00:23:55,135
+for verifying a signed transaction.
+
+442
+00:23:55,169 --> 00:23:57,538
+You'll follow the same steps
+to verify signed data
+
+443
+00:23:57,571 --> 00:24:00,841
+whether it is a signed notification
+payload from a notification
+
+444
+00:24:00,874 --> 00:24:04,945
+or a signed transaction
+from the App Store Server API.
+
+445
+00:24:04,978 --> 00:24:09,750
+Next, it is important to verify
+which app the notification is for.
+
+446
+00:24:09,783 --> 00:24:12,553
+If you have multiple apps
+sharing the same endpoint,
+
+447
+00:24:12,586 --> 00:24:15,856
+this is a good place
+to determine the target app.
+
+448
+00:24:15,889 --> 00:24:19,293
+It is also important to confirm that
+the app the notification is targeted for
+
+449
+00:24:19,326 --> 00:24:24,264
+is your app, and the notification
+was not intended for another developer.
+
+450
+00:24:24,298 --> 00:24:27,701
+Last, one more useful check is
+to make sure that the environment
+
+451
+00:24:27,734 --> 00:24:30,137
+of the notification matches
+your expected environment,
+
+452
+00:24:30,170 --> 00:24:32,606
+either Production or Sandbox.
+
+453
+00:24:32,639 --> 00:24:35,709
+Because App Store Connect allows
+separate URLs for each environment,
+
+454
+00:24:35,742 --> 00:24:37,945
+it is possible to enforce
+this requirement,
+
+455
+00:24:37,978 --> 00:24:41,481
+or, if the URLs are shared,
+guarantee you are
+
+456
+00:24:41,515 --> 00:24:46,019
+storing and processing notifications
+separately based on the environment.
+
+457
+00:24:46,053 --> 00:24:50,691
+At this point, the JWS is fully validated
+and can be stored for further processing.
+
+458
+00:24:50,724 --> 00:24:53,260
+We recommend, besides some basic checks,
+
+459
+00:24:53,293 --> 00:24:56,463
+that your server process
+the notification asynchronously.
+
+460
+00:24:56,496 --> 00:25:00,834
+If processing of the notification takes
+too long, our server will record a timeout
+
+461
+00:25:00,868 --> 00:25:03,670
+and assume the notification
+was not delivered successfully.
+
+462
+00:25:03,704 --> 00:25:06,840
+We will then resend the notification.
+
+463
+00:25:06,874 --> 00:25:10,577
+Therefore, moving time-intensive
+processing outside this function
+
+464
+00:25:10,611 --> 00:25:13,247
+helps to ensure that the App Store server
+records your notifications
+
+465
+00:25:13,280 --> 00:25:16,216
+as sent successfully
+and removes the need for your server
+
+466
+00:25:16,250 --> 00:25:19,553
+to reprocess the notifications
+upon a retry.
+
+467
+00:25:19,586 --> 00:25:24,558
+Now, let's go over the body
+of the notification after verification.
+
+468
+00:25:24,591 --> 00:25:28,695
+The first fields are notification type
+and the optional subtype.
+
+469
+00:25:28,729 --> 00:25:32,032
+Combined, these tell you the scenario
+the notification is for.
+
+470
+00:25:32,065 --> 00:25:35,903
+These fields also help show what has
+changed since the last notification
+
+471
+00:25:35,936 --> 00:25:38,872
+and provide information about
+why these changes occurred.
+
+472
+00:25:38,906 --> 00:25:43,377
+The notificationUUID is a unique
+identifier per notification.
+
+473
+00:25:43,410 --> 00:25:45,479
+If the server retries a notification,
+
+474
+00:25:45,512 --> 00:25:49,583
+the retried notification contains
+the same notificationUUID.
+
+475
+00:25:49,616 --> 00:25:52,920
+This helps detect cases where
+your server processed the notification,
+
+476
+00:25:52,953 --> 00:25:57,858
+but did not respond with a successful
+HTTP response code in a timely manner.
+
+477
+00:25:57,891 --> 00:26:01,428
+We recommend adding duplicate
+notification detection due to retries,
+
+478
+00:26:01,461 --> 00:26:03,497
+based on this field.
+
+479
+00:26:03,530 --> 00:26:06,967
+The signedDate field tells you
+when the notification was created.
+
+480
+00:26:07,000 --> 00:26:10,470
+This is especially useful
+for detecting retried notifications.
+
+481
+00:26:10,504 --> 00:26:13,507
+Next, the appAppleId and bundleId.
+
+482
+00:26:13,540 --> 00:26:16,310
+These are important
+for detecting the target application.
+
+483
+00:26:16,343 --> 00:26:19,146
+As we discussed earlier, it is important
+that you check these fields
+
+484
+00:26:19,179 --> 00:26:23,884
+and confirm they match expected values
+to prevent replay attacks.
+
+485
+00:26:23,917 --> 00:26:26,854
+Additionally, make sure the environment
+of the notification matches
+
+486
+00:26:26,887 --> 00:26:29,756
+the expected environment,
+that sandbox notifications aren't being
+
+487
+00:26:29,790 --> 00:26:32,292
+recorded as production data,
+and vice versa.
+
+488
+00:26:33,861 --> 00:26:38,599
+Last, the actual signedTransactionInfo
+and optional signedRenewalInfo.
+
+489
+00:26:38,632 --> 00:26:41,001
+These will be the latest status
+of the underlying purchase
+
+490
+00:26:41,034 --> 00:26:43,103
+at the time of signing.
+
+491
+00:26:43,136 --> 00:26:45,439
+At this point,
+having parsed the notification,
+
+492
+00:26:45,472 --> 00:26:48,242
+you are left with the latest transaction
+and renewal information,
+
+493
+00:26:48,275 --> 00:26:51,411
+and the latest reason
+for the change in status.
+
+494
+00:26:51,445 --> 00:26:55,082
+Now that we've covered setting up
+and receiving a specific notification,
+
+495
+00:26:55,115 --> 00:26:57,451
+let's examine
+the Version 2 notification model,
+
+496
+00:26:57,484 --> 00:27:00,854
+how notifications can fit together
+to track the subscription lifecycle,
+
+497
+00:27:00,888 --> 00:27:03,557
+and the design decisions
+behind Version 2 notifications
+
+498
+00:27:03,590 --> 00:27:06,660
+through a comparison with
+Version 1 notifications.
+
+499
+00:27:06,693 --> 00:27:09,530
+Version 2 adopts a different philosophy
+when sending information
+
+500
+00:27:09,563 --> 00:27:10,931
+about the state of a purchase.
+
+501
+00:27:10,964 --> 00:27:14,301
+Instead of sending the entire
+recent history every notification,
+
+502
+00:27:14,334 --> 00:27:17,938
+Version 2 notifications focus
+only on sending the latest information:
+
+503
+00:27:17,971 --> 00:27:19,506
+the latest transaction information,
+
+504
+00:27:19,540 --> 00:27:23,343
+and in the case of subscriptions,
+the pending renewal information as well.
+
+505
+00:27:24,912 --> 00:27:26,980
+With notifications,
+we work to provide information
+
+506
+00:27:27,014 --> 00:27:30,050
+on every step
+of the subscription lifecycle.
+
+507
+00:27:30,083 --> 00:27:33,453
+Therefore, notifications only contain
+the latest information
+
+508
+00:27:33,487 --> 00:27:36,123
+about the purchase or subscription.
+
+509
+00:27:36,156 --> 00:27:39,226
+Together, these notifications create
+a complete timeline
+
+510
+00:27:39,259 --> 00:27:41,161
+of a subscription's status.
+
+511
+00:27:41,195 --> 00:27:44,598
+If you need to view the entire
+transaction history and don't have access
+
+512
+00:27:44,631 --> 00:27:46,834
+to the notification history,
+this pairs well with
+
+513
+00:27:46,867 --> 00:27:49,169
+the Get Transaction History endpoint
+which lets you query
+
+514
+00:27:49,203 --> 00:27:54,074
+a user's entire transaction history
+in a paginated and filterable context.
+
+515
+00:27:54,107 --> 00:27:58,879
+Second, version 1 notifications
+do not require clients use StoreKit 2.
+
+516
+00:27:58,912 --> 00:28:01,515
+And that's right, neither does version 2.
+
+517
+00:28:01,548 --> 00:28:04,852
+In fact, no matter what framework
+is used on the client side,
+
+518
+00:28:04,885 --> 00:28:09,122
+you can start enjoying the benefits
+of version 2 notifications today.
+
+519
+00:28:09,156 --> 00:28:13,994
+Last, version 2 notifications work
+to enhance the level of detail provided
+
+520
+00:28:14,027 --> 00:28:16,897
+and expand cases covered
+by adding additional types
+
+521
+00:28:16,930 --> 00:28:19,299
+and adding the new subtype field.
+
+522
+00:28:19,333 --> 00:28:21,535
+Through this,
+we are able to cover more scenarios
+
+523
+00:28:21,568 --> 00:28:24,605
+and provide notifications at every step
+of the subscription lifecycle.
+
+524
+00:28:24,638 --> 00:28:28,041
+Some of the notable scenarios
+we've added include expiration,
+
+525
+00:28:28,075 --> 00:28:31,411
+more granular information related
+to changes in auto renewal status,
+
+526
+00:28:31,445 --> 00:28:34,281
+and more scenarios
+around the refund process.
+
+527
+00:28:34,314 --> 00:28:37,651
+Now, to illustrate the complexity
+of the scenarios covered
+
+528
+00:28:37,684 --> 00:28:40,921
+and provide a more concrete example,
+let's look at how notifications
+
+529
+00:28:40,954 --> 00:28:43,156
+can inform you of each step
+a subscription takes,
+
+530
+00:28:43,190 --> 00:28:45,325
+from start to finish.
+
+531
+00:28:45,359 --> 00:28:49,162
+Let's imagine a user
+before a subscription.
+
+532
+00:28:49,196 --> 00:28:52,833
+Upon subscribing, the user moves
+into the renewing subscription state
+
+533
+00:28:52,866 --> 00:28:55,969
+and a SUBSCRIBED with subtype INITIAL_BUY
+notification is sent,
+
+534
+00:28:56,003 --> 00:29:00,107
+or an OFFER_REDEEMED with subtype
+INITIAL_BUY if an offer was used.
+
+535
+00:29:00,140 --> 00:29:03,343
+Contained in the notification
+would be the first signed transaction
+
+536
+00:29:03,377 --> 00:29:06,246
+and the signed renewal information.
+
+537
+00:29:06,280 --> 00:29:10,384
+Time passes, and the subscription renews,
+staying in the renewing state.
+
+538
+00:29:10,417 --> 00:29:12,920
+Upon each renewal,
+we send a DID_RENEW notification
+
+539
+00:29:12,953 --> 00:29:16,723
+with the next
+signed transaction information.
+
+540
+00:29:16,757 --> 00:29:19,159
+Whenever the user deactivates
+auto renewal,
+
+541
+00:29:19,193 --> 00:29:22,029
+they move to the expiring
+subscription state, and you will receive
+
+542
+00:29:22,062 --> 00:29:23,463
+a DID_CHANGE_RENEWAL_STATUS
+
+543
+00:29:23,497 --> 00:29:26,700
+with subtype AUTO_RENEW_DISABLED
+notification.
+
+544
+00:29:28,402 --> 00:29:31,405
+If they don't reenable auto renewal,
+at the end of the period they move
+
+545
+00:29:31,438 --> 00:29:34,241
+to the expired state,
+and you will receive an EXPIRED
+
+546
+00:29:34,274 --> 00:29:36,643
+with subtype VOLUNTARY notification.
+
+547
+00:29:36,677 --> 00:29:38,278
+Now, you might be wondering,
+
+548
+00:29:38,312 --> 00:29:40,714
+where are all the other
+notification types?
+
+549
+00:29:43,050 --> 00:29:46,520
+Here is the subscription lifecycle,
+as seen through notifications.
+
+550
+00:29:46,553 --> 00:29:49,289
+There is a lot going on.
+
+551
+00:29:49,323 --> 00:29:52,626
+And this diagram doesn't even tell
+the whole story.
+
+552
+00:29:52,659 --> 00:29:57,130
+The refund/revocation lifecycle
+isn't included here, for example.
+
+553
+00:29:57,164 --> 00:29:59,566
+This diagram illustrates
+the vast array of scenarios
+
+554
+00:29:59,600 --> 00:30:02,603
+that version 2 notifications cover
+and that they work to inform you
+
+555
+00:30:02,636 --> 00:30:05,439
+of each step
+of the subscription lifecycle.
+
+556
+00:30:06,507 --> 00:30:08,342
+The other point I would make
+is that we work to cover
+
+557
+00:30:08,375 --> 00:30:10,477
+every possible transition state.
+
+558
+00:30:10,511 --> 00:30:14,147
+This helps to increase the utility of
+notifications by becoming a single source
+
+559
+00:30:14,181 --> 00:30:16,950
+for tracking subscriptions
+and improves confidence
+
+560
+00:30:16,984 --> 00:30:19,987
+that you are seeing every step
+of the subscriber's journey.
+
+561
+00:30:20,020 --> 00:30:22,623
+However, even though
+all of this data is here,
+
+562
+00:30:22,656 --> 00:30:25,158
+you don't need to work
+with every type available.
+
+563
+00:30:25,192 --> 00:30:28,662
+Even just processing notifications
+related to renewal preference changes,
+
+564
+00:30:28,695 --> 00:30:31,064
+for example, can provide value.
+
+565
+00:30:31,098 --> 00:30:33,166
+Especially if
+you are just getting started,
+
+566
+00:30:33,200 --> 00:30:37,271
+begin with the notification types
+that are most useful for your situation.
+
+567
+00:30:37,304 --> 00:30:40,207
+Now, let's cover what happens
+after you've got your server set up,
+
+568
+00:30:40,240 --> 00:30:44,011
+everything is running smoothly,
+but, alas, your server goes down.
+
+569
+00:30:44,044 --> 00:30:47,014
+Whether it was for a few days,
+a few minutes, or you think you might have
+
+570
+00:30:47,047 --> 00:30:50,884
+missed just one, let's go over some steps
+to help resolve this issue.
+
+571
+00:30:50,918 --> 00:30:52,719
+Let's image your server.
+
+572
+00:30:52,753 --> 00:30:56,690
+It is set up successfully
+and is receiving notifications.
+
+573
+00:30:56,723 --> 00:31:01,695
+At some point, your server has an issue
+and is unable to receive notifications.
+
+574
+00:31:01,728 --> 00:31:04,031
+We are still attempting
+to send messages to your server,
+
+575
+00:31:04,064 --> 00:31:06,333
+but now those requests begin to fail.
+
+576
+00:31:06,366 --> 00:31:08,368
+There are several ways
+to deal with this scenario.
+
+577
+00:31:08,402 --> 00:31:10,170
+The first is just to wait.
+
+578
+00:31:10,204 --> 00:31:13,006
+If we don't receive
+a successful status code from your server
+
+579
+00:31:13,040 --> 00:31:14,441
+or couldn't connect to it at all,
+
+580
+00:31:14,474 --> 00:31:18,645
+we will retry notifications
+according to our documented retry policy.
+
+581
+00:31:18,679 --> 00:31:21,815
+For version 2 notifications,
+we retry after each attempt,
+
+582
+00:31:21,849 --> 00:31:24,985
+first after a 1-hour delay,
+then a 12-hour delay,
+
+583
+00:31:25,018 --> 00:31:28,789
+24-, 48-, and finally 72-hour delay.
+
+584
+00:31:28,822 --> 00:31:31,225
+Waiting works great
+for outages less than an hour,
+
+585
+00:31:31,258 --> 00:31:34,661
+as notifications will be retried
+an hour after the first failure.
+
+586
+00:31:36,029 --> 00:31:37,865
+At some point your server recovers,
+
+587
+00:31:37,898 --> 00:31:41,101
+and you start receiving
+notifications again.
+
+588
+00:31:41,134 --> 00:31:46,306
+First, you receive a new notification,
+unrelated to the missed notifications.
+
+589
+00:31:46,340 --> 00:31:49,776
+Notifications are retried with a delay,
+so as soon as your server comes online,
+
+590
+00:31:49,810 --> 00:31:52,679
+you will not immediately receive
+all missed notifications.
+
+591
+00:31:53,914 --> 00:31:57,718
+Some time passes and you start to receive
+the notifications you missed,
+
+592
+00:31:57,751 --> 00:31:59,853
+interspersed with new notifications.
+
+593
+00:32:01,221 --> 00:32:04,391
+This brings up the question,
+how can you detect if a notification
+
+594
+00:32:04,424 --> 00:32:07,628
+is the original or a retried notification?
+
+595
+00:32:07,661 --> 00:32:09,496
+Let's examine a notification.
+
+596
+00:32:10,531 --> 00:32:13,600
+In this notification,
+we're just showing a few fields.
+
+597
+00:32:14,935 --> 00:32:17,838
+Notifications contain a signedDate field.
+
+598
+00:32:17,871 --> 00:32:20,007
+This field can be useful
+for detecting retries,
+
+599
+00:32:20,040 --> 00:32:23,677
+by comparing the signing date with
+the time the notification was received.
+
+600
+00:32:23,710 --> 00:32:26,980
+If you see notifications with
+a signing date significantly earlier
+
+601
+00:32:27,014 --> 00:32:28,916
+than the date
+you received the notification,
+
+602
+00:32:28,949 --> 00:32:31,518
+this indicates you may have
+experienced an outage.
+
+603
+00:32:32,619 --> 00:32:36,256
+Imagine in this scenario
+the notifications labeled 6 and 3
+
+604
+00:32:36,290 --> 00:32:38,225
+were for the same subscription.
+
+605
+00:32:38,258 --> 00:32:41,862
+This could be determined by comparing
+the originalTransactionIds.
+
+606
+00:32:41,895 --> 00:32:46,567
+In this case, just because notification 3
+was received after notification 6
+
+607
+00:32:46,600 --> 00:32:51,238
+does not mean it contains
+newer information than notification 6.
+
+608
+00:32:51,271 --> 00:32:54,241
+Other times, a notification
+may have been received by your server,
+
+609
+00:32:54,274 --> 00:32:58,712
+but it failed to respond
+with a successful HTTP 200 status code.
+
+610
+00:32:58,745 --> 00:33:02,015
+This can cause a notification
+to be redelivered to your server.
+
+611
+00:33:02,049 --> 00:33:06,119
+As discussed earlier, make sure to check
+the notificationUUID field
+
+612
+00:33:06,153 --> 00:33:08,155
+to deduplicate these requests.
+
+613
+00:33:08,188 --> 00:33:11,058
+You may see significant numbers
+of retried notifications
+
+614
+00:33:11,091 --> 00:33:13,994
+even though you successfully
+recorded the notifications.
+
+615
+00:33:14,027 --> 00:33:15,929
+In this case, make sure you are responding
+
+616
+00:33:15,963 --> 00:33:19,900
+with an HTTP 200 response
+every time you receive a notification.
+
+617
+00:33:19,933 --> 00:33:23,103
+Additionally, make sure that you are
+doing so in a timely manner,
+
+618
+00:33:23,136 --> 00:33:27,474
+and are not doing extensive processing
+before responding successfully,
+
+619
+00:33:27,508 --> 00:33:30,777
+to prevent us from recording a timeout
+and resending the notification.
+
+620
+00:33:30,811 --> 00:33:35,949
+Sometimes, especially with longer outages,
+the next retry may be hours or days away,
+
+621
+00:33:35,983 --> 00:33:39,553
+or for an extended outage,
+retries may have been exhausted.
+
+622
+00:33:39,586 --> 00:33:42,155
+The next option for recovering
+from missed notifications
+
+623
+00:33:42,189 --> 00:33:44,691
+is the Get Notification History endpoint.
+
+624
+00:33:45,826 --> 00:33:48,729
+We've just announced the new
+Get Notification History endpoint,
+
+625
+00:33:48,762 --> 00:33:52,232
+which provides a six-month history
+of notifications we have sent your server.
+
+626
+00:33:52,266 --> 00:33:54,601
+Refer to "What's new
+with in-app purchases" video
+
+627
+00:33:54,635 --> 00:33:56,069
+for an overview of this endpoint
+
+628
+00:33:56,103 --> 00:33:58,372
+along with other great features
+we are announcing.
+
+629
+00:33:58,405 --> 00:34:01,642
+Here we will be focusing on
+best practices when using this endpoint
+
+630
+00:34:01,675 --> 00:34:04,411
+and scenarios where it can assist.
+
+631
+00:34:04,444 --> 00:34:05,913
+After an outage is resolved,
+
+632
+00:34:05,946 --> 00:34:08,849
+note the start and end timestamps
+of the outage.
+
+633
+00:34:08,882 --> 00:34:11,318
+The Get Notification History endpoint
+allows queries to be made
+
+634
+00:34:11,351 --> 00:34:13,053
+over a specific timespan.
+
+635
+00:34:13,086 --> 00:34:15,455
+By specifying the start
+and end times of the outage,
+
+636
+00:34:15,489 --> 00:34:18,325
+you can only process notifications
+that you likely missed,
+
+637
+00:34:18,358 --> 00:34:21,295
+instead of requiring paging
+through the entire history.
+
+638
+00:34:21,328 --> 00:34:22,996
+This will help improve
+the speed of recovery
+
+639
+00:34:23,030 --> 00:34:26,600
+and reduce work reprocessing
+already-recorded notifications.
+
+640
+00:34:27,534 --> 00:34:29,803
+Next, the Get Notification
+History endpoint
+
+641
+00:34:29,837 --> 00:34:32,306
+allows you to filter
+by type of notification.
+
+642
+00:34:32,339 --> 00:34:35,042
+If you have experience an extended
+outage and expect a significant
+
+643
+00:34:35,075 --> 00:34:38,111
+number of notifications,
+consider filtering by type, and starting
+
+644
+00:34:38,145 --> 00:34:42,482
+with types that may have immediate impact,
+like DID_RENEW and EXPIRED.
+
+645
+00:34:42,516 --> 00:34:46,854
+These will help you take action
+on the most relevant cases first.
+
+646
+00:34:46,887 --> 00:34:49,223
+One tip when passing notification types,
+
+647
+00:34:49,256 --> 00:34:51,758
+if the notificationSubtype
+field is omitted,
+
+648
+00:34:51,792 --> 00:34:55,596
+this will only return notifications
+that also do not have a subtype.
+
+649
+00:34:55,629 --> 00:34:59,766
+Therefore, for the example shown
+for the DID_RENEW notificationType,
+
+650
+00:34:59,800 --> 00:35:01,935
+this would not return
+DID_RENEW notifications
+
+651
+00:35:01,969 --> 00:35:03,370
+with subtype BILLING_RECOVERY.
+
+652
+00:35:05,105 --> 00:35:07,908
+Last, the Get Notification
+History endpoint allows filtering
+
+653
+00:35:07,941 --> 00:35:11,712
+to a specific user by using
+an originalTransactionId.
+
+654
+00:35:11,745 --> 00:35:13,614
+Thinking back
+to the subscription lifecycle,
+
+655
+00:35:13,647 --> 00:35:16,016
+we've worked to make sure
+every step of a user's journey
+
+656
+00:35:16,049 --> 00:35:17,985
+is covered by notifications.
+
+657
+00:35:18,018 --> 00:35:21,555
+Therefore, if you find yourself
+jumping around in unexpected ways,
+
+658
+00:35:21,588 --> 00:35:24,825
+for example from a renewing subscription
+straight to expiration,
+
+659
+00:35:24,858 --> 00:35:27,961
+this may indicate that you missed
+a notification for that user.
+
+660
+00:35:27,995 --> 00:35:30,364
+This can also be useful
+in a customer-support context
+
+661
+00:35:30,397 --> 00:35:33,734
+if a user's account is in a different
+state than you would expect.
+
+662
+00:35:33,767 --> 00:35:37,771
+In these cases, you can send a query
+for that user's notification history.
+
+663
+00:35:38,906 --> 00:35:42,176
+Let's go over the response from
+the Get Notification History endpoint.
+
+664
+00:35:42,209 --> 00:35:44,878
+Only certain values are shown
+in the response for simplicity.
+
+665
+00:35:46,613 --> 00:35:50,484
+The values returned in the response
+are in the notificationHistory array.
+
+666
+00:35:52,119 --> 00:35:55,589
+Each entry in the array
+represents a single notification.
+
+667
+00:35:56,823 --> 00:35:59,660
+The signed payload field contains
+the exact notification
+
+668
+00:35:59,693 --> 00:36:00,894
+that was sent to you.
+
+669
+00:36:02,162 --> 00:36:05,199
+Second, we have
+the firstSendAttemptResult field.
+
+670
+00:36:05,232 --> 00:36:08,001
+This field contains one of several values
+based on the result
+
+671
+00:36:08,035 --> 00:36:11,638
+of the initial notification attempt
+as recorded by our servers.
+
+672
+00:36:11,672 --> 00:36:14,741
+In the successful case,
+this will be the value SUCCESS.
+
+673
+00:36:14,775 --> 00:36:16,777
+However, as we've just been discussing,
+
+674
+00:36:16,810 --> 00:36:19,780
+sometimes notifications fail
+to reach your server.
+
+675
+00:36:19,813 --> 00:36:22,482
+These messages are meant to be
+a general guide to help point you
+
+676
+00:36:22,516 --> 00:36:25,819
+in the direction of the issue,
+to simplify the resolution process.
+
+677
+00:36:25,853 --> 00:36:28,522
+For example, we see SSL_ISSUE here.
+
+678
+00:36:28,555 --> 00:36:31,024
+This indicates there is a problem
+with the SSL certificate
+
+679
+00:36:31,058 --> 00:36:33,126
+or process on the server.
+
+680
+00:36:33,160 --> 00:36:36,697
+This field provides improved visibility
+into diagnosing servers issues
+
+681
+00:36:36,730 --> 00:36:39,233
+beyond seeing
+the notification did not arrive.
+
+682
+00:36:39,266 --> 00:36:42,803
+We also provide this same field in
+the Get Test Notification Status endpoint,
+
+683
+00:36:42,836 --> 00:36:45,806
+to provide this functionality
+when using test notifications.
+
+684
+00:36:45,839 --> 00:36:48,976
+These can be used to help while
+onboarding or during troubleshooting,
+
+685
+00:36:49,009 --> 00:36:52,446
+or retrospectively during determining
+the root cause of an outage.
+
+686
+00:36:52,479 --> 00:36:55,949
+Notifications may not cover
+all cases of a user's history.
+
+687
+00:36:55,983 --> 00:36:58,652
+You may have just adopted notifications
+and have existing users
+
+688
+00:36:58,685 --> 00:37:00,354
+with histories not covered.
+
+689
+00:37:00,387 --> 00:37:03,290
+You also may wish to examine a history
+longer than the retention period
+
+690
+00:37:03,323 --> 00:37:06,894
+of notifications in the Get
+Notification History endpoint.
+
+691
+00:37:06,927 --> 00:37:09,763
+That's where the Get Transaction
+History endpoint enters the picture.
+
+692
+00:37:09,796 --> 00:37:11,899
+This endpoint,
+as we saw earlier in the presentation
+
+693
+00:37:11,932 --> 00:37:14,401
+from Gabriel,
+solves these issues by providing histories
+
+694
+00:37:14,434 --> 00:37:18,605
+for your customers that cover cases
+before you started using notifications.
+
+695
+00:37:18,639 --> 00:37:21,909
+Now, let's go over how notifications
+can provide insight
+
+696
+00:37:21,942 --> 00:37:25,179
+and opportunities above and beyond
+the purchase history.
+
+697
+00:37:25,212 --> 00:37:29,082
+One of the new additions in Version 2
+notifications is the subtype field,
+
+698
+00:37:29,116 --> 00:37:32,386
+adding additional context
+to the notificationType field.
+
+699
+00:37:32,419 --> 00:37:35,389
+This field is meant to provide
+more detail in certain scenarios,
+
+700
+00:37:35,422 --> 00:37:38,058
+like EXPIRED
+or DID_CHANGE_RENEWAL_STATUS.
+
+701
+00:37:38,091 --> 00:37:41,929
+For example, with EXPIRED,
+the action you take is usually the same,
+
+702
+00:37:41,962 --> 00:37:45,332
+mark the subscription as inactive
+and revoke access to the product.
+
+703
+00:37:45,365 --> 00:37:49,102
+However, it can often be useful
+to understand why the user expired.
+
+704
+00:37:49,136 --> 00:37:51,772
+Was it due to a billing issue,
+voluntary choice,
+
+705
+00:37:51,805 --> 00:37:53,841
+or a price increase
+that was never accepted?
+
+706
+00:37:53,874 --> 00:37:56,877
+Another notification,
+DID_CHANGE_RENEWAL_STATUS,
+
+707
+00:37:56,910 --> 00:37:59,246
+is a great example of gaining
+additional information
+
+708
+00:37:59,279 --> 00:38:01,815
+and opportunities
+when using notifications.
+
+709
+00:38:01,849 --> 00:38:04,251
+On the surface,
+it looks to be of low priority.
+
+710
+00:38:04,284 --> 00:38:06,286
+No action needs to be immediately taken.
+
+711
+00:38:06,320 --> 00:38:09,022
+The important notification
+for revoking access to the product
+
+712
+00:38:09,056 --> 00:38:11,058
+is the EXPIRED notification.
+
+713
+00:38:11,091 --> 00:38:14,127
+Don't be fooled.
+There is a lot of opportunity here.
+
+714
+00:38:14,161 --> 00:38:16,430
+One, this notification is
+a great opportunity
+
+715
+00:38:16,463 --> 00:38:20,167
+to attempt to win back the customer
+before their subscription expires.
+
+716
+00:38:20,200 --> 00:38:22,536
+Especially since deactivating
+auto renewal may occur
+
+717
+00:38:22,569 --> 00:38:25,038
+outside the application,
+this can be the only trigger
+
+718
+00:38:25,072 --> 00:38:29,443
+to be informed in this change in
+renewal status before the expiration date.
+
+719
+00:38:29,476 --> 00:38:32,546
+This notification also provides insight
+into customer behavior.
+
+720
+00:38:32,579 --> 00:38:34,014
+This notification can be used to determine
+
+721
+00:38:34,047 --> 00:38:36,550
+when in the renewal period
+subscribers are cancelling.
+
+722
+00:38:36,583 --> 00:38:37,885
+Is it the day before renewal?
+
+723
+00:38:37,918 --> 00:38:39,786
+Are new subscribers
+deactivating auto-renewal
+
+724
+00:38:39,820 --> 00:38:42,256
+soon after signing up for your service?
+
+725
+00:38:42,289 --> 00:38:43,824
+This type of information can be
+important for understanding
+
+726
+00:38:43,857 --> 00:38:47,427
+the causes of cancellation
+and improving your product.
+
+727
+00:38:47,461 --> 00:38:50,130
+Last, certain scenarios
+may never be reflected
+
+728
+00:38:50,163 --> 00:38:52,900
+in a user's history without notifications.
+
+729
+00:38:52,933 --> 00:38:57,237
+For example, a user may deactivate
+but then reactivate auto-renewal,
+
+730
+00:38:57,271 --> 00:38:59,940
+before their subscription period
+has expired.
+
+731
+00:38:59,973 --> 00:39:02,242
+Because this all occurs
+within a subscription period,
+
+732
+00:39:02,276 --> 00:39:05,345
+there is no effect
+on the subscription's long-term status.
+
+733
+00:39:05,379 --> 00:39:07,981
+These decisions can be important
+for understanding your customers,
+
+734
+00:39:08,015 --> 00:39:09,483
+and notifications provide information
+
+735
+00:39:09,516 --> 00:39:13,654
+to detect and record
+these types of scenarios.
+
+736
+00:39:13,687 --> 00:39:16,924
+Overall, notifications work
+to enhance and create opportunities
+
+737
+00:39:16,957 --> 00:39:19,459
+for understanding customer behavior
+by providing information
+
+738
+00:39:19,493 --> 00:39:23,530
+at every step of the customer journey,
+covering more scenarios than ever before.
+
+739
+00:39:23,564 --> 00:39:26,900
+In conclusion, today we've covered
+both the App Store Server API
+
+740
+00:39:26,934 --> 00:39:29,269
+and App Store Server Notifications.
+
+741
+00:39:29,303 --> 00:39:30,871
+These are available
+to improve the capabilities
+
+742
+00:39:30,904 --> 00:39:33,207
+surrounding managing
+and tracking purchases.
+
+743
+00:39:33,240 --> 00:39:37,177
+They use updated message types
+and cover more cases than ever before.
+
+744
+00:39:37,211 --> 00:39:39,046
+These systems are available
+for all clients
+
+745
+00:39:39,079 --> 00:39:42,616
+and cross-compatible with both
+Original StoreKit and StoreKit 2
+
+746
+00:39:42,649 --> 00:39:46,086
+and can improve your ability
+to monitor the subscription lifecycle.
+
+747
+00:39:46,119 --> 00:39:49,489
+Last, these tools are already available
+in both Sandbox and Production
+
+748
+00:39:49,523 --> 00:39:51,458
+and are a great addition to any system.
+
+749
+00:39:51,491 --> 00:39:54,795
+Thank you for joining us,
+and have a great WWDC.
+

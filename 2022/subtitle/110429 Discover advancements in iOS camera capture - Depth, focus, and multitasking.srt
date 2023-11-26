@@ -1,0 +1,1627 @@
+1
+00:00:00,334 --> 00:00:06,340
+♪ instrumental hip hop music ♪
+
+2
+00:00:09,810 --> 00:00:11,478
+Hello, and welcome to
+
+3
+00:00:11,512 --> 00:00:14,147
+“Discover advancements
+in iOS camera capture”.
+
+4
+00:00:14,181 --> 00:00:16,383
+I'm Nikolas Gelo
+from the Camera Software team,
+
+5
+00:00:16,416 --> 00:00:20,754
+and I'll be presenting some exciting
+new camera features in iOS and iPadOS.
+
+6
+00:00:20,787 --> 00:00:25,025
+I'll begin with how to stream depth
+from LiDAR Scanners using AVFoundation.
+
+7
+00:00:25,058 --> 00:00:28,495
+Next, a look at how your app
+will receive improved face rendering
+
+8
+00:00:28,529 --> 00:00:31,565
+with face-driven auto focus
+and auto exposure.
+
+9
+00:00:31,598 --> 00:00:36,303
+Then, I'll take you through advanced
+AVCaptureSession streaming configurations.
+
+10
+00:00:36,336 --> 00:00:38,772
+And lastly,
+I'll show you how your app will
+
+11
+00:00:38,805 --> 00:00:41,675
+be able to use the camera
+while multitasking.
+
+12
+00:00:41,708 --> 00:00:45,646
+I'll begin with how to stream depth
+from LiDAR Scanners using AVFoundation.
+
+13
+00:00:45,679 --> 00:00:50,150
+The iPhone 12 Pro,
+iPhone 13 Pro, and iPad Pro are equipped
+
+14
+00:00:50,184 --> 00:00:53,887
+with LiDAR Scanners capable
+of outputting dense depth maps.
+
+15
+00:00:53,921 --> 00:00:57,157
+The LiDAR Scanner works
+by shooting light onto the surroundings,
+
+16
+00:00:57,191 --> 00:01:00,594
+and then collecting the light
+reflected off the surfaces in the scene.
+
+17
+00:01:00,627 --> 00:01:03,397
+The depth is estimated by measuring
+the time it took for the light to go
+
+18
+00:01:03,430 --> 00:01:07,401
+from the LiDAR to the environment
+and reflect back to the scanner.
+
+19
+00:01:07,434 --> 00:01:11,138
+This entire process runs millions
+of times every second.
+
+20
+00:01:11,171 --> 00:01:14,308
+I'll show you the LiDAR Scanner
+in action using AVFoundation.
+
+21
+00:01:14,341 --> 00:01:17,945
+Here on an iPhone 13 Pro Max,
+I'm running an app that uses
+
+22
+00:01:17,978 --> 00:01:20,914
+the new LiDAR Depth Camera
+AVCaptureDevice.
+
+23
+00:01:20,948 --> 00:01:24,551
+The app renders streaming depth data
+on top of the live camera feed.
+
+24
+00:01:24,585 --> 00:01:29,189
+Blue is shown for objects that are close
+and red for objects that are further away.
+
+25
+00:01:29,223 --> 00:01:33,360
+And using the slider,
+I can adjust the opacity of the depth.
+
+26
+00:01:33,393 --> 00:01:36,430
+This app also takes photos
+with high resolution depth maps.
+
+27
+00:01:36,463 --> 00:01:39,566
+When I take a photo,
+the same depth overlay is applied
+
+28
+00:01:39,600 --> 00:01:42,903
+but with an even greater resolution
+for the still.
+
+29
+00:01:42,936 --> 00:01:45,305
+This app has one more trick up its sleeve.
+
+30
+00:01:45,339 --> 00:01:49,076
+When I press the torch button,
+the app uses the high resolution depth map
+
+31
+00:01:49,109 --> 00:01:52,880
+with the color image to render a spotlight
+on the scene using RealityKit.
+
+32
+00:01:52,913 --> 00:01:57,150
+I can tap around and point the spotlight
+at different objects in the scene.
+
+33
+00:01:57,184 --> 00:01:59,720
+Look how the spotlight
+highlights the guitar.
+
+34
+00:01:59,753 --> 00:02:02,222
+Or if I tap on the right spot
+in the corner of the wall,
+
+35
+00:02:02,256 --> 00:02:04,691
+the spotlight forms the shape of a heart.
+
+36
+00:02:04,725 --> 00:02:08,028
+Let's go back to that guitar.
+It looks so cool.
+
+37
+00:02:09,363 --> 00:02:14,668
+API for the LiDAR Scanner was
+first introduced in ARKit in iPadOS 13.4.
+
+38
+00:02:14,701 --> 00:02:19,039
+If you haven't seen the WWDC
+2020 presentation “Explore ARKit 4”,
+
+39
+00:02:19,072 --> 00:02:21,508
+I encourage you to watch it.
+
+40
+00:02:21,542 --> 00:02:26,547
+New in iOS 15.4, your app can access
+the LiDAR Scanner with AVFoundation.
+
+41
+00:02:26,580 --> 00:02:28,982
+We have introduced
+a new AVCapture Device Type,
+
+42
+00:02:29,016 --> 00:02:33,153
+the built-in LiDAR Depth Camera,
+which delivers video and depth.
+
+43
+00:02:33,187 --> 00:02:36,924
+It produces high-quality,
+high-accuracy depth information.
+
+44
+00:02:36,957 --> 00:02:40,194
+This new AVCaptureDevice uses
+the rear-facing wide-angle camera
+
+45
+00:02:40,227 --> 00:02:43,764
+to deliver video
+with the LiDAR Scanner to capture depth.
+
+46
+00:02:43,797 --> 00:02:47,935
+Both the video and depth are captured
+in the wide-angle camera's field of view.
+
+47
+00:02:47,968 --> 00:02:50,304
+And like the TrueDepth AVCaptureDevice,
+
+48
+00:02:50,337 --> 00:02:53,941
+all of its formats
+support depth data delivery.
+
+49
+00:02:53,974 --> 00:02:57,110
+This new AVCaptureDevice produces
+high quality depth data
+
+50
+00:02:57,144 --> 00:02:59,546
+by fusing sparse output
+from the LiDAR Scanner
+
+51
+00:02:59,580 --> 00:03:02,449
+with the color image
+from the rear-facing wide-angle camera.
+
+52
+00:03:02,482 --> 00:03:06,086
+The LiDAR and color inputs are processed
+using a machine learning model
+
+53
+00:03:06,119 --> 00:03:08,455
+that outputs a dense depth map.
+
+54
+00:03:08,488 --> 00:03:11,692
+Because the LiDAR Depth Camera
+uses the rear-facing wide-angle camera,
+
+55
+00:03:11,725 --> 00:03:14,761
+the Telephoto and Ultra Wide cameras
+can be used in addition
+
+56
+00:03:14,795 --> 00:03:17,030
+with an AVCaptureMultiCamSession.
+
+57
+00:03:17,064 --> 00:03:20,934
+This is useful for apps that wish
+to use multiple cameras at the same time.
+
+58
+00:03:20,968 --> 00:03:24,304
+The LiDAR Depth Camera
+exposes many formats,
+
+59
+00:03:24,338 --> 00:03:27,107
+from video resolutions of 640 by 480
+
+60
+00:03:27,140 --> 00:03:32,179
+to a full 12-megapixel image
+at 4032 by 3024.
+
+61
+00:03:32,212 --> 00:03:36,917
+While streaming,
+it can output depth maps up to 320 by 240.
+
+62
+00:03:36,950 --> 00:03:42,990
+And for photo capture,
+you can receive depth maps of 768 by 576.
+
+63
+00:03:43,023 --> 00:03:47,961
+Note, the depth resolutions are slightly
+different for 16 by 9 and 4 by 3 formats.
+
+64
+00:03:47,995 --> 00:03:50,998
+This is to match the video's aspect ratio.
+
+65
+00:03:51,031 --> 00:03:53,867
+The LiDAR Depth Camera AVCaptureDevice
+is available
+
+66
+00:03:53,901 --> 00:03:58,672
+on iPhone 12 Pro, iPhone 13 Pro,
+and iPad Pro 5th generation.
+
+67
+00:03:58,705 --> 00:04:03,477
+iPhone 13 Pro can deliver depth data using
+a combination of the rear facing cameras.
+
+68
+00:04:03,510 --> 00:04:07,147
+The AVFoundation Capture API
+refers to these as “virtual devices”
+
+69
+00:04:07,181 --> 00:04:09,449
+that consist of physical devices.
+
+70
+00:04:09,483 --> 00:04:11,451
+On the back of the iPhone 13 Pro,
+
+71
+00:04:11,485 --> 00:04:15,255
+there are four virtual AVCaptureDevices
+available to use:
+
+72
+00:04:15,289 --> 00:04:18,192
+The new LiDAR Depth Camera
+uses the LiDAR Scanner
+
+73
+00:04:18,225 --> 00:04:20,427
+with the wide-angle camera.
+
+74
+00:04:20,460 --> 00:04:24,231
+The Dual Camera uses the Wide
+and Telephoto cameras.
+
+75
+00:04:24,264 --> 00:04:25,766
+The Dual Wide Camera,
+
+76
+00:04:25,799 --> 00:04:28,669
+which uses the Wide
+and Ultra Wide cameras.
+
+77
+00:04:28,702 --> 00:04:30,003
+And the Triple Camera,
+
+78
+00:04:30,037 --> 00:04:33,707
+that uses the Wide,
+Ultra Wide, and Telephoto cameras.
+
+79
+00:04:33,740 --> 00:04:37,611
+There are differences in the type
+of depth these devices produce.
+
+80
+00:04:37,644 --> 00:04:41,081
+The LiDAR Depth Camera
+produces “absolute depth.”
+
+81
+00:04:41,114 --> 00:04:45,586
+The time of flight technique used allows
+for real-world scale to be calculated.
+
+82
+00:04:45,619 --> 00:04:49,690
+For example, this is great for computer
+vision tasks like measuring.
+
+83
+00:04:49,723 --> 00:04:52,125
+The TrueDepth, Dual, Dual Wide,
+
+84
+00:04:52,159 --> 00:04:56,296
+and Triple Cameras produce relative,
+disparity-based depth.
+
+85
+00:04:56,330 --> 00:05:00,734
+This uses less power and is great
+for apps that render photo effects.
+
+86
+00:05:00,767 --> 00:05:04,571
+AVFoundation represents depth
+using the AVDepthData class.
+
+87
+00:05:04,605 --> 00:05:07,174
+This class has a pixel buffer
+containing the depth
+
+88
+00:05:07,207 --> 00:05:08,976
+with other properties describing it,
+
+89
+00:05:09,009 --> 00:05:13,213
+including the depth data type,
+the accuracy, and whether it is filtered.
+
+90
+00:05:13,247 --> 00:05:16,149
+It is delivered
+by a depth-capable AVCaptureDevice,
+
+91
+00:05:16,183 --> 00:05:18,118
+like the new LiDAR Depth Camera.
+
+92
+00:05:18,151 --> 00:05:20,888
+You can stream depth
+from an AVCaptureDepthDataOutput
+
+93
+00:05:20,921 --> 00:05:25,425
+or receive depth attached to photos
+from an AVCapturePhotoOutput.
+
+94
+00:05:25,459 --> 00:05:27,728
+Depth data is filtered by default.
+
+95
+00:05:27,761 --> 00:05:29,329
+Filtering reduces noise
+
+96
+00:05:29,363 --> 00:05:32,566
+and fills in missing values,
+or holes, in the depth map.
+
+97
+00:05:32,599 --> 00:05:34,768
+This is great for video
+and photography apps,
+
+98
+00:05:34,801 --> 00:05:37,070
+so artifacts don't appear
+when using the depth map
+
+99
+00:05:37,104 --> 00:05:39,506
+to apply effects on a color image.
+
+100
+00:05:39,540 --> 00:05:43,110
+However, computer vision apps
+should prefer non-filtered depth data
+
+101
+00:05:43,143 --> 00:05:45,979
+to preserve the original values
+in the depth map.
+
+102
+00:05:46,013 --> 00:05:48,482
+When filtering is disabled,
+the LiDAR Depth Camera
+
+103
+00:05:48,515 --> 00:05:51,118
+excludes low confidence points.
+
+104
+00:05:51,151 --> 00:05:53,187
+To disable depth data filtering,
+
+105
+00:05:53,220 --> 00:05:57,991
+set the isFilteringEnabled property
+on your AVCaptureDepthDataOutput to false,
+
+106
+00:05:58,025 --> 00:06:01,495
+and when you receive an AVDepthData
+object from your delegate callback,
+
+107
+00:06:01,528 --> 00:06:03,463
+it will not be filtered.
+
+108
+00:06:03,497 --> 00:06:06,433
+Since ARKit already provided access
+to the LiDAR Scanner,
+
+109
+00:06:06,466 --> 00:06:09,503
+you might ask,
+“How does AVFoundation compare?”
+
+110
+00:06:10,804 --> 00:06:14,141
+AVFoundation is designed
+for video and photography apps.
+
+111
+00:06:14,174 --> 00:06:16,577
+With AVFoundation,
+you can embed depth data
+
+112
+00:06:16,610 --> 00:06:20,047
+captured with the LiDAR Scanner
+into high-resolution photos.
+
+113
+00:06:20,080 --> 00:06:23,183
+ARKit is best suited
+for augmented reality apps,
+
+114
+00:06:23,217 --> 00:06:24,852
+as the name suggests.
+
+115
+00:06:24,885 --> 00:06:28,322
+With the LiDAR Scanner,
+ARKit is capable of delivering features
+
+116
+00:06:28,355 --> 00:06:31,058
+like scene geometry and object placement.
+
+117
+00:06:31,091 --> 00:06:33,994
+AVFoundation can
+deliver high-resolution video
+
+118
+00:06:34,027 --> 00:06:36,763
+that is great for recording movies
+and taking photos.
+
+119
+00:06:36,797 --> 00:06:42,236
+AVFoundation's LiDAR Depth Camera
+can output depth up to 768 by 576.
+
+120
+00:06:42,269 --> 00:06:47,774
+This is more than twice as big
+as ARKit's depth resolution of 256 by 192.
+
+121
+00:06:47,808 --> 00:06:50,511
+ARKit uses lower resolution depth maps,
+
+122
+00:06:50,544 --> 00:06:54,982
+so it can apply augmented
+reality algorithms for its features.
+
+123
+00:06:55,015 --> 00:06:59,686
+For more “in-depth” information on how
+to use AVFoundation to capture depth data,
+
+124
+00:06:59,720 --> 00:07:03,323
+watch our previous session
+“Capturing Depth in iPhone Photography”
+
+125
+00:07:03,357 --> 00:07:05,859
+from WWDC 2017.
+
+126
+00:07:05,893 --> 00:07:07,661
+We're excited to see the interesting ways
+
+127
+00:07:07,694 --> 00:07:10,430
+you can use the LiDAR Depth Camera
+in your apps.
+
+128
+00:07:10,464 --> 00:07:15,068
+Next up, I'll discuss how improvements to
+the auto focus and auto exposure systems
+
+129
+00:07:15,102 --> 00:07:18,372
+help to improve the visibility
+of faces in the scene for your app.
+
+130
+00:07:18,405 --> 00:07:21,608
+The auto focus and auto exposure
+systems analyze the scene
+
+131
+00:07:21,642 --> 00:07:23,110
+to capture the best image.
+
+132
+00:07:23,143 --> 00:07:27,247
+The auto focus system adjusts the lens
+to keep the subject in focus,
+
+133
+00:07:27,281 --> 00:07:29,883
+and the auto exposure system
+balances the brightest
+
+134
+00:07:29,917 --> 00:07:33,654
+and darkest regions of a scene
+to keep the subject visible.
+
+135
+00:07:33,687 --> 00:07:36,156
+However, sometimes
+the automatic adjustments made
+
+136
+00:07:36,190 --> 00:07:38,926
+do not keep your subject's face in focus.
+
+137
+00:07:38,959 --> 00:07:41,595
+And other times,
+the subject's face can be difficult
+
+138
+00:07:41,628 --> 00:07:44,831
+to see with bright backlit scenes.
+
+139
+00:07:44,865 --> 00:07:49,036
+A common feature of DSLRs and other
+pro cameras is to track faces in the scene
+
+140
+00:07:49,069 --> 00:07:52,940
+to dynamically adjust the focus
+and exposure to keep them visible.
+
+141
+00:07:52,973 --> 00:07:58,612
+New in iOS 15.4, the focus and exposure
+systems will prioritize faces.
+
+142
+00:07:58,645 --> 00:08:01,849
+We liked the benefits of this so much
+that we have enabled it by default
+
+143
+00:08:01,882 --> 00:08:04,852
+for all apps linked on iOS 15.4 or later.
+
+144
+00:08:04,885 --> 00:08:07,354
+I'll show you some examples.
+
+145
+00:08:07,387 --> 00:08:10,557
+Without face-driven auto focus,
+the camera stays focused
+
+146
+00:08:10,591 --> 00:08:13,227
+on the background
+without refocusing on the face.
+
+147
+00:08:13,260 --> 00:08:14,428
+Watch it again.
+
+148
+00:08:14,461 --> 00:08:16,964
+Look at how his face remains
+out of focus as he turns around
+
+149
+00:08:16,997 --> 00:08:19,499
+and that the trees
+in the background stay sharp.
+
+150
+00:08:19,533 --> 00:08:23,637
+With face-driven auto focus enabled,
+you can clearly see his face.
+
+151
+00:08:23,670 --> 00:08:27,708
+And when he turns away, the camera
+changes its focus to the background.
+
+152
+00:08:28,742 --> 00:08:32,246
+When we compare the videos side by side,
+the difference is clear.
+
+153
+00:08:32,279 --> 00:08:34,648
+On the right
+with face-driven auto focus enabled,
+
+154
+00:08:34,681 --> 00:08:37,618
+you can see
+the finer details in his beard.
+
+155
+00:08:37,651 --> 00:08:42,456
+With bright backlit scenes, it can
+be challenging to keep faces well exposed.
+
+156
+00:08:42,489 --> 00:08:45,359
+But with the auto exposure system
+prioritizing faces,
+
+157
+00:08:45,392 --> 00:08:47,561
+we can easily see him.
+
+158
+00:08:48,896 --> 00:08:52,299
+Comparing side by side,
+we can see the difference here again.
+
+159
+00:08:52,332 --> 00:08:55,969
+Notice that by keeping his face
+well-exposed in the picture on the right,
+
+160
+00:08:56,003 --> 00:08:57,938
+the trees
+in the background appear brighter.
+
+161
+00:08:57,971 --> 00:08:59,339
+And the sky does too.
+
+162
+00:08:59,373 --> 00:09:03,310
+The exposure of the whole scene
+is adjusted when prioritizing faces.
+
+163
+00:09:04,545 --> 00:09:08,415
+In iOS 15.4, there are new properties
+on AVCaptureDevice to control
+
+164
+00:09:08,448 --> 00:09:11,718
+when face-driven auto focus
+and auto exposure are enabled.
+
+165
+00:09:11,752 --> 00:09:14,955
+You can control whether the device will
+“automatically adjust” these settings
+
+166
+00:09:14,988 --> 00:09:17,224
+and decide when it should be enabled.
+
+167
+00:09:17,257 --> 00:09:19,359
+Before toggling
+the “isEnabled” properties,
+
+168
+00:09:19,393 --> 00:09:23,030
+you must first
+disable the automatic adjustment.
+
+169
+00:09:23,063 --> 00:09:26,600
+The automatic enablement of this behavior
+is great for photography apps.
+
+170
+00:09:26,633 --> 00:09:28,302
+It's used by Apple's Camera app.
+
+171
+00:09:28,335 --> 00:09:30,304
+It's also great
+for video conferencing apps
+
+172
+00:09:30,337 --> 00:09:32,506
+to keep faces visible during calls.
+
+173
+00:09:32,539 --> 00:09:34,541
+FaceTime takes advantage of this,
+
+174
+00:09:34,575 --> 00:09:36,944
+but sometimes
+it's not best suited for an app
+
+175
+00:09:36,977 --> 00:09:40,480
+to have the auto focus and auto exposure
+systems be driven by faces.
+
+176
+00:09:40,514 --> 00:09:43,183
+For example,
+if you want your app to give the user
+
+177
+00:09:43,217 --> 00:09:46,887
+manual control over the captured image,
+you might consider turning this off.
+
+178
+00:09:48,355 --> 00:09:50,891
+If you decide face-driven auto focus
+or auto exposure is not right
+
+179
+00:09:50,924 --> 00:09:53,493
+for your app,
+you can opt out of this behavior.
+
+180
+00:09:53,527 --> 00:09:56,964
+First, lock the AVCaptureDevice
+for configuration.
+
+181
+00:09:56,997 --> 00:09:59,199
+Then, turn off the automatic adjustment
+
+182
+00:09:59,233 --> 00:10:02,002
+of face-driven auto focus
+or auto exposure.
+
+183
+00:10:02,035 --> 00:10:05,772
+Next, disable face-driven
+auto focus or auto exposure.
+
+184
+00:10:05,806 --> 00:10:09,510
+And lastly,
+unlock the device for configuration.
+
+185
+00:10:10,511 --> 00:10:13,547
+I'll talk about how you can
+use advanced streaming configurations
+
+186
+00:10:13,580 --> 00:10:18,085
+to receive audio and video data
+that is tailored for your app's needs.
+
+187
+00:10:18,118 --> 00:10:20,521
+The AVFoundation Capture API allows
+
+188
+00:10:20,554 --> 00:10:23,023
+developers to build
+immersive apps using the camera.
+
+189
+00:10:23,056 --> 00:10:27,694
+The AVCaptureSession manages data flow
+from inputs like cameras and microphones
+
+190
+00:10:27,728 --> 00:10:31,031
+that are connected to AVCaptureOutputs,
+that can deliver video,
+
+191
+00:10:31,064 --> 00:10:33,800
+audio, photos, and more.
+
+192
+00:10:33,834 --> 00:10:36,537
+Let's take a common camera app
+use case for example:
+
+193
+00:10:36,570 --> 00:10:40,407
+Applying custom effects like filters
+or overlays to recorded video.
+
+194
+00:10:40,440 --> 00:10:42,409
+An app like this would have:
+
+195
+00:10:42,442 --> 00:10:46,847
+An AVCaptureSession with two inputs,
+a camera and a mic,
+
+196
+00:10:46,880 --> 00:10:51,752
+that are connected to two outputs,
+one for video data and one for audio data.
+
+197
+00:10:51,785 --> 00:10:54,121
+The video data
+then has the effects applied,
+
+198
+00:10:54,154 --> 00:10:56,423
+and the processed video
+is sent two places,
+
+199
+00:10:56,456 --> 00:10:57,824
+to the video preview
+
+200
+00:10:57,858 --> 00:11:00,127
+and an AVAssetWriter for recording.
+
+201
+00:11:00,160 --> 00:11:01,562
+The audio data is also sent
+
+202
+00:11:01,595 --> 00:11:03,697
+to the AVAssetWriter.
+
+203
+00:11:03,730 --> 00:11:07,601
+New in iOS 16 and iPadOS 16, apps can use
+
+204
+00:11:07,634 --> 00:11:10,871
+multiple AVCaptureVideoDataOutputs
+at the same time.
+
+205
+00:11:10,904 --> 00:11:14,775
+For each video data output,
+you can customize the resolution,
+
+206
+00:11:14,808 --> 00:11:19,213
+stabilization, orientation,
+and pixel format.
+
+207
+00:11:19,246 --> 00:11:21,315
+Let's go back
+to the example camera app.
+
+208
+00:11:21,348 --> 00:11:25,385
+There are competing capture
+requirements this app is balancing.
+
+209
+00:11:25,419 --> 00:11:28,956
+The app wants to show a live video preview
+of the content being captured
+
+210
+00:11:28,989 --> 00:11:31,959
+and record high quality video
+for later playback.
+
+211
+00:11:31,992 --> 00:11:36,063
+For preview, the resolution needs to be
+just big enough for the device's screen.
+
+212
+00:11:36,096 --> 00:11:39,466
+And the processing needs to be
+fast enough for low-latency preview.
+
+213
+00:11:39,499 --> 00:11:42,603
+But when recording,
+its best to capture in high resolution
+
+214
+00:11:42,636 --> 00:11:44,872
+with quality effects applied.
+
+215
+00:11:44,905 --> 00:11:46,473
+With the ability to add a second
+
+216
+00:11:46,507 --> 00:11:48,075
+AVCaptureVideoDataOutput,
+
+217
+00:11:48,108 --> 00:11:50,711
+the capture graph can be extended.
+
+218
+00:11:50,744 --> 00:11:52,679
+Now the video data outputs
+
+219
+00:11:52,713 --> 00:11:53,981
+can be optimized.
+
+220
+00:11:54,014 --> 00:11:55,849
+One output can deliver smaller buffers
+
+221
+00:11:55,883 --> 00:11:57,184
+for preview,
+
+222
+00:11:57,217 --> 00:11:58,619
+and the other can provide
+
+223
+00:11:58,652 --> 00:12:01,522
+full-sized 4K buffers for recording.
+
+224
+00:12:01,555 --> 00:12:04,024
+Also, the app could render a simpler,
+
+225
+00:12:04,057 --> 00:12:05,325
+more performant version of the effect
+
+226
+00:12:05,359 --> 00:12:07,160
+on smaller preview buffers
+
+227
+00:12:07,194 --> 00:12:08,929
+and reserve high quality effects
+
+228
+00:12:08,962 --> 00:12:11,565
+for full-size buffers when recording.
+
+229
+00:12:11,598 --> 00:12:13,267
+Now the app no longer has
+
+230
+00:12:13,300 --> 00:12:14,501
+to compromise its preview
+
+231
+00:12:14,535 --> 00:12:16,503
+or recorded videos.
+
+232
+00:12:17,671 --> 00:12:20,674
+Another reason to use separate
+video data outputs for preview
+
+233
+00:12:20,707 --> 00:12:24,311
+and recording is
+to apply different stabilization modes.
+
+234
+00:12:24,344 --> 00:12:26,947
+Video stabilization
+introduces additional latency
+
+235
+00:12:26,980 --> 00:12:28,582
+to the video capture pipeline.
+
+236
+00:12:28,615 --> 00:12:31,018
+For preview, latency is not desirable,
+
+237
+00:12:31,051 --> 00:12:34,188
+as the noticeable delay
+makes it hard to capture content.
+
+238
+00:12:34,221 --> 00:12:36,557
+For recording,
+stabilization can be applied
+
+239
+00:12:36,590 --> 00:12:38,959
+for a better experience
+when watching the video later.
+
+240
+00:12:38,992 --> 00:12:42,996
+So you can have no stabilization applied
+on one video data output
+
+241
+00:12:43,030 --> 00:12:45,098
+for low-latency preview
+
+242
+00:12:45,132 --> 00:12:48,702
+and apply stabilization
+to the other for later playback.
+
+243
+00:12:48,735 --> 00:12:52,739
+There are many ways to configure
+the resolution of your video data output.
+
+244
+00:12:52,773 --> 00:12:56,677
+For full-size output, first,
+disable automatic configuration
+
+245
+00:12:56,710 --> 00:12:58,412
+of output buffer dimensions.
+
+246
+00:12:58,445 --> 00:13:02,282
+Then disable delivery
+of preview-sized output buffers.
+
+247
+00:13:02,316 --> 00:13:04,918
+In most cases, however,
+the video data output
+
+248
+00:13:04,952 --> 00:13:08,455
+is already configured
+for full-size output.
+
+249
+00:13:08,488 --> 00:13:12,893
+For preview-sized output, again,
+disable the automatic configuration,
+
+250
+00:13:12,926 --> 00:13:16,830
+but instead, enable delivery
+of preview-sized output buffers.
+
+251
+00:13:16,864 --> 00:13:21,535
+This is enabled by default when
+using the photo AVCaptureSessionPreset.
+
+252
+00:13:21,568 --> 00:13:25,272
+To request a custom resolution,
+specify the width and height
+
+253
+00:13:25,305 --> 00:13:27,841
+in the output's video settings dictionary.
+
+254
+00:13:27,875 --> 00:13:31,245
+The aspect ratio of the width
+and height must match the aspect ratio
+
+255
+00:13:31,278 --> 00:13:32,846
+of the source device's activeFormat.
+
+256
+00:13:32,880 --> 00:13:35,616
+There are more ways
+to configure your video data output.
+
+257
+00:13:35,649 --> 00:13:39,186
+To apply stabilization,
+set the preferred stabilization to a mode
+
+258
+00:13:39,219 --> 00:13:40,754
+like cinematic extended,
+
+259
+00:13:40,787 --> 00:13:43,490
+which produces videos
+that are great to watch.
+
+260
+00:13:43,524 --> 00:13:47,561
+You can change the orientation
+to receive buffers that are portrait.
+
+261
+00:13:47,594 --> 00:13:52,399
+And you can specify the pixel format,
+to receive 10-bit lossless YUV buffers.
+
+262
+00:13:53,567 --> 00:13:55,536
+For more information
+on selecting pixel formats
+
+263
+00:13:55,569 --> 00:14:00,274
+for an AVCaptureVideoDataOutput,
+see Technote 3121.
+
+264
+00:14:01,375 --> 00:14:04,077
+In addition
+to using multiple video data outputs,
+
+265
+00:14:04,111 --> 00:14:06,880
+starting in iOS 16 and iPadOS 16,
+
+266
+00:14:06,914 --> 00:14:09,516
+apps can record
+with AVCaptureMovieFileOutput
+
+267
+00:14:09,550 --> 00:14:12,586
+while receiving data
+from AVCaptureVideoDataOutput
+
+268
+00:14:12,619 --> 00:14:14,922
+and AVCaptureAudioDataOutput.
+
+269
+00:14:14,955 --> 00:14:17,024
+To determine
+what can be added to a session,
+
+270
+00:14:17,057 --> 00:14:19,159
+you can check
+whether an output can be added to it
+
+271
+00:14:19,193 --> 00:14:21,528
+and query
+the session's hardwareCost property
+
+272
+00:14:21,562 --> 00:14:25,065
+to determine whether
+the system can support your configuration.
+
+273
+00:14:25,098 --> 00:14:28,202
+By receiving video data
+with a movie file output,
+
+274
+00:14:28,235 --> 00:14:33,073
+you can inspect the video while recording
+and analyze the scene.
+
+275
+00:14:33,106 --> 00:14:35,776
+And receiving audio data
+with a movie file output,
+
+276
+00:14:35,809 --> 00:14:37,778
+you can sample audio while recording
+
+277
+00:14:37,811 --> 00:14:40,547
+and listen to what is being recorded.
+
+278
+00:14:40,581 --> 00:14:42,316
+With a capture graph like this,
+
+279
+00:14:42,349 --> 00:14:45,919
+you can offload the mechanics
+of recording to AVCaptureMovieFileOutput
+
+280
+00:14:45,953 --> 00:14:50,224
+while still receiving uncompressed video
+and audio samples.
+
+281
+00:14:50,958 --> 00:14:53,493
+Implementing
+these advanced streaming configurations
+
+282
+00:14:53,527 --> 00:14:55,596
+requires use of no new API.
+
+283
+00:14:55,629 --> 00:14:59,800
+We've enabled this by allowing you
+to do more with existing API.
+
+284
+00:15:01,068 --> 00:15:03,537
+And lastly, I'll discuss how your app will
+
+285
+00:15:03,570 --> 00:15:06,340
+be able to use the camera
+while the user is multitasking.
+
+286
+00:15:06,373 --> 00:15:09,409
+On iPad,
+users can multitask in many ways.
+
+287
+00:15:09,443 --> 00:15:14,114
+For example, recording Voice Memos
+while reading Notes in Split View
+
+288
+00:15:14,147 --> 00:15:16,817
+or with Slide Over,
+write in Notes in a floating window
+
+289
+00:15:16,850 --> 00:15:19,520
+above Safari in full screen.
+
+290
+00:15:19,553 --> 00:15:22,456
+With Picture in Picture,
+you can continue video playback
+
+291
+00:15:22,489 --> 00:15:26,693
+while adding reminders
+to watch more WWDC videos.
+
+292
+00:15:26,727 --> 00:15:29,463
+And with Stage Manager new to iPadOS 16,
+
+293
+00:15:29,496 --> 00:15:33,767
+users can open multiple apps
+in resizable floating windows.
+
+294
+00:15:33,800 --> 00:15:36,970
+Starting in iOS 16,
+AVCaptureSessions will be able
+
+295
+00:15:37,004 --> 00:15:38,605
+to use the camera while multitasking.
+
+296
+00:15:38,639 --> 00:15:41,508
+We prevented camera access
+while multitasking before
+
+297
+00:15:41,542 --> 00:15:43,477
+because of concerns
+of the quality of service
+
+298
+00:15:43,510 --> 00:15:46,246
+the camera system can deliver
+while multitasking.
+
+299
+00:15:46,280 --> 00:15:50,284
+Resource-intensive apps like games
+running alongside an app using the camera
+
+300
+00:15:50,317 --> 00:15:54,321
+can induce frame drops and other latency,
+resulting in a poor camera feed.
+
+301
+00:15:54,354 --> 00:15:57,991
+A user watching a video months
+or years later that has poor quality
+
+302
+00:15:58,025 --> 00:16:00,894
+may not remember
+that they recorded it while multitasking.
+
+303
+00:16:00,928 --> 00:16:05,065
+Providing a good camera experience
+is our priority.
+
+304
+00:16:05,098 --> 00:16:07,601
+When the system detects video
+from the camera was recorded
+
+305
+00:16:07,634 --> 00:16:10,204
+while multitasking,
+a dialog will be displayed
+
+306
+00:16:10,237 --> 00:16:13,674
+informing the user about the potential
+for lower quality videos.
+
+307
+00:16:13,707 --> 00:16:16,577
+This dialog will be presented
+after recording has finished
+
+308
+00:16:16,610 --> 00:16:20,314
+with AVCaptureMovieFileOutput
+or AVAssetWriter.
+
+309
+00:16:20,347 --> 00:16:23,050
+It will be shown only once
+by the system for all apps
+
+310
+00:16:23,083 --> 00:16:26,353
+and will have an OK button to dismiss.
+
+311
+00:16:26,386 --> 00:16:29,723
+There are two new properties added
+to AVCaptureSession to indicate
+
+312
+00:16:29,756 --> 00:16:33,527
+when multitasking camera access
+is supported and enabled.
+
+313
+00:16:33,560 --> 00:16:36,697
+Capture sessions that have this enabled
+will no longer be interrupted
+
+314
+00:16:36,730 --> 00:16:41,468
+with the reason “video device not
+available with multiple foreground apps.”
+
+315
+00:16:41,502 --> 00:16:43,937
+Some apps may wish
+to require a full screen experience
+
+316
+00:16:43,971 --> 00:16:45,305
+to use the camera.
+
+317
+00:16:45,339 --> 00:16:47,908
+This may be useful if you wish
+for your app to not compete
+
+318
+00:16:47,941 --> 00:16:50,711
+with other foreground apps
+for system resources.
+
+319
+00:16:50,744 --> 00:16:55,048
+For example, ARKit does not support
+using the camera while multitasking.
+
+320
+00:16:56,350 --> 00:16:59,720
+You should ensure your app performs well
+when running alongside other apps.
+
+321
+00:16:59,753 --> 00:17:02,422
+Make your app resilient
+to increasing system pressure
+
+322
+00:17:02,456 --> 00:17:04,658
+by monitoring for its notifications,
+
+323
+00:17:04,691 --> 00:17:08,295
+and take action to reduce the impact,
+like lowering the frame rate.
+
+324
+00:17:08,328 --> 00:17:10,264
+You can reduce
+your app's footprint on the system
+
+325
+00:17:10,297 --> 00:17:15,002
+by requesting lower-resolution,
+binned, or non-HDR formats.
+
+326
+00:17:15,035 --> 00:17:18,472
+For more information on best practices
+of maintaining performance,
+
+327
+00:17:18,505 --> 00:17:22,042
+read the article “Accessing
+the Camera While Multitasking”.
+
+328
+00:17:23,243 --> 00:17:27,681
+Also, video calling and video conferencing
+apps can display remote participants
+
+329
+00:17:27,714 --> 00:17:30,817
+in a system-provided
+Picture in Picture window.
+
+330
+00:17:30,851 --> 00:17:33,921
+Now your app's users
+can seamlessly continue a video call
+
+331
+00:17:33,954 --> 00:17:36,323
+while multitasking on iPad.
+
+332
+00:17:36,356 --> 00:17:41,128
+AVKit introduced API in iOS 15
+for apps to designate a view controller
+
+333
+00:17:41,161 --> 00:17:43,797
+for displaying
+remote call participants in.
+
+334
+00:17:43,830 --> 00:17:46,366
+The video call view
+controller allows you to customize
+
+335
+00:17:46,400 --> 00:17:48,735
+the content of the window.
+
+336
+00:17:48,769 --> 00:17:50,571
+To learn more about adoption,
+
+337
+00:17:50,604 --> 00:17:55,008
+please see the “Adopting Picture
+in Picture for Video Calls” article.
+
+338
+00:17:55,042 --> 00:17:58,045
+And this concludes advancements
+in iOS camera capture.
+
+339
+00:17:58,078 --> 00:18:02,182
+I showed how you can stream depth
+from LiDAR Scanners using AVFoundation,
+
+340
+00:18:02,216 --> 00:18:05,185
+how your app will receive
+improved face rendering,
+
+341
+00:18:05,219 --> 00:18:08,956
+Advanced AVCaptureSession streaming
+configurations tailored for your app,
+
+342
+00:18:08,989 --> 00:18:12,526
+and lastly, how your app
+can use the camera while multitasking.
+
+343
+00:18:12,559 --> 00:18:14,695
+I hope your WWDC rocks.
+
+344
+00:18:14,728 --> 00:18:19,433
+♪ ♪
+

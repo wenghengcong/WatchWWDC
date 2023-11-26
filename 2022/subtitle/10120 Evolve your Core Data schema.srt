@@ -1,0 +1,1489 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:13,113
+David Stites: Hi, and welcome
+to "Evolve Your Core Data Schema."
+
+3
+00:00:13,146 --> 00:00:17,718
+My name is David Stites and I am
+an engineer on the Core Data team.
+
+4
+00:00:17,751 --> 00:00:20,187
+In this session,
+I am excited to talk to you
+
+5
+00:00:20,220 --> 00:00:24,658
+about how to update and migrate
+the Core Data schema in your app.
+
+6
+00:00:24,691 --> 00:00:29,229
+The agenda for this session is to learn
+what schema migration is
+
+7
+00:00:29,263 --> 00:00:33,700
+and why your app has to perform it
+after updating its data model,
+
+8
+00:00:33,734 --> 00:00:37,070
+how to migrate the existing schema,
+
+9
+00:00:37,104 --> 00:00:41,275
+and how CloudKit
+and schema migration interact.
+
+10
+00:00:41,308 --> 00:00:45,812
+First up, what is schema migration
+and why your app must migrate
+
+11
+00:00:45,846 --> 00:00:47,681
+when you update your data model.
+
+12
+00:00:49,049 --> 00:00:54,788
+As your application evolves, it may become
+necessary to change your data model.
+
+13
+00:00:54,821 --> 00:00:58,592
+Updating the data model requires
+that those changes are materialized
+
+14
+00:00:58,625 --> 00:01:00,861
+in the underlying storage schema.
+
+15
+00:01:00,894 --> 00:01:02,763
+Consider this data model.
+
+16
+00:01:02,796 --> 00:01:06,200
+It has an Aircraft entity
+with two attributes,
+
+17
+00:01:06,233 --> 00:01:09,136
+type and number of engines.
+
+18
+00:01:09,169 --> 00:01:13,440
+These attributes are reflected
+in the underlying storage.
+
+19
+00:01:13,473 --> 00:01:16,677
+If I add
+a number of passengers attribute,
+
+20
+00:01:16,710 --> 00:01:20,147
+I need to add the corresponding storage.
+
+21
+00:01:20,180 --> 00:01:25,285
+After migration, the changes are
+fully reflected in the underlying storage.
+
+22
+00:01:25,319 --> 00:01:28,488
+Without migrating the changes
+in the underlying storage,
+
+23
+00:01:28,522 --> 00:01:31,792
+Core Data will refuse
+to open your persistent store
+
+24
+00:01:31,825 --> 00:01:36,897
+as the freshly-changed model doesn't
+match the model used for storage.
+
+25
+00:01:36,930 --> 00:01:40,868
+Attempting to open an incompatible store
+will result in an error
+
+26
+00:01:40,901 --> 00:01:45,873
+with the code NSPersistentStore-
+IncompatibleVersionHashError.
+
+27
+00:01:45,906 --> 00:01:48,675
+If you receive this error,
+it should be an indication to you
+
+28
+00:01:48,709 --> 00:01:51,512
+that a migration is required.
+
+29
+00:01:51,545 --> 00:01:54,548
+Now that I've explained
+what schema migration is
+
+30
+00:01:54,581 --> 00:01:56,850
+and why it's essential
+to evolving your app,
+
+31
+00:01:56,884 --> 00:01:59,553
+let me tell you
+how migration is accomplished.
+
+32
+00:01:59,586 --> 00:02:02,523
+Core Data has built-in
+data migration tools
+
+33
+00:02:02,556 --> 00:02:08,028
+to help keep your app's data storage
+up-to-date with the current data model.
+
+34
+00:02:08,061 --> 00:02:12,566
+Collectively, these tools are
+referred to as "lightweight migration."
+
+35
+00:02:14,067 --> 00:02:17,905
+Lightweight migration is
+the preferred method of migration.
+
+36
+00:02:17,938 --> 00:02:22,643
+Lightweight migration automatically
+analyzes and infers the migration
+
+37
+00:02:22,676 --> 00:02:27,581
+from the differences between the source
+and destination managed object models.
+
+38
+00:02:27,614 --> 00:02:31,518
+At runtime, Core Data looks for the models
+in the bundles returned
+
+39
+00:02:31,552 --> 00:02:36,757
+by .allBundles and .allFrameworks methods
+of the NSBundle class.
+
+40
+00:02:36,790 --> 00:02:39,760
+Lightweight migration then generates
+a mapping model
+
+41
+00:02:39,793 --> 00:02:44,231
+to materialize the changes you've made
+in your app in your database schema.
+
+42
+00:02:45,966 --> 00:02:49,803
+Using lightweight migration
+requires the changes to the data model
+
+43
+00:02:49,837 --> 00:02:52,239
+to fit an obvious migration pattern.
+
+44
+00:02:54,041 --> 00:02:57,110
+Lightweight operations
+involving attributes include
+
+45
+00:02:57,144 --> 00:03:00,614
+adding an attribute,
+removing an attribute,
+
+46
+00:03:00,647 --> 00:03:04,084
+making a non-optional attribute optional,
+
+47
+00:03:04,117 --> 00:03:07,087
+making an optional attribute non-optional
+
+48
+00:03:07,120 --> 00:03:09,423
+and defining a default value,
+
+49
+00:03:09,456 --> 00:03:11,391
+and renaming an attribute.
+
+50
+00:03:11,425 --> 00:03:15,062
+If you want to rename an attribute,
+set the renaming identifier
+
+51
+00:03:15,095 --> 00:03:16,864
+in the destination model to the name
+
+52
+00:03:16,897 --> 00:03:19,366
+of the corresponding attribute
+in the source model.
+
+53
+00:03:20,534 --> 00:03:22,236
+The renaming identifier is found
+
+54
+00:03:22,269 --> 00:03:25,973
+in the Xcode Data Model Editor's
+property inspector.
+
+55
+00:03:26,006 --> 00:03:28,575
+For example, you can rename
+
+56
+00:03:28,609 --> 00:03:32,713
+the Aircraft entity color attribute
+to paintColor.
+
+57
+00:03:32,746 --> 00:03:35,749
+The renaming identifier
+creates a canonical name,
+
+58
+00:03:35,782 --> 00:03:38,719
+so set the renaming identifier
+to the name of the attribute
+
+59
+00:03:38,752 --> 00:03:43,490
+in the source model, unless that attribute
+already has a renaming identifier.
+
+60
+00:03:43,524 --> 00:03:47,661
+This means you can rename
+an attribute in version 2 of a model,
+
+61
+00:03:47,694 --> 00:03:50,497
+and then rename it again in version 3.
+
+62
+00:03:50,531 --> 00:03:55,002
+The renaming will work correctly
+going from version 2 to version 3,
+
+63
+00:03:55,035 --> 00:03:58,539
+or from version 1 to version 3.
+
+64
+00:04:00,240 --> 00:04:03,544
+Lightweight migration can also
+handle changes to the relationships
+
+65
+00:04:03,577 --> 00:04:05,479
+without breaking a sweat.
+
+66
+00:04:05,512 --> 00:04:10,150
+You can add a new relationship
+or delete an existing relationship.
+
+67
+00:04:10,184 --> 00:04:13,787
+You can also rename a relationship
+by using a renaming identifier,
+
+68
+00:04:13,820 --> 00:04:15,989
+just like an attribute.
+
+69
+00:04:16,023 --> 00:04:19,259
+In addition,
+you can change relationship cardinality,
+
+70
+00:04:19,293 --> 00:04:23,630
+for example,
+migrating from a to-one to a to-many,
+
+71
+00:04:23,664 --> 00:04:27,668
+or a non-ordered to-many
+to an ordered to-many, and vice versa.
+
+72
+00:04:29,236 --> 00:04:32,539
+If you guessed that entities are
+also eligible for lightweight migration,
+
+73
+00:04:32,573 --> 00:04:33,974
+you're right.
+
+74
+00:04:34,007 --> 00:04:38,145
+You can add a new entity,
+remove an existing entity,
+
+75
+00:04:38,178 --> 00:04:40,547
+and rename entities.
+
+76
+00:04:40,581 --> 00:04:43,750
+You can also create
+a new parent or child entity
+
+77
+00:04:43,784 --> 00:04:48,488
+and move attributes up and down
+within the entity hierarchy.
+
+78
+00:04:48,522 --> 00:04:53,594
+You can move entities
+into or out of a hierarchy.
+
+79
+00:04:53,627 --> 00:04:56,530
+You cannot,
+however, merge entity hierarchies.
+
+80
+00:04:56,563 --> 00:05:00,534
+if two existing entities do not
+share a common parent in the source,
+
+81
+00:05:00,567 --> 00:05:03,237
+they cannot share a common parent
+in the destination.
+
+82
+00:05:03,270 --> 00:05:07,841
+Lightweight migration is controlled
+by two options keys:
+
+83
+00:05:07,875 --> 00:05:11,545
+NSMigratePersistent-
+StoresAutomaticallyOption
+
+84
+00:05:11,578 --> 00:05:16,383
+and
+NSInferMappingModelAutomaticallyOption.
+
+85
+00:05:16,416 --> 00:05:19,386
+The presence of these two keys
+set to a true value
+
+86
+00:05:19,419 --> 00:05:23,056
+when the store is added to the persistent
+coordinator will cause Core Data
+
+87
+00:05:23,090 --> 00:05:26,727
+to perform lightweight migration
+automatically if it detects
+
+88
+00:05:26,760 --> 00:05:31,031
+the persistent store no longer matches
+the current model.
+
+89
+00:05:31,064 --> 00:05:33,667
+If you're using NSPersistentContainer
+
+90
+00:05:33,700 --> 00:05:36,203
+or NSPersistentStoreDescription,
+
+91
+00:05:36,236 --> 00:05:38,605
+these options are set
+automatically for you
+
+92
+00:05:38,639 --> 00:05:41,275
+and you don't need to do anything.
+
+93
+00:05:41,308 --> 00:05:43,443
+If you're using an alternative API
+
+94
+00:05:43,477 --> 00:05:47,648
+such as NSPersistentStoreCoordinator
+.addPersistentStore
+
+95
+00:05:47,681 --> 00:05:50,918
+(type:configuration:at:options:),
+
+96
+00:05:50,951 --> 00:05:56,857
+lightweight migration can be requested by
+setting and passing an options dictionary
+
+97
+00:05:56,890 --> 00:06:02,496
+with the keys set NSMigratePersistent-
+StoresAutomaticallyOption
+
+98
+00:06:02,529 --> 00:06:07,968
+and NSInferMappingModelAutomaticallyOption
+to a value of YES.
+
+99
+00:06:08,001 --> 00:06:11,138
+Core Data will perform
+lightweight migration automatically
+
+100
+00:06:11,171 --> 00:06:15,676
+if it detects the persistent store
+no longer matches the current model.
+
+101
+00:06:16,910 --> 00:06:19,379
+Here’s how this works in code.
+
+102
+00:06:19,413 --> 00:06:23,684
+First, I'll import CoreData
+and create a managed object model.
+
+103
+00:06:23,717 --> 00:06:27,020
+Then, I'll create
+a persistent store coordinator
+
+104
+00:06:27,054 --> 00:06:29,923
+by using the model I just created.
+
+105
+00:06:29,957 --> 00:06:33,527
+Note the options dictionary
+I created and that I'll pass
+
+106
+00:06:33,560 --> 00:06:36,663
+when I add the store
+to the persistent coordinator.
+
+107
+00:06:36,697 --> 00:06:39,333
+Lastly, I'll add the store
+to the coordinator
+
+108
+00:06:39,366 --> 00:06:43,604
+where migration will occur
+automatically if necessary.
+
+109
+00:06:43,637 --> 00:06:48,876
+Regardless of whatever API you use,
+the changes to your data model can be made
+
+110
+00:06:48,909 --> 00:06:52,579
+directly in the same model
+that is shipping with the application.
+
+111
+00:06:52,613 --> 00:06:56,617
+There is no need to create a new version
+of the model to make changes.
+
+112
+00:06:56,650 --> 00:07:00,087
+If you want to determine
+in advance whether Core Data can
+
+113
+00:07:00,120 --> 00:07:04,157
+infer the mapping model between the source
+and destination models
+
+114
+00:07:04,191 --> 00:07:06,593
+without actually doing the work
+of migration,
+
+115
+00:07:06,627 --> 00:07:11,465
+you can use NSMappingModel
+.inferredMappingModel method.
+
+116
+00:07:11,498 --> 00:07:16,036
+The method returns the inferred model
+if Core Data was able to create it.
+
+117
+00:07:16,069 --> 00:07:18,071
+Otherwise, it returns nil.
+
+118
+00:07:19,339 --> 00:07:22,176
+Sometimes, combined changes to the schema
+
+119
+00:07:22,209 --> 00:07:25,212
+may exceed the capabilities
+of lightweight migration.
+
+120
+00:07:25,245 --> 00:07:28,282
+I’m going to describe to you
+how to deal with that problem
+
+121
+00:07:28,315 --> 00:07:30,751
+and still use lightweight migration.
+
+122
+00:07:31,518 --> 00:07:36,089
+Returning to our previous example model,
+suppose that we've previously added
+
+123
+00:07:36,123 --> 00:07:42,095
+an attribute called “flightData” that uses
+external storage for binary data,
+
+124
+00:07:42,129 --> 00:07:46,233
+indicated by the file path
+stored in FLIGHT_DATA.
+
+125
+00:07:46,266 --> 00:07:49,503
+Further, suppose there is a need
+to change that attribute
+
+126
+00:07:49,536 --> 00:07:53,707
+to store data internally
+and remove the external storage.
+
+127
+00:07:53,740 --> 00:07:57,177
+Checking to see if this migration
+fits any of the capabilities
+
+128
+00:07:57,211 --> 00:08:00,948
+of lightweight migration,
+it is discovered that it doesn't.
+
+129
+00:08:00,981 --> 00:08:03,317
+On the face of it,
+it appears that we're stuck,
+
+130
+00:08:03,350 --> 00:08:04,985
+unable to make this change.
+
+131
+00:08:05,018 --> 00:08:06,453
+However, fear not!
+
+132
+00:08:06,486 --> 00:08:10,591
+Lightweight migration can still be used
+to perform more complex,
+
+133
+00:08:10,624 --> 00:08:14,761
+non-conforming migrations,
+albeit in multiple steps.
+
+134
+00:08:16,330 --> 00:08:20,434
+The goal becomes
+to decompose the migration tasks
+
+135
+00:08:20,467 --> 00:08:23,070
+that aren't eligible
+for lightweight migration
+
+136
+00:08:23,103 --> 00:08:28,242
+into a minimum series of migrations that
+are eligible for lightweight migration.
+
+137
+00:08:28,275 --> 00:08:33,981
+Generally, if the original model is A
+and the objective model is B,
+
+138
+00:08:34,014 --> 00:08:36,817
+but model B has changes
+that aren't eligible
+
+139
+00:08:36,850 --> 00:08:40,721
+for lightweight migration,
+a bridge can be created by introducing
+
+140
+00:08:40,754 --> 00:08:45,158
+one or more model versions
+that decompose those changes.
+
+141
+00:08:46,827 --> 00:08:51,331
+Each of the models introduced
+will have one or more operations
+
+142
+00:08:51,365 --> 00:08:55,802
+that is within the capabilities
+that compose the non-conforming changes.
+
+143
+00:08:55,836 --> 00:08:58,205
+This results in a series of migrations
+
+144
+00:08:58,238 --> 00:09:01,575
+where each model is now
+lightweight migrateable
+
+145
+00:09:01,608 --> 00:09:05,279
+but equivalent
+to the non-conforming migration.
+
+146
+00:09:05,312 --> 00:09:07,781
+Returning to my example
+that wasn't eligible
+
+147
+00:09:07,814 --> 00:09:11,752
+for lightweight migration,
+our original model is model A.
+
+148
+00:09:11,785 --> 00:09:16,957
+I will start decomposing the task
+by introducing a new model version, A prime,
+
+149
+00:09:16,990 --> 00:09:20,794
+and add a new attribute
+"tmpStorage" that will be used
+
+150
+00:09:20,827 --> 00:09:25,199
+temporarily to store data
+that is imported from the external files.
+
+151
+00:09:26,333 --> 00:09:29,303
+Next, I will import the data
+from the external files
+
+152
+00:09:29,336 --> 00:09:31,371
+into our new attribute.
+
+153
+00:09:31,405 --> 00:09:33,674
+The code to import this data is separate
+
+154
+00:09:33,707 --> 00:09:37,010
+from the functionality provided
+by Core Data.
+
+155
+00:09:37,044 --> 00:09:41,715
+The execution of this import
+is interposed between migrations.
+
+156
+00:09:42,683 --> 00:09:45,185
+Once the data has been safely imported,
+
+157
+00:09:45,219 --> 00:09:50,657
+I'll create another new version
+of the model A double-prime from A prime.
+
+158
+00:09:50,691 --> 00:09:55,028
+In A double-prime, I will delete
+the old external storage attribute
+
+159
+00:09:55,062 --> 00:09:58,232
+while simultaneously renaming
+the new attribute.
+
+160
+00:09:58,265 --> 00:10:03,470
+Each of these steps described is within
+the capabilities of lightweight migration.
+
+161
+00:10:04,438 --> 00:10:09,076
+Intuitively, an event loop could be built
+that opens the persistent store
+
+162
+00:10:09,109 --> 00:10:11,478
+with the lightweight migration options set
+
+163
+00:10:11,512 --> 00:10:16,216
+and iteratively steps through each
+unprocessed model in a serial order,
+
+164
+00:10:16,250 --> 00:10:19,253
+and Core Data will migrate the store.
+
+165
+00:10:19,286 --> 00:10:22,723
+If you perform app-specific logic
+during your migrations,
+
+166
+00:10:22,756 --> 00:10:26,927
+such as how I imported data from
+external files in the previous example,
+
+167
+00:10:26,960 --> 00:10:31,832
+that logic must be "restartable"
+in the event the migration is interrupted
+
+168
+00:10:31,865 --> 00:10:33,800
+due to the process terminating.
+
+169
+00:10:34,668 --> 00:10:36,904
+If your app uses Core Data and CloudKit,
+
+170
+00:10:36,937 --> 00:10:39,373
+there are some important points
+you should keep in mind
+
+171
+00:10:39,406 --> 00:10:42,142
+when designing your data model
+in Core Data.
+
+172
+00:10:42,176 --> 00:10:46,914
+To pass records between a Core Data store
+and a CloudKit database,
+
+173
+00:10:46,947 --> 00:10:51,285
+they require a shared understanding
+of the data model.
+
+174
+00:10:51,318 --> 00:10:55,389
+You define this model
+in the Core Data model editor.
+
+175
+00:10:55,422 --> 00:10:59,860
+That model is subsequently used
+to generate the CloudKit schema.
+
+176
+00:10:59,893 --> 00:11:04,264
+The generated schema is created initially
+in the Development environment,
+
+177
+00:11:04,298 --> 00:11:07,067
+and then promoted to Production.
+
+178
+00:11:07,100 --> 00:11:10,504
+You should be aware that CloudKit
+doesn't support all the features
+
+179
+00:11:10,537 --> 00:11:12,406
+of a Core Data model.
+
+180
+00:11:12,439 --> 00:11:16,109
+As you design your model,
+be aware of the following limitations
+
+181
+00:11:16,143 --> 00:11:18,612
+and create a compatible data model.
+
+182
+00:11:18,645 --> 00:11:23,417
+For example, unique constraints
+on entities aren't supported.
+
+183
+00:11:23,450 --> 00:11:28,856
+Undefined and objectID attribute type
+aren't supported as attribute types.
+
+184
+00:11:28,889 --> 00:11:34,461
+And relationships must be optional
+and have an inverse relationship.
+
+185
+00:11:34,494 --> 00:11:38,899
+In addition, CloudKit does not support
+the deny deletion rule.
+
+186
+00:11:38,932 --> 00:11:43,937
+As you're developing your app, you'll be
+using the Development environment.
+
+187
+00:11:43,971 --> 00:11:48,475
+The CloudKit schema can be
+modified freely in this environment.
+
+188
+00:11:48,509 --> 00:11:51,612
+However, after you promote
+your schema to Production,
+
+189
+00:11:51,645 --> 00:11:54,882
+the record types
+and their fields are immutable.
+
+190
+00:11:54,915 --> 00:11:58,919
+While lightweight migration handles
+many different scenarios,
+
+191
+00:11:58,952 --> 00:12:02,523
+CloudKit is more restricted
+in what it supports.
+
+192
+00:12:02,556 --> 00:12:07,561
+Many of the lightweight operations
+I described earlier are unsupported.
+
+193
+00:12:07,594 --> 00:12:10,998
+Specifically,
+what is supported in CloudKit is
+
+194
+00:12:11,031 --> 00:12:16,203
+adding new fields to existing record types
+and adding new record types.
+
+195
+00:12:16,236 --> 00:12:21,441
+You cannot modify or delete
+existing record types or fields.
+
+196
+00:12:21,475 --> 00:12:25,245
+Consider these restrictions
+when modifying the model schema.
+
+197
+00:12:26,680 --> 00:12:28,949
+When it comes time to update
+your data model,
+
+198
+00:12:28,982 --> 00:12:33,153
+keep in mind that lightweight migration
+only materializes schema changes
+
+199
+00:12:33,187 --> 00:12:35,155
+in the local store file.
+
+200
+00:12:35,189 --> 00:12:38,859
+Regardless of whether a particular store
+is used with CloudKit,
+
+201
+00:12:38,892 --> 00:12:42,162
+migration will only change
+the store on disk
+
+202
+00:12:42,196 --> 00:12:45,799
+and does not make changes
+to the CloudKit schema.
+
+203
+00:12:45,832 --> 00:12:48,001
+You still need
+to materialize those changes
+
+204
+00:12:48,035 --> 00:12:52,172
+in the Development database
+by running the schema initializer
+
+205
+00:12:52,206 --> 00:12:55,042
+and then promoting
+those changes in Development
+
+206
+00:12:55,075 --> 00:12:58,212
+to Production using the CloudKit Console.
+
+207
+00:12:58,245 --> 00:13:02,216
+Keep in mind that users of your app
+will be using old versions
+
+208
+00:13:02,249 --> 00:13:04,384
+as well as new versions.
+
+209
+00:13:04,418 --> 00:13:06,954
+The latest version of the app
+will of course know
+
+210
+00:13:06,987 --> 00:13:09,823
+about any new additions to the schema.
+
+211
+00:13:09,857 --> 00:13:14,127
+Old versions of the app won't know
+about the new fields or record types.
+
+212
+00:13:15,863 --> 00:13:18,866
+Since CloudKit schema is
+essentially additive,
+
+213
+00:13:18,899 --> 00:13:22,069
+give consideration to the effects
+of schema migration
+
+214
+00:13:22,102 --> 00:13:24,938
+to devices running
+older versions of your app.
+
+215
+00:13:24,972 --> 00:13:29,743
+For example, one common pitfall
+is forgetting to update old fields
+
+216
+00:13:29,776 --> 00:13:33,747
+that the older versions of your app use
+but newer versions don't.
+
+217
+00:13:33,780 --> 00:13:37,885
+Here are some strategies
+to migrate CloudKit schema.
+
+218
+00:13:37,918 --> 00:13:43,090
+The first option is to incrementally add
+new fields to existing record types.
+
+219
+00:13:43,123 --> 00:13:47,227
+If you adopt this approach, older versions
+of your app will have access
+
+220
+00:13:47,261 --> 00:13:50,964
+to every record a user creates,
+but not every field.
+
+221
+00:13:52,332 --> 00:13:55,102
+A second option is
+to version your entities
+
+222
+00:13:55,135 --> 00:13:59,006
+by including a version attribute,
+and then use a fetch request to select
+
+223
+00:13:59,039 --> 00:14:03,110
+only the records that are compatible
+with the current version of the app.
+
+224
+00:14:04,077 --> 00:14:07,714
+If you adopt this approach,
+older versions of your app
+
+225
+00:14:07,748 --> 00:14:11,752
+won't fetch records that a user creates
+with a more recent version,
+
+226
+00:14:11,785 --> 00:14:15,122
+effectively hiding them on that device.
+
+227
+00:14:15,155 --> 00:14:18,525
+The last strategy is to create
+a completely new container,
+
+228
+00:14:18,559 --> 00:14:21,595
+using
+NSPersistentCloudKitContainerOptions,
+
+229
+00:14:21,628 --> 00:14:25,032
+to associate the new store
+with a new container.
+
+230
+00:14:25,065 --> 00:14:28,068
+Be aware that if the user has
+a large data set,
+
+231
+00:14:28,101 --> 00:14:33,106
+uploading the data set to iCloud
+could take an extended period of time.
+
+232
+00:14:33,140 --> 00:14:37,244
+Whatever method you use,
+take care in designing your data model.
+
+233
+00:14:37,277 --> 00:14:40,948
+Be sure to consider
+cross-version compatibility issues
+
+234
+00:14:40,981 --> 00:14:44,518
+and test different versions
+of your data model together.
+
+235
+00:14:44,551 --> 00:14:47,020
+Now that we've
+thoroughly discussed data models,
+
+236
+00:14:47,054 --> 00:14:51,124
+migration, and CloudKit,
+I am going to demonstrate this in action.
+
+237
+00:14:51,158 --> 00:14:54,161
+As you may have guessed, I'm a pilot.
+
+238
+00:14:54,194 --> 00:14:57,264
+I've created a small app
+to log my flight time.
+
+239
+00:14:57,297 --> 00:14:59,499
+Here is the data model for that app.
+
+240
+00:14:59,533 --> 00:15:04,037
+I have a single entity called “LogEntry”
+and have added a number of attributes,
+
+241
+00:15:04,071 --> 00:15:09,443
+such as aircraft type,
+flight duration, origin, destination,
+
+242
+00:15:09,476 --> 00:15:14,414
+and tail number to allow me to log
+the required experience information.
+
+243
+00:15:14,448 --> 00:15:16,817
+When I run this application
+for the first time,
+
+244
+00:15:16,850 --> 00:15:21,455
+Core Data will create the store
+and materialize the schema in that store.
+
+245
+00:15:21,488 --> 00:15:23,190
+Before I run the application,
+
+246
+00:15:23,223 --> 00:15:28,128
+I am going to turn on
+the com.apple.CoreData.SQLDebug
+
+247
+00:15:28,161 --> 00:15:34,001
+and the com.apple.CoreData.MigrationDebug
+environment variables.
+
+248
+00:15:34,034 --> 00:15:37,704
+This will cause Core Data
+to log the steps it is taking.
+
+249
+00:15:37,738 --> 00:15:40,574
+With these arguments in place,
+I will run the app.
+
+250
+00:15:42,342 --> 00:15:46,180
+As the app launches, Core Data is
+logging the steps that it is taking:
+
+251
+00:15:46,213 --> 00:15:49,716
+creating the file,
+creating the metadata for the store,
+
+252
+00:15:49,750 --> 00:15:52,019
+and materializing the schema.
+
+253
+00:15:52,052 --> 00:15:56,623
+SQLite created the table ZLOGENTRY
+with our schema in it.
+
+254
+00:15:56,657 --> 00:15:59,526
+This can also be confirmed
+by looking at the store file
+
+255
+00:15:59,560 --> 00:16:02,262
+using the sqlite3 command line tool.
+
+256
+00:16:02,296 --> 00:16:07,201
+Here, I have the LogEntry table,
+and it has the corresponding columns
+
+257
+00:16:07,234 --> 00:16:09,970
+to the attributes I created
+in the data model.
+
+258
+00:16:10,003 --> 00:16:12,973
+Now I'm going to make
+some lightweight changes.
+
+259
+00:16:14,341 --> 00:16:18,445
+I'm adding some new entities,
+Aircraft, Pilot, and Airport.
+
+260
+00:16:18,478 --> 00:16:21,081
+This will help me normalize the schema.
+
+261
+00:16:21,114 --> 00:16:26,086
+I am changing some of the attributes in
+the LogEntry entity to be relationships.
+
+262
+00:16:26,119 --> 00:16:30,958
+For example, destination and origin move
+from being string attributes
+
+263
+00:16:30,991 --> 00:16:34,061
+to being an Airport to-one relationship.
+
+264
+00:16:34,094 --> 00:16:37,164
+The Airport entity
+also has two new attributes,
+
+265
+00:16:37,197 --> 00:16:40,534
+icaoIdentifier and faaIdentifier.
+
+266
+00:16:40,567 --> 00:16:44,304
+The type attribute is promoted
+to a new entity; Aircraft
+
+267
+00:16:44,338 --> 00:16:49,343
+and I am adding two new attributes,
+tailNumber and registrationNumber.
+
+268
+00:16:49,376 --> 00:16:55,249
+On LogEntry, I am creating a to-one
+relationship to an Aircraft from LogEntry.
+
+269
+00:16:56,416 --> 00:17:01,522
+Lastly, I added a Pilot entity
+that has name and certificate ID.
+
+270
+00:17:02,589 --> 00:17:06,393
+Each log entry will be
+related to a Pilot entity.
+
+271
+00:17:06,426 --> 00:17:09,296
+Now that I've completed my changes
+to the data model,
+
+272
+00:17:09,329 --> 00:17:10,998
+I'm going to run the app again.
+
+273
+00:17:15,235 --> 00:17:19,039
+Oop! I received an error running the app.
+
+274
+00:17:19,072 --> 00:17:20,774
+Inspecting the code, it is
+
+275
+00:17:20,807 --> 00:17:24,845
+NSPersistentStore-
+IncompatibleVersionHashError.
+
+276
+00:17:24,878 --> 00:17:28,448
+That error means that my current model
+no longer matches the schema
+
+277
+00:17:28,482 --> 00:17:30,184
+for the model in the store.
+
+278
+00:17:30,217 --> 00:17:32,719
+I need to migrate the store schema.
+
+279
+00:17:32,753 --> 00:17:35,355
+I can do that in one of three ways.
+
+280
+00:17:35,389 --> 00:17:40,761
+Using the first method, I can convert
+my code to use an NSPersistentContainer
+
+281
+00:17:40,794 --> 00:17:45,799
+as the lightweight migration options
+are automatically set for me.
+
+282
+00:17:45,832 --> 00:17:50,337
+Using the second method,
+I can use NSPersistentStoreDescription,
+
+283
+00:17:50,370 --> 00:17:55,375
+as, again, the lightweight migrations
+options are automatically set for me.
+
+284
+00:17:55,409 --> 00:17:58,812
+Lastly, using the third method,
+I can manually set
+
+285
+00:17:58,846 --> 00:18:02,115
+the lightweight migration options
+on an options dictionary
+
+286
+00:18:02,149 --> 00:18:06,119
+and pass that dictionary
+to the coordinator when opening the store.
+
+287
+00:18:06,987 --> 00:18:11,225
+I think I'll go with the first option,
+using an NSPersistentContainer.
+
+288
+00:18:11,258 --> 00:18:15,295
+Now that I have converted the code
+to use an NSPersistentContainer,
+
+289
+00:18:15,329 --> 00:18:17,431
+I will launch the app and again observe
+
+290
+00:18:17,464 --> 00:18:20,467
+that Core Data is migrating the schema
+in the store file.
+
+291
+00:18:32,012 --> 00:18:36,850
+Again, this can be confirmed
+using the sqlite3 command line tool.
+
+292
+00:18:36,884 --> 00:18:40,621
+Note the new schema was materialized
+by Core Data automatically,
+
+293
+00:18:40,654 --> 00:18:42,256
+using lightweight migration.
+
+294
+00:18:42,289 --> 00:18:44,525
+What could be easier?
+
+295
+00:18:44,558 --> 00:18:48,562
+Before ending my demo,
+I wanted to show option number 3.
+
+296
+00:18:48,595 --> 00:18:50,931
+Recall in this option,
+I am manually setting
+
+297
+00:18:50,964 --> 00:18:54,168
+the lightweight migration options
+on an options dictionary
+
+298
+00:18:54,201 --> 00:18:58,739
+and then passing that dictionary
+to the coordinator when opening the store.
+
+299
+00:18:58,772 --> 00:19:00,073
+The end result is the same
+
+300
+00:19:00,107 --> 00:19:02,976
+in that the store is migrated
+to the new schema.
+
+301
+00:19:03,010 --> 00:19:07,748
+When you make changes to your data model,
+use lightweight migration to help you.
+
+302
+00:19:07,781 --> 00:19:11,385
+Lightweight migration is very flexible
+and easy to use
+
+303
+00:19:11,418 --> 00:19:14,788
+for the vast majority
+of data model changes.
+
+304
+00:19:14,821 --> 00:19:18,692
+If you have more complex data models,
+break that model down
+
+305
+00:19:18,725 --> 00:19:22,062
+into ones that are composed
+of lightweight changes.
+
+306
+00:19:22,095 --> 00:19:24,965
+Lastly, if you use CloudKit with your app,
+
+307
+00:19:24,998 --> 00:19:29,303
+carefully consider the implications
+of the data model changes.
+
+308
+00:19:29,336 --> 00:19:32,506
+Thoroughly test any data model changes.
+
+309
+00:19:32,539 --> 00:19:34,808
+I hope you've found
+this information useful
+
+310
+00:19:34,842 --> 00:19:37,611
+and that you'll consider updating
+the model in your project
+
+311
+00:19:37,644 --> 00:19:40,047
+to build some awesome new features.
+
+312
+00:19:40,080 --> 00:19:43,884
+Thanks for flying with me,
+and have a great WWDC.
+

@@ -1,0 +1,1419 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,645
+Vaibhav Gautam:
+Hi, I am Vaibhav Gautam,
+
+3
+00:00:11,678 --> 00:00:15,482
+and I am an engineer
+on the Software Power team.
+
+4
+00:00:15,516 --> 00:00:17,251
+Apps enrich people's lives,
+
+5
+00:00:17,284 --> 00:00:22,222
+as they provide various critical
+functionalities throughout a day of use.
+
+6
+00:00:22,256 --> 00:00:26,293
+But this use can come with a cost:
+battery drain.
+
+7
+00:00:26,326 --> 00:00:30,230
+Therefore, it is important
+that you take special attention
+
+8
+00:00:30,264 --> 00:00:32,432
+to improve your app's battery life
+
+9
+00:00:32,466 --> 00:00:37,437
+so that your users can use their devices
+and your apps longer.
+
+10
+00:00:37,471 --> 00:00:39,573
+We deeply study
+different system components
+
+11
+00:00:39,606 --> 00:00:41,775
+to understand power consumption,
+
+12
+00:00:41,808 --> 00:00:45,245
+and in this session,
+I will go over four key actions
+
+13
+00:00:45,279 --> 00:00:47,281
+we have identified that you can take
+
+14
+00:00:47,314 --> 00:00:51,185
+to significantly improve
+your app's battery life.
+
+15
+00:00:51,218 --> 00:00:54,454
+These are Dark Mode in your app,
+
+16
+00:00:54,488 --> 00:00:56,823
+auditing frame rates,
+
+17
+00:00:56,857 --> 00:01:00,060
+limiting background time,,
+
+18
+00:01:00,093 --> 00:01:02,196
+and deferring work in your app.
+
+19
+00:01:03,797 --> 00:01:05,899
+First, I'll talk about Dark Mode.
+
+20
+00:01:06,834 --> 00:01:09,703
+Dark Mode was introduced in iOS 13,
+
+21
+00:01:09,736 --> 00:01:14,942
+and allows someone to configure
+their devices in a darker presentation.
+
+22
+00:01:14,975 --> 00:01:18,946
+You may be familiar with
+the personalization benefits of Dark Mode,
+
+23
+00:01:18,979 --> 00:01:22,649
+but it can also
+dramatically affect battery life.
+
+24
+00:01:24,051 --> 00:01:27,888
+This is because
+on devices with OLED displays,
+
+25
+00:01:27,921 --> 00:01:31,191
+like iPhone 13 and 13 Pro,
+
+26
+00:01:31,225 --> 00:01:35,762
+darker content consumes
+less power than lighter content.
+
+27
+00:01:35,796 --> 00:01:40,434
+On an OLED screen
+each pixel requires individual power,
+
+28
+00:01:40,467 --> 00:01:45,539
+and for darker colors less power
+is required to light up the pixels.
+
+29
+00:01:45,572 --> 00:01:48,609
+Among all the components in the system,
+
+30
+00:01:48,642 --> 00:01:52,779
+display is one of the major sources
+of power consumption.
+
+31
+00:01:52,813 --> 00:01:58,051
+In fact, in typical use cases,
+the display can be the leading contributor
+
+32
+00:01:58,085 --> 00:02:00,554
+to battery drain.
+
+33
+00:02:00,587 --> 00:02:04,725
+You have a way to influence
+the power consumption of the display.
+
+34
+00:02:04,758 --> 00:02:07,961
+And one way is by adopting Dark Mode.
+
+35
+00:02:08,896 --> 00:02:12,933
+I'll use the Food Truck app
+my team has been working on
+
+36
+00:02:12,966 --> 00:02:14,801
+as an example.
+
+37
+00:02:14,835 --> 00:02:18,071
+This app has a very prominent
+background color
+
+38
+00:02:18,105 --> 00:02:21,008
+that takes up most of the screen.
+
+39
+00:02:21,041 --> 00:02:22,910
+When presenting in Dark Mode,
+
+40
+00:02:22,943 --> 00:02:27,047
+this background color becomes much darker
+than its Light Mode version,
+
+41
+00:02:27,080 --> 00:02:29,583
+contributing heavily to battery savings.
+
+42
+00:02:29,616 --> 00:02:34,254
+In fact, for cases like this,
+we expect up
+
+43
+00:02:34,288 --> 00:02:38,759
+to a 70% display power savings
+as a result.
+
+44
+00:02:38,792 --> 00:02:41,495
+This is a huge savings!
+
+45
+00:02:41,528 --> 00:02:43,897
+And when screen brightness is high,
+
+46
+00:02:43,931 --> 00:02:46,667
+the battery savings are even higher.
+
+47
+00:02:46,700 --> 00:02:49,603
+For users who prefer Dark Mode,
+
+48
+00:02:49,636 --> 00:02:53,607
+this is a tremendous opportunity
+to save them some battery drain
+
+49
+00:02:53,640 --> 00:02:56,009
+and it can reduce thermal load too.
+
+50
+00:02:56,844 --> 00:03:01,215
+To adopt Dark Mode, start by reviewing
+how your app currently appears
+
+51
+00:03:01,248 --> 00:03:03,884
+when Dark Mode is enabled.
+
+52
+00:03:03,917 --> 00:03:07,154
+Figure out what components
+of your app you should update
+
+53
+00:03:07,187 --> 00:03:10,257
+to fit in better with system UI.
+
+54
+00:03:10,290 --> 00:03:16,930
+Xcode makes this easy by using the
+appearance feature when building your app.
+
+55
+00:03:18,165 --> 00:03:23,971
+Your app may have hard coded colors
+because it only supports Light Mode.
+
+56
+00:03:24,004 --> 00:03:28,275
+Use dynamic colors in Xcode
+to support background color,
+
+57
+00:03:28,308 --> 00:03:32,713
+images, and text
+in Light and Dark Mode.
+
+58
+00:03:32,746 --> 00:03:36,350
+The system will automatically use
+the correct color values,
+
+59
+00:03:36,383 --> 00:03:38,919
+and will update when the mode changes.
+
+60
+00:03:40,587 --> 00:03:44,558
+Your app should also support
+alternate images for Light Mode
+
+61
+00:03:44,591 --> 00:03:46,593
+and Dark Mode.
+
+62
+00:03:46,627 --> 00:03:50,063
+To learn more about
+customizing your app for Dark Mode,
+
+63
+00:03:50,097 --> 00:03:55,469
+check out "Implementing Dark Mode on iOS"
+from WWDC 2019.
+
+64
+00:03:57,004 --> 00:04:00,507
+Now that you know
+how to adopt Dark Mode in your app,
+
+65
+00:04:00,541 --> 00:04:06,113
+you should also think about how to adopt
+Dark Mode for your web content.
+
+66
+00:04:06,146 --> 00:04:09,049
+Safari does not auto-darken
+any web content,
+
+67
+00:04:09,082 --> 00:04:13,320
+so make sure you adopt Dark Mode
+for your web content too.
+
+68
+00:04:14,321 --> 00:04:19,293
+To do so, implement the color-scheme
+property in your website's stylesheet.
+
+69
+00:04:20,894 --> 00:04:25,399
+This enables the default text
+and background colors of the web page
+
+70
+00:04:25,432 --> 00:04:27,768
+to match the current system appearance,
+
+71
+00:04:27,801 --> 00:04:31,405
+standard form controls, and scrollbars.
+
+72
+00:04:31,438 --> 00:04:34,374
+Other named system colors
+change their look,
+
+73
+00:04:34,408 --> 00:04:38,011
+switching between Light and Dark Mode.
+
+74
+00:04:38,045 --> 00:04:40,414
+Start using stylesheet variables
+
+75
+00:04:40,447 --> 00:04:44,418
+wherever colors are referenced
+in your stylesheet.
+
+76
+00:04:44,451 --> 00:04:47,821
+This allows your web content
+to update its colors
+
+77
+00:04:47,855 --> 00:04:51,925
+as the device switches
+between Light and Dark.
+
+78
+00:04:51,959 --> 00:04:56,997
+Apply the same logic to images
+and other media assets on your web pages,
+
+79
+00:04:57,030 --> 00:05:00,501
+with different variants
+for different modes.
+
+80
+00:05:00,534 --> 00:05:04,371
+To learn more about implementing Dark Mode
+for web content,
+
+81
+00:05:04,404 --> 00:05:07,574
+refer to "Supporting Dark Mode
+in Your Web Content"
+
+82
+00:05:07,608 --> 00:05:11,211
+from WWDC 2019.
+
+83
+00:05:11,245 --> 00:05:17,184
+Another way to reduce your app's
+power usage is to audit your frame rates.
+
+84
+00:05:17,217 --> 00:05:19,953
+On devices with ProMotion displays,
+
+85
+00:05:19,987 --> 00:05:23,257
+the refresh rate
+can affect power consumption.
+
+86
+00:05:23,290 --> 00:05:26,760
+Higher refresh rates use higher power.
+
+87
+00:05:26,793 --> 00:05:29,696
+The frame rates
+of animations in your app
+
+88
+00:05:29,730 --> 00:05:32,499
+determine the display's refresh rate.
+
+89
+00:05:32,533 --> 00:05:35,669
+Be considerate
+of the primary content in your app
+
+90
+00:05:35,702 --> 00:05:37,971
+and what frame rate it requires,
+
+91
+00:05:38,005 --> 00:05:42,176
+as not all content in your app
+may require a high frame rate.
+
+92
+00:05:42,209 --> 00:05:45,712
+The display's refresh rate is determined
+by the animation
+
+93
+00:05:45,746 --> 00:05:48,448
+with the highest frame rate in your app.
+
+94
+00:05:48,482 --> 00:05:52,619
+Your app may have secondary elements
+refreshing at a higher rate
+
+95
+00:05:52,653 --> 00:05:54,454
+than necessary,
+
+96
+00:05:54,488 --> 00:05:58,792
+causing the app as a whole
+to consume more battery than expected.
+
+97
+00:06:00,427 --> 00:06:03,797
+Here we have the food truck app again.
+
+98
+00:06:03,830 --> 00:06:08,836
+The primary truck scene at the top
+is rendering at 30 frames per second.
+
+99
+00:06:08,869 --> 00:06:12,439
+Below the truck,
+there is a text overlay "Food Truck,"
+
+100
+00:06:12,472 --> 00:06:15,142
+which is horizontally scrolling.
+
+101
+00:06:15,175 --> 00:06:19,613
+This secondary text is rendering
+at 60 frames per second.
+
+102
+00:06:19,646 --> 00:06:24,351
+As a result, the whole screen is
+now rendering at 60 frames per second.
+
+103
+00:06:24,384 --> 00:06:27,588
+If we change the text animation to 30fps,
+
+104
+00:06:27,621 --> 00:06:30,691
+then the entire screen can render
+at 30fps,
+
+105
+00:06:30,724 --> 00:06:33,961
+and we could save
+up to 20% of the battery drain.
+
+106
+00:06:33,994 --> 00:06:35,462
+Amazing!
+
+107
+00:06:36,230 --> 00:06:40,701
+To debug and get more information
+about the frame rates in your app,
+
+108
+00:06:40,734 --> 00:06:42,636
+use Instruments.
+
+109
+00:06:42,669 --> 00:06:45,572
+Use the CoreAnimation FPS instrument
+
+110
+00:06:45,606 --> 00:06:51,178
+to see a timeline showing the frame rate
+of your app over time.
+
+111
+00:06:51,211 --> 00:06:54,414
+Start by auditing main user scenarios.
+
+112
+00:06:54,448 --> 00:06:59,052
+To identify if frames are being rendered
+at the rate you expect,
+
+113
+00:06:59,086 --> 00:07:01,955
+determine if secondary elements
+on the screen
+
+114
+00:07:01,989 --> 00:07:05,626
+have a higher frame rate
+than your primary content.
+
+115
+00:07:06,693 --> 00:07:12,766
+Your app may be using CADisplayLink
+offered by CoreAnimation on iOS
+
+116
+00:07:12,799 --> 00:07:16,603
+to drive custom animations
+and custom render loop.
+
+117
+00:07:16,637 --> 00:07:21,542
+CADisplayLink is a timer synchronized
+with the display refresh rate.
+
+118
+00:07:21,575 --> 00:07:25,145
+It provides necessary timing information
+to your app
+
+119
+00:07:25,179 --> 00:07:30,384
+so that your custom drawing
+can be aware of refresh events.
+
+120
+00:07:30,417 --> 00:07:34,288
+Your app can give hints
+to a CADisplayLink object
+
+121
+00:07:34,321 --> 00:07:37,758
+about the desired screen refresh rate.
+
+122
+00:07:37,791 --> 00:07:41,461
+Set the preferredFrameRateRange
+of a CADisplayLink
+
+123
+00:07:41,495 --> 00:07:46,466
+and specify your minimum,
+maximum, and preferred frame rates.
+
+124
+00:07:47,868 --> 00:07:51,305
+Display link will then choose
+the nearest available frame rate
+
+125
+00:07:51,338 --> 00:07:55,676
+to your preferred rate,
+based on what the system can handle.
+
+126
+00:07:55,709 --> 00:07:57,978
+If it cannot provide that rate,
+
+127
+00:07:58,011 --> 00:08:02,382
+it will try to stay
+within your specified range.
+
+128
+00:08:02,416 --> 00:08:04,384
+To configure your display link,
+
+129
+00:08:04,418 --> 00:08:07,888
+initialize it with a target and selector.
+
+130
+00:08:07,921 --> 00:08:11,825
+The provided selector is used
+to perform custom animation
+
+131
+00:08:11,859 --> 00:08:16,163
+and calculate which video frame
+to display next.
+
+132
+00:08:16,196 --> 00:08:18,298
+Once your display link is initialized,
+
+133
+00:08:18,332 --> 00:08:20,667
+set the preferred frame rate range.
+
+134
+00:08:20,701 --> 00:08:24,404
+In this example,
+the preferred rate is 30,
+
+135
+00:08:24,438 --> 00:08:29,076
+but the range can handle
+anything between 10 and 60.
+
+136
+00:08:29,109 --> 00:08:32,746
+Finally, add the display link
+to the current run loop.
+
+137
+00:08:34,882 --> 00:08:39,820
+Keep refresh rates in mind when thinking
+about your app's battery consumption.
+
+138
+00:08:39,853 --> 00:08:43,891
+This is especially important
+for devices with ProMotion displays
+
+139
+00:08:43,924 --> 00:08:47,361
+that support very dynamic refresh rates.
+
+140
+00:08:47,394 --> 00:08:50,831
+Monitor your app's frame rates
+with Instruments
+
+141
+00:08:50,864 --> 00:08:55,536
+to discover issues
+before you release your app.
+
+142
+00:08:55,569 --> 00:09:00,240
+Lastly, provide information to the system,
+using CADisplayLink
+
+143
+00:09:00,274 --> 00:09:03,810
+to limit refresh rate
+for your app's content.
+
+144
+00:09:05,279 --> 00:09:08,215
+To learn more
+about frame rate optimizations,
+
+145
+00:09:08,248 --> 00:09:11,852
+refer to "Optimize for variable refresh
+rate displays"
+
+146
+00:09:11,885 --> 00:09:15,455
+from WWDC 2021.
+
+147
+00:09:15,489 --> 00:09:19,193
+Now, let's talk about
+how you can power down your app
+
+148
+00:09:19,226 --> 00:09:21,295
+when it's running in the background.
+
+149
+00:09:21,328 --> 00:09:25,365
+When someone switches from your app
+to a different app,
+
+150
+00:09:25,399 --> 00:09:28,902
+your app may rely
+on background execution APIs
+
+151
+00:09:28,936 --> 00:09:31,438
+to continue to run in the background.
+
+152
+00:09:31,471 --> 00:09:33,106
+While running in the background,
+
+153
+00:09:33,140 --> 00:09:39,112
+your app may continue to use
+common services like location and audio.
+
+154
+00:09:39,146 --> 00:09:43,550
+Running these services for long durations
+will cause battery drain,
+
+155
+00:09:43,584 --> 00:09:46,887
+so when your app is using
+these services in background,
+
+156
+00:09:46,920 --> 00:09:49,723
+you need to be especially careful!
+
+157
+00:09:49,756 --> 00:09:56,029
+So let's talk about how to avoid
+excess drain when using these modes
+
+158
+00:09:56,063 --> 00:09:58,866
+Location services keep the device awake
+
+159
+00:09:58,899 --> 00:10:01,201
+to continuously stream location.
+
+160
+00:10:01,235 --> 00:10:04,304
+Even though the app is invisible
+to the user,
+
+161
+00:10:04,338 --> 00:10:07,741
+it could be continuously streaming
+location in the background,
+
+162
+00:10:07,774 --> 00:10:10,277
+and cause excess battery drain.
+
+163
+00:10:10,310 --> 00:10:15,616
+It is important to make sure, that you
+are on top of background location session
+
+164
+00:10:15,649 --> 00:10:17,718
+runtime in your app.
+
+165
+00:10:17,751 --> 00:10:19,853
+When you no longer need the session,
+
+166
+00:10:19,887 --> 00:10:23,323
+make sure your app calls
+stopUpdatingLocation()
+
+167
+00:10:23,357 --> 00:10:25,559
+to stop the session.
+
+168
+00:10:25,592 --> 00:10:28,161
+During different stages
+of app development,
+
+169
+00:10:28,195 --> 00:10:31,765
+you can use different tools
+to find out background location usage,
+
+170
+00:10:31,798 --> 00:10:34,168
+which may not be expected.
+
+171
+00:10:34,201 --> 00:10:36,403
+While building and testing the app,
+
+172
+00:10:36,436 --> 00:10:40,541
+Xcode gauges can be used
+to find out system energy usage,
+
+173
+00:10:40,574 --> 00:10:43,210
+as well as background location usage.
+
+174
+00:10:43,243 --> 00:10:46,079
+When testing your app before release,
+
+175
+00:10:46,113 --> 00:10:51,685
+you can use MetricKit to collect
+diagnostic information for a day of use.
+
+176
+00:10:51,718 --> 00:10:57,558
+New in iOS 16 is the location usage
+in Control Center.
+
+177
+00:10:57,591 --> 00:11:00,594
+Xcode gauges provide information
+about system usage
+
+178
+00:11:00,627 --> 00:11:05,265
+such as CPU, Network, and Location usage.
+
+179
+00:11:05,299 --> 00:11:09,069
+Xcode gauges will show a timeline
+of the location usage
+
+180
+00:11:09,102 --> 00:11:11,772
+and energy impact of your app.
+
+181
+00:11:11,805 --> 00:11:15,442
+Looking at this timeline view
+can be a great way to verify
+
+182
+00:11:15,475 --> 00:11:19,446
+that your location runtime stops
+when you expect it to stop.
+
+183
+00:11:20,314 --> 00:11:24,818
+Another tool is to use Metric Kit
+when testing your apps.
+
+184
+00:11:24,852 --> 00:11:28,055
+Use the
+cumulativeBackgroundLocationTime property
+
+185
+00:11:28,088 --> 00:11:33,727
+to find out how long your app was actively
+using location services in background.
+
+186
+00:11:34,995 --> 00:11:38,365
+New in iOS 16,
+users can monitor apps
+
+187
+00:11:38,398 --> 00:11:43,070
+which are currently using location
+services by navigating to Control Center.
+
+188
+00:11:43,103 --> 00:11:45,906
+They can tap the text at the top
+
+189
+00:11:45,939 --> 00:11:49,276
+for a detailed view
+of apps using location.
+
+190
+00:11:49,309 --> 00:11:52,112
+Use this to get
+an away-from-your-desk insight
+
+191
+00:11:52,145 --> 00:11:54,548
+into your location runtime.
+
+192
+00:11:54,581 --> 00:11:57,885
+If you see your app here
+and you don't expect to,
+
+193
+00:11:57,918 --> 00:12:03,090
+it is an indicator that your app has
+an active location streaming session.
+
+194
+00:12:03,123 --> 00:12:07,027
+We can apply the same principles
+to audio sessions.
+
+195
+00:12:07,060 --> 00:12:11,331
+Let's say we have a music app
+that is using the audio player
+
+196
+00:12:11,365 --> 00:12:15,102
+for playing back some file,
+and the user stops playback.
+
+197
+00:12:15,936 --> 00:12:18,739
+The app should not only
+pause or stop the sound,
+
+198
+00:12:18,772 --> 00:12:22,042
+but it should also pause or stop
+the Audio Engine
+
+199
+00:12:22,075 --> 00:12:25,979
+in order to prevent it from running idle.
+
+200
+00:12:26,013 --> 00:12:28,448
+We recommend using auto shutdown mode
+
+201
+00:12:28,482 --> 00:12:32,619
+which can be enabled by setting
+the autoShutdownEnabled property
+
+202
+00:12:32,653 --> 00:12:35,556
+of AVAudioEngine class.
+
+203
+00:12:35,589 --> 00:12:39,726
+In this mode, the audio engine
+continuously monitors and detects
+
+204
+00:12:39,760 --> 00:12:42,496
+if it is idle for a certain duration.
+
+205
+00:12:42,529 --> 00:12:47,000
+When idle, the engine will shut down
+the audio hardware.
+
+206
+00:12:47,034 --> 00:12:51,205
+And later on,
+if any of the sources become active again,
+
+207
+00:12:51,238 --> 00:12:54,341
+it will start the audio hardware
+dynamically.
+
+208
+00:12:54,374 --> 00:12:57,611
+And all of this happens under the hood.
+
+209
+00:12:57,644 --> 00:13:02,249
+On watchOS auto shutdown mode
+is the enforced behavior.
+
+210
+00:13:02,282 --> 00:13:05,385
+Make sure to stop
+the Audio Engine when not in use
+
+211
+00:13:05,419 --> 00:13:07,654
+in order to conserve power.
+
+212
+00:13:07,688 --> 00:13:09,923
+The key to limiting background runtime
+
+213
+00:13:09,957 --> 00:13:13,894
+is to remember to tell the system
+when you are done.
+
+214
+00:13:13,927 --> 00:13:18,532
+The last action you can take
+to improve battery life is to defer work.
+
+215
+00:13:18,565 --> 00:13:20,467
+Over the course of the day,
+
+216
+00:13:20,501 --> 00:13:24,838
+your app may process
+lots of different tasks and data.
+
+217
+00:13:24,872 --> 00:13:28,876
+Some of this work needs to occur
+immediately to service user actions,
+
+218
+00:13:28,909 --> 00:13:32,412
+like rendering content on the screen
+or playing audio
+
+219
+00:13:32,446 --> 00:13:35,282
+or a video the user taps on.
+
+220
+00:13:37,584 --> 00:13:39,853
+Other work like machine learning tasks,
+
+221
+00:13:39,887 --> 00:13:45,292
+uploading analytics,
+or backups is not as time-sensitive.
+
+222
+00:13:45,325 --> 00:13:49,129
+If we defer this time insensitive work
+to a better time–
+
+223
+00:13:49,162 --> 00:13:51,031
+when the device is charging–
+
+224
+00:13:51,064 --> 00:13:52,299
+we can save battery
+
+225
+00:13:52,332 --> 00:13:56,537
+and avoid contending with
+the user initiated and interactive work.
+
+226
+00:13:56,570 --> 00:14:01,008
+Let's talk about three APIs
+you can use to accomplish this.
+
+227
+00:14:01,041 --> 00:14:07,648
+BGProcessingTask is a good choice to
+defer tasks which run for long durations.
+
+228
+00:14:07,681 --> 00:14:10,617
+Discretionary URLSession
+is the perfect choice
+
+229
+00:14:10,651 --> 00:14:13,053
+to schedule deferrable networking.
+
+230
+00:14:13,086 --> 00:14:16,456
+And leveraging the right push priority
+can help servers
+
+231
+00:14:16,490 --> 00:14:19,059
+deliver pushes at the right time.
+
+232
+00:14:19,092 --> 00:14:21,995
+Let's go into detail for each.
+
+233
+00:14:22,029 --> 00:14:24,798
+First is BGProcessingTask.
+
+234
+00:14:24,831 --> 00:14:29,269
+BGProcessingTask lets you defer
+long-running processing tasks
+
+235
+00:14:29,303 --> 00:14:34,241
+to a better time,
+such as when the device is charging.
+
+236
+00:14:34,274 --> 00:14:37,010
+It's great for tasks
+like database cleanup,
+
+237
+00:14:37,044 --> 00:14:41,415
+creating backups,
+and running machine learning training.
+
+238
+00:14:41,448 --> 00:14:47,754
+To use it, you simply create a request by
+using BGProcessingTaskRequest API,
+
+239
+00:14:47,788 --> 00:14:50,891
+and provide an application identifier.
+
+240
+00:14:50,924 --> 00:14:52,359
+Then provide more information,
+
+241
+00:14:52,392 --> 00:14:57,497
+such as if your task needs
+external power or network.
+
+242
+00:14:57,531 --> 00:15:01,335
+Providing more information
+will help the system schedule the task
+
+243
+00:15:01,368 --> 00:15:03,537
+at a better time window.
+
+244
+00:15:03,570 --> 00:15:08,242
+The system will then launch your app
+in the background at an opportune time
+
+245
+00:15:08,275 --> 00:15:12,613
+and grant several minutes of runtime
+to complete the deferrable work.
+
+246
+00:15:12,646 --> 00:15:16,116
+Next is discretionary URLSession.
+
+247
+00:15:16,149 --> 00:15:20,254
+Your app may already be using
+Background URLSessions
+
+248
+00:15:20,287 --> 00:15:22,055
+for general networking.
+
+249
+00:15:22,089 --> 00:15:28,195
+Background URLSessions get even better
+when you use the discretionary flag.
+
+250
+00:15:28,228 --> 00:15:32,833
+URLSessions with discretionary flag
+are networking transactions
+
+251
+00:15:32,866 --> 00:15:35,335
+offloaded to the system
+
+252
+00:15:35,369 --> 00:15:38,605
+to perform networking
+at a more optimal time,
+
+253
+00:15:38,639 --> 00:15:42,743
+such as when the device is plugged in
+and connected to Wi-Fi.
+
+254
+00:15:42,776 --> 00:15:46,547
+The discretionary flag
+is great for non-user initiated
+
+255
+00:15:46,580 --> 00:15:50,784
+long-running networking,
+such as telemetry collection
+
+256
+00:15:50,817 --> 00:15:54,454
+or downloading
+the next episode of a TV show.
+
+257
+00:15:54,488 --> 00:15:57,090
+And because the networking was offloaded,
+
+258
+00:15:57,124 --> 00:15:59,927
+it means
+your app does not need to be running
+
+259
+00:15:59,960 --> 00:16:02,362
+while the network transaction completes.
+
+260
+00:16:03,230 --> 00:16:05,866
+To use discretionary URL sessions,
+
+261
+00:16:05,899 --> 00:16:09,970
+you simply set up a background URL
+session
+
+262
+00:16:10,003 --> 00:16:14,074
+and set isDiscretionary to true.
+
+263
+00:16:14,107 --> 00:16:16,276
+You can provide additional information
+
+264
+00:16:16,310 --> 00:16:20,480
+to help the system schedule the download
+at the right time.
+
+265
+00:16:20,514 --> 00:16:24,451
+Pass in timeout intervals
+so that the system does not attempt
+
+266
+00:16:24,484 --> 00:16:27,120
+to download forever,
+causing battery drain.
+
+267
+00:16:28,722 --> 00:16:31,291
+If you don't want to upload
+or download data
+
+268
+00:16:31,325 --> 00:16:33,694
+until some point later in the future,
+
+269
+00:16:33,727 --> 00:16:36,864
+pass in an earliest begin date.
+
+270
+00:16:36,897 --> 00:16:40,033
+Finally, pass in an expected workload size
+
+271
+00:16:40,067 --> 00:16:43,270
+so that the system
+can intelligently load balance
+
+272
+00:16:43,303 --> 00:16:45,873
+between your various download tasks.
+
+273
+00:16:48,175 --> 00:16:52,913
+Similar to how you can control
+the immediacy of certain operations
+
+274
+00:16:52,946 --> 00:16:57,417
+with BGProcessingTask
+and discretionary URL sessions,
+
+275
+00:16:57,451 --> 00:17:00,554
+you can influence the immediacy
+of push delivery
+
+276
+00:17:00,587 --> 00:17:03,123
+by using different push priorities.
+
+277
+00:17:03,156 --> 00:17:07,327
+Push priority determines how urgently
+a push needs to be delivered
+
+278
+00:17:07,361 --> 00:17:08,529
+to the device.
+
+279
+00:17:08,562 --> 00:17:10,197
+For a high priority push,
+
+280
+00:17:10,230 --> 00:17:13,867
+the server will send the push immediately
+to the device,
+
+281
+00:17:13,901 --> 00:17:18,071
+potentially waking the device
+and causing battery drain.
+
+282
+00:17:18,105 --> 00:17:19,806
+For low priority pushes,
+
+283
+00:17:19,840 --> 00:17:24,011
+the server will delay sending the push
+until an opportune time,
+
+284
+00:17:24,044 --> 00:17:26,446
+such as when the device is awake
+
+285
+00:17:26,480 --> 00:17:29,449
+or a high priority push comes through.
+
+286
+00:17:29,483 --> 00:17:34,855
+High priority pushes are great for urgent
+messages like a severe weather warning.
+
+287
+00:17:34,888 --> 00:17:39,059
+Low priority pushes are great
+for more passive notifications
+
+288
+00:17:39,092 --> 00:17:42,496
+that aren't urgent and can be deferred.
+
+289
+00:17:42,529 --> 00:17:46,667
+Leveraging low priority push to delay
+the delivery of deferrable messages
+
+290
+00:17:46,700 --> 00:17:52,840
+will save battery as the device will not
+have to wake as frequently from sleep.
+
+291
+00:17:52,873 --> 00:17:55,108
+To configure low priority pushes,
+
+292
+00:17:55,142 --> 00:17:59,780
+simply set apns-priority to 5
+in the push payload.
+
+293
+00:17:59,813 --> 00:18:01,782
+The server will take care of the rest,
+
+294
+00:18:01,815 --> 00:18:05,686
+and your users will appreciate
+the battery life savings.
+
+295
+00:18:06,553 --> 00:18:10,324
+So let's wrap it up
+with some final thoughts and next steps.
+
+296
+00:18:10,357 --> 00:18:13,427
+Provide an option
+of Dark Mode in your app.
+
+297
+00:18:13,460 --> 00:18:18,799
+If a user chooses Dark Mode,
+respecting their intent can save battery.
+
+298
+00:18:18,832 --> 00:18:20,634
+Review your animations
+
+299
+00:18:20,667 --> 00:18:25,172
+and hunt for opportunities
+to reduce frame rates to what's necessary.
+
+300
+00:18:25,205 --> 00:18:28,709
+One small animation can have a big impact.
+
+301
+00:18:28,742 --> 00:18:31,478
+Keep a close eye
+on your background runtime
+
+302
+00:18:31,512 --> 00:18:34,715
+by letting the system know
+when you are done.
+
+303
+00:18:34,748 --> 00:18:38,585
+Finally, consider deferring
+long-running background work
+
+304
+00:18:38,619 --> 00:18:42,756
+to a better time, such as
+when the device is connected to a charger.
+
+305
+00:18:42,789 --> 00:18:44,691
+If you do all this,
+
+306
+00:18:44,725 --> 00:18:47,594
+then you will have
+truly powered down your app.
+
+307
+00:18:47,628 --> 00:18:49,463
+Thank you so much.
+

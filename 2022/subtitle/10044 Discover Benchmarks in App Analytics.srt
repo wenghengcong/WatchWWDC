@@ -1,0 +1,889 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,643 --> 00:00:11,612
+Mahesh Molakalapalli:
+My name is Mahesh Molakalapalli.
+
+3
+00:00:11,645 --> 00:00:16,083
+I am an engineering manager on
+the App Store and App Analytics team.
+
+4
+00:00:16,116 --> 00:00:20,020
+Our goal with App Analytics
+is to help you grow your business
+
+5
+00:00:20,053 --> 00:00:24,024
+by providing you with the unique
+insights about your app.
+
+6
+00:00:24,057 --> 00:00:28,629
+Today, I am going to introduce you
+to an exciting new feature
+
+7
+00:00:28,662 --> 00:00:31,098
+called App Benchmarking
+
+8
+00:00:31,131 --> 00:00:35,636
+that will help you get better insights
+than ever before.
+
+9
+00:00:35,669 --> 00:00:39,706
+We will begin with an overview
+of benchmarking.
+
+10
+00:00:39,740 --> 00:00:45,779
+Then we'll talk about the metrics for
+which you can see benchmarking data.
+
+11
+00:00:45,812 --> 00:00:50,684
+Next, we'll show you how we create
+relevant benchmarks
+
+12
+00:00:50,717 --> 00:00:55,155
+while protecting the privacy of all apps.
+
+13
+00:00:55,189 --> 00:00:59,526
+And we will wrap up by showing you
+how you can take action
+
+14
+00:00:59,560 --> 00:01:03,530
+on insights gained from benchmarking.
+
+15
+00:01:03,564 --> 00:01:05,132
+Let's get started.
+
+16
+00:01:05,165 --> 00:01:07,868
+Many of you may already use App Analytics.
+
+17
+00:01:07,901 --> 00:01:10,537
+In this tool, we share data with you
+
+18
+00:01:10,571 --> 00:01:15,409
+about your app's acquisition,
+usage, and monetization.
+
+19
+00:01:15,442 --> 00:01:19,546
+Let's say that you are a developer
+of an app called Mountain Climber,
+
+20
+00:01:19,580 --> 00:01:23,650
+which is a travel app
+offering subscriptions.
+
+21
+00:01:23,684 --> 00:01:28,655
+The overview page shows how
+Mountain Climber is performing over time,
+
+22
+00:01:28,689 --> 00:01:31,558
+across key performance metrics
+
+23
+00:01:31,592 --> 00:01:36,864
+that allows you to monitor results
+in each stage of the customer lifecycle,
+
+24
+00:01:36,897 --> 00:01:42,236
+from awareness
+to conversion and on to retention.
+
+25
+00:01:42,269 --> 00:01:44,771
+Since you're focused on growth,
+
+26
+00:01:44,805 --> 00:01:49,643
+let's say that one of your top
+business priorities for your app
+
+27
+00:01:49,676 --> 00:01:52,479
+has been to improve your conversion rate.
+
+28
+00:01:52,513 --> 00:01:56,483
+Looking at the data,
+you have been making steady improvement,
+
+29
+00:01:56,517 --> 00:02:00,888
+with a 5.5% increase
+over the last 90 days.
+
+30
+00:02:00,921 --> 00:02:04,758
+But what is unclear
+is how much more improvement
+
+31
+00:02:04,791 --> 00:02:08,262
+you might be able to achieve
+with continued effort.
+
+32
+00:02:08,295 --> 00:02:10,664
+Do you have more opportunity to grow,
+
+33
+00:02:10,697 --> 00:02:14,535
+or should you focus your efforts
+somewhere else?
+
+34
+00:02:14,568 --> 00:02:17,838
+That's where peer group benchmarking
+comes in.
+
+35
+00:02:17,871 --> 00:02:20,607
+You can learn
+about the performance of apps
+
+36
+00:02:20,641 --> 00:02:24,144
+that are similar to your app
+in a privacy-friendly way,
+
+37
+00:02:24,178 --> 00:02:28,415
+and check how you are performing
+relative to them.
+
+38
+00:02:28,448 --> 00:02:30,584
+Like your Mountain Climber app,
+
+39
+00:02:30,617 --> 00:02:34,621
+all the apps
+on the right hand side are travel apps,
+
+40
+00:02:34,655 --> 00:02:37,724
+with a subscription business model.
+
+41
+00:02:37,758 --> 00:02:42,963
+Let's take a look at how your App is doing
+compared to this group.
+
+42
+00:02:44,064 --> 00:02:48,836
+You can see the same apps,
+arranged left to right,
+
+43
+00:02:48,869 --> 00:02:52,673
+from lowest to highest conversion rates.
+
+44
+00:02:52,706 --> 00:02:56,610
+So how does your app stack up
+against all the others?
+
+45
+00:02:56,643 --> 00:03:00,347
+Although your conversion rate
+has been improving over time,
+
+46
+00:03:00,380 --> 00:03:03,784
+you are still in the bottom half
+of your peer group.
+
+47
+00:03:03,817 --> 00:03:06,119
+There's plenty of room for improvement.
+
+48
+00:03:06,153 --> 00:03:08,989
+Benchmarking provides insights like this
+
+49
+00:03:09,022 --> 00:03:14,728
+without revealing the performance
+of any individual app in your peer group.
+
+50
+00:03:15,495 --> 00:03:20,501
+We do this by including enough apps
+to provide meaningful results
+
+51
+00:03:20,534 --> 00:03:21,869
+in the aggregate
+
+52
+00:03:21,902 --> 00:03:26,373
+so that it doesn't reveal
+any individual app's performance.
+
+53
+00:03:26,406 --> 00:03:29,543
+And in order to show
+your relative position,
+
+54
+00:03:29,576 --> 00:03:34,381
+we show you what the distribution
+of your peer group looks like
+
+55
+00:03:34,414 --> 00:03:40,053
+such as the 25th, 50th,
+and 75th percentiles of your group.
+
+56
+00:03:41,455 --> 00:03:44,324
+You will then be able to see
+how you are performing
+
+57
+00:03:44,358 --> 00:03:46,293
+relative to your peer group,
+
+58
+00:03:46,326 --> 00:03:49,363
+and understand
+whether you have growth opportunity,
+
+59
+00:03:49,396 --> 00:03:52,900
+or whether
+you're already beating the competition.
+
+60
+00:03:52,933 --> 00:03:57,437
+Now that you have an idea
+of what peer group benchmarking is
+
+61
+00:03:57,471 --> 00:03:59,640
+and why it is so important,
+
+62
+00:03:59,673 --> 00:04:04,611
+let us talk about the metrics that you
+will be able to use in this feature.
+
+63
+00:04:05,512 --> 00:04:09,449
+One of our goals with benchmarking
+is to give you insight
+
+64
+00:04:09,483 --> 00:04:14,288
+into how your app is performing
+throughout the customer lifecycle.
+
+65
+00:04:14,321 --> 00:04:20,160
+That's why we will be offering benchmarks
+for metrics related to acquisition,
+
+66
+00:04:20,194 --> 00:04:22,963
+usage, and monetization.
+
+67
+00:04:22,996 --> 00:04:25,699
+To help you measure
+your acquisition efforts,
+
+68
+00:04:25,732 --> 00:04:29,036
+we will provide you with
+conversion rate benchmarks.
+
+69
+00:04:29,069 --> 00:04:33,440
+Conversion rate helps you understand
+how often people download
+
+70
+00:04:33,473 --> 00:04:37,978
+or redownload your app
+after seeing it on the App Store.
+
+71
+00:04:38,011 --> 00:04:39,847
+The higher your conversion rate,
+
+72
+00:04:39,880 --> 00:04:43,617
+the more efficiently
+you are acquiring your customers.
+
+73
+00:04:44,785 --> 00:04:49,089
+To help you measure usage,
+you will be able to see Day 1,
+
+74
+00:04:49,122 --> 00:04:52,359
+Day 7, and Day 28 retention.
+
+75
+00:04:52,392 --> 00:04:56,129
+Retention helps you understand
+what percentage of people return
+
+76
+00:04:56,163 --> 00:04:58,699
+to your app one day after download,
+
+77
+00:04:58,732 --> 00:05:00,133
+seven days after download,
+
+78
+00:05:00,167 --> 00:05:02,369
+and 28 days after download,
+
+79
+00:05:02,402 --> 00:05:06,807
+and is a good indicator
+of how engaging your app is
+
+80
+00:05:06,840 --> 00:05:08,408
+for your customers.
+
+81
+00:05:09,676 --> 00:05:13,747
+You will also be able to see
+how your crash rate stacks up
+
+82
+00:05:13,780 --> 00:05:15,682
+against your peers.
+
+83
+00:05:15,716 --> 00:05:19,186
+If your app is prone to crashing
+more often than normal,
+
+84
+00:05:19,219 --> 00:05:23,390
+it may negatively impact your engagement
+and monetization metrics,
+
+85
+00:05:23,423 --> 00:05:26,627
+so it's good to keep this
+as low as possible.
+
+86
+00:05:27,928 --> 00:05:32,032
+Finally, to help you evaluate
+your monetization strategy,
+
+87
+00:05:32,065 --> 00:05:37,471
+you will be able to see benchmarks
+around average proceeds per paying user.
+
+88
+00:05:37,504 --> 00:05:42,075
+This will allow you to see how much money
+your peers take home
+
+89
+00:05:42,109 --> 00:05:44,444
+from each of their paying customers,
+
+90
+00:05:44,478 --> 00:05:47,314
+so you can see how you compare.
+
+91
+00:05:47,347 --> 00:05:51,385
+Now that you know what metrics
+you will be able to see,
+
+92
+00:05:51,418 --> 00:05:55,222
+let us talk about relevancy and privacy.
+
+93
+00:05:55,255 --> 00:05:57,424
+Throughout the development
+of this feature,
+
+94
+00:05:57,457 --> 00:06:00,260
+we have strived to create peer groups
+
+95
+00:06:00,294 --> 00:06:03,463
+that are highly relevant to you
+and your business,
+
+96
+00:06:03,497 --> 00:06:08,802
+while also protecting the privacy
+of each app within that group.
+
+97
+00:06:08,836 --> 00:06:14,141
+This helps us meet our goals
+of providing you with helpful insights,
+
+98
+00:06:14,174 --> 00:06:18,478
+without revealing the performance
+of any individual app.
+
+99
+00:06:18,512 --> 00:06:20,881
+Let us discuss two examples
+
+100
+00:06:20,914 --> 00:06:24,585
+of how we will make the peer groups
+relevant to you,
+
+101
+00:06:24,618 --> 00:06:29,289
+no matter what kind of app
+that you have on the App Store.
+
+102
+00:06:29,323 --> 00:06:34,094
+First, we will use a number of attributes
+that we have on the App Store
+
+103
+00:06:34,127 --> 00:06:36,096
+to create your peer groups,
+
+104
+00:06:36,129 --> 00:06:39,199
+including the app's App Store category.
+
+105
+00:06:39,233 --> 00:06:43,003
+For example, if you have put your app
+in the travel category,
+
+106
+00:06:43,036 --> 00:06:44,938
+we will group you with other apps
+
+107
+00:06:44,972 --> 00:06:48,509
+that also put themselves
+in the travel category.
+
+108
+00:06:48,542 --> 00:06:53,547
+Second, we will also look at
+how your app monetizes on the store.
+
+109
+00:06:53,580 --> 00:06:56,350
+For example, is it a free app,
+
+110
+00:06:56,383 --> 00:07:00,320
+freemium, paid,
+paidmium, or subscription?
+
+111
+00:07:00,354 --> 00:07:04,024
+Since apps with different business models
+have different expectations
+
+112
+00:07:04,057 --> 00:07:05,759
+about user behavior,
+
+113
+00:07:05,792 --> 00:07:10,564
+this is also a very important factor
+for creating relevant peer groups.
+
+114
+00:07:10,597 --> 00:07:14,468
+Each attribute that we use to create
+your peer groups
+
+115
+00:07:14,501 --> 00:07:19,173
+has been tested to ensure
+it allows for meaningful comparisons
+
+116
+00:07:19,206 --> 00:07:23,143
+over time between your app
+and its peer group.
+
+117
+00:07:23,177 --> 00:07:25,546
+Next, let's talk about privacy.
+
+118
+00:07:25,579 --> 00:07:30,217
+At Apple, we have significant experience
+with building great products
+
+119
+00:07:30,250 --> 00:07:32,286
+that also have great privacy,
+
+120
+00:07:32,319 --> 00:07:36,023
+and we used that experience here.
+
+121
+00:07:36,056 --> 00:07:38,192
+In order to accomplish our privacy goals,
+
+122
+00:07:38,225 --> 00:07:41,361
+we use a technique called
+differential privacy,
+
+123
+00:07:41,395 --> 00:07:44,932
+which is the gold standard
+for ensuring that aggregated data
+
+124
+00:07:44,965 --> 00:07:50,037
+can remain both helpful
+and private at the same time.
+
+125
+00:07:50,070 --> 00:07:54,074
+When we calculate your peer
+group's overall conversion rate,
+
+126
+00:07:54,107 --> 00:07:56,643
+we add small amounts of noise
+
+127
+00:07:56,677 --> 00:08:01,181
+to each data point
+we share about your peer group.
+
+128
+00:08:01,215 --> 00:08:05,485
+We also ensure
+that enough apps are in your peer group
+
+129
+00:08:05,519 --> 00:08:08,522
+so that it is not possible to know
+
+130
+00:08:08,555 --> 00:08:13,427
+whether a particular app is in
+or out of your peer group,
+
+131
+00:08:13,460 --> 00:08:16,597
+because the noise added to the data set
+
+132
+00:08:16,630 --> 00:08:21,201
+is large enough to obscure
+the exact makeup of the peer group,
+
+133
+00:08:21,235 --> 00:08:24,238
+while still providing useful information
+
+134
+00:08:24,271 --> 00:08:27,074
+about your peer group in the aggregate.
+
+135
+00:08:27,107 --> 00:08:30,043
+This protects the privacy of your app
+
+136
+00:08:30,077 --> 00:08:33,046
+and all the other apps in the peer group.
+
+137
+00:08:33,080 --> 00:08:37,751
+Let us end by taking a look at
+how you can use other tools
+
+138
+00:08:37,784 --> 00:08:40,153
+to take action on this information.
+
+139
+00:08:41,288 --> 00:08:44,725
+The App Store provides a number
+of developer features
+
+140
+00:08:44,758 --> 00:08:49,530
+that enable you to optimize
+and improve your performance
+
+141
+00:08:49,563 --> 00:08:52,332
+across the customer lifecycle.
+
+142
+00:08:52,366 --> 00:08:55,569
+For example,
+to have a great conversion rate,
+
+143
+00:08:55,602 --> 00:08:58,639
+you need to have
+a great App Store product page,
+
+144
+00:08:58,672 --> 00:09:02,409
+and the App Store offers you
+tools to help.
+
+145
+00:09:02,442 --> 00:09:04,611
+With product page optimization,
+
+146
+00:09:04,645 --> 00:09:07,314
+you can test different app icons,
+
+147
+00:09:07,347 --> 00:09:09,683
+screenshots, and app previews
+
+148
+00:09:09,716 --> 00:09:15,689
+to find out which combination of features
+works best with your customers.
+
+149
+00:09:15,722 --> 00:09:19,960
+And with custom product pages,
+you can create unique product pages
+
+150
+00:09:19,993 --> 00:09:21,562
+for different audience
+
+151
+00:09:21,595 --> 00:09:24,097
+that focus on their specific interests,
+
+152
+00:09:24,131 --> 00:09:28,235
+rather than having one product page
+for all customers.
+
+153
+00:09:28,268 --> 00:09:33,807
+Both of these features can help you
+boost your conversion rate.
+
+154
+00:09:33,841 --> 00:09:36,410
+In order to improve your usage metrics,
+
+155
+00:09:36,443 --> 00:09:39,947
+you can utilize in-app events
+and App Clips.
+
+156
+00:09:39,980 --> 00:09:43,984
+In-app events are timely events
+within apps and games–
+
+157
+00:09:44,017 --> 00:09:46,019
+such as game competitions,
+
+158
+00:09:46,053 --> 00:09:49,456
+movie premieres,
+or livestreamed experiences–
+
+159
+00:09:49,489 --> 00:09:51,992
+that you can showcase on the App Store
+
+160
+00:09:52,025 --> 00:09:56,730
+to engage new customers
+and re-engage existing customers.
+
+161
+00:09:56,763 --> 00:09:59,933
+And an App Clip is
+a small part of your app
+
+162
+00:09:59,967 --> 00:10:03,403
+that is discoverable
+in relevant public places
+
+163
+00:10:03,437 --> 00:10:07,441
+so your customers can complete
+a quick task from your app.
+
+164
+00:10:07,474 --> 00:10:10,944
+For example, whether ordering take-out
+from a restaurant,
+
+165
+00:10:10,978 --> 00:10:14,214
+renting a scooter,
+or setting up a new connected appliance
+
+166
+00:10:14,248 --> 00:10:17,251
+for the first time,
+people can launch the App Clip
+
+167
+00:10:17,284 --> 00:10:20,854
+to easily start and finish the task.
+
+168
+00:10:20,888 --> 00:10:23,891
+And finally, to improve your monetization,
+
+169
+00:10:23,924 --> 00:10:26,426
+you can try out different pricing tiers
+
+170
+00:10:26,460 --> 00:10:29,396
+so that users can customize
+their experiences
+
+171
+00:10:29,429 --> 00:10:34,067
+based on their preferences
+and the amount they want to pay.
+
+172
+00:10:34,101 --> 00:10:37,271
+Or you can create
+a promoted in-app purchase,
+
+173
+00:10:37,304 --> 00:10:41,975
+which lets users browse the items for sale
+directly on the App Store,
+
+174
+00:10:42,009 --> 00:10:45,078
+even before they download your app.
+
+175
+00:10:45,112 --> 00:10:48,715
+To conclude,
+by combining peer group benchmarking
+
+176
+00:10:48,749 --> 00:10:52,719
+with other App Store tools,
+you can make meaningful progress
+
+177
+00:10:52,753 --> 00:10:57,191
+in the areas
+where your app needs it the most.
+
+178
+00:10:57,224 --> 00:11:01,795
+We invite you to go to
+developer.apple.com/app-store
+
+179
+00:11:01,828 --> 00:11:03,997
+to learn more.
+
+180
+00:11:04,031 --> 00:11:07,301
+Here is a quick summary
+of what you've seen today.
+
+181
+00:11:07,334 --> 00:11:10,437
+Peer Group Benchmarking
+is an exciting tool
+
+182
+00:11:10,470 --> 00:11:13,874
+that will let you compare
+your App Store performance
+
+183
+00:11:13,907 --> 00:11:18,245
+against a group of similar apps
+on the store.
+
+184
+00:11:18,278 --> 00:11:20,814
+We have designed Peer Group Benchmarking
+
+185
+00:11:20,848 --> 00:11:25,052
+using differential privacy
+to provide relevant insights
+
+186
+00:11:25,085 --> 00:11:30,157
+without revealing the information
+about any individual app.
+
+187
+00:11:30,190 --> 00:11:32,292
+By using Peer Group Benchmarking
+
+188
+00:11:32,326 --> 00:11:36,263
+in combination with other developer
+features on the App Store,
+
+189
+00:11:36,296 --> 00:11:42,369
+you will have the ability to boost
+your app's performance on the App Store.
+
+190
+00:11:42,402 --> 00:11:47,007
+You will be able to start using
+Peer Group Benchmarking early next year.
+
+191
+00:11:47,040 --> 00:11:48,942
+Thank you.
+

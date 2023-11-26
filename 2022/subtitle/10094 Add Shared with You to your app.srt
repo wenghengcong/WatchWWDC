@@ -1,0 +1,1209 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:10,010 --> 00:00:11,912
+Karthik: Hi, I'm Karthik,
+
+3
+00:00:11,945 --> 00:00:14,581
+an engineer on the Messages team.
+
+4
+00:00:14,615 --> 00:00:18,318
+In this video,
+I'm going to introduce Shared with You,
+
+5
+00:00:18,352 --> 00:00:20,921
+and how to adopt it in your app.
+
+6
+00:00:22,523 --> 00:00:25,959
+Shared with You was announced in iOS 15.
+
+7
+00:00:25,993 --> 00:00:29,830
+It is designed to make it easier
+for you to revisit links
+
+8
+00:00:29,863 --> 00:00:33,667
+that friends and family send you
+in Messages.
+
+9
+00:00:33,700 --> 00:00:37,604
+System applications that have
+adopted Shared with You are
+
+10
+00:00:37,638 --> 00:00:40,240
+Safari, News,
+
+11
+00:00:40,274 --> 00:00:42,910
+Music, Podcasts,
+
+12
+00:00:42,943 --> 00:00:46,213
+the TV app and Photos.
+
+13
+00:00:46,246 --> 00:00:51,351
+Shared with You meets you
+where you're consuming content.
+
+14
+00:00:51,385 --> 00:00:56,390
+Many times content is received
+when we are not ready to consume it.
+
+15
+00:00:56,423 --> 00:01:01,028
+For example, a friend sends
+a recommendation for a TV show
+
+16
+00:01:01,061 --> 00:01:03,630
+while you are out grocery shopping,
+
+17
+00:01:03,664 --> 00:01:07,901
+and then it's forgotten
+in the course of the day.
+
+18
+00:01:07,935 --> 00:01:12,840
+Shared with You makes it easier
+to discover this TV show later on
+
+19
+00:01:12,873 --> 00:01:17,477
+when you are browsing
+for TV shows to watch in the TV app
+
+20
+00:01:17,511 --> 00:01:22,816
+Shared with You makes it convenient to
+pick up a Messages conversation
+
+21
+00:01:22,850 --> 00:01:25,252
+right from within the app,
+
+22
+00:01:25,285 --> 00:01:29,456
+allowing you to stay in context
+of shared content
+
+23
+00:01:29,489 --> 00:01:31,792
+without leaving the app.
+
+24
+00:01:33,594 --> 00:01:36,964
+Your content can be pinned in Messages.
+
+25
+00:01:36,997 --> 00:01:42,436
+It elevates the content
+in Shared with You and Search.
+
+26
+00:01:42,469 --> 00:01:45,405
+This is a signal
+that content is important,
+
+27
+00:01:45,439 --> 00:01:48,809
+and starts the flow
+of automatic sharing consent.
+
+28
+00:01:48,842 --> 00:01:51,211
+More on that later.
+
+29
+00:01:51,245 --> 00:01:57,618
+In iOS 16, Shared with You is extended
+to include your apps, links, and content.
+
+30
+00:01:57,651 --> 00:02:01,822
+This takes the convenience of
+Shared with You and puts it in your apps.
+
+31
+00:02:03,023 --> 00:02:06,927
+I'll first talk about the design
+of Shared with You in your app,
+
+32
+00:02:06,960 --> 00:02:09,997
+then show you how it works,
+
+33
+00:02:10,030 --> 00:02:13,066
+and then walk you through
+how to adopt Shared with You.
+
+34
+00:02:14,401 --> 00:02:16,203
+Starting with design.
+
+35
+00:02:16,236 --> 00:02:21,208
+There are two parts of Shared with You
+that are part of your app experience:
+
+36
+00:02:21,241 --> 00:02:26,013
+The Shared with You shelf,
+and the Shared with You attribution view.
+
+37
+00:02:26,046 --> 00:02:29,516
+The Shared with You shelf
+is a dedicated space
+
+38
+00:02:29,550 --> 00:02:32,386
+in your app's browsing experience
+
+39
+00:02:32,419 --> 00:02:37,090
+that highlights content
+that was shared in Messages.
+
+40
+00:02:37,124 --> 00:02:44,198
+For example, the TV app's "Watch Now" tab
+has a Shared with You shelf.
+
+41
+00:02:44,231 --> 00:02:48,502
+So does the Listen Now tab
+in Music and Podcasts.
+
+42
+00:02:49,937 --> 00:02:55,475
+The content provided by Shared with You
+is a ranked and ordered list.
+
+43
+00:02:55,509 --> 00:02:58,879
+I'll go over that later in the video.
+
+44
+00:02:58,912 --> 00:03:01,949
+For each item
+in the Shared with You shelf,
+
+45
+00:03:01,982 --> 00:03:07,087
+show a rich preview
+along with an attribution view.
+
+46
+00:03:07,120 --> 00:03:11,391
+A rich preview has thumbnail, a title,
+
+47
+00:03:11,425 --> 00:03:14,361
+and a subtitle if applicable.
+
+48
+00:03:14,394 --> 00:03:19,166
+In this example, the rich preview
+consists of podcast art,
+
+49
+00:03:19,199 --> 00:03:22,669
+episode name, and the show name.
+
+50
+00:03:22,703 --> 00:03:27,341
+There is also an attribution view
+for each shared content
+
+51
+00:03:27,374 --> 00:03:29,610
+in the Shared with You shelf.
+
+52
+00:03:29,643 --> 00:03:32,479
+This is the all of the information
+that allows context
+
+53
+00:03:32,513 --> 00:03:34,681
+to be gleaned at a glance.
+
+54
+00:03:36,083 --> 00:03:39,486
+Have a Show More element
+that can expand the view
+
+55
+00:03:39,520 --> 00:03:44,024
+or navigate to showing all of your app's
+Shared with You content.
+
+56
+00:03:44,057 --> 00:03:47,794
+The Attribution view
+is an out of process view
+
+57
+00:03:47,828 --> 00:03:54,434
+that securely displays the names
+and avatars of who shared it.
+
+58
+00:03:54,468 --> 00:03:59,907
+It also shows
+if the content was pinned in Messages.
+
+59
+00:03:59,940 --> 00:04:05,012
+Show the attribution view
+in the details view of your content.
+
+60
+00:04:05,045 --> 00:04:09,216
+This allows people to connect
+content in your app
+
+61
+00:04:09,249 --> 00:04:12,886
+back to the Messages conversation
+it was shared in.
+
+62
+00:04:12,920 --> 00:04:17,124
+For example,
+when I'm browsing for a TV show to watch,
+
+63
+00:04:17,157 --> 00:04:23,497
+the attribution view helps me recall
+that a friend had recommend it.
+
+64
+00:04:23,530 --> 00:04:28,202
+I can quickly tell my friend
+that I'm about to watch the show.
+
+65
+00:04:28,235 --> 00:04:31,872
+All this happens right in app,
+
+66
+00:04:31,905 --> 00:04:36,376
+and after replying,
+I'm right back at the content.
+
+67
+00:04:36,410 --> 00:04:39,179
+The attribution view is interactive.
+
+68
+00:04:39,213 --> 00:04:42,482
+Tapping on the view takes you
+to the Messages conversation
+
+69
+00:04:42,516 --> 00:04:45,185
+right from within the application.
+
+70
+00:04:45,219 --> 00:04:50,123
+The attribution view also presents
+contextual menu options
+
+71
+00:04:50,157 --> 00:04:53,994
+such as "Reply" and "Remove".
+
+72
+00:04:54,027 --> 00:05:00,968
+The "Reply" content menu option
+functions similar to tapping the view.
+
+73
+00:05:01,001 --> 00:05:04,638
+The "Remove" context menu option
+is a way to tell the Shared with You
+
+74
+00:05:04,671 --> 00:05:08,509
+not to surface a piece of content
+going forward.
+
+75
+00:05:08,542 --> 00:05:12,346
+The same contextual menus
+are made available to you
+
+76
+00:05:12,379 --> 00:05:16,717
+to add to your content's contextual menus.
+
+77
+00:05:16,750 --> 00:05:21,488
+The title for the Remove context menu
+can be customized.
+
+78
+00:05:21,522 --> 00:05:24,358
+For example in Safari,
+
+79
+00:05:24,391 --> 00:05:29,396
+the contextual menu
+for the web page shows "Remove Link".
+
+80
+00:05:29,429 --> 00:05:35,269
+I'll go over how you can do this
+in your app later on in this video.
+
+81
+00:05:35,302 --> 00:05:38,872
+Now you know where to present
+a Shared with You shelf
+
+82
+00:05:38,906 --> 00:05:42,242
+and where to show the Attribution View.
+
+83
+00:05:42,276 --> 00:05:45,045
+Let me show you how Shared with You works.
+
+84
+00:05:45,078 --> 00:05:52,386
+Links shared by friends and family in
+Messages are surfaced in Shared with You.
+
+85
+00:05:52,419 --> 00:05:55,589
+Links in group conversations are surfaced
+
+86
+00:05:55,622 --> 00:05:59,826
+when at least one participant
+is a contact.
+
+87
+00:05:59,860 --> 00:06:05,332
+Shared with You is based on the same
+technology behind Universal Links.
+
+88
+00:06:05,365 --> 00:06:11,505
+Universal Links allows for
+seamless linking to content in your app
+
+89
+00:06:11,538 --> 00:06:14,208
+or on your website.
+
+90
+00:06:14,241 --> 00:06:19,346
+Users have granular control
+over Shared with You content.
+
+91
+00:06:20,414 --> 00:06:25,118
+They can choose what content is shared
+outside of Messages
+
+92
+00:06:25,152 --> 00:06:27,988
+on a per conversation basis,
+
+93
+00:06:28,021 --> 00:06:31,124
+per app, or globally.
+
+94
+00:06:31,158 --> 00:06:36,396
+This permission doesn't need
+to be requested in advance.
+
+95
+00:06:36,430 --> 00:06:39,399
+It happens organically.
+
+96
+00:06:39,433 --> 00:06:46,340
+Pinning links is implicit permission
+to surface the content in Shared with You.
+
+97
+00:06:46,373 --> 00:06:52,012
+Pinned content is always available
+to Shared with You in your app.
+
+98
+00:06:52,045 --> 00:06:57,951
+Based on heuristics when content
+for your app is pinned in Messages,
+
+99
+00:06:57,985 --> 00:07:03,123
+an option to enable
+automatic sharing is presented.
+
+100
+00:07:03,156 --> 00:07:06,527
+When automatic sharing is turned on,
+
+101
+00:07:06,560 --> 00:07:12,299
+further content is automatically available
+to Shared with You in your app.
+
+102
+00:07:13,834 --> 00:07:17,304
+Content in Shared with You is ordered.
+
+103
+00:07:17,337 --> 00:07:22,910
+The first item in the Shared with You
+shelf is curated by Siri Suggestions
+
+104
+00:07:22,943 --> 00:07:26,914
+based on various signals from the system.
+
+105
+00:07:26,947 --> 00:07:30,751
+This is followed by Pinned items
+
+106
+00:07:30,784 --> 00:07:34,788
+and the remainder of the list
+is chronologically ordered.
+
+107
+00:07:36,790 --> 00:07:40,661
+Siri Suggestions uses signals
+such as "Has the user viewed
+
+108
+00:07:40,694 --> 00:07:43,130
+or interacted with the content?"
+
+109
+00:07:43,163 --> 00:07:45,032
+Is the content Pinned?
+
+110
+00:07:45,065 --> 00:07:48,902
+In which context
+is the content being presented?
+
+111
+00:07:48,936 --> 00:07:52,539
+Your app plays a part
+in providing this feedback.
+
+112
+00:07:52,573 --> 00:07:56,443
+I'll go over in detail
+a little later on in the video.
+
+113
+00:07:56,476 --> 00:08:02,649
+All this is done to ensure that content
+is not too transient or stale.
+
+114
+00:08:02,683 --> 00:08:07,521
+In a conversation
+when a link is shared multiple times,
+
+115
+00:08:07,554 --> 00:08:12,726
+Shared with You surfaces
+only the most recent message.
+
+116
+00:08:12,759 --> 00:08:17,331
+When a link is shared in
+multiple Messages conversations,
+
+117
+00:08:17,364 --> 00:08:23,470
+Shared with You visually represents
+that via the attribution view.
+
+118
+00:08:23,504 --> 00:08:27,908
+For example,
+both Enrique and Sarah have shared
+
+119
+00:08:27,941 --> 00:08:31,178
+the Top 25 Chicago playlist.
+
+120
+00:08:31,211 --> 00:08:36,984
+The attribution view shows
+both their contact avatars.
+
+121
+00:08:37,017 --> 00:08:41,889
+Tapping on the attribution view
+presents a disambiguation menu,
+
+122
+00:08:41,922 --> 00:08:47,861
+allowing you to choose which Messages
+conversation to reply to.
+
+123
+00:08:47,895 --> 00:08:51,064
+Security and Privacy
+was a primary consideration
+
+124
+00:08:51,098 --> 00:08:53,967
+and focus when designing Shared with You.
+
+125
+00:08:54,001 --> 00:08:58,105
+The attribution views
+and disambiguation views
+
+126
+00:08:58,138 --> 00:09:02,309
+are drawn on your behalf out of process.
+
+127
+00:09:02,342 --> 00:09:05,279
+Shared with You protects
+your app's content
+
+128
+00:09:05,312 --> 00:09:08,215
+via the Universal Links association
+
+129
+00:09:08,248 --> 00:09:12,219
+so it is accessible to only your app.
+
+130
+00:09:12,252 --> 00:09:17,958
+Apps do not have access to Messages
+recipients and conversations.
+
+131
+00:09:19,426 --> 00:09:22,196
+Now you know how Shared with You works.
+
+132
+00:09:22,229 --> 00:09:24,131
+On to the most exciting part–
+
+133
+00:09:24,164 --> 00:09:27,568
+how to adopt Shared with You in your app.
+
+134
+00:09:27,601 --> 00:09:31,104
+First, adopt Universal Links.
+
+135
+00:09:31,138 --> 00:09:34,441
+Then, add the new Shared with You
+Capability,
+
+136
+00:09:34,474 --> 00:09:37,411
+under the Capabilities tab in Xcode.
+
+137
+00:09:37,444 --> 00:09:41,682
+Then, put a Shared with You shelf
+in your app,
+
+138
+00:09:41,715 --> 00:09:46,420
+and add attribution view
+to your content.
+
+139
+00:09:46,453 --> 00:09:50,224
+Let me briefly talk about
+adopting Universal Links.
+
+140
+00:09:51,491 --> 00:09:56,730
+Universal Links allows your users
+to intelligently follow links to content
+
+141
+00:09:56,763 --> 00:09:59,633
+in your app or to your website.
+
+142
+00:09:59,666 --> 00:10:03,537
+Take the following steps
+to support universal links.
+
+143
+00:10:03,570 --> 00:10:06,974
+First create a two-way association
+
+144
+00:10:07,007 --> 00:10:10,477
+between your app and your website
+
+145
+00:10:10,511 --> 00:10:14,715
+and specify the URLs
+that your app handles.
+
+146
+00:10:14,748 --> 00:10:20,854
+You create them by adding the Associated
+Domains entitlement to your app,
+
+147
+00:10:20,888 --> 00:10:26,126
+and by adding a JSON file
+to your web server.
+
+148
+00:10:26,159 --> 00:10:28,929
+Next, update your app delegate
+
+149
+00:10:28,962 --> 00:10:32,966
+to respond to the user activity object
+the system provides
+
+150
+00:10:33,000 --> 00:10:36,670
+when a universal link routes to your app.
+
+151
+00:10:36,703 --> 00:10:42,409
+For more information, please watch
+the "What's new in Universal Links" video.
+
+152
+00:10:42,442 --> 00:10:47,614
+In iOS 16 we have introduced
+a new Framework called Shared with You.
+
+153
+00:10:47,648 --> 00:10:51,752
+There are three main classes
+in the Shared with You Framework:
+
+154
+00:10:51,785 --> 00:10:54,121
+SWHighlightCenter,
+
+155
+00:10:54,154 --> 00:10:59,026
+SWHighlight, and SWAttributionView.
+
+156
+00:10:59,059 --> 00:11:03,497
+SWHighlightCenter is the class that helps
+you get Shared with You content
+
+157
+00:11:03,530 --> 00:11:04,831
+for your app.
+
+158
+00:11:04,865 --> 00:11:10,204
+SWHighlight is a model object
+that wraps your app's shared content.
+
+159
+00:11:10,237 --> 00:11:15,042
+SWAttributionView is the view
+that helps connect your content
+
+160
+00:11:15,075 --> 00:11:17,778
+back to a Messages conversation
+
+161
+00:11:17,811 --> 00:11:20,547
+and displays attribution information.
+
+162
+00:11:21,949 --> 00:11:25,953
+The highlight center is
+a simple object that consists of:
+
+163
+00:11:25,986 --> 00:11:31,358
+Highlights,
+which is an array of SWHighlight objects;
+
+164
+00:11:31,391 --> 00:11:35,462
+and a delegate property
+by which apps get notified
+
+165
+00:11:35,495 --> 00:11:41,768
+when there is content added,
+removed, or updated by Shared with You.
+
+166
+00:11:41,802 --> 00:11:46,373
+A highlight is represented
+by the SWHighlight class.
+
+167
+00:11:46,406 --> 00:11:52,513
+It is used to pass the URL for your app's
+content that was shared in Messages.
+
+168
+00:11:52,546 --> 00:11:57,317
+You use it to refer to your content,
+render a rich preview,
+
+169
+00:11:57,351 --> 00:12:01,021
+and navigate to the content in your app.
+
+170
+00:12:01,054 --> 00:12:05,726
+Let me show you how to enumerate
+Shared with You content in your app.
+
+171
+00:12:06,994 --> 00:12:12,299
+First create an instance
+of SWHighlightCenter.
+
+172
+00:12:12,332 --> 00:12:16,670
+Then set the delegate property.
+
+173
+00:12:16,703 --> 00:12:22,109
+Implement the SWHighlightCenterDelegate
+method.
+
+174
+00:12:22,142 --> 00:12:24,811
+Use the highlights property
+on the highlight center
+
+175
+00:12:24,845 --> 00:12:29,149
+to access your app's Shared with You
+content.
+
+176
+00:12:29,183 --> 00:12:32,786
+Apps can choose to keep
+the previous list of highlights
+
+177
+00:12:32,819 --> 00:12:37,491
+in order to quickly diff that list
+against the latest list.
+
+178
+00:12:39,193 --> 00:12:44,464
+Use the URL property on each highlight
+to generate a Rich preview
+
+179
+00:12:44,498 --> 00:12:47,634
+of your app's content.
+
+180
+00:12:47,668 --> 00:12:53,674
+And it's as easy as that to enumerate
+Shared with You content in your app.
+
+181
+00:12:53,707 --> 00:12:59,012
+Next, I'll show you how to add
+and customize the Attribution View
+
+182
+00:12:59,046 --> 00:13:01,548
+to your app's Shared with You content.
+
+183
+00:13:01,582 --> 00:13:07,254
+SWAttributionView is the view
+that shows the names and avatars
+
+184
+00:13:07,287 --> 00:13:10,090
+of who shared the content.
+
+185
+00:13:10,123 --> 00:13:14,595
+Each highlight has
+a corresponding attribution view.
+
+186
+00:13:14,628 --> 00:13:17,831
+Setting the highlight Property
+on the attribution view
+
+187
+00:13:17,865 --> 00:13:22,102
+triggers the out of process rendering
+of the attribution information.
+
+188
+00:13:23,604 --> 00:13:28,275
+Specify a maximum width
+the attribution view can take.
+
+189
+00:13:28,308 --> 00:13:34,281
+The attribution view will fill
+or fit the space as needed.
+
+190
+00:13:34,314 --> 00:13:39,853
+Set the alignment of the attribution view
+within the maximum space.
+
+191
+00:13:39,887 --> 00:13:41,321
+Let me show you an example.
+
+192
+00:13:42,923 --> 00:13:46,693
+Create an instance of SWAttributionView
+
+193
+00:13:46,727 --> 00:13:49,897
+and set the highlight property.
+
+194
+00:13:49,930 --> 00:13:52,699
+Set the preferredMaxLayoutWidth.
+
+195
+00:13:52,733 --> 00:13:57,905
+In this example it spans the bottom
+of the shared content thumbnail.
+
+196
+00:13:57,938 --> 00:14:00,507
+Constrain this view's width anchor
+
+197
+00:14:00,541 --> 00:14:05,879
+or set its frame width to control
+the maximum width of its contents.
+
+198
+00:14:05,913 --> 00:14:09,950
+Set the maximum AX content size category
+for the view as necessary
+
+199
+00:14:09,983 --> 00:14:13,153
+using:
+minimumContentSizeCategory
+
+200
+00:14:13,187 --> 00:14:18,392
+or maximumContentSizeCategory
+properties on UIView.
+
+201
+00:14:18,425 --> 00:14:22,162
+Provide enough vertical space
+around this view.
+
+202
+00:14:22,196 --> 00:14:26,166
+The view's height is dependent
+on the preferredContentSizeCategory,
+
+203
+00:14:26,200 --> 00:14:28,836
+and the resulting font size.
+
+204
+00:14:28,869 --> 00:14:32,306
+If the view's height
+is unnecessarily constrained,
+
+205
+00:14:32,339 --> 00:14:36,310
+then the view might be clipped
+or not get drawn.
+
+206
+00:14:36,343 --> 00:14:40,747
+The horizontalAlignment is set
+to leading in this case.
+
+207
+00:14:40,781 --> 00:14:44,084
+It can also be set to Center
+
+208
+00:14:44,117 --> 00:14:46,887
+or Trailing.
+
+209
+00:14:46,920 --> 00:14:51,725
+Next, let me show you how to customize
+the Attribution view.
+
+210
+00:14:51,758 --> 00:14:54,561
+Setting a display context helps inform
+the system
+
+211
+00:14:54,595 --> 00:14:58,866
+about how the user is consuming
+the attributed content.
+
+212
+00:14:58,899 --> 00:15:03,303
+It also influences ranking of
+Shared with You content for your app.
+
+213
+00:15:03,337 --> 00:15:06,106
+Set this before it's added to a window.
+
+214
+00:15:06,139 --> 00:15:10,077
+The background style of
+the attribution view can be customized
+
+215
+00:15:10,110 --> 00:15:14,615
+based on the content's background
+it is being used against.
+
+216
+00:15:14,648 --> 00:15:17,284
+Let me show you an example.
+
+217
+00:15:17,317 --> 00:15:22,990
+The default value for
+displayContext property is summary.
+
+218
+00:15:23,023 --> 00:15:28,762
+This indicates that the content
+is being shown for consumption.
+
+219
+00:15:28,795 --> 00:15:31,198
+Set the displayContext to detail
+
+220
+00:15:31,231 --> 00:15:34,401
+when the user is actively consuming
+the content,
+
+221
+00:15:34,434 --> 00:15:39,173
+like watching a movie
+or listening to a podcast.
+
+222
+00:15:39,206 --> 00:15:43,510
+Setting the displayContext
+is the feedback your app can provide.
+
+223
+00:15:43,544 --> 00:15:47,548
+This'll help Siri Suggestions
+rank content for you app.
+
+224
+00:15:47,581 --> 00:15:51,385
+Set the background style
+for the attribution view to color
+
+225
+00:15:51,418 --> 00:15:55,355
+when placing the attribution view
+over monochrome backgrounds
+
+226
+00:15:55,389 --> 00:15:57,558
+like in this example.
+
+227
+00:15:57,591 --> 00:16:03,964
+Use material when placing the attribution
+view over multicolored backgrounds.
+
+228
+00:16:03,997 --> 00:16:08,669
+This sets a material background blur
+for the view's contents.
+
+229
+00:16:08,702 --> 00:16:14,041
+In this example, Safari's landing page
+has a background image.
+
+230
+00:16:14,074 --> 00:16:17,611
+The contents of the attribution view
+are more visible
+
+231
+00:16:17,644 --> 00:16:21,582
+by setting the correct background style.
+
+232
+00:16:21,615 --> 00:16:26,086
+Next let me show you how to add Shared
+with You Contextual Menus
+
+233
+00:16:26,119 --> 00:16:30,324
+to your app's content
+and customize the title.
+
+234
+00:16:30,357 --> 00:16:34,127
+The existing contextual menu
+attached to your app's content
+
+235
+00:16:34,161 --> 00:16:39,032
+can be supplemented
+by the attribution view's menu.
+
+236
+00:16:39,066 --> 00:16:42,669
+This menu should be added inline with
+
+237
+00:16:42,703 --> 00:16:48,175
+or at the end of the contextual menu
+it augments.
+
+238
+00:16:48,208 --> 00:16:53,814
+A custom title for the Remove contextual
+menu option can be provided.
+
+239
+00:16:53,847 --> 00:16:59,052
+The string should include the word
+"Remove", localized correctly.
+
+240
+00:16:59,086 --> 00:17:04,391
+In this example, Safari has customized
+the Remove menu title to "Remove Link"
+
+241
+00:17:04,424 --> 00:17:08,762
+in its content's context menu at the end.
+
+242
+00:17:08,795 --> 00:17:12,533
+Let me show you how to do this
+via an example.
+
+243
+00:17:12,566 --> 00:17:16,036
+First create an instance
+of the attribution view
+
+244
+00:17:16,069 --> 00:17:18,505
+and set the highlight property.
+
+245
+00:17:18,539 --> 00:17:21,975
+Provide a custom title
+for the Remove context menu
+
+246
+00:17:22,009 --> 00:17:24,945
+via the menuTitleForHideAction.
+
+247
+00:17:24,978 --> 00:17:28,081
+When configuring
+your content's context menu,
+
+248
+00:17:28,115 --> 00:17:34,188
+get the menu from the attribution view
+via the supplementalMenu property.
+
+249
+00:17:34,221 --> 00:17:38,692
+Then append them
+to your content's context menu.
+
+250
+00:17:38,725 --> 00:17:43,363
+These easy steps allow your app
+to add the context menu option
+
+251
+00:17:43,397 --> 00:17:49,336
+available on the attribution view
+to your content's context menus.
+
+252
+00:17:49,369 --> 00:17:54,508
+Now you know all that is needed
+to adopt Shared with You in your app.
+
+253
+00:17:54,541 --> 00:17:59,680
+Let's recap the three easy steps
+to adopt Shared with You in your app.
+
+254
+00:17:59,713 --> 00:18:01,849
+Go adopt Universal Links.
+
+255
+00:18:01,882 --> 00:18:07,354
+Then add the new Shared with You
+Capability in Xcode for your app.
+
+256
+00:18:07,387 --> 00:18:11,625
+Import and use the new
+Shared with You framework.
+
+257
+00:18:11,658 --> 00:18:15,462
+I'm looking forward to sharing
+your content in Messages
+
+258
+00:18:15,495 --> 00:18:18,498
+and using Shared with You in your app.
+
+259
+00:18:18,532 --> 00:18:21,869
+Thank you for your time and attention.
+

@@ -1,0 +1,1237 @@
+1
+00:00:00,067 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,610
+♪
+
+3
+00:00:09,610 --> 00:00:11,245
+Hello! I'm Justin,
+
+4
+00:00:11,245 --> 00:00:13,280
+and I'm an engineer
+on the Photos team.
+
+5
+00:00:13,280 --> 00:00:15,983
+Today, I would like to talk
+about some of the improvements
+
+6
+00:00:15,983 --> 00:00:18,619
+we have made
+to the system Photos picker.
+
+7
+00:00:18,619 --> 00:00:21,388
+The system Photos picker
+is the best way for most apps
+
+8
+00:00:21,388 --> 00:00:24,224
+to access photos
+and videos on iOS.
+
+9
+00:00:24,224 --> 00:00:26,960
+The picker runs out of process,
+so your app doesn't need
+
+10
+00:00:26,960 --> 00:00:29,796
+to request any library access
+to use it.
+
+11
+00:00:29,796 --> 00:00:33,734
+It has an intuitive UI
+and an easy-to-use API.
+
+12
+00:00:33,734 --> 00:00:36,670
+If you aren't familiar
+with the PHPicker API,
+
+13
+00:00:36,670 --> 00:00:39,840
+you can watch our previous
+years' WWDC sessions
+
+14
+00:00:39,840 --> 00:00:43,343
+where we talked
+about it in depth.
+
+15
+00:00:43,343 --> 00:00:46,413
+In today's session,
+I'll start with an overview
+
+16
+00:00:46,413 --> 00:00:50,083
+of the new features
+we added to the picker.
+
+17
+00:00:50,083 --> 00:00:53,353
+Then, I will talk about
+additional platforms
+
+18
+00:00:53,353 --> 00:00:56,857
+and frameworks
+the picker now supports.
+
+19
+00:00:56,857 --> 00:00:59,927
+All right, let's dive in.
+
+20
+00:00:59,927 --> 00:01:02,863
+The picker supports filtering
+between images, videos,
+
+21
+00:01:02,863 --> 00:01:06,333
+and Live Photos
+since its introduction.
+
+22
+00:01:06,333 --> 00:01:08,669
+However, we understand
+that some of your apps
+
+23
+00:01:08,669 --> 00:01:11,138
+may have some other requirements.
+
+24
+00:01:11,138 --> 00:01:13,974
+For example,
+a screenshot-stitching app
+
+25
+00:01:13,974 --> 00:01:17,210
+wants to only show
+screenshots in the picker.
+
+26
+00:01:17,210 --> 00:01:20,213
+Now it is possible
+with the new screenshots filter
+
+27
+00:01:20,213 --> 00:01:23,583
+we added this year.
+
+28
+00:01:23,583 --> 00:01:27,587
+In addition to screenshots,
+we added other asset types
+
+29
+00:01:27,587 --> 00:01:31,725
+like screen recordings
+and slo-mo videos.
+
+30
+00:01:31,725 --> 00:01:34,027
+There is also a way for you
+to create a new filter
+
+31
+00:01:34,027 --> 00:01:38,532
+using PHAsset.PlaybackStyle.
+
+32
+00:01:38,532 --> 00:01:42,970
+Other than Cinematic videos,
+depth effect photos, and bursts,
+
+33
+00:01:42,970 --> 00:01:45,706
+all of the new filters
+are backported.
+
+34
+00:01:45,706 --> 00:01:48,408
+If your app
+is targeting iOS 15,
+
+35
+00:01:48,408 --> 00:01:50,877
+you can still use them
+as long as you are compiling
+
+36
+00:01:50,877 --> 00:01:53,847
+with the iOS 16 SDK.
+
+37
+00:01:53,847 --> 00:01:58,218
+For compound filters, in
+addition to the existing "any,"
+
+38
+00:01:58,218 --> 00:02:00,954
+now you also use
+"all" and "not."
+
+39
+00:02:00,954 --> 00:02:04,358
+They are also backported
+to iOS 15.
+
+40
+00:02:04,358 --> 00:02:06,994
+Let's look at some
+code examples.
+
+41
+00:02:06,994 --> 00:02:12,299
+To show videos and Live Photos,
+you can combine them with "any."
+
+42
+00:02:12,299 --> 00:02:17,404
+Or you may only want
+to show screenshots.
+
+43
+00:02:17,404 --> 00:02:20,140
+To show all images
+without screenshots,
+
+44
+00:02:20,140 --> 00:02:22,442
+you can combine images
+and screenshots filters
+
+45
+00:02:22,442 --> 00:02:25,612
+using "all" and "not."
+
+46
+00:02:25,612 --> 00:02:29,149
+And the last example, you can
+use .cinematicVideos filter
+
+47
+00:02:29,149 --> 00:02:32,285
+if you are targeting iOS 16.
+
+48
+00:02:32,285 --> 00:02:35,122
+Next, let's talk
+about improvements
+
+49
+00:02:35,122 --> 00:02:37,624
+related to the half-height
+picker.
+
+50
+00:02:37,624 --> 00:02:41,995
+In iOS 15, UIKit has a new
+UISheetPresentationController
+
+51
+00:02:41,995 --> 00:02:47,300
+API which you can use to present
+the picker in half-height mode.
+
+52
+00:02:47,300 --> 00:02:50,637
+It already works great
+in many cases.
+
+53
+00:02:50,637 --> 00:02:53,807
+But some of you may want
+to implement a custom UI
+
+54
+00:02:53,807 --> 00:02:56,543
+to adjust selected assets
+and have those changes
+
+55
+00:02:56,543 --> 00:03:00,447
+be reflected back in picker.
+
+56
+00:03:00,447 --> 00:03:03,650
+In iOS 16,
+you can deselect assets
+
+57
+00:03:03,650 --> 00:03:07,320
+using their asset identifiers.
+
+58
+00:03:07,320 --> 00:03:10,857
+As shown here, the second photo
+is no longer selected
+
+59
+00:03:10,857 --> 00:03:16,696
+in the picker after
+deselectAssets is called.
+
+60
+00:03:16,696 --> 00:03:21,568
+You can also call the moveAsset
+method to reorder assets.
+
+61
+00:03:21,568 --> 00:03:24,704
+Now we are familiar with
+all of the new picker features,
+
+62
+00:03:24,704 --> 00:03:27,574
+let's talk about
+platform support.
+
+63
+00:03:27,574 --> 00:03:30,577
+Currently, the system Photos
+picker can only be used
+
+64
+00:03:30,577 --> 00:03:33,814
+by iOS and iPadOS apps.
+
+65
+00:03:33,814 --> 00:03:35,982
+This year, we are bringing
+the Photos picker
+
+66
+00:03:35,982 --> 00:03:41,154
+to two additional platforms:
+macOS and watchOS.
+
+67
+00:03:41,154 --> 00:03:44,157
+The iPadOS picker is also
+updated with a new design
+
+68
+00:03:44,157 --> 00:03:46,493
+just for the iPad.
+
+69
+00:03:46,493 --> 00:03:49,696
+Let's take a look
+at the new iPad UI first.
+
+70
+00:03:49,696 --> 00:03:51,398
+The picker now shows a sidebar
+
+71
+00:03:51,398 --> 00:03:55,202
+to take advantage
+of the larger iPad display.
+
+72
+00:03:55,202 --> 00:03:57,070
+The sidebar allows
+faster navigation
+
+73
+00:03:57,070 --> 00:03:59,239
+between different collections.
+
+74
+00:03:59,239 --> 00:04:01,274
+But if there is not
+enough space,
+
+75
+00:04:01,274 --> 00:04:03,677
+like in Split Screen mode,
+
+76
+00:04:03,677 --> 00:04:08,215
+we will fall back to the
+existing compact picker UI.
+
+77
+00:04:08,215 --> 00:04:11,718
+Next, macOS.
+
+78
+00:04:11,718 --> 00:04:16,056
+The macOS picker also has a
+sidebar with Mac-style controls.
+
+79
+00:04:16,056 --> 00:04:20,527
+And just like the iOS picker,
+it supports multiple selection,
+
+80
+00:04:20,527 --> 00:04:23,930
+fluid zooming in the grid, and
+has a powerful search feature
+
+81
+00:04:23,930 --> 00:04:27,434
+which allows you to search
+for things like people, places,
+
+82
+00:04:27,434 --> 00:04:30,070
+and a lot more.
+
+83
+00:04:30,070 --> 00:04:34,407
+The new picker UI is also
+available in NSOpenPanel.
+
+84
+00:04:34,407 --> 00:04:38,278
+You can use it to select assets
+from the system photo library,
+
+85
+00:04:38,278 --> 00:04:39,846
+and for the first time,
+
+86
+00:04:39,846 --> 00:04:43,617
+including those assets
+stored in iCloud Photos.
+
+87
+00:04:43,617 --> 00:04:46,086
+Your app will get
+the new UI for free
+
+88
+00:04:46,086 --> 00:04:49,856
+without needing to do
+any adoption work.
+
+89
+00:04:49,856 --> 00:04:54,227
+Drag and drop is supported
+in the NSOpenPanel picker.
+
+90
+00:04:54,227 --> 00:04:57,164
+It's also supported
+in the standard picker on iOS,
+
+91
+00:04:57,164 --> 00:05:00,734
+iPadOS, and macOS.
+
+92
+00:05:00,734 --> 00:05:04,838
+If your app only needs to select
+a few images or videos,
+
+93
+00:05:04,838 --> 00:05:08,742
+the NSOpenPanel API
+may be all you need.
+
+94
+00:05:08,742 --> 00:05:11,244
+But keep in mind that selected
+files in the photo library
+
+95
+00:05:11,244 --> 00:05:15,115
+may be deleted by the system
+at any time.
+
+96
+00:05:15,115 --> 00:05:18,118
+You should copy them to
+a location managed by your app
+
+97
+00:05:18,118 --> 00:05:23,557
+if you need to ensure their
+availability in the long term.
+
+98
+00:05:23,557 --> 00:05:28,094
+For media-centric macOS apps,
+we encourage you to default
+
+99
+00:05:28,094 --> 00:05:32,699
+to the new Photos picker
+for the best user experience.
+
+100
+00:05:32,699 --> 00:05:37,237
+However, your app should still
+provide an alternative way
+
+101
+00:05:37,237 --> 00:05:39,573
+to select assets
+from the file system
+
+102
+00:05:39,573 --> 00:05:42,842
+using the NSOpenPanel API.
+
+103
+00:05:42,842 --> 00:05:46,479
+Sometimes your customers
+may still want to select assets
+
+104
+00:05:46,479 --> 00:05:50,984
+outside their photo libraries.
+
+105
+00:05:50,984 --> 00:05:55,522
+Last but not least,
+let's talk about watchOS.
+
+106
+00:05:55,522 --> 00:05:58,191
+For the first time,
+you can have access to images
+
+107
+00:05:58,191 --> 00:06:01,561
+stored on the watch
+using a new API.
+
+108
+00:06:01,561 --> 00:06:04,264
+The watchOS picker
+also runs out of process,
+
+109
+00:06:04,264 --> 00:06:06,933
+like the iOS
+and the macOS picker,
+
+110
+00:06:06,933 --> 00:06:10,770
+so you don't need to request
+any library access to use it.
+
+111
+00:06:10,770 --> 00:06:13,373
+It has a UI
+similar to the iOS picker
+
+112
+00:06:13,373 --> 00:06:17,177
+but optimized
+for the smaller screen.
+
+113
+00:06:17,177 --> 00:06:21,681
+You can browse your photos
+in the grid or by collections.
+
+114
+00:06:21,681 --> 00:06:24,784
+You can configure the picker
+to show the selection order,
+
+115
+00:06:24,784 --> 00:06:29,356
+as well as specifying
+a selection limit.
+
+116
+00:06:29,356 --> 00:06:32,626
+However, unlike iOS and macOS,
+
+117
+00:06:32,626 --> 00:06:36,696
+only images will be displayed
+in the watchOS picker.
+
+118
+00:06:36,696 --> 00:06:39,733
+If the device has more
+than 500 images,
+
+119
+00:06:39,733 --> 00:06:43,370
+only the most recent 500
+will be shown.
+
+120
+00:06:43,370 --> 00:06:45,005
+You may be wondering,
+
+121
+00:06:45,005 --> 00:06:48,041
+"PHPickerViewController
+is UIKit based.
+
+122
+00:06:48,041 --> 00:06:52,545
+How can I use it for my macOS
+or watchOS app?"
+
+123
+00:06:52,545 --> 00:06:54,547
+As you may have guessed,
+
+124
+00:06:54,547 --> 00:07:00,687
+new picker APIs are now
+available in AppKit and SwiftUI.
+
+125
+00:07:00,687 --> 00:07:03,690
+Let's take a look
+at the AppKit API first.
+
+126
+00:07:03,690 --> 00:07:07,961
+Actually, it is very similar
+to the UIKit API.
+
+127
+00:07:07,961 --> 00:07:11,264
+You have access to the same
+PHPickerConfiguration type
+
+128
+00:07:11,264 --> 00:07:13,767
+and its properties.
+
+129
+00:07:13,767 --> 00:07:16,336
+There is only
+a small difference:
+
+130
+00:07:16,336 --> 00:07:19,706
+PHPickerViewController
+is a NSViewController subclass
+
+131
+00:07:19,706 --> 00:07:23,710
+for AppKit apps.
+
+132
+00:07:23,710 --> 00:07:27,480
+With the introduction
+of the AppKit-based PHPicker,
+
+133
+00:07:27,480 --> 00:07:31,785
+it's time to move away from the
+legacy media library browser.
+
+134
+00:07:31,785 --> 00:07:35,121
+PHPicker is a lot more powerful.
+
+135
+00:07:35,121 --> 00:07:38,158
+It's also easier to maintain
+if you are working on both
+
+136
+00:07:38,158 --> 00:07:43,730
+UIKit and AppKit apps
+at the same time.
+
+137
+00:07:43,730 --> 00:07:47,734
+Finally, it's time to talk about
+the SwiftUI API.
+
+138
+00:07:49,969 --> 00:07:53,540
+Remember the iOS picker you saw
+at the beginning of the session?
+
+139
+00:07:53,540 --> 00:07:58,044
+It can be presented with only
+a few lines of SwiftUI code.
+
+140
+00:07:58,044 --> 00:08:00,513
+More importantly,
+you have access
+
+141
+00:08:00,513 --> 00:08:03,016
+to the SwiftUI PhotosPicker API
+
+142
+00:08:03,016 --> 00:08:06,219
+on all picker-supported
+platforms:
+
+143
+00:08:06,219 --> 00:08:10,957
+iOS, iPadOS, macOS, and watchOS.
+
+144
+00:08:10,957 --> 00:08:13,693
+The picker will automatically
+choose the best layout
+
+145
+00:08:13,693 --> 00:08:17,297
+depending on the platform,
+your app's configuration,
+
+146
+00:08:17,297 --> 00:08:20,133
+and available screen space.
+
+147
+00:08:20,133 --> 00:08:23,069
+You don't need to worry about
+what the picker UI should be,
+
+148
+00:08:23,069 --> 00:08:26,639
+so you just can focus
+on making your app better.
+
+149
+00:08:29,409 --> 00:08:32,979
+Before we look at the new API
+in detail via a demo,
+
+150
+00:08:32,979 --> 00:08:34,481
+we should talk about how to load
+
+151
+00:08:34,481 --> 00:08:38,318
+selected photos
+and videos first.
+
+152
+00:08:38,318 --> 00:08:42,055
+The selection you receive
+through the SwiftUI binding
+
+153
+00:08:42,055 --> 00:08:45,458
+only contains
+placeholder objects.
+
+154
+00:08:45,458 --> 00:08:50,029
+You still need to load
+actual asset data on demand.
+
+155
+00:08:50,029 --> 00:08:51,931
+Keep in mind
+that some asset data
+
+156
+00:08:51,931 --> 00:08:54,634
+won't be loaded immediately.
+
+157
+00:08:54,634 --> 00:08:56,836
+The load operation
+could also fail
+
+158
+00:08:56,836 --> 00:08:58,938
+if an error was encountered,
+
+159
+00:08:58,938 --> 00:09:02,075
+for example, when the picker
+was trying to download data
+
+160
+00:09:02,075 --> 00:09:05,512
+from iCloud Photos
+but the device was not connected
+
+161
+00:09:05,512 --> 00:09:08,014
+to the internet.
+
+162
+00:09:08,014 --> 00:09:12,485
+Some large files like videos may
+take a long time to download,
+
+163
+00:09:12,485 --> 00:09:16,456
+so we recommend you to show
+a per-item inline loading UI
+
+164
+00:09:16,456 --> 00:09:21,060
+instead of a blocking
+loading indicator.
+
+165
+00:09:21,060 --> 00:09:23,563
+The PhotosPicker
+uses Transferable,
+
+166
+00:09:23,563 --> 00:09:26,766
+which is a new SwiftUI protocol
+for transferring data
+
+167
+00:09:26,766 --> 00:09:29,903
+between apps and extensions.
+
+168
+00:09:29,903 --> 00:09:33,506
+You can load SwiftUI Image
+via Transferable directly,
+
+169
+00:09:33,506 --> 00:09:35,809
+but for advanced use cases,
+
+170
+00:09:35,809 --> 00:09:37,844
+you should define
+your own model objects
+
+171
+00:09:37,844 --> 00:09:40,280
+conforming to
+the Transferable protocol
+
+172
+00:09:40,280 --> 00:09:44,918
+to fully control the type
+of data you want to load.
+
+173
+00:09:44,918 --> 00:09:47,687
+For more information
+about Transferable,
+
+174
+00:09:47,687 --> 00:09:50,890
+you can check out
+the "Meet Transferable" session.
+
+175
+00:09:50,890 --> 00:09:54,861
+If your app needs to deal with
+a lot of items at the same time,
+
+176
+00:09:54,861 --> 00:09:57,530
+or large assets like videos,
+
+177
+00:09:57,530 --> 00:10:00,633
+it may not be feasible
+to load everything in memory
+
+178
+00:10:00,633 --> 00:10:03,169
+at the same time.
+
+179
+00:10:03,169 --> 00:10:08,007
+To reduce memory usage, you can
+use FileTransferRepresentation
+
+180
+00:10:08,007 --> 00:10:11,711
+to load selected assets
+as files.
+
+181
+00:10:11,711 --> 00:10:13,646
+When loading assets as files,
+
+182
+00:10:13,646 --> 00:10:16,216
+keep in mind
+that your app is responsible
+
+183
+00:10:16,216 --> 00:10:19,219
+for managing their lifecycles.
+
+184
+00:10:19,219 --> 00:10:21,821
+Files should always be copied
+to your app directory
+
+185
+00:10:21,821 --> 00:10:27,227
+when received and deleted
+when they are no longer needed.
+
+186
+00:10:27,227 --> 00:10:30,163
+OK, it's time for the demo!
+
+187
+00:10:30,163 --> 00:10:31,931
+I have already set up
+this demo app
+
+188
+00:10:31,931 --> 00:10:34,634
+showing an account profile page.
+
+189
+00:10:34,634 --> 00:10:39,205
+Right now the profile image
+is just a placeholder icon.
+
+190
+00:10:39,205 --> 00:10:42,675
+We want to add an edit button
+to change the profile image
+
+191
+00:10:42,675 --> 00:10:45,011
+using the PhotosPicker API.
+
+192
+00:10:45,011 --> 00:10:47,013
+The profile image view
+can already respond
+
+193
+00:10:47,013 --> 00:10:50,383
+to the image state
+defined in our view model,
+
+194
+00:10:50,383 --> 00:10:52,719
+so we just need to update
+the image state
+
+195
+00:10:52,719 --> 00:10:56,189
+when a picker selection
+is received.
+
+196
+00:10:56,189 --> 00:10:58,591
+First, let's go
+to our view model
+
+197
+00:10:58,591 --> 00:11:01,494
+and add a new
+imageSelection property.
+
+198
+00:11:01,494 --> 00:11:04,030
+It will be passed
+to the PhotosPicker API
+
+199
+00:11:04,030 --> 00:11:07,300
+as the selection binding.
+
+200
+00:11:07,300 --> 00:11:10,937
+Now we can go back
+to our profile image view,
+
+201
+00:11:10,937 --> 00:11:14,340
+and add an overlay button
+that brings up the picker.
+
+202
+00:11:19,212 --> 00:11:22,682
+OK, let's pause for a second
+and take a look at the code
+
+203
+00:11:22,682 --> 00:11:24,384
+we just added.
+
+204
+00:11:24,384 --> 00:11:26,085
+We added a PhotosPicker view,
+
+205
+00:11:26,085 --> 00:11:29,289
+given it the selection binding
+we just defined,
+
+206
+00:11:29,289 --> 00:11:33,059
+and configured it
+to only show images.
+
+207
+00:11:33,059 --> 00:11:34,294
+The label of the PhotosPicker
+
+208
+00:11:34,294 --> 00:11:39,098
+is just a pencil glyph
+with a circle background.
+
+209
+00:11:39,098 --> 00:11:42,335
+We can build and run
+to see what we have so far.
+
+210
+00:11:42,335 --> 00:11:46,005
+I can tap the edit button
+to bring up the picker.
+
+211
+00:11:46,005 --> 00:11:49,909
+Tapping an image will
+automatically close the picker,
+
+212
+00:11:49,909 --> 00:11:52,512
+but the profile image
+is not updated.
+
+213
+00:11:52,512 --> 00:11:53,713
+Why?
+
+214
+00:11:53,713 --> 00:11:55,815
+We still need to connect
+the image selection
+
+215
+00:11:55,815 --> 00:11:57,350
+and the image state.
+
+216
+00:11:57,350 --> 00:11:59,452
+So, let's do that.
+
+217
+00:11:59,452 --> 00:12:01,054
+We can go back to the view model
+
+218
+00:12:01,054 --> 00:12:04,624
+and respond to image
+selection did set.
+
+219
+00:12:04,624 --> 00:12:08,695
+We set the image state to empty
+if the image selection is nil.
+
+220
+00:12:08,695 --> 00:12:12,532
+Otherwise,
+we start loading the image.
+
+221
+00:12:12,532 --> 00:12:15,535
+We are seeing a compiler error
+because we haven't implemented
+
+222
+00:12:15,535 --> 00:12:17,870
+the loadTransferable
+method yet.
+
+223
+00:12:17,870 --> 00:12:19,472
+Let's fix it.
+
+224
+00:12:23,042 --> 00:12:25,645
+The implementation
+is very simple.
+
+225
+00:12:25,645 --> 00:12:28,247
+We just need to respond
+to the completion handler
+
+226
+00:12:28,247 --> 00:12:29,916
+and update image state
+
+227
+00:12:29,916 --> 00:12:34,220
+if the request is still
+the most recent one.
+
+228
+00:12:34,220 --> 00:12:37,790
+Let's build and run
+to see it in action.
+
+229
+00:12:37,790 --> 00:12:43,229
+I can tap the edit button
+and select an image.
+
+230
+00:12:43,229 --> 00:12:46,899
+Great!
+It works as expected.
+
+231
+00:12:46,899 --> 00:12:52,338
+Actually, the project is already
+set up to run on macOS as well.
+
+232
+00:12:52,338 --> 00:12:56,209
+Will the code I just added
+automatically work on macOS?
+
+233
+00:12:56,209 --> 00:12:59,445
+Let's build and run to find out.
+
+234
+00:12:59,445 --> 00:13:01,014
+It compiles!
+
+235
+00:13:01,014 --> 00:13:04,150
+I can open the picker,
+select an image,
+
+236
+00:13:04,150 --> 00:13:07,954
+and it is reflected in the app.
+
+237
+00:13:07,954 --> 00:13:09,989
+That's it for the demo.
+
+238
+00:13:09,989 --> 00:13:13,226
+You just saw the demo
+on iOS and macOS,
+
+239
+00:13:13,226 --> 00:13:17,030
+but the same code will work
+on watchOS as well.
+
+240
+00:13:17,030 --> 00:13:20,433
+However, there are a few things
+to keep in mind.
+
+241
+00:13:23,269 --> 00:13:25,805
+The watchOS picker is designed
+for simple flows
+
+242
+00:13:25,805 --> 00:13:28,274
+and short interactions.
+
+243
+00:13:28,274 --> 00:13:31,778
+Images are scaled
+based on the device size.
+
+244
+00:13:31,778 --> 00:13:36,616
+Usually, they are synced
+from the paired iPhone.
+
+245
+00:13:36,616 --> 00:13:39,986
+However, Family Setup
+lets your family members
+
+246
+00:13:39,986 --> 00:13:41,487
+who don't have their own iPhone
+
+247
+00:13:41,487 --> 00:13:46,092
+enjoy the features and benefits
+of an Apple Watch.
+
+248
+00:13:46,092 --> 00:13:49,228
+If a device is in
+the Family Setup mode,
+
+249
+00:13:49,228 --> 00:13:52,899
+the most recent 1000 images in
+iCloud Photos can be selected
+
+250
+00:13:52,899 --> 00:13:55,301
+using the picker.
+
+251
+00:13:55,301 --> 00:13:59,439
+The picker may need to download
+some images from the internet.
+
+252
+00:13:59,439 --> 00:14:01,207
+And if that's the case,
+
+253
+00:14:01,207 --> 00:14:04,877
+a loading UI will be shown
+in the picker before closing.
+
+254
+00:14:06,746 --> 00:14:08,715
+Before you go,
+I just want to say
+
+255
+00:14:08,715 --> 00:14:11,350
+that we are committed to making
+the system Photos picker
+
+256
+00:14:11,350 --> 00:14:15,488
+the best way for most apps
+to access photos and videos.
+
+257
+00:14:15,488 --> 00:14:17,590
+We really encourage you
+to switch to it
+
+258
+00:14:17,590 --> 00:14:20,326
+if you are still using
+a custom picker.
+
+259
+00:14:20,326 --> 00:14:23,396
+Thank you,
+and have a great WWDC!
+
+260
+00:14:23,396 --> 00:14:27,533
+♪
+

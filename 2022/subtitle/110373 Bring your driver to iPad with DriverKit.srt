@@ -1,0 +1,1271 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,843 --> 00:00:10,944
+Souvik Banerjee: Hi, and welcome
+
+3
+00:00:10,978 --> 00:00:14,081
+to "Bring your driver to iPad
+with DriverKit."
+
+4
+00:00:14,114 --> 00:00:19,419
+I'm Souvik, and today I'll discuss several
+exciting new developments in DriverKit.
+
+5
+00:00:19,453 --> 00:00:22,856
+We're going to discuss three topics today.
+
+6
+00:00:22,890 --> 00:00:27,294
+First, I'll give a brief overview
+of DriverKit.
+
+7
+00:00:27,327 --> 00:00:31,999
+Then, I'll discuss some updates
+to AudioDriverKit.
+
+8
+00:00:32,032 --> 00:00:37,004
+And I'll end with how to bring your
+drivers to the iPad
+
+9
+00:00:37,037 --> 00:00:39,306
+Let's get started with an overview.
+
+10
+00:00:39,339 --> 00:00:42,809
+In 2019, we introduced DriverKit,
+
+11
+00:00:42,843 --> 00:00:45,812
+a replacement for IOKit device drivers.
+
+12
+00:00:45,846 --> 00:00:48,949
+DriverKit brought a new way
+to extend the system
+
+13
+00:00:48,982 --> 00:00:53,921
+that is more reliable and secure,
+running in userspace.
+
+14
+00:00:53,954 --> 00:00:58,959
+And it's easier to develop
+since your process isn't in the kernel.
+
+15
+00:00:58,992 --> 00:01:03,797
+These driver extensions,
+also known as dexts, are bundled in apps,
+
+16
+00:01:03,830 --> 00:01:08,969
+and you can easily distribute your apps
+and drivers on the Mac App Store.
+
+17
+00:01:09,002 --> 00:01:12,105
+People can easily find your driver
+with a search,
+
+18
+00:01:12,139 --> 00:01:14,441
+and if your driver is no longer needed,
+
+19
+00:01:14,474 --> 00:01:17,177
+you can just delete the app
+to uninstall it.
+
+20
+00:01:17,211 --> 00:01:22,316
+Since introducing DriverKit, we have added
+support for many new driver families.
+
+21
+00:01:23,283 --> 00:01:27,354
+We now support Networking,
+Block Storage, Serial,
+
+22
+00:01:27,387 --> 00:01:31,425
+Audio, and SCSI controller
+and peripheral drivers
+
+23
+00:01:31,458 --> 00:01:36,063
+in addition to transports
+such as USB, PCI, and HID.
+
+24
+00:01:37,030 --> 00:01:41,134
+To learn more about the kinds of drivers
+you can build with DriverKit,
+
+25
+00:01:41,168 --> 00:01:45,038
+please check out the "Create audio drivers
+with DriverKit" session
+
+26
+00:01:45,072 --> 00:01:47,608
+from WWDC 2021
+
+27
+00:01:47,641 --> 00:01:52,045
+and the "Modernize PCI and SCSI drivers
+with DriverKit" session
+
+28
+00:01:52,079 --> 00:01:54,882
+from WWDC 2020.
+
+29
+00:01:54,915 --> 00:01:59,186
+Next, we added several new features
+in AudioDriverKit recently
+
+30
+00:01:59,219 --> 00:02:01,088
+that I want to highlight.
+
+31
+00:02:01,121 --> 00:02:04,224
+One of these features
+is real-time operations.
+
+32
+00:02:04,258 --> 00:02:08,095
+We're excited to introduce
+a new feature in AudioDriverKit
+
+33
+00:02:08,128 --> 00:02:11,265
+allowing you to register
+a real-time callback.
+
+34
+00:02:11,298 --> 00:02:16,303
+This callback gets invoked
+every time an IO operation happens.
+
+35
+00:02:16,336 --> 00:02:20,240
+You can use this callback if you need
+to modify your audio buffers
+
+36
+00:02:20,274 --> 00:02:23,443
+on a real-time thread,
+such as for signal processing.
+
+37
+00:02:25,646 --> 00:02:29,283
+To register a real-time callback
+in AudioDriverKit,
+
+38
+00:02:29,316 --> 00:02:32,219
+we declare an IOOperationHandler block
+
+39
+00:02:32,252 --> 00:02:36,156
+to set on the IOUserAudioDevice.
+
+40
+00:02:36,190 --> 00:02:39,660
+This block will be called
+from a real-time context
+
+41
+00:02:39,693 --> 00:02:44,431
+when an IO operation occurs
+on the IOUserAudioStream buffers
+
+42
+00:02:44,464 --> 00:02:45,666
+for the device.
+
+43
+00:02:47,167 --> 00:02:50,304
+Inside the block,
+we check what the operation is,
+
+44
+00:02:50,337 --> 00:02:53,473
+and we can modify the data as necessary.
+
+45
+00:02:53,507 --> 00:02:59,613
+Finally, we call SetIOOperationHandler
+to set the block on the audio device.
+
+46
+00:02:59,646 --> 00:03:02,816
+Now let's talk about entitlements.
+
+47
+00:03:02,850 --> 00:03:05,919
+When we introduced AudioDriverKit,
+you had to use
+
+48
+00:03:05,953 --> 00:03:11,058
+the allow-any-userclient-access
+entitlement on your driver.
+
+49
+00:03:11,091 --> 00:03:15,028
+In macOS 12.1,
+we introduced a new entitlement
+
+50
+00:03:15,062 --> 00:03:17,764
+specifically for AudioDriverKit.
+
+51
+00:03:17,798 --> 00:03:22,870
+Please update your audio drivers
+to use the new audio family entitlement
+
+52
+00:03:22,903 --> 00:03:27,174
+instead of the
+allow-any-userclient-access entitlement.
+
+53
+00:03:27,207 --> 00:03:30,844
+You can keep the
+allow-any-userclient-access entitlement
+
+54
+00:03:30,878 --> 00:03:35,148
+if you want any app to be able
+to communicate with your driver.
+
+55
+00:03:35,182 --> 00:03:38,452
+This new entitlement
+is public for development,
+
+56
+00:03:38,485 --> 00:03:43,290
+so you can get started using this today
+without filing a request.
+
+57
+00:03:43,323 --> 00:03:49,530
+In fact, all DriverKit family entitlements
+are now available to use for development.
+
+58
+00:03:49,563 --> 00:03:52,466
+To request
+this entitlement for distribution,
+
+59
+00:03:52,499 --> 00:03:57,304
+please visit the System Extension page
+on developer.apple.com.
+
+60
+00:03:57,337 --> 00:04:02,142
+Now, I'm really excited to tell you
+about DriverKit on iPad.
+
+61
+00:04:02,176 --> 00:04:06,647
+Professionals are increasingly
+using iPad to do their best work.
+
+62
+00:04:06,680 --> 00:04:11,552
+But many rely on external hardware
+that they couldn't use on iPad.
+
+63
+00:04:11,585 --> 00:04:16,423
+So today, we're excited to announce
+that DriverKit is coming to iPad.
+
+64
+00:04:17,457 --> 00:04:21,395
+DriverKit on macOS has made it possible
+to extend the system
+
+65
+00:04:21,428 --> 00:04:23,497
+in a safe and secure way,
+
+66
+00:04:23,530 --> 00:04:26,900
+and we're bringing
+that same technology to the iPad.
+
+67
+00:04:26,934 --> 00:04:31,738
+In fact, if you've already created
+a driver with DriverKit on the Mac,
+
+68
+00:04:31,772 --> 00:04:35,576
+you can bring that exact same driver
+to the iPad
+
+69
+00:04:35,609 --> 00:04:39,613
+without any changes to your driver.
+
+70
+00:04:39,646 --> 00:04:45,752
+USB, PCI, and Audio will be
+supported in iPadOS 16.
+
+71
+00:04:45,786 --> 00:04:50,691
+This will enable Thunderbolt audio
+interfaces on iPad for the first time,
+
+72
+00:04:50,724 --> 00:04:54,027
+and many more devices.
+
+73
+00:04:54,061 --> 00:04:57,030
+This is made possible
+with the power of the M1 chip.
+
+74
+00:04:57,064 --> 00:05:00,934
+All iPads with M1 will support DriverKit.
+
+75
+00:05:00,968 --> 00:05:05,572
+DriverKit on iPadOS
+is the same as on macOS.
+
+76
+00:05:05,606 --> 00:05:08,842
+This means that you can build
+one DriverKit driver
+
+77
+00:05:08,876 --> 00:05:13,647
+and have it work on both platforms,
+no source changes required.
+
+78
+00:05:13,680 --> 00:05:17,217
+In addition ,
+using the new multiplatform apps feature
+
+79
+00:05:17,251 --> 00:05:21,688
+in Xcode 14, you can easily create
+a single app target
+
+80
+00:05:21,722 --> 00:05:25,726
+to deliver your driver
+on both Mac and iPad.
+
+81
+00:05:25,759 --> 00:05:28,862
+For more information
+about multiplatform apps,
+
+82
+00:05:28,896 --> 00:05:33,066
+please check out the "Use Xcode
+to develop a multiplatform app" session.
+
+83
+00:05:34,368 --> 00:05:39,406
+Xcode also now supports
+automatic signing of DriverKit drivers.
+
+84
+00:05:39,439 --> 00:05:42,676
+It knows how to handle DriverKit on iPadOS
+
+85
+00:05:42,709 --> 00:05:46,180
+and can provision for both Mac and iPad.
+
+86
+00:05:46,213 --> 00:05:51,485
+You no longer need to configure
+manual signing for DriverKit drivers.
+
+87
+00:05:51,518 --> 00:05:55,455
+Your iPadOS app and driver
+can be distributed on the App Store ,
+
+88
+00:05:55,489 --> 00:05:57,591
+just like on macOS.
+
+89
+00:05:57,624 --> 00:06:01,461
+This means that you can take advantage
+of features like in-app purchases
+
+90
+00:06:01,495 --> 00:06:05,432
+and have your driver be
+easily discoverable by users.
+
+91
+00:06:05,465 --> 00:06:09,903
+Let's see just how easy it is
+to take an existing macOS driver and app
+
+92
+00:06:09,937 --> 00:06:12,005
+and bring it to iPad.
+
+93
+00:06:12,039 --> 00:06:15,475
+Here, I have an app
+called DriverKitSampleApp.
+
+94
+00:06:15,509 --> 00:06:19,079
+It has a SwiftUI view
+with a label and a button
+
+95
+00:06:19,112 --> 00:06:22,182
+allowing the user to install the driver.
+
+96
+00:06:22,216 --> 00:06:25,118
+Our driver is called NullDriver.
+
+97
+00:06:25,152 --> 00:06:28,989
+It prints a message when the driver starts
+
+98
+00:06:29,022 --> 00:06:32,459
+and starts a timer that fires every second
+
+99
+00:06:32,492 --> 00:06:36,697
+and increments a counter
+called timerCount.
+
+100
+00:06:36,730 --> 00:06:40,133
+To make this an iPad app,
+all I need to do is select
+
+101
+00:06:40,167 --> 00:06:43,103
+the DriverKitSampleApp target in Xcode...
+
+102
+00:06:45,305 --> 00:06:48,542
+And add iPad to Supported Destinations.
+
+103
+00:06:51,845 --> 00:06:56,884
+Now I can change my run destination
+to the iPad I have connected to my Mac.
+
+104
+00:06:59,152 --> 00:07:02,122
+Let's try running this on the iPad.
+
+105
+00:07:02,155 --> 00:07:04,324
+Here's our iPad app.
+
+106
+00:07:04,358 --> 00:07:09,029
+We have the label and the button
+from the view we saw in Xcode.
+
+107
+00:07:09,062 --> 00:07:12,566
+Tapping the Install Dext button
+takes us to Settings,
+
+108
+00:07:12,599 --> 00:07:15,169
+where we see this new Drivers link.
+
+109
+00:07:15,202 --> 00:07:20,507
+We tap that link, and we see a list
+of all drivers bundled in this app.
+
+110
+00:07:20,541 --> 00:07:24,178
+We can then enable our Null Driver.
+
+111
+00:07:24,211 --> 00:07:27,881
+So you might have noticed
+several things in the demo.
+
+112
+00:07:27,915 --> 00:07:31,685
+Our Null Driver is bundled
+inside our iPadOS app,
+
+113
+00:07:31,718 --> 00:07:36,323
+and it gets automatically discovered
+by the system after installation.
+
+114
+00:07:36,356 --> 00:07:40,627
+On macOS , you would need to use
+the SystemExtension framework
+
+115
+00:07:40,661 --> 00:07:43,931
+to prompt the user to install the driver.
+
+116
+00:07:43,964 --> 00:07:47,367
+On iPadOS, there is no
+SystemExtensions framework.
+
+117
+00:07:48,769 --> 00:07:50,838
+Inside Xcode, you can see
+
+118
+00:07:50,871 --> 00:07:54,908
+that our driver is embedded
+within our app.
+
+119
+00:07:54,942 --> 00:07:58,779
+Since drivers are low-level software
+and are privileged,
+
+120
+00:07:58,812 --> 00:08:02,616
+they need to be approved by the user
+before they can run.
+
+121
+00:08:02,649 --> 00:08:07,387
+On macOS, users need to go
+to the Security & Privacy preferences
+
+122
+00:08:07,421 --> 00:08:10,023
+to allow system extensions.
+
+123
+00:08:10,057 --> 00:08:14,695
+On iPadOS, the driver approvals
+are in the Settings app.
+
+124
+00:08:14,728 --> 00:08:17,631
+There are two options
+for driver approvals.
+
+125
+00:08:17,664 --> 00:08:20,300
+If there is at least one app
+with a driver installed,
+
+126
+00:08:20,334 --> 00:08:22,936
+there will be a menu
+inside General Settings
+
+127
+00:08:22,970 --> 00:08:25,772
+with a list of all available drivers.
+
+128
+00:08:25,806 --> 00:08:29,576
+Each driver can be toggled on or off.
+
+129
+00:08:29,610 --> 00:08:34,047
+If your app contains a Settings bundle,
+there will be a Drivers link
+
+130
+00:08:34,081 --> 00:08:36,083
+inside your app's Settings.
+
+131
+00:08:36,116 --> 00:08:40,053
+Your app should prompt the user
+to enable the driver in Settings.
+
+132
+00:08:40,087 --> 00:08:43,590
+Let's start again
+with our macOS driver project
+
+133
+00:08:43,624 --> 00:08:45,526
+and see how we can have our app
+
+134
+00:08:45,559 --> 00:08:48,829
+prompt the user to enable
+the driver in Settings.
+
+135
+00:08:48,862 --> 00:08:53,433
+We start by adding iPad
+to our supported destinations.
+
+136
+00:08:55,602 --> 00:09:00,374
+Our SwiftUI view has a button
+to install the driver,
+
+137
+00:09:00,407 --> 00:09:03,744
+and our view model has a state machine
+
+138
+00:09:03,777 --> 00:09:07,314
+that interacts
+with the SystemExtensions framework.
+
+139
+00:09:07,347 --> 00:09:11,218
+Since this project is going to build
+for both Mac and iPad,
+
+140
+00:09:11,251 --> 00:09:14,154
+we want to keep our Mac view
+and view model
+
+141
+00:09:14,188 --> 00:09:17,191
+but create a new view
+that will be used on iPad.
+
+142
+00:09:25,566 --> 00:09:29,269
+Then, we can go to Build Phases
+and Compile sources
+
+143
+00:09:29,303 --> 00:09:32,105
+and change the platform filter
+for each file
+
+144
+00:09:32,139 --> 00:09:35,642
+to conditionally compile for iOS or macOS.
+
+145
+00:09:49,223 --> 00:09:52,593
+Now, let's add
+a Settings bundle to our app.
+
+146
+00:09:52,626 --> 00:09:55,429
+We're going to use the default
+example Settings for now,
+
+147
+00:09:55,462 --> 00:09:59,466
+but we can change these later
+to real Settings that the app can use.
+
+148
+00:10:03,537 --> 00:10:07,140
+Now let's check the iOS view
+we just created.
+
+149
+00:10:07,174 --> 00:10:10,310
+We can copy our macOS view
+to our iOS view
+
+150
+00:10:10,344 --> 00:10:12,246
+to use as a starting point.
+
+151
+00:10:13,780 --> 00:10:17,851
+Our iOS view doesn't use a view model,
+so we can remove that.
+
+152
+00:10:20,420 --> 00:10:24,691
+We also need to change our button action
+to open our Settings bundle.
+
+153
+00:10:24,725 --> 00:10:28,896
+This will take the user into Settings,
+so that they can enable the driver.
+
+154
+00:10:40,107 --> 00:10:43,010
+Finally, we change the button text
+to make it clear
+
+155
+00:10:43,043 --> 00:10:46,046
+that the user needs to enable the driver
+in Settings.
+
+156
+00:10:52,519 --> 00:10:55,189
+Let's see this in action.
+
+157
+00:10:55,222 --> 00:10:57,357
+We have the view we designed,
+
+158
+00:10:57,391 --> 00:11:01,061
+and tapping the button takes us
+to our Settings bundle.
+
+159
+00:11:01,094 --> 00:11:04,631
+Then we go into Drivers
+and enable the Null Driver.
+
+160
+00:11:06,266 --> 00:11:10,070
+It's important to keep in mind
+that drivers launch on demand.
+
+161
+00:11:10,103 --> 00:11:12,506
+Although we've enabled the driver
+in Settings,
+
+162
+00:11:12,539 --> 00:11:14,241
+the driver only starts running
+
+163
+00:11:14,274 --> 00:11:17,644
+when the hardware device is
+plugged in to the iPad.
+
+164
+00:11:17,678 --> 00:11:21,248
+After the driver starts running,
+I can attach a debugger to it
+
+165
+00:11:21,281 --> 00:11:23,483
+using Xcode wireless debugging.
+
+166
+00:11:23,517 --> 00:11:27,054
+To do that,
+I go to the Debug menu in Xcode,
+
+167
+00:11:27,087 --> 00:11:31,692
+attach to process,
+then select the NullDriver process.
+
+168
+00:11:31,725 --> 00:11:36,396
+Once attached, I can set breakpoints
+or pause execution.
+
+169
+00:11:36,430 --> 00:11:39,700
+Here, I've set a breakpoint in our timer.
+
+170
+00:11:39,733 --> 00:11:45,472
+I'm going to print timerCount to see
+how many times our timer has been called.
+
+171
+00:11:46,540 --> 00:11:50,377
+When you're done debugging,
+detach from the driver process
+
+172
+00:11:50,410 --> 00:11:53,046
+using the Debug menu in Xcode.
+
+173
+00:11:54,848 --> 00:11:57,184
+So now we have a driver.
+
+174
+00:11:57,217 --> 00:12:00,053
+But a driver isn't very useful by itself.
+
+175
+00:12:00,087 --> 00:12:03,123
+It needs to communicate
+with the rest of the system.
+
+176
+00:12:03,156 --> 00:12:07,861
+Some DriverKit frameworks
+like AudioDriverKit handle this for you.
+
+177
+00:12:07,895 --> 00:12:10,264
+But if you need to do something
+more advanced,
+
+178
+00:12:10,297 --> 00:12:13,967
+such as creating a custom
+control panel app for your hardware,
+
+179
+00:12:14,001 --> 00:12:17,871
+you need to have your app be able
+to communicate with your driver.
+
+180
+00:12:17,905 --> 00:12:21,341
+This is what user clients allow you to do.
+
+181
+00:12:21,375 --> 00:12:23,877
+They allow you
+to define your own interface,
+
+182
+00:12:23,911 --> 00:12:27,014
+allowing app and driver communication.
+
+183
+00:12:27,047 --> 00:12:30,951
+Apps use the IOKit.framework
+to open user clients.
+
+184
+00:12:30,984 --> 00:12:33,020
+For an example of how this works,
+
+185
+00:12:33,053 --> 00:12:36,390
+please see the sample code
+on developer.apple.com.
+
+186
+00:12:38,192 --> 00:12:41,562
+So we know that apps can
+communicate with drivers.
+
+187
+00:12:41,595 --> 00:12:43,897
+But it's important
+to keep security in mind.
+
+188
+00:12:43,931 --> 00:12:47,201
+Since drivers are privileged,
+we don't want to allow every app
+
+189
+00:12:47,234 --> 00:12:49,203
+to communicate with drivers.
+
+190
+00:12:50,737 --> 00:12:55,809
+On macOS, the app needs the driverkit
+userclient-access entitlement,
+
+191
+00:12:55,843 --> 00:13:00,113
+and the value is an array
+of allowed driver bundle identifiers.
+
+192
+00:13:01,715 --> 00:13:07,321
+On iPadOS, we added a new entitlement
+called Communicates With Drivers.
+
+193
+00:13:07,354 --> 00:13:11,225
+It replaces
+the macOS user client entitlement.
+
+194
+00:13:11,258 --> 00:13:13,160
+This entitlement grants your app
+
+195
+00:13:13,193 --> 00:13:16,530
+the ability to open user clients
+to your driver.
+
+196
+00:13:18,498 --> 00:13:21,368
+If you want to add
+the Communicates With Drivers entitlement
+
+197
+00:13:21,401 --> 00:13:25,539
+manually to your app,
+here's the XML entitlement string.
+
+198
+00:13:27,007 --> 00:13:29,810
+We can also add
+this entitlement from Xcode.
+
+199
+00:13:29,843 --> 00:13:33,247
+In Xcode,
+we go to Signing and Capabilities,
+
+200
+00:13:33,280 --> 00:13:35,916
+then add a new capability.
+
+201
+00:13:35,949 --> 00:13:38,752
+Then, we can search
+for "communicates with drivers"
+
+202
+00:13:38,785 --> 00:13:41,288
+and add the capability to our app.
+
+203
+00:13:43,390 --> 00:13:47,728
+Another use case for user clients
+is to allow apps from other developers
+
+204
+00:13:47,761 --> 00:13:50,330
+to interact with your driver.
+
+205
+00:13:50,364 --> 00:13:53,700
+So in this case,
+suppose you have an app and driver
+
+206
+00:13:53,734 --> 00:13:56,270
+and you want to provide a service
+to other apps,
+
+207
+00:13:56,303 --> 00:13:59,106
+including those from other developers.
+
+208
+00:13:59,139 --> 00:14:02,309
+DriverKit user clients also support this.
+
+209
+00:14:03,577 --> 00:14:05,979
+Each app that needs to communicate
+with drivers
+
+210
+00:14:06,013 --> 00:14:09,216
+needs the communicates
+with drivers entitlement.
+
+211
+00:14:09,249 --> 00:14:13,587
+The driver needs the Allow Third Party
+User Clients entitlement.
+
+212
+00:14:13,620 --> 00:14:17,191
+This allows apps
+built with a different team identifier
+
+213
+00:14:17,224 --> 00:14:20,260
+to open a user client to the driver.
+
+214
+00:14:20,294 --> 00:14:23,830
+Without this entitlement,
+only apps from the same team
+
+215
+00:14:23,864 --> 00:14:25,966
+can communicate with the driver.
+
+216
+00:14:25,999 --> 00:14:29,636
+If you want to add the Allow Third Party
+User Clients entitlement
+
+217
+00:14:29,670 --> 00:14:33,907
+manually to your driver,
+here's the XML entitlement string.
+
+218
+00:14:34,675 --> 00:14:37,511
+Or we can add this capability from Xcode
+
+219
+00:14:37,544 --> 00:14:40,981
+by going into Signing and Capabilities
+for our driver.
+
+220
+00:14:42,683 --> 00:14:46,720
+These new user client entitlements
+are public for development,
+
+221
+00:14:46,753 --> 00:14:51,158
+which means that you can get started
+using this today without any approval.
+
+222
+00:14:51,191 --> 00:14:53,660
+To request these entitlements
+for distribution,
+
+223
+00:14:53,694 --> 00:14:56,496
+please see our developer website.
+
+224
+00:14:56,530 --> 00:15:01,935
+DriverKit drivers also have
+important implications for app update.
+
+225
+00:15:01,969 --> 00:15:07,474
+Automatic app update ensures users
+always get the latest version of your app.
+
+226
+00:15:07,508 --> 00:15:09,943
+However, for apps containing drivers,
+
+227
+00:15:09,977 --> 00:15:12,779
+the update process works
+a little differently.
+
+228
+00:15:12,813 --> 00:15:18,151
+Let's suppose you distribute version 1
+of your app on the app store.
+
+229
+00:15:18,185 --> 00:15:23,524
+Then, you install that app
+along with its bundled driver on your iPad
+
+230
+00:15:23,557 --> 00:15:26,460
+and enable the driver in Settings.
+
+231
+00:15:26,493 --> 00:15:29,696
+When you plug in the hardware device
+for your driver,
+
+232
+00:15:29,730 --> 00:15:31,632
+the driver starts running,
+
+233
+00:15:31,665 --> 00:15:35,135
+and once the driver starts running,
+your app can begin communicating
+
+234
+00:15:35,169 --> 00:15:38,539
+with your driver using user clients.
+
+235
+00:15:38,572 --> 00:15:41,341
+Now, suppose you find a bug in your app
+
+236
+00:15:41,375 --> 00:15:44,845
+and you submit version 2 to the App Store.
+
+237
+00:15:44,878 --> 00:15:46,880
+Because of automatic app update,
+
+238
+00:15:46,914 --> 00:15:52,119
+the version 2 app is downloaded
+and installed on your iPad automatically.
+
+239
+00:15:52,152 --> 00:15:55,222
+The driver approval state is
+maintained through updates,
+
+240
+00:15:55,255 --> 00:15:58,158
+so you don't need to approve
+the driver again.
+
+241
+00:15:58,192 --> 00:16:01,828
+However, notice that the hardware
+is still plugged in,
+
+242
+00:16:01,862 --> 00:16:05,065
+and our version 1 driver is still running.
+
+243
+00:16:05,098 --> 00:16:08,402
+Driver version 2 was downloaded
+with the app update
+
+244
+00:16:08,435 --> 00:16:11,705
+but does not start running.
+
+245
+00:16:11,738 --> 00:16:14,208
+Since the old driver
+still continues running,
+
+246
+00:16:14,241 --> 00:16:19,246
+your version 2 app may have to communicate
+with the version 1 driver.
+
+247
+00:16:20,714 --> 00:16:24,785
+When the hardware device is unplugged,
+the driver stops running,
+
+248
+00:16:24,818 --> 00:16:27,654
+so now driver version 1 is done
+
+249
+00:16:27,688 --> 00:16:30,290
+and we can update the driver to version 2.
+
+250
+00:16:31,758 --> 00:16:36,830
+Now, if you plug in the device again,
+we start the version 2 driver,
+
+251
+00:16:36,864 --> 00:16:40,033
+and now your app is communicating
+with the new driver.
+
+252
+00:16:41,568 --> 00:16:47,474
+To recap: Apps are updated anytime
+with automatic app update.
+
+253
+00:16:47,508 --> 00:16:51,879
+Drivers are updated
+after the device is unplugged.
+
+254
+00:16:51,912 --> 00:16:55,782
+And your app may communicate
+with an old driver.
+
+255
+00:16:55,816 --> 00:17:01,321
+When your app and driver are ready,
+you can submit them to the App Store.
+
+256
+00:17:01,355 --> 00:17:05,592
+Your drivers can only run
+on devices that support DriverKit.
+
+257
+00:17:05,626 --> 00:17:08,562
+If you want to restrict
+your app to those devices,
+
+258
+00:17:08,595 --> 00:17:11,798
+such as if your app
+only installs a driver,
+
+259
+00:17:11,832 --> 00:17:16,370
+add DriverKit to your app's
+UIRequiredDeviceCapabilities.
+
+260
+00:17:16,403 --> 00:17:19,106
+This will prevent users
+from installing your app
+
+261
+00:17:19,139 --> 00:17:22,643
+on a device
+that does not support DriverKit.
+
+262
+00:17:22,676 --> 00:17:25,679
+We also suggest submitting a video
+to App Review
+
+263
+00:17:25,712 --> 00:17:29,850
+showing how your app and driver work
+with your hardware device.
+
+264
+00:17:29,883 --> 00:17:32,619
+So that's DriverKit on iPad.
+
+265
+00:17:32,653 --> 00:17:38,125
+You can now bring USB, PCI,
+and Audio drivers to iPad with M1
+
+266
+00:17:38,158 --> 00:17:42,029
+and deliver those drivers
+inside apps on the App Store.
+
+267
+00:17:42,062 --> 00:17:46,400
+And if you already have a driver,
+it's easy to bring that to iPad.
+
+268
+00:17:46,433 --> 00:17:50,370
+We encourage developers
+to try using DriverKit on iPad
+
+269
+00:17:50,404 --> 00:17:53,373
+and provide any feedback
+using Feedback Assistant.
+
+270
+00:17:53,407 --> 00:17:55,342
+Thank you for watching.
+

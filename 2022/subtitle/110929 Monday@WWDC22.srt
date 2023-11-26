@@ -1,0 +1,318 @@
+1
+00:00:00,000 --> 00:00:05,672
+♪ Bass-heavy electronic music ♪
+
+2
+00:00:05,672 --> 00:00:07,474
+Serenity Caldwell:
+Welcome to HQ.
+
+3
+00:00:07,474 --> 00:00:08,642
+I'm Serenity Caldwell;
+
+4
+00:00:08,642 --> 00:00:12,346
+here's your day one
+debrief of WWDC.
+
+5
+00:00:12,346 --> 00:00:14,781
+iOS 16 is now mission-ready,
+
+6
+00:00:14,781 --> 00:00:17,050
+starting with
+the reimagined Lock Screen.
+
+7
+00:00:17,050 --> 00:00:19,720
+Choose from countless fonts,
+colors, and widgets
+
+8
+00:00:19,720 --> 00:00:22,089
+to personalize your iPhone.
+
+9
+00:00:22,089 --> 00:00:24,558
+Want to set boundaries between
+work and home life?
+
+10
+00:00:24,558 --> 00:00:26,393
+Activate Personal Focus.
+
+11
+00:00:26,393 --> 00:00:28,362
+And if you've ever sent
+an embarrassing message,
+
+12
+00:00:28,362 --> 00:00:29,963
+now you can fix that.
+
+13
+00:00:29,963 --> 00:00:33,967
+Or better still, erase it
+before anyone spots it. [POP]
+
+14
+00:00:33,967 --> 00:00:36,470
+With SharePlay you can actually
+watch movies and shows
+
+15
+00:00:36,470 --> 00:00:38,739
+with friends while messaging.
+Ted Lasso: Oh, I like this.
+
+16
+00:00:38,739 --> 00:00:40,107
+Serenity: Want to send a picture
+of your best friend
+
+17
+00:00:40,107 --> 00:00:41,575
+without the background?
+
+18
+00:00:41,575 --> 00:00:44,278
+Just touch, lift, and send.
+[BARK]
+
+19
+00:00:44,278 --> 00:00:46,580
+Sharing photos with family
+just got a lot easier with...
+
+20
+00:00:46,580 --> 00:00:48,916
+Craig Federighi: ...iCloud
+Shared Photo Library.
+
+21
+00:00:48,916 --> 00:00:52,152
+Serenity: We also got a sneak
+peek at the future of CarPlay.
+
+22
+00:00:52,152 --> 00:00:54,321
+♪
+
+23
+00:00:54,321 --> 00:00:56,623
+And arriving in Maps, at last,
+
+24
+00:00:56,623 --> 00:00:59,159
+the ability to plan
+up to 15 stops.
+
+25
+00:00:59,159 --> 00:01:02,162
+Say hello to some new
+Apple Watch features.
+
+26
+00:01:02,162 --> 00:01:04,798
+There are new Workout views
+like heart rate zones.
+
+27
+00:01:04,798 --> 00:01:06,967
+We made it easier
+to customize your workout
+
+28
+00:01:06,967 --> 00:01:09,102
+and added reminders
+to take your meds.
+
+29
+00:01:09,102 --> 00:01:11,338
+And there's a range
+of new watch faces:
+
+30
+00:01:11,338 --> 00:01:15,642
+Astronomy, Lunar,
+Playtime, Metropolitan,
+
+31
+00:01:15,642 --> 00:01:19,746
+and of course,
+we can't forget [BARK] Buddy!
+
+32
+00:01:19,746 --> 00:01:22,082
+The next generation
+of Apple silicon is here.
+
+33
+00:01:22,082 --> 00:01:23,817
+Meet the mighty M2.
+
+34
+00:01:23,817 --> 00:01:26,820
+We took all this power
+and used it to supercharge
+
+35
+00:01:26,820 --> 00:01:27,921
+the new MacBook Air.
+
+36
+00:01:27,921 --> 00:01:30,791
+It's thinner, lighter,
+and faster than ever.
+
+37
+00:01:30,791 --> 00:01:35,028
+We're even bringing M2
+to 13-inch MacBook Pro.
+
+38
+00:01:35,028 --> 00:01:37,531
+We launched
+the newest macOS, Ventura,
+
+39
+00:01:37,531 --> 00:01:40,801
+with big upgrades to Spotlight
+like Enhanced Image Search,
+
+40
+00:01:40,801 --> 00:01:42,836
+and we introduced...
+Craig: ...Stage Manager.
+
+41
+00:01:42,836 --> 00:01:44,938
+Serenity: Now working between
+different windows and apps
+
+42
+00:01:44,938 --> 00:01:46,940
+is faster and easier.
+
+43
+00:01:46,940 --> 00:01:50,510
+And you can Schedule Send
+and Undo Send emails.
+
+44
+00:01:50,510 --> 00:01:53,113
+You asked, we delivered.
+
+45
+00:01:53,113 --> 00:01:55,248
+Introducing Continuity Camera.
+
+46
+00:01:55,248 --> 00:01:57,217
+Now you can use
+your iPhone as a webcam
+
+47
+00:01:57,217 --> 00:01:59,486
+in ways that were
+never possible before.
+
+48
+00:01:59,486 --> 00:02:01,922
+Don't look now, it's...
+Craig: ...iPadOS 16.
+
+49
+00:02:01,922 --> 00:02:03,790
+Serenity: For the first time,
+you can work on multiple
+
+50
+00:02:03,790 --> 00:02:06,059
+overlapping windows
+with Stage Manager.
+
+51
+00:02:06,059 --> 00:02:07,561
+Craig: And it gets even better.
+
+52
+00:02:07,561 --> 00:02:09,930
+Serenity: We made collaborating
+easier across different apps
+
+53
+00:02:09,930 --> 00:02:12,366
+and devices,
+and coming later this year,
+
+54
+00:02:12,366 --> 00:02:15,168
+a new app
+for live collaboration.
+
+55
+00:02:15,168 --> 00:02:17,971
+We added new APIs
+to all Apple platforms,
+
+56
+00:02:17,971 --> 00:02:20,340
+brought in top-notch weather
+data with WeatherKit,
+
+57
+00:02:20,340 --> 00:02:23,877
+gave developers more power
+to build games with Metal 3,
+
+58
+00:02:23,877 --> 00:02:26,546
+Made SwiftUI
+more powerful and flexible,
+
+59
+00:02:26,546 --> 00:02:28,882
+raised the bar
+with Swift Charts,
+
+60
+00:02:28,882 --> 00:02:30,450
+Introduced Swift Regex,
+
+61
+00:02:30,450 --> 00:02:33,653
+and opened Xcode Cloud
+to all developers.
+
+62
+00:02:33,653 --> 00:02:36,890
+And congrats to the 12 winners
+of the Apple Design Awards
+
+63
+00:02:36,890 --> 00:02:39,526
+and all our finalists.
+
+64
+00:02:39,526 --> 00:02:41,595
+Here's a look at day two.
+
+65
+00:02:41,595 --> 00:02:47,734
+♪
+
+66
+00:02:47,734 --> 00:02:49,603
+That's all for now.
+
+67
+00:02:49,603 --> 00:02:52,172
+Be sure to report back tomorrow.
+
+68
+00:02:52,172 --> 00:02:59,012
+♪
+

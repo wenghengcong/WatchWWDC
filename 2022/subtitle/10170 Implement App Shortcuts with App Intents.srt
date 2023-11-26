@@ -1,0 +1,2342 @@
+1
+00:00:00,000 --> 00:00:03,003
+♪ (Mellow instrumental
+hip-hop music) ♪
+
+2
+00:00:03,003 --> 00:00:09,710
+♪
+
+3
+00:00:09,710 --> 00:00:11,678
+Hi, my name is Michael Sumner.
+
+4
+00:00:11,678 --> 00:00:15,148
+I'm a software engineer
+working on Siri and App Intents.
+
+5
+00:00:15,148 --> 00:00:17,117
+In this session,
+I want to talk to you
+
+6
+00:00:17,117 --> 00:00:19,219
+about creating app shortcuts
+for your app,
+
+7
+00:00:19,219 --> 00:00:22,155
+using the new
+App Intents framework.
+
+8
+00:00:22,155 --> 00:00:25,425
+I'll start with an overview
+of what App Shortcuts are
+
+9
+00:00:25,425 --> 00:00:28,095
+and how they relate
+to App Intents.
+
+10
+00:00:28,095 --> 00:00:31,665
+Then, I'll walk through creating
+an app shortcut in Swift,
+
+11
+00:00:31,665 --> 00:00:34,301
+and adding a parameter.
+
+12
+00:00:34,301 --> 00:00:38,205
+Finally, I'll cover how to make
+your app shortcut discoverable,
+
+13
+00:00:38,205 --> 00:00:41,775
+so users can benefit
+from your hard work.
+
+14
+00:00:41,775 --> 00:00:44,177
+Let's get started with
+the App Intents framework
+
+15
+00:00:44,177 --> 00:00:46,280
+and App Shortcuts.
+
+16
+00:00:46,280 --> 00:00:48,982
+People use shortcuts
+to create multistep workflows
+
+17
+00:00:48,982 --> 00:00:51,785
+with your apps that can be used
+from the Shortcuts app
+
+18
+00:00:51,785 --> 00:00:53,553
+and from Siri.
+
+19
+00:00:53,553 --> 00:00:56,790
+Until now, someone first
+had to set up a shortcut
+
+20
+00:00:56,790 --> 00:00:59,826
+via an Add to Siri button
+or the Shortcuts app
+
+21
+00:00:59,826 --> 00:01:02,429
+before they could use
+your intent.
+
+22
+00:01:02,429 --> 00:01:05,032
+We're excited to introduce
+App Shortcuts,
+
+23
+00:01:05,032 --> 00:01:08,268
+which require zero user setup.
+
+24
+00:01:08,268 --> 00:01:10,871
+This makes it easier than ever
+for people to benefit
+
+25
+00:01:10,871 --> 00:01:12,773
+from your shortcuts.
+
+26
+00:01:12,773 --> 00:01:14,808
+By integrating
+with App Shortcuts,
+
+27
+00:01:14,808 --> 00:01:16,677
+intents from your app
+will be available
+
+28
+00:01:16,677 --> 00:01:19,346
+as soon as your app
+is installed.
+
+29
+00:01:19,346 --> 00:01:21,982
+This makes it easy for someone
+to discover and use
+
+30
+00:01:21,982 --> 00:01:24,251
+your app's functionality.
+
+31
+00:01:24,251 --> 00:01:26,687
+They no longer need
+to head to the Shortcuts app
+
+32
+00:01:26,687 --> 00:01:31,024
+or use an Add to Siri button
+to set anything up.
+
+33
+00:01:31,024 --> 00:01:33,760
+App Shortcuts,
+like user-built shortcuts,
+
+34
+00:01:33,760 --> 00:01:35,662
+can be run from
+the Shortcuts app,
+
+35
+00:01:35,662 --> 00:01:38,198
+Spotlight, and Siri.
+
+36
+00:01:38,198 --> 00:01:40,901
+This gives people multiple ways
+to discover and interact
+
+37
+00:01:40,901 --> 00:01:44,638
+with your application from
+various places in the system.
+
+38
+00:01:44,638 --> 00:01:46,873
+For example,
+when searching in Spotlight,
+
+39
+00:01:46,873 --> 00:01:48,442
+your app shortcut
+will be displayed
+
+40
+00:01:48,442 --> 00:01:52,045
+right in the search results
+for easy access.
+
+41
+00:01:52,045 --> 00:01:53,947
+By implementing App Shortcuts,
+
+42
+00:01:53,947 --> 00:01:57,417
+your users will be able to
+interact with your app in quick,
+
+43
+00:01:57,417 --> 00:01:59,853
+lightweight interactions
+that make it easier for them
+
+44
+00:01:59,853 --> 00:02:03,724
+to complete their task
+and be on their way.
+
+45
+00:02:03,724 --> 00:02:06,226
+My team is working on an app --
+Meditation --
+
+46
+00:02:06,226 --> 00:02:08,428
+that helps users meditate
+by guiding them
+
+47
+00:02:08,428 --> 00:02:11,031
+through a set of audio prompts
+and sounds
+
+48
+00:02:11,031 --> 00:02:13,667
+to help them focus
+on what matters.
+
+49
+00:02:13,667 --> 00:02:17,871
+Today, to start a meditation,
+users have to launch the app,
+
+50
+00:02:17,871 --> 00:02:22,242
+log in, and find the meditation
+session that they want to run.
+
+51
+00:02:22,242 --> 00:02:24,244
+By integrating
+with App Shortcuts,
+
+52
+00:02:24,244 --> 00:02:27,581
+my users can quickly access
+these features from anywhere
+
+53
+00:02:27,581 --> 00:02:30,217
+just by asking Siri.
+
+54
+00:02:30,217 --> 00:02:32,919
+And by making it faster
+to start a session,
+
+55
+00:02:32,919 --> 00:02:36,223
+users can integrate meditation
+into their daily routine,
+
+56
+00:02:36,223 --> 00:02:38,125
+either in the morning
+before work
+
+57
+00:02:38,125 --> 00:02:43,830
+or in the evening to help
+wind down after a long day.
+
+58
+00:02:43,830 --> 00:02:46,500
+Alright, let's dive right in
+to the code needed
+
+59
+00:02:46,500 --> 00:02:51,204
+to create an App Intent and
+turn it into an app shortcut.
+
+60
+00:02:51,204 --> 00:02:52,873
+Unlike previous shortcuts,
+
+61
+00:02:52,873 --> 00:02:57,244
+App Shortcuts are built with
+the new App Intents framework.
+
+62
+00:02:57,244 --> 00:02:59,813
+App Intents is a new,
+Swift-only framework
+
+63
+00:02:59,813 --> 00:03:02,182
+built from the ground up
+to make it faster
+
+64
+00:03:02,182 --> 00:03:05,318
+and easier to build
+great intents.
+
+65
+00:03:05,318 --> 00:03:07,187
+With App Intents,
+everything is defined
+
+66
+00:03:07,187 --> 00:03:09,189
+right in your Swift source code,
+
+67
+00:03:09,189 --> 00:03:12,125
+instead of a separate
+metadata file.
+
+68
+00:03:12,125 --> 00:03:14,628
+This removes any
+code generation steps
+
+69
+00:03:14,628 --> 00:03:17,330
+and allows you to stay focused
+without switching contexts
+
+70
+00:03:17,330 --> 00:03:20,634
+between the source editor
+and the metadata editor.
+
+71
+00:03:20,634 --> 00:03:22,169
+They're also easier
+to code review
+
+72
+00:03:22,169 --> 00:03:24,638
+and solve merge conflicts.
+
+73
+00:03:24,638 --> 00:03:26,039
+To build App Shortcuts,
+
+74
+00:03:26,039 --> 00:03:28,575
+you'll need to write
+an AppShortcutsProvider
+
+75
+00:03:28,575 --> 00:03:31,845
+that lists the phrases
+and other metadata needed
+
+76
+00:03:31,845 --> 00:03:35,615
+to turn your App Intent
+into a full-fledged shortcut.
+
+77
+00:03:35,615 --> 00:03:37,818
+And note that because
+these are set up
+
+78
+00:03:37,818 --> 00:03:40,454
+without any user interaction,
+you'll need to include
+
+79
+00:03:40,454 --> 00:03:44,024
+your application's name
+in the trigger phrase.
+
+80
+00:03:44,024 --> 00:03:46,326
+Intents are defined
+as Swift structs,
+
+81
+00:03:46,326 --> 00:03:49,262
+that implement
+the AppIntent protocol.
+
+82
+00:03:49,262 --> 00:03:52,165
+A basic intent has
+just two requirements --
+
+83
+00:03:52,165 --> 00:03:54,701
+a title, which is used
+to display your intent
+
+84
+00:03:54,701 --> 00:03:58,438
+in the Shortcuts app,
+and a method called perform.
+
+85
+00:03:58,438 --> 00:04:01,074
+The perform method is where
+you run your intent's logic
+
+86
+00:04:01,074 --> 00:04:03,210
+and return a result.
+
+87
+00:04:03,210 --> 00:04:05,946
+Additionally, you can trigger
+prompts for the user
+
+88
+00:04:05,946 --> 00:04:08,648
+and await their response.
+
+89
+00:04:08,648 --> 00:04:11,852
+In this intent, I'll start
+the default meditation session
+
+90
+00:04:11,852 --> 00:04:14,788
+using my app's
+MeditationService.
+
+91
+00:04:14,788 --> 00:04:16,990
+Because the perform method
+is async,
+
+92
+00:04:16,990 --> 00:04:21,294
+I can run asynchronous code
+to start my session.
+
+93
+00:04:21,294 --> 00:04:22,896
+Once the session has started,
+
+94
+00:04:22,896 --> 00:04:25,832
+I'll return a dialog
+that is shown to the user.
+
+95
+00:04:25,832 --> 00:04:27,467
+And if your app is localized,
+
+96
+00:04:27,467 --> 00:04:32,539
+you'll want to localize this
+string in all of your locales.
+
+97
+00:04:32,539 --> 00:04:34,608
+So far, with what I've built,
+
+98
+00:04:34,608 --> 00:04:37,677
+the StartMeditationIntent
+will appear in the Shortcuts app
+
+99
+00:04:37,677 --> 00:04:39,813
+when authoring a shortcut.
+
+100
+00:04:39,813 --> 00:04:42,249
+A motivated user
+can take this intent
+
+101
+00:04:42,249 --> 00:04:45,418
+and create a shortcut
+that will kick off a session.
+
+102
+00:04:45,418 --> 00:04:46,653
+In this shortcut,
+
+103
+00:04:46,653 --> 00:04:51,191
+I've also added a second intent
+to enable a Focus.
+
+104
+00:04:51,191 --> 00:04:54,194
+By default, my App Intent
+is rendered using the title
+
+105
+00:04:54,194 --> 00:04:56,830
+I specified in my source code.
+
+106
+00:04:56,830 --> 00:04:59,499
+To customize the rendering
+for your action,
+
+107
+00:04:59,499 --> 00:05:04,004
+be sure to add a parameter
+summary to your App Intent.
+
+108
+00:05:04,004 --> 00:05:05,906
+Parameter summaries
+allow you to customize
+
+109
+00:05:05,906 --> 00:05:10,410
+the look of your intent,
+as well as show values inline.
+
+110
+00:05:10,410 --> 00:05:14,681
+However, this intent works great
+as a shortcut all by itself.
+
+111
+00:05:14,681 --> 00:05:17,417
+Ideally, someone would be able
+to run my intent
+
+112
+00:05:17,417 --> 00:05:20,754
+without first having to author
+a shortcut at all.
+
+113
+00:05:20,754 --> 00:05:22,422
+By creating an app shortcut,
+
+114
+00:05:22,422 --> 00:05:25,892
+I can perform this setup step
+on behalf of the user,
+
+115
+00:05:25,892 --> 00:05:27,994
+so they can start
+using my intent
+
+116
+00:05:27,994 --> 00:05:31,164
+as soon as the app is installed.
+
+117
+00:05:31,164 --> 00:05:32,899
+Now that I've written an intent,
+
+118
+00:05:32,899 --> 00:05:35,735
+I'll create
+an app shortcut for it.
+
+119
+00:05:35,735 --> 00:05:37,437
+Similar to an intent,
+
+120
+00:05:37,437 --> 00:05:39,773
+App Shortcuts are defined
+in Swift code,
+
+121
+00:05:39,773 --> 00:05:43,410
+by implementing the
+AppShortcutsProvider protocol.
+
+122
+00:05:43,410 --> 00:05:44,978
+To implement the protocol,
+
+123
+00:05:44,978 --> 00:05:47,514
+I'll simply create
+a single getter that returns
+
+124
+00:05:47,514 --> 00:05:50,850
+all the app shortcuts
+I want to set up for the user.
+
+125
+00:05:50,850 --> 00:05:53,720
+Note that in total,
+your app can have a maximum
+
+126
+00:05:53,720 --> 00:05:55,922
+of 10 app shortcuts.
+
+127
+00:05:55,922 --> 00:06:00,093
+However, most apps
+only need a few.
+
+128
+00:06:00,093 --> 00:06:02,429
+So I'll create
+a single AppShortcut
+
+129
+00:06:02,429 --> 00:06:05,098
+for my StartMeditationIntent.
+
+130
+00:06:05,098 --> 00:06:08,635
+To get started, I'll pass
+an instance of my intent.
+
+131
+00:06:08,635 --> 00:06:11,137
+If my intent's initializer
+took parameters,
+
+132
+00:06:11,137 --> 00:06:14,074
+I could specify values here.
+
+133
+00:06:14,074 --> 00:06:17,143
+Second, I'll create an array
+of spoken phrases
+
+134
+00:06:17,143 --> 00:06:20,413
+that will invoke
+my AppShortcut from Siri.
+
+135
+00:06:20,413 --> 00:06:23,149
+You'll notice that rather than
+writing my application's name
+
+136
+00:06:23,149 --> 00:06:24,584
+directly in the string,
+
+137
+00:06:24,584 --> 00:06:27,787
+I used a special
+.applicationName token.
+
+138
+00:06:27,787 --> 00:06:31,258
+This allows Siri to insert not
+only my application's main name,
+
+139
+00:06:31,258 --> 00:06:35,996
+but also any app name synonyms
+that I've configured.
+
+140
+00:06:35,996 --> 00:06:39,432
+Because users may say different
+phrases to start meditation,
+
+141
+00:06:39,432 --> 00:06:42,636
+I'll provide a few more
+alternative phrases here.
+
+142
+00:06:42,636 --> 00:06:44,137
+If your app is localized,
+
+143
+00:06:44,137 --> 00:06:46,840
+you'll need to localize
+these phrases as well.
+
+144
+00:06:48,842 --> 00:06:51,711
+Great. So now when someone
+wants to mediate,
+
+145
+00:06:51,711 --> 00:06:55,081
+they just stay to Siri,
+"Start a meditation."
+
+146
+00:06:55,081 --> 00:06:57,751
+Siri will call
+the StartMeditationIntent
+
+147
+00:06:57,751 --> 00:07:00,887
+and speak the dialog
+that I returned.
+
+148
+00:07:00,887 --> 00:07:04,257
+Also, if someone searches
+for my app in Spotlight,
+
+149
+00:07:04,257 --> 00:07:06,559
+they'll see the first
+App Shortcut I've listed
+
+150
+00:07:06,559 --> 00:07:08,161
+in my code.
+
+151
+00:07:08,161 --> 00:07:09,829
+When the user taps the result,
+
+152
+00:07:09,829 --> 00:07:11,631
+the shortcut
+will immediately run
+
+153
+00:07:11,631 --> 00:07:14,000
+without launching
+the application.
+
+154
+00:07:14,000 --> 00:07:15,935
+It's important to note
+that if your intent
+
+155
+00:07:15,935 --> 00:07:19,906
+does trigger an app launch,
+it won't be shown in Spotlight.
+
+156
+00:07:19,906 --> 00:07:22,709
+So, with just a very small
+amount of code,
+
+157
+00:07:22,709 --> 00:07:25,478
+I've now made it much,
+much simpler for my users
+
+158
+00:07:25,478 --> 00:07:28,982
+to meditate with my app.
+
+159
+00:07:28,982 --> 00:07:31,751
+But right now, Siri shows
+a default view
+
+160
+00:07:31,751 --> 00:07:33,820
+whenever running my intent.
+
+161
+00:07:33,820 --> 00:07:36,623
+This is OK, but I'd really
+like to show the user
+
+162
+00:07:36,623 --> 00:07:40,293
+more information when they run
+my app shortcut.
+
+163
+00:07:40,293 --> 00:07:43,163
+To do this, I'll need
+to implement a custom view
+
+164
+00:07:43,163 --> 00:07:47,901
+that Siri can show whenever
+my intent is run.
+
+165
+00:07:47,901 --> 00:07:49,969
+Views in the App Intents
+framework are built
+
+166
+00:07:49,969 --> 00:07:54,841
+using SwiftUI and leverage the
+same view technology as widgets.
+
+167
+00:07:54,841 --> 00:07:57,977
+This means you, as a developer,
+don't need to build
+
+168
+00:07:57,977 --> 00:08:01,181
+a separate UI extension
+for your custom view.
+
+169
+00:08:01,181 --> 00:08:03,316
+Instead, you can simply
+return the view
+
+170
+00:08:03,316 --> 00:08:05,685
+when running your intent.
+
+171
+00:08:05,685 --> 00:08:08,188
+It's important to think about
+the specific constraints
+
+172
+00:08:08,188 --> 00:08:10,190
+this brings for your views.
+
+173
+00:08:10,190 --> 00:08:13,026
+Just like widgets,
+custom App Intent views
+
+174
+00:08:13,026 --> 00:08:17,530
+can't include things like
+interactivity or animations.
+
+175
+00:08:17,530 --> 00:08:21,801
+Make sure to take this into
+account when designing your UI.
+
+176
+00:08:21,801 --> 00:08:26,206
+App Intents supports showing
+custom UI at three phases:
+
+177
+00:08:26,206 --> 00:08:29,142
+value confirmation,
+intent confirmation,
+
+178
+00:08:29,142 --> 00:08:31,478
+and after the intent
+is finished.
+
+179
+00:08:31,478 --> 00:08:34,247
+For my app, I'm going to return
+a custom view
+
+180
+00:08:34,247 --> 00:08:36,816
+at the end of running my intent.
+
+181
+00:08:36,816 --> 00:08:38,885
+If you're using
+these other prompts,
+
+182
+00:08:38,885 --> 00:08:41,521
+be sure to think about how
+you can integrate custom UI
+
+183
+00:08:41,521 --> 00:08:44,257
+at those steps too.
+
+184
+00:08:44,257 --> 00:08:48,328
+Finally, as I mentioned,
+displaying custom UI is easy.
+
+185
+00:08:48,328 --> 00:08:52,065
+You simply need to return
+your view from your intent.
+
+186
+00:08:52,065 --> 00:08:55,235
+Alright, time to jump
+into some code.
+
+187
+00:08:55,235 --> 00:08:57,203
+Adding a custom view is easy.
+
+188
+00:08:57,203 --> 00:09:01,241
+As I mentioned, I'll just return
+the view alongside my dialog.
+
+189
+00:09:01,241 --> 00:09:03,276
+The App Intents framework
+will take care
+
+190
+00:09:03,276 --> 00:09:06,846
+of presenting my view
+inside the Siri snippet.
+
+191
+00:09:06,846 --> 00:09:09,215
+Keep in mind that your views
+are going to be shown
+
+192
+00:09:09,215 --> 00:09:11,551
+alongside other Siri views,
+
+193
+00:09:11,551 --> 00:09:14,654
+like the snippet title
+or confirmation buttons.
+
+194
+00:09:14,654 --> 00:09:16,289
+So you'll want
+your snippet's design
+
+195
+00:09:16,289 --> 00:09:19,559
+to feel at home inside of Siri.
+
+196
+00:09:19,559 --> 00:09:22,695
+Up next, let's check out how
+I can extend an app shortcut
+
+197
+00:09:22,695 --> 00:09:26,766
+to include parameters.
+
+198
+00:09:26,766 --> 00:09:28,601
+In my previous implementation,
+
+199
+00:09:28,601 --> 00:09:32,238
+I chose to start
+the default meditation session.
+
+200
+00:09:32,238 --> 00:09:35,575
+But my app includes
+many great session types,
+
+201
+00:09:35,575 --> 00:09:37,811
+and users will want to start
+a particular session
+
+202
+00:09:37,811 --> 00:09:39,746
+they have in mind.
+
+203
+00:09:39,746 --> 00:09:42,415
+Ideally, my user would be able
+to specify the session
+
+204
+00:09:42,415 --> 00:09:45,251
+they want to start
+when running my intent.
+
+205
+00:09:45,251 --> 00:09:46,820
+To support these use cases,
+
+206
+00:09:46,820 --> 00:09:49,622
+I'll need to extend my intent
+by adding a parameter
+
+207
+00:09:49,622 --> 00:09:54,461
+that captures the session
+the user wants to run.
+
+208
+00:09:54,461 --> 00:09:55,728
+To add a parameter,
+
+209
+00:09:55,728 --> 00:09:58,698
+I first need to define
+the parameter's type.
+
+210
+00:09:58,698 --> 00:10:01,034
+I'll create
+a MeditationSession struct
+
+211
+00:10:01,034 --> 00:10:03,870
+that has the relevant
+information for a session.
+
+212
+00:10:03,870 --> 00:10:05,138
+I'll include a name,
+
+213
+00:10:05,138 --> 00:10:06,873
+and I'll give it
+an identifier field,
+
+214
+00:10:06,873 --> 00:10:10,009
+which can be a UUID.
+
+215
+00:10:10,009 --> 00:10:13,079
+To use this struct
+as a parameter for my intent,
+
+216
+00:10:13,079 --> 00:10:16,983
+I also need to implement
+the AppEntity protocol.
+
+217
+00:10:16,983 --> 00:10:19,152
+Implementing
+the AppEntity protocol
+
+218
+00:10:19,152 --> 00:10:22,055
+tells the App Intents framework
+about my type
+
+219
+00:10:22,055 --> 00:10:24,524
+and lets me specify
+additional information,
+
+220
+00:10:24,524 --> 00:10:27,527
+like how the entity
+is displayed.
+
+221
+00:10:27,527 --> 00:10:31,130
+The entity protocol requires
+that my type has an identifier,
+
+222
+00:10:31,130 --> 00:10:32,866
+which I've already provided.
+
+223
+00:10:32,866 --> 00:10:37,370
+I could use other types as well,
+like integers or strings.
+
+224
+00:10:37,370 --> 00:10:39,072
+I also need to provide
+some information
+
+225
+00:10:39,072 --> 00:10:41,207
+on how to display my entity.
+
+226
+00:10:41,207 --> 00:10:42,809
+This will be used
+in the Shortcuts app
+
+227
+00:10:42,809 --> 00:10:46,246
+and other places
+where my entity is shown.
+
+228
+00:10:46,246 --> 00:10:49,449
+Finally, I need to wire up
+a default query.
+
+229
+00:10:49,449 --> 00:10:52,252
+I'll call my query
+the MeditationSessionQuery,
+
+230
+00:10:52,252 --> 00:10:55,388
+and I'll implement it next.
+
+231
+00:10:55,388 --> 00:10:58,057
+In order to work with my entity,
+the App Intents framework
+
+232
+00:10:58,057 --> 00:10:59,859
+needs to be able
+to look up my entities
+
+233
+00:10:59,859 --> 00:11:01,928
+based on their identifier.
+
+234
+00:11:01,928 --> 00:11:03,229
+To make this possible,
+
+235
+00:11:03,229 --> 00:11:06,633
+the EntityQuery protocol
+defines just one requirement:
+
+236
+00:11:06,633 --> 00:11:08,568
+a function
+that takes identifiers
+
+237
+00:11:08,568 --> 00:11:11,237
+and returns matching entities.
+
+238
+00:11:11,237 --> 00:11:13,573
+I'll implement this function
+by looking up the sessions
+
+239
+00:11:13,573 --> 00:11:16,709
+in my SessionManager.
+
+240
+00:11:16,709 --> 00:11:19,646
+Next, I'll update
+my StartMeditationIntent
+
+241
+00:11:19,646 --> 00:11:21,748
+to add a parameter.
+
+242
+00:11:21,748 --> 00:11:23,016
+Parameters are
+straightforward;
+
+243
+00:11:23,016 --> 00:11:25,852
+they are just a normal
+property on my struct.
+
+244
+00:11:25,852 --> 00:11:28,488
+But to tell App Intents
+about my parameter,
+
+245
+00:11:28,488 --> 00:11:31,991
+I also need to add the
+@Parameter property wrapper.
+
+246
+00:11:31,991 --> 00:11:33,993
+This property wrapper
+lets App Intents know
+
+247
+00:11:33,993 --> 00:11:37,330
+that the session property
+is part of my intent.
+
+248
+00:11:37,330 --> 00:11:39,532
+I can also specify
+additional metadata
+
+249
+00:11:39,532 --> 00:11:44,404
+in the Parameter property
+wrapper, like the display name.
+
+250
+00:11:44,404 --> 00:11:47,173
+Now that I've added
+a parameter to my intent,
+
+251
+00:11:47,173 --> 00:11:50,443
+I need to ask the user which
+session they'd like to run.
+
+252
+00:11:50,443 --> 00:11:52,745
+The App Intents framework
+has robust support
+
+253
+00:11:52,745 --> 00:11:54,714
+for asking users
+follow-up questions
+
+254
+00:11:54,714 --> 00:11:58,184
+to gather values
+for my intent's parameters.
+
+255
+00:11:58,184 --> 00:12:02,121
+These prompts will be displayed
+anywhere my intent is run.
+
+256
+00:12:02,121 --> 00:12:05,058
+When run from Siri, Siri will
+speak out the questions,
+
+257
+00:12:05,058 --> 00:12:07,827
+and ask the user
+to speak the answer.
+
+258
+00:12:07,827 --> 00:12:09,729
+In Spotlight
+and the Shortcuts app,
+
+259
+00:12:09,729 --> 00:12:11,864
+the user will be presented
+with the same prompt
+
+260
+00:12:11,864 --> 00:12:14,667
+in a touch-driven UI.
+
+261
+00:12:14,667 --> 00:12:19,138
+App Intents supports
+three types of value prompts.
+
+262
+00:12:19,138 --> 00:12:23,643
+Disambiguations asks the user
+to select from a fixed list.
+
+263
+00:12:23,643 --> 00:12:26,079
+Disambiguations are great
+to present the user
+
+264
+00:12:26,079 --> 00:12:28,581
+when you have small
+fixed set of options
+
+265
+00:12:28,581 --> 00:12:32,452
+for a parameter
+in your intent.
+
+266
+00:12:32,452 --> 00:12:34,687
+Value prompts allow you
+to ask the user
+
+267
+00:12:34,687 --> 00:12:37,056
+for an open-ended value.
+
+268
+00:12:37,056 --> 00:12:39,926
+These are great for types
+like strings or integers,
+
+269
+00:12:39,926 --> 00:12:42,996
+which can take any value.
+
+270
+00:12:42,996 --> 00:12:45,632
+Finally, confirmation
+asks the user
+
+271
+00:12:45,632 --> 00:12:48,668
+to verify a particular value
+and can be helpful
+
+272
+00:12:48,668 --> 00:12:50,503
+if you want to double-check
+with the user
+
+273
+00:12:50,503 --> 00:12:53,039
+that you understand
+their intent.
+
+274
+00:12:53,039 --> 00:12:55,375
+Prompting for values is
+a great way to make intents
+
+275
+00:12:55,375 --> 00:12:58,578
+more flexible and allows you
+to gather more information
+
+276
+00:12:58,578 --> 00:13:00,179
+from the user.
+
+277
+00:13:00,179 --> 00:13:03,182
+But they also slow down
+the conversation,
+
+278
+00:13:03,182 --> 00:13:06,586
+and can frustrate users
+if you use them too often.
+
+279
+00:13:06,586 --> 00:13:09,889
+For more insight into
+designing great intents,
+
+280
+00:13:09,889 --> 00:13:11,357
+check out the session titled
+
+281
+00:13:11,357 --> 00:13:15,595
+"Design App Shortcuts"
+from Lynn.
+
+282
+00:13:15,595 --> 00:13:18,464
+All right, now that I've added
+the session parameter
+
+283
+00:13:18,464 --> 00:13:22,035
+to the StartMeditationIntent,
+I'll go ahead and add logic
+
+284
+00:13:22,035 --> 00:13:25,772
+to my perform method
+to prompt for this value.
+
+285
+00:13:25,772 --> 00:13:28,841
+In my app, I have a small
+fixed number of sessions
+
+286
+00:13:28,841 --> 00:13:30,410
+the user can run.
+
+287
+00:13:30,410 --> 00:13:32,779
+If the session
+isn't already specified,
+
+288
+00:13:32,779 --> 00:13:35,081
+I'll retrieve the list
+from my SessionManager
+
+289
+00:13:35,081 --> 00:13:38,084
+and present a disambiguation
+to the user.
+
+290
+00:13:38,084 --> 00:13:41,354
+Using the display representation
+for each of my sessions,
+
+291
+00:13:41,354 --> 00:13:44,390
+App Intents will format
+sessions into list items
+
+292
+00:13:44,390 --> 00:13:46,859
+and display them
+to the user.
+
+293
+00:13:46,859 --> 00:13:48,094
+When the user picks one,
+
+294
+00:13:48,094 --> 00:13:51,497
+the selected item
+will be returned to me.
+
+295
+00:13:51,497 --> 00:13:54,634
+I'll pass the selected session
+to my MeditationService,
+
+296
+00:13:54,634 --> 00:13:56,736
+which will start
+the session.
+
+297
+00:13:56,736 --> 00:13:59,305
+I can then return a dialog
+to let the user know
+
+298
+00:13:59,305 --> 00:14:01,541
+that the intent has started.
+
+299
+00:14:01,541 --> 00:14:03,976
+Since the user
+provided a session,
+
+300
+00:14:03,976 --> 00:14:06,012
+it's a good idea to put the name
+of the session
+
+301
+00:14:06,012 --> 00:14:11,217
+in the dialog so the user knows
+we understood their request.
+
+302
+00:14:11,217 --> 00:14:15,221
+Great, so now when my users
+say, "Start a Meditation,"
+
+303
+00:14:15,221 --> 00:14:17,990
+my app can prompt the user
+for the particular session
+
+304
+00:14:17,990 --> 00:14:19,859
+they want to run.
+
+305
+00:14:19,859 --> 00:14:21,894
+However, as I
+mentioned before,
+
+306
+00:14:21,894 --> 00:14:26,432
+users prefer Siri interactions
+that are quick and to the point.
+
+307
+00:14:26,432 --> 00:14:29,469
+Ideally, I'd be able
+to let my users tell Siri
+
+308
+00:14:29,469 --> 00:14:32,438
+the session they'd like
+to run in the initial phrase,
+
+309
+00:14:32,438 --> 00:14:35,174
+rather than
+in a follow-up question.
+
+310
+00:14:35,174 --> 00:14:37,643
+Well, I have good news.
+
+311
+00:14:37,643 --> 00:14:40,413
+App Shortcuts has support
+for extending trigger phrases
+
+312
+00:14:40,413 --> 00:14:43,216
+with predefined parameters.
+
+313
+00:14:43,216 --> 00:14:46,018
+By implementing
+parameterized phrases,
+
+314
+00:14:46,018 --> 00:14:48,187
+my app can support
+utterances like
+
+315
+00:14:48,187 --> 00:14:52,959
+"Start a calming meditation"
+or "Start a walking meditation."
+
+316
+00:14:52,959 --> 00:14:54,293
+Parameters are great
+when you have
+
+317
+00:14:54,293 --> 00:14:56,929
+a fixed set of well-known
+parameter values
+
+318
+00:14:56,929 --> 00:15:00,032
+that you can specify
+to Siri ahead of time.
+
+319
+00:15:00,032 --> 00:15:04,003
+For my app,
+I'll use my session names.
+
+320
+00:15:04,003 --> 00:15:07,440
+Parameters are not meant
+for open-ended values.
+
+321
+00:15:07,440 --> 00:15:11,010
+For example, it's not possible
+to gather an arbitrary string
+
+322
+00:15:11,010 --> 00:15:13,513
+from the user
+in the initial utterance.
+
+323
+00:15:13,513 --> 00:15:15,715
+So, my app couldn't support
+a phrase
+
+324
+00:15:15,715 --> 00:15:18,518
+like "Search my
+diary for X,"
+
+325
+00:15:18,518 --> 00:15:22,121
+where X could be
+any input from the user.
+
+326
+00:15:22,121 --> 00:15:25,491
+Instead, parameter values
+are specified ahead of time,
+
+327
+00:15:25,491 --> 00:15:27,393
+when your app is running.
+
+328
+00:15:27,393 --> 00:15:30,630
+Let's implement
+some parameterized phrases.
+
+329
+00:15:30,630 --> 00:15:32,899
+To implement parameterized
+phrases in my app,
+
+330
+00:15:32,899 --> 00:15:35,535
+I need to make
+a few changes.
+
+331
+00:15:35,535 --> 00:15:38,704
+First, I'll update the query
+for my SessionEntity
+
+332
+00:15:38,704 --> 00:15:41,007
+to implement the
+suggestedResults() method
+
+333
+00:15:41,007 --> 00:15:45,444
+to return the list of entities
+for my parameterized shortcut.
+
+334
+00:15:45,444 --> 00:15:48,381
+Second, I'll need to notify
+the App Intents framework
+
+335
+00:15:48,381 --> 00:15:51,651
+when the list of available
+SessionEntities has changed.
+
+336
+00:15:51,651 --> 00:15:53,119
+This allows
+the App Intents framework
+
+337
+00:15:53,119 --> 00:15:56,756
+to create new shortcut phrases
+for use in Siri.
+
+338
+00:15:56,756 --> 00:15:59,292
+I'll do this by updating
+my app's model layer
+
+339
+00:15:59,292 --> 00:16:00,860
+to notify
+the App Intents framework
+
+340
+00:16:00,860 --> 00:16:03,729
+whenever my session list
+changes.
+
+341
+00:16:03,729 --> 00:16:06,899
+Finally, I'll add some new
+phrases to my App Shortcut
+
+342
+00:16:06,899 --> 00:16:08,701
+that reference
+the session parameter
+
+343
+00:16:08,701 --> 00:16:12,171
+on my StartMeditationIntent.
+
+344
+00:16:12,171 --> 00:16:15,808
+So first, I'll update
+the MeditationSessionQuery
+
+345
+00:16:15,808 --> 00:16:18,945
+by implementing the
+suggestedEntities function.
+
+346
+00:16:18,945 --> 00:16:21,214
+The App Intents framework
+uses the sessions
+
+347
+00:16:21,214 --> 00:16:25,318
+returned from this function to
+create parameterized shortcuts.
+
+348
+00:16:25,318 --> 00:16:28,354
+It's important to note that
+while this method is optional,
+
+349
+00:16:28,354 --> 00:16:30,356
+if I don't implement
+this method,
+
+350
+00:16:30,356 --> 00:16:34,861
+I won't get any
+parameterized shortcuts at all.
+
+351
+00:16:34,861 --> 00:16:37,697
+Second, I'll need to update
+my app's model layer
+
+352
+00:16:37,697 --> 00:16:39,699
+to notify
+the App Intents framework
+
+353
+00:16:39,699 --> 00:16:42,935
+whenever my list
+of sessions changes.
+
+354
+00:16:42,935 --> 00:16:46,172
+In my app, I infrequently
+publish new session types
+
+355
+00:16:46,172 --> 00:16:48,875
+that I fetch from the server
+in the background.
+
+356
+00:16:48,875 --> 00:16:51,043
+I'll update my SessionModel
+to call the
+
+357
+00:16:51,043 --> 00:16:53,846
+updateAppShortcutParameters()
+method
+
+358
+00:16:53,846 --> 00:16:56,616
+any time I receive
+new sessions.
+
+359
+00:16:56,616 --> 00:16:59,185
+This method is provided
+by the App Intents framework;
+
+360
+00:16:59,185 --> 00:17:01,554
+you don't need
+to implement it yourself.
+
+361
+00:17:01,554 --> 00:17:04,891
+When called, App Intents
+will invoke your entity's query
+
+362
+00:17:04,891 --> 00:17:09,195
+to gather the list of parameters
+for your shortcut phrases.
+
+363
+00:17:09,195 --> 00:17:12,265
+Finally, I'll add new phrases
+for my App Shortcut
+
+364
+00:17:12,265 --> 00:17:15,601
+that include the session
+keypath on my intent.
+
+365
+00:17:15,601 --> 00:17:18,271
+The App Intents framework
+will combine this phrase
+
+366
+00:17:18,271 --> 00:17:21,574
+with all of the sessions
+returned from my query.
+
+367
+00:17:21,574 --> 00:17:25,678
+The text used for each value is
+pulled from the title property
+
+368
+00:17:25,678 --> 00:17:29,248
+on the SessionEntity's
+display representation.
+
+369
+00:17:29,248 --> 00:17:31,350
+Just like before,
+I'll want to include
+
+370
+00:17:31,350 --> 00:17:35,421
+a few different ways that users
+might phrase my App Shortcut.
+
+371
+00:17:35,421 --> 00:17:37,523
+This ensures
+a smoother experience
+
+372
+00:17:37,523 --> 00:17:41,360
+if the user doesn't remember
+your preferred phrase.
+
+373
+00:17:41,360 --> 00:17:44,931
+All right, I now have a great,
+full-featured App Shortcut,
+
+374
+00:17:44,931 --> 00:17:48,034
+and I can't wait for my users
+to give it a try.
+
+375
+00:17:48,034 --> 00:17:50,336
+But in order
+for that to happen,
+
+376
+00:17:50,336 --> 00:17:55,675
+I need to do some work to help
+users discover my new Shortcut.
+
+377
+00:17:55,675 --> 00:17:59,478
+The first thing I want to talk
+about is picking great phrases.
+
+378
+00:17:59,478 --> 00:18:03,516
+Great phrases for App Shortcuts
+are short and memorable.
+
+379
+00:18:03,516 --> 00:18:05,751
+Users will have a lot
+of apps on their phone
+
+380
+00:18:05,751 --> 00:18:07,353
+that support App Shortcuts;
+
+381
+00:18:07,353 --> 00:18:09,822
+and in practice,
+users can have a hard time
+
+382
+00:18:09,822 --> 00:18:12,792
+remembering exactly how
+to phrase their shortcuts.
+
+383
+00:18:12,792 --> 00:18:17,997
+So where possible, keep your
+phrases short and to the point.
+
+384
+00:18:17,997 --> 00:18:20,132
+Along these lines,
+if your app name
+
+385
+00:18:20,132 --> 00:18:22,468
+can be used
+as a noun or verb,
+
+386
+00:18:22,468 --> 00:18:25,304
+consider using it that way
+in your phrase.
+
+387
+00:18:25,304 --> 00:18:28,174
+In my app, I've used
+Meditation like a noun,
+
+388
+00:18:28,174 --> 00:18:31,677
+so that the phrase
+can be short and memorable.
+
+389
+00:18:31,677 --> 00:18:36,782
+Finally, app name synonyms
+can help your users immensely.
+
+390
+00:18:36,782 --> 00:18:38,250
+If users call your app
+
+391
+00:18:38,250 --> 00:18:40,653
+something other than
+your app's display name,
+
+392
+00:18:40,653 --> 00:18:44,557
+you'll want to consider adding
+an app name synonym for it.
+
+393
+00:18:44,557 --> 00:18:48,361
+iOS 11 added support
+for app name synonyms.
+
+394
+00:18:48,361 --> 00:18:53,065
+If you haven't created one, now
+may be a great time to do so.
+
+395
+00:18:53,065 --> 00:18:54,700
+The next thing
+I want to talk about
+
+396
+00:18:54,700 --> 00:18:58,371
+is the Siri Tip
+and the Shortcuts link.
+
+397
+00:18:58,371 --> 00:19:01,640
+Because App Shortcuts
+don't require any user setup,
+
+398
+00:19:01,640 --> 00:19:04,777
+discoverability is vital
+for users to find
+
+399
+00:19:04,777 --> 00:19:07,613
+and use your App Shortcuts.
+
+400
+00:19:07,613 --> 00:19:10,016
+With App Shortcuts,
+users no longer need
+
+401
+00:19:10,016 --> 00:19:13,419
+the Add to Siri button
+to add your Shortcut.
+
+402
+00:19:13,419 --> 00:19:14,787
+It's already added!
+
+403
+00:19:14,787 --> 00:19:18,024
+However, we don't want to lose
+the discoverability benefits
+
+404
+00:19:18,024 --> 00:19:20,259
+that the Add to Siri button
+provided.
+
+405
+00:19:20,259 --> 00:19:24,697
+With that in mind, we've
+created a new Siri Tip view.
+
+406
+00:19:24,697 --> 00:19:27,166
+This view works great
+anywhere you may have used
+
+407
+00:19:27,166 --> 00:19:29,902
+the Add To Siri button
+in the past.
+
+408
+00:19:29,902 --> 00:19:34,106
+The Tip view is available
+in both SwiftUI and UIKit.
+
+409
+00:19:34,106 --> 00:19:35,908
+And we've provided
+a number of styles
+
+410
+00:19:35,908 --> 00:19:40,012
+so that the Tip looks great
+in any application.
+
+411
+00:19:40,012 --> 00:19:42,615
+Siri Tips are best placed
+contextually,
+
+412
+00:19:42,615 --> 00:19:45,518
+when they're relevant
+to the content onscreen.
+
+413
+00:19:45,518 --> 00:19:48,454
+If a user just placed
+an order in your app,
+
+414
+00:19:48,454 --> 00:19:50,589
+consider showing a Tip
+for your Shortcut
+
+415
+00:19:50,589 --> 00:19:52,958
+that provides
+the order status.
+
+416
+00:19:52,958 --> 00:19:55,227
+Siri Tips should be
+placed thoughtfully,
+
+417
+00:19:55,227 --> 00:19:57,329
+when you feel a user
+is likely to engage
+
+418
+00:19:57,329 --> 00:20:00,566
+with your App Shortcut
+in the near future.
+
+419
+00:20:00,566 --> 00:20:03,736
+The Siri Tip also
+supports dismissal.
+
+420
+00:20:03,736 --> 00:20:06,472
+The view includes a dismiss
+button and will trigger
+
+421
+00:20:06,472 --> 00:20:09,608
+a custom closure
+in your code when tapped.
+
+422
+00:20:09,608 --> 00:20:11,844
+You'll want to remove
+the view from your layout,
+
+423
+00:20:11,844 --> 00:20:13,779
+and consider
+not showing it again
+
+424
+00:20:13,779 --> 00:20:16,348
+until you feel
+it's relevant.
+
+425
+00:20:16,348 --> 00:20:19,585
+Finally, we've also included
+a new ShortcutsLink
+
+426
+00:20:19,585 --> 00:20:22,988
+that will launch to a list
+of Shortcuts from your app.
+
+427
+00:20:22,988 --> 00:20:24,990
+This new element is great
+
+428
+00:20:24,990 --> 00:20:27,259
+if your app has a lot
+of App Shortcuts
+
+429
+00:20:27,259 --> 00:20:30,863
+and you want to let users
+explore all of them.
+
+430
+00:20:30,863 --> 00:20:33,365
+Now, the great thing
+about App Shortcuts
+
+431
+00:20:33,365 --> 00:20:36,769
+is they're available as soon
+as your app is installed.
+
+432
+00:20:36,769 --> 00:20:39,038
+Even before the app
+is first launched,
+
+433
+00:20:39,038 --> 00:20:41,273
+users can see and run
+your Shortcuts
+
+434
+00:20:41,273 --> 00:20:44,743
+from Spotlight, Siri,
+and the Shortcuts app.
+
+435
+00:20:44,743 --> 00:20:46,512
+You may need to take this
+into account
+
+436
+00:20:46,512 --> 00:20:48,414
+when building
+your App Shortcut.
+
+437
+00:20:48,414 --> 00:20:51,784
+For example, if your app
+requires a log-in flow,
+
+438
+00:20:51,784 --> 00:20:55,121
+the user may not have logged in
+before running your intent.
+
+439
+00:20:55,121 --> 00:20:58,257
+Your intent should fail
+gracefully with an error message
+
+440
+00:20:58,257 --> 00:21:01,861
+explaining to the user
+that they need to log in.
+
+441
+00:21:01,861 --> 00:21:05,364
+Second, parameterized phrases
+for your App Shortcuts
+
+442
+00:21:05,364 --> 00:21:08,467
+won't be available until
+your app has been launched
+
+443
+00:21:08,467 --> 00:21:10,402
+and notified
+the App Intents framework
+
+444
+00:21:10,402 --> 00:21:12,905
+that you have new
+parameter values.
+
+445
+00:21:12,905 --> 00:21:14,607
+If your App Shortcut
+doesn't contain
+
+446
+00:21:14,607 --> 00:21:17,977
+any non-parameterized
+phrases, the user won't see
+
+447
+00:21:17,977 --> 00:21:21,714
+your App Shortcut at all until
+they first launch your app.
+
+448
+00:21:21,714 --> 00:21:25,084
+You may consider adding a
+few non-parameterized phrases
+
+449
+00:21:25,084 --> 00:21:27,553
+to avoid this issue.
+
+450
+00:21:27,553 --> 00:21:30,923
+Additionally, Siri has added
+support for phrases like,
+
+451
+00:21:30,923 --> 00:21:35,094
+"What can I do here?" and
+"What can I do with Meditation?"
+
+452
+00:21:35,094 --> 00:21:37,463
+Siri will automatically
+gather and recommend
+
+453
+00:21:37,463 --> 00:21:41,634
+any App Shortcut phrases and
+present them on your behalf.
+
+454
+00:21:41,634 --> 00:21:44,003
+Your app doesn't need
+to do anything additional
+
+455
+00:21:44,003 --> 00:21:46,305
+for this
+functionality to work.
+
+456
+00:21:46,305 --> 00:21:49,275
+Finally, in both Siri
+and the Shortcuts app,
+
+457
+00:21:49,275 --> 00:21:52,011
+the order your App Shortcuts
+are displayed is determined
+
+458
+00:21:52,011 --> 00:21:54,246
+by the order that you list
+your App Shortcuts
+
+459
+00:21:54,246 --> 00:21:55,948
+in your source code.
+
+460
+00:21:55,948 --> 00:21:58,384
+You'll want to consider putting
+your best and most useful
+
+461
+00:21:58,384 --> 00:22:02,087
+App Shortcuts first, so that
+they get the most attention.
+
+462
+00:22:02,087 --> 00:22:05,591
+Similarly, the first phrase
+you list in the phrase array
+
+463
+00:22:05,591 --> 00:22:09,495
+will be considered the primary
+phrase for that App Shortcut.
+
+464
+00:22:09,495 --> 00:22:13,566
+The primary phrase is used as
+the label on the Shortcut tile,
+
+465
+00:22:13,566 --> 00:22:15,601
+and it's shown
+when the user asks Siri
+
+466
+00:22:15,601 --> 00:22:18,404
+for help with your app.
+
+467
+00:22:18,404 --> 00:22:22,274
+OK, we covered a lot
+about App Intents framework
+
+468
+00:22:22,274 --> 00:22:24,310
+and App Shortcuts.
+
+469
+00:22:24,310 --> 00:22:27,246
+I want to leave you
+with two key thoughts.
+
+470
+00:22:27,246 --> 00:22:31,483
+First, App Shortcuts make it
+easy for users to use your app
+
+471
+00:22:31,483 --> 00:22:35,921
+from anywhere in the system, so
+think about the best use cases
+
+472
+00:22:35,921 --> 00:22:40,059
+in your app that fit
+this more lightweight model.
+
+473
+00:22:40,059 --> 00:22:43,395
+Second, once you've
+implemented an App Shortcut,
+
+474
+00:22:43,395 --> 00:22:46,832
+users will not know about it
+unless you tell them!
+
+475
+00:22:46,832 --> 00:22:50,302
+Think hard about how to make
+your App Shortcut discoverable.
+
+476
+00:22:50,302 --> 00:22:52,605
+Consider places in your app
+where you can show
+
+477
+00:22:52,605 --> 00:22:56,008
+the Siri Tip, as well as
+off-product locations,
+
+478
+00:22:56,008 --> 00:22:59,345
+like a website
+or a sign in your store.
+
+479
+00:22:59,345 --> 00:23:02,014
+We can't wait to see
+all the great App Shortcuts
+
+480
+00:23:02,014 --> 00:23:05,217
+that you create with the
+new App Intents framework.
+
+481
+00:23:05,217 --> 00:23:07,319
+To dig deeper into design,
+
+482
+00:23:07,319 --> 00:23:09,622
+as well as
+the App Intents framework,
+
+483
+00:23:09,622 --> 00:23:12,424
+be sure to check out
+other talks this week.
+
+484
+00:23:12,424 --> 00:23:15,494
+Thanks, and have
+a great WWDC.
+
+485
+00:23:15,494 --> 00:23:19,531
+♪
+

@@ -1,0 +1,1303 @@
+1
+00:00:00,334 --> 00:00:06,340
+[upbeat music]
+
+2
+00:00:09,309 --> 00:00:12,513
+- Howdy. I'm Jake,
+a designer on the Xcode team.
+
+3
+00:00:12,546 --> 00:00:16,917
+Multiplatform app development is being
+taken to the next level in Xcode 14.
+
+4
+00:00:16,950 --> 00:00:20,220
+A single app target can now
+support even more destinations
+
+5
+00:00:20,254 --> 00:00:22,222
+across multiple platforms,
+
+6
+00:00:22,256 --> 00:00:26,260
+all while maintaining a single common
+codebase, sharing settings by default,
+
+7
+00:00:26,293 --> 00:00:29,730
+and allowing new ways to
+conditionalize where needed.
+
+8
+00:00:29,763 --> 00:00:33,600
+First, we'll cover what
+a multiplatform app target is,
+
+9
+00:00:33,634 --> 00:00:35,269
+and in which cases it works best.
+
+10
+00:00:36,436 --> 00:00:41,975
+Next, we'll modify our project to support
+multiple destinations and platforms,
+
+11
+00:00:42,009 --> 00:00:45,946
+then we'll update our project to get it
+building and running on the new platform.
+
+12
+00:00:47,314 --> 00:00:50,584
+We'll ensure our app looks great on each
+supported platform...
+
+13
+00:00:52,119 --> 00:00:55,522
+and finally we'll integrate Xcode Cloud
+with our project changes.
+
+14
+00:00:57,224 --> 00:00:59,793
+First, let's understand
+which technique we want to use
+
+15
+00:00:59,826 --> 00:01:02,863
+to allow our app
+to support multiple platforms.
+
+16
+00:01:02,896 --> 00:01:06,767
+Before Xcode 14,
+if you wanted your app to support iOS
+
+17
+00:01:06,800 --> 00:01:10,270
+and macOS,
+you would need two separate targets.
+
+18
+00:01:10,304 --> 00:01:13,574
+This is great if your project
+needs significantly different codebases,
+
+19
+00:01:13,607 --> 00:01:17,244
+shares very few of its settings
+between its different platforms,
+
+20
+00:01:17,277 --> 00:01:21,582
+or if each app target relies heavily
+on a different underlying technologies.
+
+21
+00:01:22,783 --> 00:01:24,785
+If that's still the case
+with your project today,
+
+22
+00:01:24,818 --> 00:01:29,089
+your best bet would be to continue to use
+separate targets for each platform.
+
+23
+00:01:29,122 --> 00:01:33,293
+In Xcode 14, a single app target can
+declare support for many destinations
+
+24
+00:01:33,327 --> 00:01:37,097
+like iPhone, iPad, Mac, and Apple TV.
+
+25
+00:01:37,130 --> 00:01:39,800
+This is great for an app
+that uses a common codebase
+
+26
+00:01:39,833 --> 00:01:42,369
+and shares most of its settings
+across all its destinations
+
+27
+00:01:42,402 --> 00:01:45,839
+while still allowing for
+customization when needed.
+
+28
+00:01:45,873 --> 00:01:49,610
+Let's take a look at how
+multiplatform apps work in Xcode 14.
+
+29
+00:01:49,643 --> 00:01:52,579
+If we're starting from scratch,
+a great way to begin
+
+30
+00:01:52,613 --> 00:01:55,883
+would be to use the new,
+improved multiplatform app template
+
+31
+00:01:55,916 --> 00:01:57,818
+when making a new project in Xcode.
+
+32
+00:01:58,886 --> 00:02:03,123
+The multiplatform app template uses
+SwiftUI for its lifecycle and interface,
+
+33
+00:02:03,156 --> 00:02:07,160
+which starts us out with a target
+configured by default to support iPhone,
+
+34
+00:02:07,194 --> 00:02:08,829
+iPad, and Mac.
+
+35
+00:02:08,862 --> 00:02:11,498
+This is a fantastic configuration
+for new projects.
+
+36
+00:02:11,532 --> 00:02:13,200
+Because we're using SwiftUI,
+
+37
+00:02:13,233 --> 00:02:16,503
+we have access to the full
+feature-set of each platform's SDK,
+
+38
+00:02:16,537 --> 00:02:18,972
+allowing the creation of amazing new apps
+
+39
+00:02:19,006 --> 00:02:22,075
+that take advantage of
+what each platform has to offer.
+
+40
+00:02:22,109 --> 00:02:24,978
+Existing projects
+can also declare support
+
+41
+00:02:25,012 --> 00:02:26,580
+for multiple destinations
+in their app target
+
+42
+00:02:27,548 --> 00:02:32,586
+and use SwiftUI to get access to
+the full power of each platform's SDK.
+
+43
+00:02:32,619 --> 00:02:37,591
+Let's take a look at how to add a
+Mac destination to an existing iOS app.
+
+44
+00:02:37,624 --> 00:02:42,196
+I've been building a Food Truck app,
+and it works great on iPhone and iPad.
+
+45
+00:02:42,229 --> 00:02:44,464
+I'm pretty happy with this iOS app,
+
+46
+00:02:44,498 --> 00:02:48,869
+and now I want to bring it to the Mac
+and embrace the platform and its features.
+
+47
+00:02:48,902 --> 00:02:52,206
+Let's take a look at what our
+project looks like in Xcode.
+
+48
+00:02:54,641 --> 00:02:56,476
+If we take a look at my app target,
+
+49
+00:02:56,510 --> 00:02:59,346
+we can see a list of all
+the destinations my app supports.
+
+50
+00:03:00,781 --> 00:03:05,018
+You can see I have a Mac destination
+already--Designed for iPad.
+
+51
+00:03:05,052 --> 00:03:09,957
+This allows Mac computers with Apple
+silicon to run my unmodified iOS app.
+
+52
+00:03:09,990 --> 00:03:12,826
+This is a great way to get
+started supporting the Mac,
+
+53
+00:03:12,860 --> 00:03:15,829
+but I want to take my Mac support
+to the next level.
+
+54
+00:03:15,863 --> 00:03:19,399
+Let's add a "Designed for Mac" experience,
+so to speak.
+
+55
+00:03:20,767 --> 00:03:23,337
+We can easily edit our list of
+supported destinations
+
+56
+00:03:23,370 --> 00:03:26,473
+and add a Mac destination to our app.
+
+57
+00:03:26,507 --> 00:03:28,976
+There are a couple options
+for Mac destinations:
+
+58
+00:03:29,009 --> 00:03:32,479
+Mac, Mac Catalyst, and Designed for iPad,
+
+59
+00:03:32,513 --> 00:03:35,282
+the last of which is grayed out,
+because my app already supports it.
+
+60
+00:03:36,750 --> 00:03:39,419
+Choosing between Mac and
+Mac Catalyst mainly comes down to
+
+61
+00:03:39,453 --> 00:03:41,655
+which technology
+we're most interested in using.
+
+62
+00:03:41,688 --> 00:03:46,260
+If our app made heavy use of UIKit
+or Storyboards at the core of our app,
+
+63
+00:03:46,293 --> 00:03:49,897
+Mac Catalyst would be a great way
+to convert our existing iPad app
+
+64
+00:03:49,930 --> 00:03:52,366
+into a compatible Mac app.
+
+65
+00:03:52,399 --> 00:03:56,036
+However, our app uses SwiftUI,
+which makes the "Mac option"
+
+66
+00:03:56,069 --> 00:03:59,506
+the best choice to craft our,
+well, Mac app.
+
+67
+00:03:59,540 --> 00:04:03,210
+We'll get the amazing Mac look and feel
+right out of the box,
+
+68
+00:04:03,243 --> 00:04:07,347
+with the full power of
+the macOS SDK without any limits.
+
+69
+00:04:07,381 --> 00:04:10,851
+Meaning, we'll have the freedom
+to use UIKit in our iOS app,
+
+70
+00:04:10,884 --> 00:04:14,188
+and AppKit in our macOS app,
+if we want that flexibility.
+
+71
+00:04:14,221 --> 00:04:17,324
+With all that in mind, let's choose Mac,
+
+72
+00:04:17,357 --> 00:04:19,960
+the best option for working with SwiftUI.
+
+73
+00:04:19,993 --> 00:04:22,362
+Once I make my choice,
+Xcode will alert me
+
+74
+00:04:22,396 --> 00:04:26,200
+to some changes necessary
+to prepare my project for Mac support.
+
+75
+00:04:26,233 --> 00:04:28,502
+In this case,
+Xcode will update my target
+
+76
+00:04:28,535 --> 00:04:32,372
+to only include dependencies and
+frameworks that are supported on Mac.
+
+77
+00:04:32,406 --> 00:04:35,542
+It's important to note Xcode
+won't make changes to my code,
+
+78
+00:04:35,576 --> 00:04:38,478
+so if I'm calling API
+that isn't available on Mac,
+
+79
+00:04:38,512 --> 00:04:40,681
+I'll need to resolve those issues myself.
+
+80
+00:04:40,714 --> 00:04:45,552
+Once I pick my Mac option, it's added
+to my list of supported destinations.
+
+81
+00:04:45,586 --> 00:04:48,455
+It's totally valid to have more
+than one Mac destination
+
+82
+00:04:48,488 --> 00:04:50,657
+when I'm developing in Xcode.
+
+83
+00:04:50,691 --> 00:04:53,827
+This is especially useful if I'm
+transitioning from "Mac Catalyst"
+
+84
+00:04:53,861 --> 00:04:56,496
+or "Designed for iPad" to a full Mac app.
+
+85
+00:04:57,731 --> 00:05:02,669
+This means I can continue testing out
+each of my Mac products within Xcode.
+
+86
+00:05:02,703 --> 00:05:06,974
+And I'm not necessarily restricted to
+a single choice when developing my app.
+
+87
+00:05:07,007 --> 00:05:10,911
+However, if I were to publish
+my native Mac app to the App Store,
+
+88
+00:05:10,944 --> 00:05:15,582
+my Designed for iPad app wouldn't
+be available anymore to my customers,
+
+89
+00:05:15,616 --> 00:05:19,152
+so Xcode offers a quick way
+to remove this destination.
+
+90
+00:05:19,186 --> 00:05:21,388
+But I'll consider removing
+this destination
+
+91
+00:05:21,421 --> 00:05:24,024
+once I'm happy
+with my native Mac experience.
+
+92
+00:05:24,057 --> 00:05:25,926
+Whether I'm starting from scratch
+
+93
+00:05:25,959 --> 00:05:28,529
+or adding a new destination
+to an existing app,
+
+94
+00:05:28,562 --> 00:05:31,965
+using a single target in Xcode
+lets me share code
+
+95
+00:05:31,999 --> 00:05:33,800
+and build settings by default.
+
+96
+00:05:33,834 --> 00:05:37,304
+There may be cases where I want
+to customize an individual setting,
+
+97
+00:05:37,337 --> 00:05:40,941
+like my app's display name
+or a minimum deployment version.
+
+98
+00:05:40,974 --> 00:05:45,412
+Let's take a look at how to do that in
+the improved target editor in Xcode 14.
+
+99
+00:05:45,445 --> 00:05:50,450
+Many app target settings now include
+a way to conditionalize its value.
+
+100
+00:05:50,484 --> 00:05:53,020
+On supported settings,
+I can reveal an editor
+
+101
+00:05:53,053 --> 00:05:57,357
+that lets me set the default value for
+each build configuration in my project.
+
+102
+00:05:57,391 --> 00:06:00,027
+I have a custom Beta configuration
+that I added,
+
+103
+00:06:00,060 --> 00:06:02,763
+as well as the standard Debug
+and Release configurations
+
+104
+00:06:02,796 --> 00:06:04,932
+that come with new Xcode projects.
+
+105
+00:06:04,965 --> 00:06:06,934
+I want to give my app
+a different display name
+
+106
+00:06:06,967 --> 00:06:11,538
+when built with a beta configuration,
+so I can just edit the name right here.
+
+107
+00:06:11,572 --> 00:06:14,208
+As I type, we'll see our app's
+display name in Xcode
+
+108
+00:06:14,241 --> 00:06:16,710
+has been replaced with a readout
+of all possible values
+
+109
+00:06:16,743 --> 00:06:19,246
+the display name can now have.
+
+110
+00:06:19,279 --> 00:06:21,381
+If needed, I could also add a condition,
+
+111
+00:06:21,415 --> 00:06:25,252
+letting me specify a value based on
+which SDK is being used.
+
+112
+00:06:25,285 --> 00:06:27,754
+This allows me to say
+set a specific name
+
+113
+00:06:27,788 --> 00:06:30,624
+for the beta configuration
+when building for Mac.
+
+114
+00:06:32,059 --> 00:06:35,562
+Okay, I think we're done with the edits
+we want to make in the General tab.
+
+115
+00:06:35,596 --> 00:06:38,298
+Let's take a look at the
+Signing and Capabilities tab
+
+116
+00:06:38,332 --> 00:06:40,701
+for any other changes we need to make.
+
+117
+00:06:42,035 --> 00:06:44,605
+The good news is,
+with Automatic Signing turned on,
+
+118
+00:06:44,638 --> 00:06:47,074
+there are no extra steps to take.
+
+119
+00:06:47,107 --> 00:06:50,344
+When I added my Mac destination,
+the necessary Signing Certificate
+
+120
+00:06:50,377 --> 00:06:53,780
+and Provisioning Profile for the Mac
+was generated on my behalf.
+
+121
+00:06:53,814 --> 00:06:59,353
+Both my iOS and macOS app products
+use the same bundle identifier by default,
+
+122
+00:06:59,386 --> 00:07:02,990
+which is awesome, because that means
+when I publish them to the App Store,
+
+123
+00:07:03,023 --> 00:07:05,792
+they will be made available
+for Universal Purchase.
+
+124
+00:07:05,826 --> 00:07:10,197
+So folks who buy my iOS app
+will also get my Mac app automatically.
+
+125
+00:07:10,230 --> 00:07:14,601
+My app also makes use of
+capabilities like push notifications.
+
+126
+00:07:14,635 --> 00:07:17,638
+Any capabilities
+I've been using for my iOS app
+
+127
+00:07:17,671 --> 00:07:21,441
+that are applicable to my macOS app
+get applied with no extra work from me.
+
+128
+00:07:21,475 --> 00:07:25,078
+They even get combined
+into a single entitlements file.
+
+129
+00:07:25,112 --> 00:07:28,448
+Now that we've added support
+for multiple destinations to our app,
+
+130
+00:07:28,482 --> 00:07:31,185
+our next goal is to get it to build.
+
+131
+00:07:31,218 --> 00:07:34,621
+It's normal to run into issues
+building an app for a new destination,
+
+132
+00:07:34,655 --> 00:07:38,692
+especially if a new SDK is involved,
+like our new Mac support.
+
+133
+00:07:38,725 --> 00:07:41,195
+So let's take a look
+at some of these common issues.
+
+134
+00:07:41,228 --> 00:07:44,264
+Some frameworks
+are not available to all platforms.
+
+135
+00:07:44,298 --> 00:07:46,800
+We'll need to make sure
+we're not importing or linking
+
+136
+00:07:46,834 --> 00:07:48,969
+any unavailable frameworks.
+
+137
+00:07:49,002 --> 00:07:53,740
+Remember that Xcode won't change our code
+when adding support for a new destination,
+
+138
+00:07:53,774 --> 00:07:57,277
+so we'll need to conditionalize
+our code based on SDK,
+
+139
+00:07:57,311 --> 00:08:00,380
+similar to how we conditionalized
+our app's settings.
+
+140
+00:08:00,414 --> 00:08:02,616
+This is also true for API.
+
+141
+00:08:02,649 --> 00:08:06,954
+Some features are marked as unavailable
+based on which SDK we're building with.
+
+142
+00:08:06,987 --> 00:08:10,290
+Swift offers a way to conditionalize
+portions of our code
+
+143
+00:08:10,324 --> 00:08:14,528
+to only include features available
+for the SDKs we're building with.
+
+144
+00:08:14,561 --> 00:08:18,565
+Xcode also lets us specify
+if an individual file should be compiled
+
+145
+00:08:18,599 --> 00:08:20,834
+when building for some SDKs.
+
+146
+00:08:20,868 --> 00:08:24,838
+If I build my project right now...
+
+147
+00:08:24,872 --> 00:08:26,740
+I don't see any issues.
+
+148
+00:08:26,773 --> 00:08:29,510
+That's because I still have
+a destination selected in my toolbar
+
+149
+00:08:29,543 --> 00:08:32,312
+that uses the iOS SDK.
+
+150
+00:08:32,346 --> 00:08:37,317
+I'll need to pick "My Mac" from the list
+to build against the macOS SDK.
+
+151
+00:08:40,654 --> 00:08:42,556
+Building now reveals some new issues,
+
+152
+00:08:42,589 --> 00:08:45,859
+and as we expected,
+they're mainly related to availability.
+
+153
+00:08:45,893 --> 00:08:51,765
+In one of my files, I'm importing ARKit,
+which is not available on Mac.
+
+154
+00:08:51,798 --> 00:08:56,904
+I could wrap this import statement
+in #if canImport to conditionalize it out.
+
+155
+00:08:58,405 --> 00:09:01,775
+This is useful if I don't want to manage
+a list of known platforms
+
+156
+00:09:01,808 --> 00:09:03,443
+a framework is available for
+
+157
+00:09:03,477 --> 00:09:06,613
+and simply say if it's not available,
+don't include it.
+
+158
+00:09:06,647 --> 00:09:10,184
+However, I'm still using ARKit
+throughout this file,
+
+159
+00:09:10,217 --> 00:09:11,718
+so sometimes it makes more sense
+
+160
+00:09:11,752 --> 00:09:15,222
+to conditionalize out
+an entire file for an SDK.
+
+161
+00:09:15,255 --> 00:09:17,157
+If we navigate back to our target
+
+162
+00:09:17,191 --> 00:09:21,695
+and go to the Build Phases tab,
+I can search for my file...
+
+163
+00:09:24,331 --> 00:09:27,167
+And specify
+it should only be compiled for iOS.
+
+164
+00:09:35,642 --> 00:09:37,744
+After building,
+once I've made those changes,
+
+165
+00:09:37,778 --> 00:09:39,680
+Xcode reports a new issue--
+
+166
+00:09:39,713 --> 00:09:42,416
+a framework that is available on Mac,
+SwiftUI,
+
+167
+00:09:42,449 --> 00:09:45,919
+has a feature that's
+been marked as unavailable.
+
+168
+00:09:45,953 --> 00:09:49,223
+Specifically,
+I'm using EditMode on iOS to allow users
+
+169
+00:09:49,256 --> 00:09:51,792
+to make edits and select content
+in Tables and Lists,
+
+170
+00:09:51,825 --> 00:09:54,928
+but on macOS EditMode doesn't exist!
+
+171
+00:09:54,962 --> 00:09:58,565
+Users can already freely select
+and edit rows of content on Mac,
+
+172
+00:09:58,599 --> 00:10:01,902
+so let's make sure this code
+is only runs on iOS.
+
+173
+00:10:01,935 --> 00:10:04,037
+I can condition out
+my environment property
+
+174
+00:10:04,071 --> 00:10:06,273
+and any place I was using EditMode below.
+
+175
+00:10:07,574 --> 00:10:10,444
+Now, I need to make sure any places
+I was using this property
+
+176
+00:10:10,477 --> 00:10:14,882
+are also conditioned out,
+like this onChange modifier.
+
+177
+00:10:14,915 --> 00:10:18,018
+I can wrap the entire modifier
+in an "if os" condition.
+
+178
+00:10:19,419 --> 00:10:23,891
+And finally, I'm using an EditButton view
+in the toolbar, which is also iOS-only.
+
+179
+00:10:28,762 --> 00:10:30,597
+Okay, let's try running our app.
+
+180
+00:10:33,767 --> 00:10:37,237
+Ah! It lives!
+Our app now builds and runs on Mac!
+
+181
+00:10:37,271 --> 00:10:40,474
+Just because our app now builds
+and runs on our new platform
+
+182
+00:10:40,507 --> 00:10:42,709
+doesn't mean our job is done.
+
+183
+00:10:42,743 --> 00:10:45,779
+There will be cases where you want to
+refine your app experience
+
+184
+00:10:45,812 --> 00:10:48,482
+for what users on
+your new platform will expect.
+
+185
+00:10:49,416 --> 00:10:53,120
+Also, trimming out our iOS-only
+features isn't the end of our journey.
+
+186
+00:10:53,153 --> 00:10:56,523
+We now have all the features
+of the macOS SDK to play with.
+
+187
+00:10:56,557 --> 00:10:59,126
+Now that I see my app running on Mac,
+
+188
+00:10:59,159 --> 00:11:00,928
+I'm noticing a quirk about my app
+
+189
+00:11:00,961 --> 00:11:03,230
+that doesn't feel natural
+in its new context.
+
+190
+00:11:03,263 --> 00:11:07,434
+These donuts in this grid view
+seem much too large!
+
+191
+00:11:07,467 --> 00:11:10,003
+That's because our grid items
+were designed for touch.
+
+192
+00:11:10,037 --> 00:11:15,042
+Situations like this arise when you
+declare a point size for a UI element
+
+193
+00:11:15,075 --> 00:11:19,379
+or otherwise customize a control
+with only a single platform in mind.
+
+194
+00:11:19,413 --> 00:11:23,383
+On the Mac, we don't need to
+make our buttons or thumbnails so large,
+
+195
+00:11:23,417 --> 00:11:27,120
+since we have a much more
+precise pointing device.
+
+196
+00:11:27,154 --> 00:11:30,757
+This is a great case to conditionalize
+a constant in our project
+
+197
+00:11:30,791 --> 00:11:33,694
+to vary based on which SDK
+we're building for.
+
+198
+00:11:33,727 --> 00:11:36,930
+When we bring our app to other
+platforms it's important to reconsider
+
+199
+00:11:36,964 --> 00:11:40,968
+many of these choices with
+our new platform's expectations.
+
+200
+00:11:41,001 --> 00:11:43,136
+Let's take a look at specifying
+a different value
+
+201
+00:11:43,170 --> 00:11:45,339
+based on which SDK we're building for.
+
+202
+00:11:45,372 --> 00:11:49,510
+One technique I often use is
+making a constant a computed property,
+
+203
+00:11:49,543 --> 00:11:52,779
+and using "#if os" to
+conditionalize what is returned.
+
+204
+00:11:52,813 --> 00:11:55,115
+Let's convert this to a computed property
+
+205
+00:11:55,148 --> 00:11:58,285
+and return what previously
+was a constant...
+
+206
+00:11:58,318 --> 00:12:00,287
+but only return that value on iOS.
+
+207
+00:12:11,932 --> 00:12:14,601
+Ah, 80 feels much more naturally sized.
+
+208
+00:12:21,742 --> 00:12:26,547
+Now, as for making use of the macOS SDK,
+there's a cool new feature in SwiftUI
+
+209
+00:12:26,580 --> 00:12:29,850
+that allows us to add
+our own UI element to the Menu Bar.
+
+210
+00:12:29,883 --> 00:12:32,786
+I have a summary view for my app
+that I'd love to let my users
+
+211
+00:12:32,819 --> 00:12:34,922
+have quick and easy access to.
+
+212
+00:12:34,955 --> 00:12:36,657
+Let's go to my App declaration,
+
+213
+00:12:36,690 --> 00:12:41,028
+and here, I can add a new Scene
+for my Menu Bar Extra.
+
+214
+00:12:41,061 --> 00:12:43,764
+Note, though,
+because this is a macOS-only feature,
+
+215
+00:12:43,797 --> 00:12:46,767
+I do need to conditionalize it
+for the macOS SDK.
+
+216
+00:12:48,135 --> 00:12:50,103
+Let's build and run and take a look.
+
+217
+00:12:54,107 --> 00:12:57,845
+Ah cool, my truck icon
+now shows up in the menu bar.
+
+218
+00:12:57,878 --> 00:13:00,414
+Awesome, now my Mac users
+can see a quick glance
+
+219
+00:13:00,447 --> 00:13:03,383
+at today's information
+right from their menu bar.
+
+220
+00:13:03,417 --> 00:13:07,387
+When we use SwiftUI, we get access
+to the full SDK of each platform
+
+221
+00:13:07,421 --> 00:13:09,656
+and can utilize its awesome features.
+
+222
+00:13:09,690 --> 00:13:12,526
+It's important to note,
+when we bring our app to other platforms,
+
+223
+00:13:12,559 --> 00:13:15,262
+we'll often need to
+reconsider many past choices
+
+224
+00:13:15,295 --> 00:13:18,065
+when working in the context
+of our new platform.
+
+225
+00:13:18,098 --> 00:13:22,102
+SwiftUI bakes platform expectations
+directly into the API.
+
+226
+00:13:22,135 --> 00:13:25,005
+Many interface elements
+will gain an automatic appearance
+
+227
+00:13:25,038 --> 00:13:27,040
+that looks great on each platform.
+
+228
+00:13:27,074 --> 00:13:30,177
+Conversely, that means we can lose
+that automatic styling
+
+229
+00:13:30,210 --> 00:13:34,014
+when we heavily customize
+our controls and other pieces of our UI,
+
+230
+00:13:34,047 --> 00:13:38,352
+so we should always double-check
+our UI looks great everywhere.
+
+231
+00:13:38,385 --> 00:13:40,754
+All that said,
+as we construct our cool app,
+
+232
+00:13:40,787 --> 00:13:43,123
+we should ensure we're following
+the best practices
+
+233
+00:13:43,156 --> 00:13:45,726
+laid out by the human interface
+guidelines.
+
+234
+00:13:45,759 --> 00:13:48,428
+Now that we're happy with
+our local changes to our app,
+
+235
+00:13:48,462 --> 00:13:52,165
+it's time to archive our app products
+and upload them to App Store Connect,
+
+236
+00:13:52,199 --> 00:13:56,103
+which we can do from Xcode
+or automate it with Xcode Cloud.
+
+237
+00:13:56,136 --> 00:13:58,138
+Once we're ready,
+we can then share the app
+
+238
+00:13:58,172 --> 00:14:00,474
+with internal and external testers
+on TestFlight
+
+239
+00:14:00,507 --> 00:14:02,409
+and release it to the App Store.
+
+240
+00:14:02,442 --> 00:14:05,779
+We'll need to archive our products
+to upload them to App Store Connect.
+
+241
+00:14:05,812 --> 00:14:07,915
+Just because we have a single target
+
+242
+00:14:07,948 --> 00:14:10,317
+doesn't mean we only have
+a single product.
+
+243
+00:14:10,350 --> 00:14:15,255
+We'll need to archive for each platform
+and upload those individually.
+
+244
+00:14:15,289 --> 00:14:18,325
+If you're building and archiving locally,
+you'll need to select a destination
+
+245
+00:14:18,358 --> 00:14:22,029
+that has the SDK
+you want to create an archive for.
+
+246
+00:14:22,062 --> 00:14:25,465
+If I want to produce my macOS app,
+I'll need to select "My Mac"
+
+247
+00:14:25,499 --> 00:14:27,334
+from the list of destinations,
+
+248
+00:14:27,367 --> 00:14:30,771
+otherwise I'd select an iOS device
+to produce my iOS app.
+
+249
+00:14:32,472 --> 00:14:34,174
+Once I have a destination selected,
+
+250
+00:14:34,208 --> 00:14:37,511
+I can choose "Product Archive"
+to create the archive.
+
+251
+00:14:39,246 --> 00:14:42,716
+Once my archives are complete,
+I can use the Organizer window in Xcode
+
+252
+00:14:42,749 --> 00:14:44,718
+to upload them to App Store Connect.
+
+253
+00:14:45,853 --> 00:14:49,690
+If I'm using Xcode Cloud,
+I can add actions to my workflow to build,
+
+254
+00:14:49,723 --> 00:14:51,892
+test, and archive my products.
+
+255
+00:14:51,925 --> 00:14:55,996
+In my list of actions in my workflow,
+I can create new items to build,
+
+256
+00:14:56,029 --> 00:15:00,200
+test, analyze,
+and archive each of my products.
+
+257
+00:15:00,234 --> 00:15:03,804
+In this case,
+I have an iOS app and a macOS app.
+
+258
+00:15:03,837 --> 00:15:07,641
+I can take it one step further
+and include a deployment preparation
+
+259
+00:15:07,674 --> 00:15:10,777
+to automate uploading my app
+to App Store Connect,
+
+260
+00:15:10,811 --> 00:15:14,114
+and I can even send those builds to
+my internal TestFlight team right away
+
+261
+00:15:14,147 --> 00:15:17,150
+and start getting feedback
+on the changes hot off the presses.
+
+262
+00:15:17,184 --> 00:15:20,888
+To summarize, Xcode 14
+takes multiplatform app development
+
+263
+00:15:20,921 --> 00:15:24,091
+to the next level
+with streamlined app targets
+
+264
+00:15:24,124 --> 00:15:28,262
+which can now support even more
+destinations across multiple platforms.
+
+265
+00:15:28,295 --> 00:15:31,965
+With a single app target,
+you can maintain a common codebase
+
+266
+00:15:31,999 --> 00:15:34,301
+and shared settings by default.
+
+267
+00:15:34,334 --> 00:15:38,939
+As demonstrated, we can conditionalize our
+settings and code based on our needs,
+
+268
+00:15:38,972 --> 00:15:43,076
+letting us customize our app to
+best match platform expectations.
+
+269
+00:15:43,110 --> 00:15:44,945
+The rest is up to you.
+
+270
+00:15:44,978 --> 00:15:47,781
+To learn more about new features
+and improvements in Xcode this year,
+
+271
+00:15:47,814 --> 00:15:50,350
+check out "What's new in Xcode."
+
+272
+00:15:50,384 --> 00:15:52,986
+I can't wait to see what
+incredible ideas you bring to life
+
+273
+00:15:53,020 --> 00:15:55,122
+with the power of Xcode and SwiftUI.
+

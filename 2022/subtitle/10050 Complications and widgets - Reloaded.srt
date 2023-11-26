@@ -1,0 +1,1584 @@
+1
+00:00:00,200 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,543
+♪
+
+3
+00:00:09,543 --> 00:00:11,578
+Hi!
+My name is Devon.
+
+4
+00:00:11,578 --> 00:00:13,180
+I'm an engineer
+on the watchOS team,
+
+5
+00:00:13,180 --> 00:00:15,315
+and today,
+I'll be talking about iOS.
+
+6
+00:00:15,315 --> 00:00:17,985
+And I'm Graham,
+an engineer from iOS,
+
+7
+00:00:17,985 --> 00:00:21,355
+and today,
+I'll be talking about watchOS.
+
+8
+00:00:21,355 --> 00:00:23,924
+We'll be talking about
+API additions to WidgetKit
+
+9
+00:00:23,924 --> 00:00:25,726
+that enable you to write
+accessory widgets
+
+10
+00:00:25,726 --> 00:00:29,162
+for the Lock Screen
+and complications for watchOS.
+
+11
+00:00:29,162 --> 00:00:31,365
+We'll show how you can
+develop both together,
+
+12
+00:00:31,365 --> 00:00:34,701
+along with additions to SwiftUI
+to help you along the way.
+
+13
+00:00:34,701 --> 00:00:36,203
+If you're unfamiliar
+with widgets,
+
+14
+00:00:36,203 --> 00:00:37,604
+timelines, and reloading,
+
+15
+00:00:37,604 --> 00:00:41,141
+I encourage you to seek out
+prior WidgetKit sessions.
+
+16
+00:00:41,141 --> 00:00:43,644
+First, we'll talk about
+the history of complications
+
+17
+00:00:43,644 --> 00:00:45,579
+and how they've evolved.
+
+18
+00:00:45,579 --> 00:00:48,482
+Then, we'll talk about new API
+to color your widgets
+
+19
+00:00:48,482 --> 00:00:51,652
+and complications
+in their new environments.
+
+20
+00:00:51,652 --> 00:00:53,854
+After that, Graham will demo
+how to get started
+
+21
+00:00:53,854 --> 00:00:54,922
+making your own widgets
+
+22
+00:00:54,922 --> 00:00:58,792
+and moving your existing
+widget extension to watchOS.
+
+23
+00:00:58,792 --> 00:01:00,360
+Next, Graham will
+walk you through
+
+24
+00:01:00,360 --> 00:01:02,863
+how to make the most
+of these smaller views.
+
+25
+00:01:02,863 --> 00:01:05,599
+And lastly, we'll talk about the
+different privacy environments
+
+26
+00:01:05,599 --> 00:01:07,935
+your widgets may appear in.
+
+27
+00:01:07,935 --> 00:01:10,771
+Complications are a key piece
+of the watchOS platform,
+
+28
+00:01:10,771 --> 00:01:14,741
+presenting quick, glanceable
+information on the watch face.
+
+29
+00:01:14,741 --> 00:01:16,076
+They convey
+immediately accessible,
+
+30
+00:01:16,076 --> 00:01:18,545
+high-value information
+and a tap takes you
+
+31
+00:01:18,545 --> 00:01:22,149
+to the relevant location
+in the app.
+
+32
+00:01:22,149 --> 00:01:24,284
+In watchOS 2,
+ClockKit enabled you
+
+33
+00:01:24,284 --> 00:01:26,453
+to create your own
+complications.
+
+34
+00:01:26,453 --> 00:01:28,689
+Complications have come
+a long way since then.
+
+35
+00:01:30,824 --> 00:01:33,460
+Rich complications were
+introduced in watchOS 5,
+
+36
+00:01:33,460 --> 00:01:37,798
+with graphic content
+and a suite of new families.
+
+37
+00:01:37,798 --> 00:01:40,300
+SwiftUI complications
+and multiple complications
+
+38
+00:01:40,300 --> 00:01:42,502
+were introduced in watchOS 7,
+which enabled you
+
+39
+00:01:42,502 --> 00:01:44,671
+to take your complications
+to the next level
+
+40
+00:01:44,671 --> 00:01:48,742
+and provide more options
+than ever.
+
+41
+00:01:48,742 --> 00:01:50,944
+Today, complications
+have been reimagined
+
+42
+00:01:50,944 --> 00:01:53,680
+and remade with WidgetKit,
+embracing SwiftUI
+
+43
+00:01:53,680 --> 00:01:55,716
+and bringing the glanceable
+complication experience
+
+44
+00:01:55,716 --> 00:01:58,952
+to iOS in the form of widgets.
+
+45
+00:01:58,952 --> 00:02:01,922
+With WidgetKit in iOS 16
+and watchOS 9,
+
+46
+00:02:01,922 --> 00:02:04,391
+you can build great glanceable
+widgets and complications
+
+47
+00:02:04,391 --> 00:02:05,892
+across both platforms,
+
+48
+00:02:05,892 --> 00:02:08,462
+enabling you to write your code
+once and share infrastructure
+
+49
+00:02:08,462 --> 00:02:11,231
+with your existing
+Home Screen widgets.
+
+50
+00:02:11,231 --> 00:02:13,333
+To do this, we've added
+new widget families
+
+51
+00:02:13,333 --> 00:02:15,268
+to the existing
+WidgetFamily type,
+
+52
+00:02:15,268 --> 00:02:18,905
+prefixed with the word
+"accessory."
+
+53
+00:02:18,905 --> 00:02:20,841
+The new accessoryRectangular
+family can be used
+
+54
+00:02:20,841 --> 00:02:23,877
+to show multiple lines of text
+or small graphs and charts,
+
+55
+00:02:23,877 --> 00:02:27,981
+similar to the existing ClockKit
+graphicRectangular family.
+
+56
+00:02:27,981 --> 00:02:30,951
+The accessoryCircular family
+is great for brief information,
+
+57
+00:02:30,951 --> 00:02:32,953
+gauges, and progress views.
+
+58
+00:02:32,953 --> 00:02:37,624
+This family also replaces the
+graphicCircular ClockKit family.
+
+59
+00:02:37,624 --> 00:02:40,660
+The all-new accessoryInline
+is a text-only slot
+
+60
+00:02:40,660 --> 00:02:45,132
+present on many faces on watchOS
+and above the time on iOS.
+
+61
+00:02:45,132 --> 00:02:47,234
+The inline slot
+comes in many sizes,
+
+62
+00:02:47,234 --> 00:02:48,502
+and we'll talk about how
+to make the best use
+
+63
+00:02:48,502 --> 00:02:50,037
+of them all later on.
+
+64
+00:02:52,339 --> 00:02:55,609
+Specific to watchOS is the new
+accessoryCorner family,
+
+65
+00:02:55,609 --> 00:02:59,146
+mixing a small circle of widget
+content with gauges and text.
+
+66
+00:02:59,146 --> 00:03:03,784
+This talk focuses on families
+common between iOS and watchOS.
+
+67
+00:03:03,784 --> 00:03:05,952
+For more details
+on this new watchOS family
+
+68
+00:03:05,952 --> 00:03:08,255
+and complication-specific
+features, check out
+
+69
+00:03:08,255 --> 00:03:11,992
+the "Go further with WidgetKit
+complications" session.
+
+70
+00:03:11,992 --> 00:03:14,261
+Let's talk about colors
+and rendering modes.
+
+71
+00:03:14,261 --> 00:03:15,896
+You may have noticed
+that accessory widgets
+
+72
+00:03:15,896 --> 00:03:18,298
+take on a few
+different appearances.
+
+73
+00:03:18,298 --> 00:03:21,001
+The system controls the look
+of accessory family widgets,
+
+74
+00:03:21,001 --> 00:03:22,769
+and we've given you some tools
+to help adapt them
+
+75
+00:03:22,769 --> 00:03:25,105
+to the rendering style.
+
+76
+00:03:25,105 --> 00:03:26,239
+There are three different
+rendering modes
+
+77
+00:03:26,239 --> 00:03:28,375
+your widget
+may be shown in.
+
+78
+00:03:28,375 --> 00:03:34,981
+Your widget can be full color,
+accented, or vibrant.
+
+79
+00:03:34,981 --> 00:03:36,983
+We've introduced the
+WidgetRenderingMode type
+
+80
+00:03:36,983 --> 00:03:40,787
+to represent these three
+different presentations.
+
+81
+00:03:40,787 --> 00:03:42,956
+You can access this value
+from the Environment,
+
+82
+00:03:42,956 --> 00:03:46,093
+using the widgetRenderingMode
+keypath.
+
+83
+00:03:46,093 --> 00:03:48,662
+After that, you can change
+your content conditionally
+
+84
+00:03:48,662 --> 00:03:53,800
+to make sure it looks just right
+everywhere that it'll show up.
+
+85
+00:03:53,800 --> 00:03:55,569
+In watchOS's full-color mode,
+
+86
+00:03:55,569 --> 00:03:58,772
+your content is displayed
+exactly as you specify.
+
+87
+00:03:58,772 --> 00:04:01,308
+Many existing complications
+take on a colorful appearance
+
+88
+00:04:01,308 --> 00:04:04,277
+in full color, like the gradient
+in Weather's gauges,
+
+89
+00:04:04,277 --> 00:04:08,381
+or the Activity rings' colors.
+
+90
+00:04:08,381 --> 00:04:10,784
+In the accented rendering mode,
+your views are split
+
+91
+00:04:10,784 --> 00:04:13,787
+into two groups
+and colored independently.
+
+92
+00:04:13,787 --> 00:04:15,722
+The two coloring groups
+are flatly colored,
+
+93
+00:04:15,722 --> 00:04:19,226
+preserving only
+their original opacities.
+
+94
+00:04:19,226 --> 00:04:21,061
+You can tell the system
+how to group your views
+
+95
+00:04:21,061 --> 00:04:23,063
+with the .widgetAccentable()
+view modifier,
+
+96
+00:04:23,063 --> 00:04:24,898
+or switch out your content
+based on
+
+97
+00:04:24,898 --> 00:04:26,700
+the Widget Rendering Mode
+environment value
+
+98
+00:04:26,700 --> 00:04:29,970
+to look perfect when flattened.
+
+99
+00:04:29,970 --> 00:04:31,638
+Note that the system
+can tint your content
+
+100
+00:04:31,638 --> 00:04:35,008
+in a number of ways,
+some of which are inverted.
+
+101
+00:04:35,008 --> 00:04:37,010
+Some are on a black background,
+while others are
+
+102
+00:04:37,010 --> 00:04:42,115
+on the new full-color
+backgrounds in watchOS 9.
+
+103
+00:04:42,115 --> 00:04:44,017
+In the iOS vibrant
+rendering mode,
+
+104
+00:04:44,017 --> 00:04:46,419
+your content is desaturated
+then colored appropriately
+
+105
+00:04:46,419 --> 00:04:48,588
+for the Lock Screen background.
+
+106
+00:04:48,588 --> 00:04:50,290
+The system maps
+your greyscale content
+
+107
+00:04:50,290 --> 00:04:52,225
+in to a material appearance.
+
+108
+00:04:52,225 --> 00:04:54,661
+This material is adaptive
+to the content behind it,
+
+109
+00:04:54,661 --> 00:04:57,430
+appearing just right
+in its environment.
+
+110
+00:04:57,430 --> 00:04:59,466
+Additionally, the Lock Screen
+can be configured
+
+111
+00:04:59,466 --> 00:05:02,936
+to give the vibrant
+rendering mode a colored tint.
+
+112
+00:05:02,936 --> 00:05:05,772
+A light source color ends up
+mostly opaque and brighter.
+
+113
+00:05:05,772 --> 00:05:07,574
+On the other end,
+a dark source color
+
+114
+00:05:07,574 --> 00:05:10,310
+appears as a less prominent blur
+of the background behind it,
+
+115
+00:05:10,310 --> 00:05:12,512
+with only a slight amount
+of brightening.
+
+116
+00:05:12,512 --> 00:05:13,813
+To ensure legibility,
+
+117
+00:05:13,813 --> 00:05:16,750
+avoid using transparent colors
+in this mode.
+
+118
+00:05:16,750 --> 00:05:18,885
+Instead, use darker colors
+or black
+
+119
+00:05:18,885 --> 00:05:20,587
+to represent less
+prominent content
+
+120
+00:05:20,587 --> 00:05:23,323
+while maintaining legibility.
+
+121
+00:05:23,323 --> 00:05:24,991
+To help you with
+some of this nuance,
+
+122
+00:05:24,991 --> 00:05:27,761
+we've also introduced the
+AccessoryWidgetBackground view
+
+123
+00:05:27,761 --> 00:05:30,230
+to give a consistent backdrop
+to widgets that need them,
+
+124
+00:05:30,230 --> 00:05:32,866
+like this circular calendar.
+
+125
+00:05:32,866 --> 00:05:34,901
+While most accessory widgets
+have no background,
+
+126
+00:05:34,901 --> 00:05:38,038
+some styles can be
+enhanced with one.
+
+127
+00:05:38,038 --> 00:05:39,906
+The background view takes on
+different appearances
+
+128
+00:05:39,906 --> 00:05:41,841
+in the various
+widget rendering modes
+
+129
+00:05:41,841 --> 00:05:43,577
+and is tuned by the system
+to look right
+
+130
+00:05:43,577 --> 00:05:46,346
+for the style of the face
+or Lock Screen.
+
+131
+00:05:46,346 --> 00:05:49,216
+This is a soft transparent view
+in full color and accented,
+
+132
+00:05:49,216 --> 00:05:51,184
+and black in
+the vibrant environment,
+
+133
+00:05:51,184 --> 00:05:54,588
+which results in
+a low brightness and full blur.
+
+134
+00:05:54,588 --> 00:05:57,057
+Graham is super excited to get
+started making some new widgets
+
+135
+00:05:57,057 --> 00:05:59,259
+for the Lock Screen
+and complications on watchOS --
+
+136
+00:05:59,259 --> 00:06:01,294
+I'll hand it off to him.
+
+137
+00:06:01,294 --> 00:06:02,462
+Hi again!
+
+138
+00:06:02,462 --> 00:06:04,598
+I'll be adding support
+for our new widget families
+
+139
+00:06:04,598 --> 00:06:07,300
+to an existing app --
+Emoji Rangers --
+
+140
+00:06:07,300 --> 00:06:10,937
+which some of you might be
+familiar with from WWDC2020's
+
+141
+00:06:10,937 --> 00:06:13,240
+"Widgets Code-along."
+
+142
+00:06:13,240 --> 00:06:14,774
+Before I begin, a note for those
+
+143
+00:06:14,774 --> 00:06:17,510
+with existing
+widget-free projects.
+
+144
+00:06:17,510 --> 00:06:20,080
+You can get started by adding
+the Widget Extension target
+
+145
+00:06:20,080 --> 00:06:23,250
+to your project,
+which already exists on iOS
+
+146
+00:06:23,250 --> 00:06:26,052
+and has been brought
+to watchOS.
+
+147
+00:06:26,052 --> 00:06:28,722
+But I know that many of you
+have apps with widgets already,
+
+148
+00:06:28,722 --> 00:06:30,557
+so today let's start there
+and talk about
+
+149
+00:06:30,557 --> 00:06:33,093
+adding new widgets
+and complications.
+
+150
+00:06:35,895 --> 00:06:38,531
+We'll continue
+the Emoji Rangers project.
+
+151
+00:06:38,531 --> 00:06:41,234
+This app keeps track
+of our favorite Emoji Rangers
+
+152
+00:06:41,234 --> 00:06:43,737
+and keeps you up to date with
+their health and recharge time
+
+153
+00:06:43,737 --> 00:06:46,072
+with the use
+of Home Screen widgets.
+
+154
+00:06:46,072 --> 00:06:48,742
+We've already brought Emoji
+Rangers over to watchOS,
+
+155
+00:06:48,742 --> 00:06:51,177
+bringing our favorite app
+to our wrists.
+
+156
+00:06:51,177 --> 00:06:53,480
+Today we'll be extending
+Emoji Rangers with support
+
+157
+00:06:53,480 --> 00:06:55,181
+for our new widget families
+
+158
+00:06:55,181 --> 00:06:59,152
+and bringing its widget
+extension to the watch.
+
+159
+00:06:59,152 --> 00:07:01,154
+Let's get started with getting
+the widget extension
+
+160
+00:07:01,154 --> 00:07:02,689
+onto the watch.
+
+161
+00:07:02,689 --> 00:07:05,358
+We'll add a new watchOS target
+that shares code
+
+162
+00:07:05,358 --> 00:07:07,961
+with the existing iOS target.
+
+163
+00:07:07,961 --> 00:07:10,664
+We'll duplicate the iOS
+widget extension target,
+
+164
+00:07:13,066 --> 00:07:14,334
+give it a better name,
+
+165
+00:07:19,439 --> 00:07:20,640
+change the bundle identifier
+
+166
+00:07:20,640 --> 00:07:24,844
+to be prefixed
+with the watch app's,
+
+167
+00:07:24,844 --> 00:07:27,647
+target watchOS,
+
+168
+00:07:29,716 --> 00:07:32,952
+and embed our new extension
+in our watch app.
+
+169
+00:07:44,764 --> 00:07:47,200
+Now we need to get our code
+building on watchOS --
+
+170
+00:07:47,200 --> 00:07:48,935
+let's get on with that.
+
+171
+00:07:53,907 --> 00:07:56,676
+Glancing through the
+EmojiRangerWidget code,
+
+172
+00:07:56,676 --> 00:07:58,578
+we can see
+the timeline provider,
+
+173
+00:07:58,578 --> 00:08:01,548
+which is used when the
+system reloads content,
+
+174
+00:08:08,288 --> 00:08:10,824
+the view which uses SwiftUI
+to generate content
+
+175
+00:08:10,824 --> 00:08:13,493
+for our different families,
+
+176
+00:08:16,529 --> 00:08:19,966
+the widget configuration,
+
+177
+00:08:19,966 --> 00:08:22,736
+and the Xcode preview provider.
+
+178
+00:08:22,736 --> 00:08:23,903
+The Emoji Rangers app
+
+179
+00:08:23,903 --> 00:08:26,806
+already supports
+iOS Home Screen widgets.
+
+180
+00:08:26,806 --> 00:08:29,376
+It offers the system small
+and medium families,
+
+181
+00:08:29,376 --> 00:08:31,444
+and here in the
+widget configuration,
+
+182
+00:08:31,444 --> 00:08:34,080
+I'm going to add
+the new families.
+
+183
+00:08:38,051 --> 00:08:41,054
+Because system families are
+unavailable on the watch,
+
+184
+00:08:41,054 --> 00:08:42,622
+we'll need to use
+a platform macro
+
+185
+00:08:42,622 --> 00:08:45,291
+to specify our
+supportedFamilies.
+
+186
+00:08:55,535 --> 00:08:57,904
+In the preview provider,
+I'm going to add previews
+
+187
+00:08:57,904 --> 00:08:59,906
+for the new families.
+
+188
+00:09:12,952 --> 00:09:16,356
+Next, we need to implement the
+new IntentRecommendation API
+
+189
+00:09:16,356 --> 00:09:19,859
+before we can successfully
+build for watchOS.
+
+190
+00:09:19,859 --> 00:09:21,828
+While Intents are
+fully configurable
+
+191
+00:09:21,828 --> 00:09:24,464
+in the widgets editing UI
+on iOS,
+
+192
+00:09:24,464 --> 00:09:28,401
+on watchOS, we need to provide
+a preconfigured list.
+
+193
+00:09:28,401 --> 00:09:31,604
+We can do that by overriding
+the new recommendations method
+
+194
+00:09:31,604 --> 00:09:34,107
+on our IntentTimelineProvider.
+
+195
+00:09:46,119 --> 00:09:47,887
+Now we're building successfully.
+
+196
+00:09:47,887 --> 00:09:49,189
+Let's resume the previews
+
+197
+00:09:49,189 --> 00:09:51,591
+and see what
+our circular widget looks like.
+
+198
+00:09:56,296 --> 00:09:58,631
+The content intended
+for even a small widget
+
+199
+00:09:58,631 --> 00:10:01,534
+doesn't fit well inside
+our new form factor.
+
+200
+00:10:01,534 --> 00:10:03,937
+The new widget families
+are smaller than iOS widgets
+
+201
+00:10:03,937 --> 00:10:06,206
+found on the Home Screen,
+and you'll need to consider
+
+202
+00:10:06,206 --> 00:10:09,175
+the content of
+your complications.
+
+203
+00:10:09,175 --> 00:10:11,611
+Now let's talk about
+some new views we can use
+
+204
+00:10:11,611 --> 00:10:14,814
+to make our complications
+stand out.
+
+205
+00:10:14,814 --> 00:10:16,516
+Let's go to the view.
+
+206
+00:10:16,516 --> 00:10:19,452
+We can see code for the
+systemSmall and other widgets;
+
+207
+00:10:19,452 --> 00:10:22,288
+let's add code for
+the accessoryCircular case.
+
+208
+00:10:22,288 --> 00:10:25,158
+I think it would look good
+just with the avatar.
+
+209
+00:10:32,298 --> 00:10:34,634
+This provides a quick shortcut
+in to our app
+
+210
+00:10:34,634 --> 00:10:37,403
+but doesn't offer users
+any information.
+
+211
+00:10:37,403 --> 00:10:39,305
+Let's add a progress view
+around the edge,
+
+212
+00:10:39,305 --> 00:10:41,641
+which will give the users
+an idea of when the Ranger
+
+213
+00:10:41,641 --> 00:10:44,310
+will be ready for combat again.
+
+214
+00:10:46,579 --> 00:10:49,282
+Trouble is animating
+this progress view to be current
+
+215
+00:10:49,282 --> 00:10:53,419
+will require a lot of timeline
+entries in short succession.
+
+216
+00:10:53,419 --> 00:10:57,524
+Instead, we can use SwiftUI's
+new auto-updating ProgressView.
+
+217
+00:10:57,524 --> 00:10:59,559
+That takes a date interval
+over which our Ranger
+
+218
+00:10:59,559 --> 00:11:01,060
+will be fully healed.
+
+219
+00:11:01,060 --> 00:11:03,463
+The system will keep
+our progress view updated,
+
+220
+00:11:03,463 --> 00:11:06,599
+meaning we only need
+one timeline entry here.
+
+221
+00:11:11,471 --> 00:11:14,774
+Much better.
+
+222
+00:11:14,774 --> 00:11:16,843
+Now let's add
+the rectangular family.
+
+223
+00:11:19,846 --> 00:11:25,652
+We'll select
+the rectangular preview.
+
+224
+00:11:25,652 --> 00:11:28,555
+This gives us more space,
+so we'll make a three-line view
+
+225
+00:11:28,555 --> 00:11:31,224
+in the style of a complication.
+
+226
+00:11:31,224 --> 00:11:33,927
+First the character's name,
+then their level,
+
+227
+00:11:33,927 --> 00:11:35,895
+and then the time
+until fully healed,
+
+228
+00:11:35,895 --> 00:11:39,933
+for which we'll use
+an auto-updating date field.
+
+229
+00:11:39,933 --> 00:11:41,834
+I'd like the character's name
+to stand out,
+
+230
+00:11:41,834 --> 00:11:45,004
+so I'll size the text,
+using a font style of headline,
+
+231
+00:11:45,004 --> 00:11:47,040
+and add the
+widgetAccentable modifier
+
+232
+00:11:47,040 --> 00:11:50,443
+which will adjust its color.
+
+233
+00:11:59,385 --> 00:12:01,287
+Our view looks great here
+in vibrant,
+
+234
+00:12:01,287 --> 00:12:03,823
+now let's see how it looks
+in our other rendering modes
+
+235
+00:12:03,823 --> 00:12:06,826
+on the watch.
+
+236
+00:12:18,338 --> 00:12:22,041
+You can see how the character's
+name takes on the accent color.
+
+237
+00:12:22,041 --> 00:12:24,177
+To make your widgets
+and complications feel at home
+
+238
+00:12:24,177 --> 00:12:26,112
+in their environment,
+it's important
+
+239
+00:12:26,112 --> 00:12:28,348
+that you use
+the default font parameters
+
+240
+00:12:28,348 --> 00:12:30,950
+and make use of font styles.
+
+241
+00:12:30,950 --> 00:12:32,585
+The font styles and sizes
+are different
+
+242
+00:12:32,585 --> 00:12:34,487
+between iOS and watchOS.
+
+243
+00:12:34,487 --> 00:12:36,322
+iOS uses the regular
+text design,
+
+244
+00:12:36,322 --> 00:12:38,558
+while watchOS uses
+a rounded design
+
+245
+00:12:38,558 --> 00:12:40,293
+with a heavier weight.
+
+246
+00:12:40,293 --> 00:12:42,462
+Your widgets and complications
+will sit onscreen
+
+247
+00:12:42,462 --> 00:12:43,830
+adjacent to others.
+
+248
+00:12:43,830 --> 00:12:46,065
+And so they look consistent,
+we recommend using
+
+249
+00:12:46,065 --> 00:12:50,036
+the font styles Title, Headline,
+Body, and Caption.
+
+250
+00:12:53,373 --> 00:12:55,541
+Xcode's preview shows
+we still have room leftover
+
+251
+00:12:55,541 --> 00:12:58,177
+to add the avatar too.
+
+252
+00:13:04,550 --> 00:13:07,086
+Let's see how this looks
+on the iPhone.
+
+253
+00:13:11,290 --> 00:13:13,026
+That looks great!
+
+254
+00:13:13,026 --> 00:13:16,095
+Finally, let's add the third
+style, accessoryInline,
+
+255
+00:13:16,095 --> 00:13:19,999
+which displays a line of text
+and optionally an image.
+
+256
+00:13:19,999 --> 00:13:21,868
+Note that inline accessories
+are drawn
+
+257
+00:13:21,868 --> 00:13:25,271
+according to system-defined
+coloring and font.
+
+258
+00:13:25,271 --> 00:13:27,540
+Let's select the preview.
+
+259
+00:13:38,317 --> 00:13:41,454
+Let's show our hero's name
+and recharge countdown.
+
+260
+00:13:45,224 --> 00:13:47,860
+This text is too long
+for our watch slot.
+
+261
+00:13:47,860 --> 00:13:51,064
+So now's a good time
+to show you ViewThatFits.
+
+262
+00:13:51,064 --> 00:13:54,534
+I can supply multiple views,
+from lengthy to concise,
+
+263
+00:13:54,534 --> 00:13:56,736
+and ViewThatFits will choose
+the first content view
+
+264
+00:13:56,736 --> 00:14:00,673
+that fits the available space
+without truncation or clipping.
+
+265
+00:14:00,673 --> 00:14:02,208
+Let's shorten the text.
+
+266
+00:14:19,859 --> 00:14:22,595
+Even that might be too long
+for the shortest watch slot,
+
+267
+00:14:22,595 --> 00:14:24,497
+so let's offer
+a third alternative
+
+268
+00:14:24,497 --> 00:14:27,333
+by switching out the avatar
+for the name.
+
+269
+00:14:42,048 --> 00:14:44,851
+Let's see what that looks like.
+
+270
+00:14:49,188 --> 00:14:52,225
+Refer to the "Compose Custom
+layouts with SwiftUI" session
+
+271
+00:14:52,225 --> 00:14:54,660
+for more about this.
+
+272
+00:14:54,660 --> 00:14:56,262
+Awesome!
+
+273
+00:14:56,262 --> 00:14:59,232
+Even Emoji Rangers like
+to enjoy some privacy,
+
+274
+00:14:59,232 --> 00:15:02,735
+so I'll hand it back
+to Devon to talk about that.
+
+275
+00:15:02,735 --> 00:15:05,738
+Hello again!
+Let's talk about privacy.
+
+276
+00:15:05,738 --> 00:15:08,007
+So far in this talk,
+we've discussed the active state
+
+277
+00:15:08,007 --> 00:15:10,009
+of your widgets
+and complications.
+
+278
+00:15:10,009 --> 00:15:12,678
+However, across our platforms,
+you'll need to consider
+
+279
+00:15:12,678 --> 00:15:14,647
+whether the device
+is redacting content
+
+280
+00:15:14,647 --> 00:15:17,550
+or in a low-luminance state.
+
+281
+00:15:17,550 --> 00:15:19,685
+On the iOS Lock Screen,
+the default behavior
+
+282
+00:15:19,685 --> 00:15:22,789
+is to show your content even
+while the device is locked,
+
+283
+00:15:22,789 --> 00:15:25,725
+which is the top-left cell
+in our grid here.
+
+284
+00:15:25,725 --> 00:15:28,227
+However, this is configurable
+in Settings,
+
+285
+00:15:28,227 --> 00:15:30,997
+and users can choose to redact
+their widget when locked,
+
+286
+00:15:30,997 --> 00:15:34,167
+much like Notifications.
+
+287
+00:15:34,167 --> 00:15:36,369
+On watchOS,
+the device stays unlocked
+
+288
+00:15:36,369 --> 00:15:38,671
+as long as the watch
+is being worn.
+
+289
+00:15:38,671 --> 00:15:41,474
+When inactive, the watch
+transitions into always-on,
+
+290
+00:15:41,474 --> 00:15:43,676
+with content in
+a low-luminance presentation
+
+291
+00:15:43,676 --> 00:15:45,645
+and a lower update cadence.
+
+292
+00:15:45,645 --> 00:15:48,681
+By default, your content is not
+redacted in low luminance,
+
+293
+00:15:48,681 --> 00:15:52,718
+which is the state
+on the bottom left.
+
+294
+00:15:52,718 --> 00:15:55,054
+Like the Lock Screen,
+your users can configure
+
+295
+00:15:55,054 --> 00:15:57,089
+their complication content
+to be redacted
+
+296
+00:15:57,089 --> 00:15:59,091
+in this always-on state.
+
+297
+00:15:59,091 --> 00:16:01,294
+In this state, you'll need
+to make sure your content
+
+298
+00:16:01,294 --> 00:16:05,698
+is prepared for both redaction
+and low luminance.
+
+299
+00:16:05,698 --> 00:16:08,100
+Together, the platforms cover
+each of the four states
+
+300
+00:16:08,100 --> 00:16:09,635
+shown here.
+
+301
+00:16:09,635 --> 00:16:11,737
+Consider all these possible
+states and ensure
+
+302
+00:16:11,737 --> 00:16:14,674
+your complications and widgets
+work well in all cases.
+
+303
+00:16:14,674 --> 00:16:18,411
+Let's talk about
+how you can do that.
+
+304
+00:16:18,411 --> 00:16:20,279
+On the watch, your widget
+needs to support
+
+305
+00:16:20,279 --> 00:16:23,182
+the always-on
+display experience.
+
+306
+00:16:23,182 --> 00:16:25,051
+You can adapt your content
+for always-on
+
+307
+00:16:25,051 --> 00:16:28,521
+with the \.isLuminanceReduced
+environment value.
+
+308
+00:16:28,521 --> 00:16:31,023
+If you're coming from ClockKit,
+note that you now can prepare
+
+309
+00:16:31,023 --> 00:16:35,027
+always-on content for every
+timeline entry, not just one.
+
+310
+00:16:35,027 --> 00:16:37,597
+When in always-on,
+your time-relative text
+
+311
+00:16:37,597 --> 00:16:40,233
+and progress views will change
+to a reduced fidelity mode
+
+312
+00:16:40,233 --> 00:16:43,169
+to support the low update
+cadence of always-on.
+
+313
+00:16:43,169 --> 00:16:45,771
+To support this mode, use the
+environment value to remove
+
+314
+00:16:45,771 --> 00:16:48,341
+any time-sensitive content
+and optimize your content
+
+315
+00:16:48,341 --> 00:16:52,211
+for the lower update frequency.
+
+316
+00:16:52,211 --> 00:16:54,647
+Now let's talk about redaction.
+
+317
+00:16:54,647 --> 00:16:57,450
+By default, the privacy mode
+will show a redacted version
+
+318
+00:16:57,450 --> 00:17:01,888
+of the placeholder view
+your TimelineProvider creates.
+
+319
+00:17:01,888 --> 00:17:03,756
+If you have some elements
+that are sensitive
+
+320
+00:17:03,756 --> 00:17:05,625
+and others that don't need
+to be redacted,
+
+321
+00:17:05,625 --> 00:17:07,560
+you can use the
+.privacySensitive modifier
+
+322
+00:17:07,560 --> 00:17:10,696
+to mark only some of
+the views to be redacted.
+
+323
+00:17:10,696 --> 00:17:13,432
+In this example, we've redacted
+the heart rate in our widget
+
+324
+00:17:13,432 --> 00:17:16,235
+but left the image unredacted.
+
+325
+00:17:16,235 --> 00:17:18,571
+Now you're ready to make awesome
+widgets for the Lock Screen
+
+326
+00:17:18,571 --> 00:17:20,907
+and WidgetKit complications.
+
+327
+00:17:20,907 --> 00:17:22,675
+For more on what's new
+in SwiftUI,
+
+328
+00:17:22,675 --> 00:17:26,145
+check out the "Compose Custom
+Layouts with SwiftUI" talk.
+
+329
+00:17:26,145 --> 00:17:27,580
+Thanks for watching.
+
+330
+00:17:27,580 --> 00:17:31,784
+♪
+

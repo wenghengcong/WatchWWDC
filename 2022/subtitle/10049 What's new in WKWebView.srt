@@ -1,0 +1,773 @@
+1
+00:00:00,300 --> 00:00:05,339
+♪ instrumental hip hop music ♪
+
+2
+00:00:05,339 --> 00:00:09,476
+♪
+
+3
+00:00:09,476 --> 00:00:12,980
+Hello, and welcome to
+"What's new in WKWebView"
+
+4
+00:00:12,980 --> 00:00:16,450
+I'm Alex Christensen,
+an engineer on the WebKit team.
+
+5
+00:00:16,450 --> 00:00:19,653
+We've been busy, and we've added
+a lot of new web technology
+
+6
+00:00:19,653 --> 00:00:23,223
+for you to use
+in your apps this year.
+
+7
+00:00:23,223 --> 00:00:25,158
+Before we start, though,
+
+8
+00:00:25,158 --> 00:00:27,494
+let's make sure you are
+using the right technology
+
+9
+00:00:27,494 --> 00:00:29,830
+for your application.
+
+10
+00:00:29,830 --> 00:00:33,467
+If you want a browser-like
+experience inside your app,
+
+11
+00:00:33,467 --> 00:00:36,003
+and don't need
+deep customization,
+
+12
+00:00:36,003 --> 00:00:40,974
+you'll definitely want to
+use SFSafariViewController.
+
+13
+00:00:40,974 --> 00:00:45,712
+If your app still uses
+the deprecated UIWebView,
+
+14
+00:00:45,712 --> 00:00:48,248
+now is the time to migrate
+to the faster
+
+15
+00:00:48,248 --> 00:00:51,051
+and more responsive
+WKWebView.
+
+16
+00:00:51,051 --> 00:00:56,189
+UIWebView will be removed
+in a future release.
+
+17
+00:00:56,189 --> 00:00:58,759
+WKWebView is the API to use
+
+18
+00:00:58,759 --> 00:01:02,663
+to write an application
+that interacts with web content.
+
+19
+00:01:02,663 --> 00:01:05,532
+You could be using it
+for CSS-based UI
+
+20
+00:01:05,532 --> 00:01:09,102
+or writing some of your app
+in JavaScript.
+
+21
+00:01:09,102 --> 00:01:11,705
+You might be interacting
+with your own web content
+
+22
+00:01:11,705 --> 00:01:14,274
+using app-bound domains.
+
+23
+00:01:14,274 --> 00:01:17,978
+You may also be developing
+your own browser.
+
+24
+00:01:17,978 --> 00:01:20,213
+Whatever your application is,
+
+25
+00:01:20,213 --> 00:01:22,215
+we are constantly adding
+new capabilities
+
+26
+00:01:22,215 --> 00:01:25,786
+to allow you to make
+richer web applications.
+
+27
+00:01:25,786 --> 00:01:28,622
+The new features available
+to WKWebView this year
+
+28
+00:01:28,622 --> 00:01:30,624
+come in four categories:
+
+29
+00:01:30,624 --> 00:01:33,160
+new ways to interact
+with web content,
+
+30
+00:01:33,160 --> 00:01:35,762
+new capabilities
+for content blockers,
+
+31
+00:01:35,762 --> 00:01:41,601
+encrypted media,
+and use of Remote Web Inspector.
+
+32
+00:01:41,601 --> 00:01:44,371
+First, we're going
+to cover new APIs
+
+33
+00:01:44,371 --> 00:01:47,708
+for interacting
+with web content.
+
+34
+00:01:47,708 --> 00:01:50,444
+There are three new ways
+your app can interact
+
+35
+00:01:50,444 --> 00:01:55,615
+with web content in iOS 16:
+using the full-screen API,
+
+36
+00:01:55,615 --> 00:02:01,154
+using new CSS viewport units,
+and using find interactions.
+
+37
+00:02:01,154 --> 00:02:03,490
+Let's get started
+with full screen.
+
+38
+00:02:03,490 --> 00:02:04,791
+For many years now,
+
+39
+00:02:04,791 --> 00:02:07,627
+JavaScript has been able
+to make HTML elements,
+
+40
+00:02:07,627 --> 00:02:11,698
+like videos or canvas games,
+full screen in browsers,
+
+41
+00:02:11,698 --> 00:02:15,469
+and now they can do
+that in your apps too.
+
+42
+00:02:15,469 --> 00:02:19,172
+Here's what a simple example
+looks like on a phone.
+
+43
+00:02:19,172 --> 00:02:21,708
+JavaScript can request
+full screen,
+
+44
+00:02:21,708 --> 00:02:26,113
+then the user or JavaScript
+can exit full screen.
+
+45
+00:02:26,113 --> 00:02:27,748
+All you need to do
+in your app
+
+46
+00:02:27,748 --> 00:02:32,519
+is set WKPreferences
+.isElementFullscreenEnabled
+
+47
+00:02:32,519 --> 00:02:37,024
+to true and load web content
+that uses full-screen APIs
+
+48
+00:02:37,024 --> 00:02:39,893
+like webkitRequestFullscreen.
+
+49
+00:02:39,893 --> 00:02:41,595
+It works pretty well
+out of the box,
+
+50
+00:02:41,595 --> 00:02:44,798
+but if you'd like to customize
+the transitions in your app,
+
+51
+00:02:44,798 --> 00:02:49,036
+you can observe the value
+of WKWebView.fullscreenState,
+
+52
+00:02:49,036 --> 00:02:52,105
+which will let your app know
+when the web content
+
+53
+00:02:52,105 --> 00:02:55,275
+is becoming full screen
+or returning.
+
+54
+00:02:55,275 --> 00:02:58,412
+And that's all there is to
+using WebKit's full-screen APIs
+
+55
+00:02:58,412 --> 00:02:59,913
+in your app.
+
+56
+00:03:01,248 --> 00:03:04,251
+We also have new CSS units
+to allow web content
+
+57
+00:03:04,251 --> 00:03:08,221
+to lay out according
+to dynamic viewport sizes.
+
+58
+00:03:08,221 --> 00:03:14,861
+These new CSS units include
+svh, lvh, dvh, and many others.
+
+59
+00:03:14,861 --> 00:03:17,064
+They allow web developers
+to modify layout
+
+60
+00:03:17,064 --> 00:03:22,102
+based on the smallest, largest,
+and dynamic viewport sizes.
+
+61
+00:03:22,102 --> 00:03:24,004
+Let's take a look
+at what Safari does
+
+62
+00:03:24,004 --> 00:03:28,742
+to get an idea of how
+this can be used in your app.
+
+63
+00:03:28,742 --> 00:03:31,311
+When you first open
+a page in Safari,
+
+64
+00:03:31,311 --> 00:03:35,348
+you see the webpage host
+and some buttons at the bottom.
+
+65
+00:03:35,348 --> 00:03:38,452
+As you scroll,
+the viewport increases in size
+
+66
+00:03:38,452 --> 00:03:41,621
+when the buttons slide
+out of the way.
+
+67
+00:03:41,621 --> 00:03:45,659
+Svh, lvh, and dvh
+provide useful units
+
+68
+00:03:45,659 --> 00:03:49,896
+to measure these different
+sizes of the viewport.
+
+69
+00:03:49,896 --> 00:03:53,900
+If your app changes the viewport
+of your WKWebView,
+
+70
+00:03:53,900 --> 00:03:56,536
+then you should inform
+WebKit up front
+
+71
+00:03:56,536 --> 00:03:59,639
+what the viewport
+size ranges are.
+
+72
+00:03:59,639 --> 00:04:02,642
+In Swift, one function call
+informs WebKit
+
+73
+00:04:02,642 --> 00:04:05,912
+of the maximum and minimum
+edge insets
+
+74
+00:04:05,912 --> 00:04:08,715
+to allow this web content
+to lay out correctly
+
+75
+00:04:08,715 --> 00:04:10,717
+in your app.
+
+76
+00:04:10,717 --> 00:04:13,753
+We are also introducing support
+for Find interactions
+
+77
+00:04:13,753 --> 00:04:17,824
+in WKWebView in iOS 16.
+
+78
+00:04:17,824 --> 00:04:21,428
+Many WKWebView applications
+load lots of text,
+
+79
+00:04:21,428 --> 00:04:24,331
+and users want
+to search this text.
+
+80
+00:04:24,331 --> 00:04:27,667
+If you set WKWebView
+.findInteractionEnabled
+
+81
+00:04:27,667 --> 00:04:28,969
+to true,
+
+82
+00:04:28,969 --> 00:04:32,139
+then your users will be able
+to use familiar UI
+
+83
+00:04:32,139 --> 00:04:36,409
+and shortcuts like Command-F
+to search the text
+
+84
+00:04:36,409 --> 00:04:38,845
+on the open page.
+
+85
+00:04:38,845 --> 00:04:40,947
+That one line of code
+is all you need
+
+86
+00:04:40,947 --> 00:04:42,883
+to turn on the feature,
+
+87
+00:04:42,883 --> 00:04:46,286
+but you can also access
+the UIFindInteraction object
+
+88
+00:04:46,286 --> 00:04:48,889
+through WKWebView
+.findInteraction
+
+89
+00:04:48,889 --> 00:04:52,058
+to do things like present
+and dismiss the Find panel,
+
+90
+00:04:52,058 --> 00:04:55,929
+or move to the next or previous
+results programmatically.
+
+91
+00:04:55,929 --> 00:04:59,132
+Try it out and see
+what it can do in your app.
+
+92
+00:04:59,132 --> 00:05:00,634
+For content blocking,
+
+93
+00:05:00,634 --> 00:05:04,738
+we added a new capability
+to WKContentRuleList,
+
+94
+00:05:04,738 --> 00:05:08,975
+the API used to implement
+content blockers in Safari.
+
+95
+00:05:08,975 --> 00:05:14,147
+Here, we have Wikipedia embedded
+in an iframe on an example site.
+
+96
+00:05:14,147 --> 00:05:17,651
+Previously, you could run
+regular expressions on the URL
+
+97
+00:05:17,651 --> 00:05:20,754
+being requested
+and the top-frame URL,
+
+98
+00:05:20,754 --> 00:05:24,758
+to decide whether to block
+a load or perform other actions.
+
+99
+00:05:24,758 --> 00:05:26,193
+Sometimes, though,
+
+100
+00:05:26,193 --> 00:05:29,029
+what you really wanted
+was for a certain rule
+
+101
+00:05:29,029 --> 00:05:33,934
+to apply only to loads
+inside certain iframes.
+
+102
+00:05:33,934 --> 00:05:36,469
+Now you can run
+regular expressions
+
+103
+00:05:36,469 --> 00:05:39,339
+on the URL of the current frame.
+
+104
+00:05:39,339 --> 00:05:41,908
+We are going to write a rule
+to block images
+
+105
+00:05:41,908 --> 00:05:47,147
+but only from frames
+containing Wikipedia.
+
+106
+00:05:47,147 --> 00:05:48,215
+To do this,
+
+107
+00:05:48,215 --> 00:05:52,686
+we add if-frame-url
+to the JSON like this.
+
+108
+00:05:52,686 --> 00:05:55,455
+You then compile the JSON
+as you have before
+
+109
+00:05:55,455 --> 00:05:58,959
+and apply it to
+a WKWebViewConfiguration.
+
+110
+00:05:58,959 --> 00:06:01,027
+The regular expression then runs
+
+111
+00:06:01,027 --> 00:06:06,199
+on the URL of the frame
+that is making the request.
+
+112
+00:06:06,199 --> 00:06:10,203
+This blocking rule will now only
+apply to requests from frames
+
+113
+00:06:10,203 --> 00:06:14,541
+that match the if-frame-url
+regular expression.
+
+114
+00:06:14,541 --> 00:06:16,910
+Here we see that it has
+blocked the image loads
+
+115
+00:06:16,910 --> 00:06:20,347
+inside the Wikipedia iframe.
+
+116
+00:06:20,347 --> 00:06:23,450
+If you're serious about
+implementing content blockers,
+
+117
+00:06:23,450 --> 00:06:28,188
+you should check out the WWDC
+session about Safari Extensions
+
+118
+00:06:28,188 --> 00:06:30,323
+which includes some
+new possibilities
+
+119
+00:06:30,323 --> 00:06:33,059
+in declarativeNetRequest.
+
+120
+00:06:33,059 --> 00:06:36,796
+Another new capability
+in WKWebView in iPadOS 16
+
+121
+00:06:36,796 --> 00:06:38,898
+is encrypted media.
+
+122
+00:06:38,898 --> 00:06:42,202
+If you have content that uses
+the Encrypted Media Extensions
+
+123
+00:06:42,202 --> 00:06:45,305
+and Media Source
+Extensions APIs,
+
+124
+00:06:45,305 --> 00:06:49,276
+you can now use it
+in your apps on iPadOS.
+
+125
+00:06:49,276 --> 00:06:53,480
+This means that if you have
+premium content like AppleTV+,
+
+126
+00:06:53,480 --> 00:06:57,684
+it will work on iPadOS
+like it has in macOS.
+
+127
+00:06:57,684 --> 00:07:00,887
+If your app has
+the web-browser entitlement,
+
+128
+00:07:00,887 --> 00:07:03,223
+then Remote Web Inspector
+will just work
+
+129
+00:07:03,223 --> 00:07:07,260
+with your production app
+like it has on Safari on iOS;
+
+130
+00:07:07,260 --> 00:07:11,931
+no need to add
+or change any code.
+
+131
+00:07:11,931 --> 00:07:15,001
+To enable Web Inspector
+in third-party browsers,
+
+132
+00:07:15,001 --> 00:07:17,671
+the process is the same
+as with Safari.
+
+133
+00:07:17,671 --> 00:07:20,006
+You'll first need to turn on
+Web Inspector
+
+134
+00:07:20,006 --> 00:07:23,276
+in Safari settings
+on the iOS device,
+
+135
+00:07:23,276 --> 00:07:26,846
+then enable the Develop menu
+in Advanced Settings
+
+136
+00:07:26,846 --> 00:07:29,416
+in Safari on your Mac.
+
+137
+00:07:29,416 --> 00:07:33,019
+Attach your phone to the Mac
+and look for your device
+
+138
+00:07:33,019 --> 00:07:36,489
+in Safari's Develop menu
+on macOS.
+
+139
+00:07:36,489 --> 00:07:40,060
+Web Inspector has many tools
+for debugging web content.
+
+140
+00:07:40,060 --> 00:07:42,062
+You can explore the DOM,
+
+141
+00:07:42,062 --> 00:07:45,198
+run and debug
+JavaScript execution,
+
+142
+00:07:45,198 --> 00:07:48,702
+view timelines
+of your page-loading, and more.
+
+143
+00:07:48,702 --> 00:07:50,370
+If you have a website,
+
+144
+00:07:50,370 --> 00:07:53,106
+you can now inspect
+and debug it yourself
+
+145
+00:07:53,106 --> 00:07:55,241
+in third-party browsers
+on iOS,
+
+146
+00:07:55,241 --> 00:07:57,844
+using Remote Web Inspector.
+
+147
+00:07:57,844 --> 00:08:00,146
+Those are the main
+new API additions
+
+148
+00:08:00,146 --> 00:08:02,582
+to WKWebView this year.
+
+149
+00:08:02,582 --> 00:08:06,252
+Try them out and see
+what they can do in your apps.
+
+150
+00:08:06,252 --> 00:08:10,056
+Remember to use the best APIs
+for your application,
+
+151
+00:08:10,056 --> 00:08:13,360
+and if there's something you're
+unable to do with WKWebView,
+
+152
+00:08:13,360 --> 00:08:17,364
+please file a feature request
+using Feedback Assistant.
+
+153
+00:08:17,364 --> 00:08:19,399
+We read the feature requests
+we get
+
+154
+00:08:19,399 --> 00:08:23,770
+and prioritize our development
+based on your input.
+
+155
+00:08:23,770 --> 00:08:24,938
+Don't forget to check out
+
+156
+00:08:24,938 --> 00:08:27,440
+"What's new in Safari
+Web Extensions”,
+
+157
+00:08:27,440 --> 00:08:30,343
+and for more additions
+to the web platform,
+
+158
+00:08:30,343 --> 00:08:31,711
+remember to check out
+
+159
+00:08:31,711 --> 00:08:34,447
+"What's new in Safari
+and WebKit”.
+
+160
+00:08:34,447 --> 00:08:37,684
+Thanks for watching,
+and enjoy the rest of WWDC.
+
+161
+00:08:37,684 --> 00:08:41,921
+♪ ♪
+

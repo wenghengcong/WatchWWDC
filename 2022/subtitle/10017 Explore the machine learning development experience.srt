@@ -1,0 +1,1193 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,943 --> 00:00:12,246
+Ciao, my name is Geppy Parziale,
+
+3
+00:00:12,279 --> 00:00:15,148
+and I am a machine learning engineer
+here at Apple.
+
+4
+00:00:15,182 --> 00:00:18,952
+Today, I want to walk you through
+the journey of building an app
+
+5
+00:00:18,986 --> 00:00:21,355
+that uses machine learning
+to solve a problem
+
+6
+00:00:21,388 --> 00:00:25,893
+that would usually require an expert
+to perform some very specialized work.
+
+7
+00:00:27,394 --> 00:00:31,098
+This journey gives me the opportunity
+to show you how to add
+
+8
+00:00:31,131 --> 00:00:33,600
+open source machine learning models
+to your apps
+
+9
+00:00:33,634 --> 00:00:37,471
+and create fantastic new experiences.
+
+10
+00:00:37,504 --> 00:00:39,640
+During the journey, I will also highlight
+
+11
+00:00:39,673 --> 00:00:44,411
+a few of the many tools, frameworks,
+and APIs available for you
+
+12
+00:00:44,444 --> 00:00:48,749
+in the Apple development ecosystem
+to build apps using machine learning.
+
+13
+00:00:49,983 --> 00:00:53,654
+When building an app, you, the developer,
+go through a series of decisions
+
+14
+00:00:53,687 --> 00:00:57,824
+that hopefully will bring
+the best experience to your users.
+
+15
+00:00:57,858 --> 00:01:02,396
+And this is also true when adding machine
+learning functionality to applications.
+
+16
+00:01:04,031 --> 00:01:07,067
+During the development, you could ask:
+
+17
+00:01:07,100 --> 00:01:10,637
+should I use machine learning
+to build this feature?
+
+18
+00:01:10,671 --> 00:01:14,408
+How can I get a machine learning model?
+
+19
+00:01:14,441 --> 00:01:18,745
+How do I make that model
+compatible with Apple platforms?
+
+20
+00:01:18,779 --> 00:01:22,716
+Will that model work
+for my specific use case?
+
+21
+00:01:22,749 --> 00:01:26,320
+Does it run on the Apple Neural Engine?
+
+22
+00:01:26,353 --> 00:01:29,590
+So let's take this journey together.
+
+23
+00:01:29,623 --> 00:01:33,193
+I want to build an app that allows me
+to add realistic colors
+
+24
+00:01:33,227 --> 00:01:38,198
+to my family black and white photos
+that I found in an old box in my basement.
+
+25
+00:01:39,666 --> 00:01:44,338
+Of course, a professional photographer
+could do this with some manual work,
+
+26
+00:01:44,371 --> 00:01:47,908
+spending some time
+in a photo editing tool.
+
+27
+00:01:47,941 --> 00:01:50,744
+Instead, what if I want
+to automate this process
+
+28
+00:01:50,777 --> 00:01:54,515
+and apply the colorization
+in just a few seconds?
+
+29
+00:01:54,548 --> 00:01:57,584
+This seems to be a perfect task
+for machine learning.
+
+30
+00:01:58,919 --> 00:02:02,155
+Apple offers a tremendous amount
+of frameworks and tools
+
+31
+00:02:02,189 --> 00:02:06,026
+that can help you build and integrate
+ML functionality in your apps.
+
+32
+00:02:06,960 --> 00:02:09,296
+They provide everything
+from data processing
+
+33
+00:02:09,329 --> 00:02:11,999
+to model training and inference.
+
+34
+00:02:12,032 --> 00:02:15,669
+For this journey,
+I am going to use a few of them.
+
+35
+00:02:15,702 --> 00:02:19,006
+But remember, you have many to choose from
+
+36
+00:02:19,039 --> 00:02:22,910
+depending on the specific machine learning
+task that you are developing.
+
+37
+00:02:22,943 --> 00:02:25,712
+The process I use when developing
+a machine learning feature
+
+38
+00:02:25,746 --> 00:02:28,582
+in my apps goes through a set of stages.
+
+39
+00:02:29,650 --> 00:02:32,753
+First, I search for the right
+machine learning model
+
+40
+00:02:32,786 --> 00:02:36,723
+in either scientific publication
+or specialized website.
+
+41
+00:02:38,058 --> 00:02:40,360
+I searched for photo colorization,
+
+42
+00:02:40,394 --> 00:02:45,332
+and I found a model called Colorizer
+that may work for what I need.
+
+43
+00:02:46,233 --> 00:02:50,337
+Here is an example of the colorization
+I can get using this model.
+
+44
+00:02:53,473 --> 00:02:55,175
+Here is another one.
+
+45
+00:02:56,643 --> 00:03:00,547
+And here is another one. Really great.
+
+46
+00:03:00,581 --> 00:03:03,083
+Let me show you how it works.
+
+47
+00:03:03,116 --> 00:03:07,821
+The Colorizer model expects
+a black and white image as input.
+
+48
+00:03:07,855 --> 00:03:14,228
+The Python source code I found converts
+any RGB image to a LAB color space image.
+
+49
+00:03:15,362 --> 00:03:18,031
+This color space has 3 channels:
+
+50
+00:03:18,065 --> 00:03:22,102
+one represents the image lightness
+or L channel,
+
+51
+00:03:22,135 --> 00:03:25,806
+and the other two represent
+the color components.
+
+52
+00:03:25,839 --> 00:03:27,875
+The color components are discarded
+
+53
+00:03:27,908 --> 00:03:31,378
+while the lightness becomes
+the input of the colorizer model.
+
+54
+00:03:32,646 --> 00:03:35,516
+The model then estimates
+two new color components
+
+55
+00:03:35,549 --> 00:03:40,053
+that, combined with the input L channel,
+provide the resulting image with color.
+
+56
+00:03:41,154 --> 00:03:45,459
+It's time now to make this model
+compatible with my app.
+
+57
+00:03:45,492 --> 00:03:49,496
+To achieve this, I can convert
+the original PyTorch model
+
+58
+00:03:49,530 --> 00:03:53,300
+to Core ML format using coremltools.
+
+59
+00:03:53,333 --> 00:03:58,071
+Here is the simple Python script I used
+to convert the PyTorch model to Core ML.
+
+60
+00:03:59,439 --> 00:04:02,910
+First, I import the PyTorch model
+architecture and weights.
+
+61
+00:04:04,378 --> 00:04:07,114
+Then I trace the imported model.
+
+62
+00:04:07,147 --> 00:04:11,285
+Finally, I convert the PyTorch model
+to Core ML and save it.
+
+63
+00:04:12,953 --> 00:04:15,389
+Once the model is in the Core ML format,
+
+64
+00:04:15,422 --> 00:04:18,992
+I need to verify
+that the conversion worked correctly.
+
+65
+00:04:19,026 --> 00:04:23,130
+I can do that directly in Python
+again using coremltools.
+
+66
+00:04:23,163 --> 00:04:25,499
+And this is easy.
+
+67
+00:04:25,532 --> 00:04:28,702
+I import the image in RGB color space
+
+68
+00:04:28,735 --> 00:04:31,238
+and convert it to Lab color space.
+
+69
+00:04:32,940 --> 00:04:37,144
+Then I separate the lightness
+from the color channels and discard them.
+
+70
+00:04:38,745 --> 00:04:41,515
+I run the prediction
+using the Core ML model.
+
+71
+00:04:42,616 --> 00:04:44,918
+And finally, compose the input lightness
+
+72
+00:04:44,952 --> 00:04:48,355
+with the estimated color components
+and convert to RGB.
+
+73
+00:04:49,723 --> 00:04:53,794
+This allows me to verify
+that functionality of the converted model
+
+74
+00:04:53,827 --> 00:04:57,464
+matches the functionality
+of the original PyTorch model.
+
+75
+00:04:57,497 --> 00:05:01,301
+I call this stage Model Verification.
+
+76
+00:05:01,335 --> 00:05:05,305
+However, there is another
+important check to be done.
+
+77
+00:05:05,339 --> 00:05:10,644
+I need to understand if this model
+can run fast enough on my target device.
+
+78
+00:05:10,677 --> 00:05:13,747
+So I would need to assess
+the model on device
+
+79
+00:05:13,780 --> 00:05:17,851
+and make sure it would provide
+the best user experience.
+
+80
+00:05:17,885 --> 00:05:22,322
+The new Core ML Performance report,
+available now in Xcode 14,
+
+81
+00:05:22,356 --> 00:05:26,393
+performs a time-based analysis
+of a Core ML model.
+
+82
+00:05:26,426 --> 00:05:29,630
+I just need to drag and drop
+the model into Xcode
+
+83
+00:05:29,663 --> 00:05:32,699
+and create a performance report
+in a few seconds.
+
+84
+00:05:33,834 --> 00:05:37,871
+Using this tool,
+I can see that estimated prediction time
+
+85
+00:05:37,905 --> 00:05:43,577
+is almost 90 milliseconds
+on an iPad Pro with M1 and iPadOS 16.
+
+86
+00:05:44,578 --> 00:05:48,215
+And this is perfect
+for my photo colorization app.
+
+87
+00:05:48,248 --> 00:05:51,718
+If you want to know more about
+Performance Report in Xcode,
+
+88
+00:05:51,752 --> 00:05:56,957
+I suggest you to watch this year’s session
+"Optimize your Core ML usage".
+
+89
+00:05:56,990 --> 00:06:01,128
+So Performance Report can help you
+make an assessment of the model
+
+90
+00:06:01,161 --> 00:06:04,798
+and make sure it provides
+the best on-device user experience.
+
+91
+00:06:05,966 --> 00:06:09,937
+Now that I am sure about the functionality
+and performance of my model,
+
+92
+00:06:09,970 --> 00:06:11,872
+let me integrate it into my app.
+
+93
+00:06:13,507 --> 00:06:18,178
+The integration process is identical
+to what I have done until now in Python,
+
+94
+00:06:18,212 --> 00:06:20,848
+but this time I can do it seamlessly in Swift
+
+95
+00:06:20,881 --> 00:06:24,151
+using Xcode and all the other tools
+you are familiar with.
+
+96
+00:06:26,286 --> 00:06:29,289
+Remember the model, now in Core ML format,
+
+97
+00:06:29,323 --> 00:06:33,227
+expects a single channel image
+representing its lightness.
+
+98
+00:06:34,695 --> 00:06:37,798
+So similarly to what I did
+previously in Python,
+
+99
+00:06:37,831 --> 00:06:43,203
+I need to convert any RGB input image
+to an image using the Lab color space.
+
+100
+00:06:45,839 --> 00:06:48,408
+I could write this transformation
+in multiple ways:
+
+101
+00:06:48,442 --> 00:06:52,212
+directly in Swift with vImage,
+or using Metal.
+
+102
+00:06:53,514 --> 00:06:57,784
+Exploring deeper in the documentation,
+I found that the Core Image framework
+
+103
+00:06:57,818 --> 00:07:00,554
+provides something
+that can help me with this.
+
+104
+00:07:02,656 --> 00:07:06,360
+So let me show you how to achieve
+the RGB to LAB conversion
+
+105
+00:07:06,393 --> 00:07:08,929
+and run the prediction
+using the Core ML model.
+
+106
+00:07:10,864 --> 00:07:13,667
+Here is the Swift code
+to extract the lightness
+
+107
+00:07:13,700 --> 00:07:17,538
+from an RGB image
+and pass it to the Core ML model.
+
+108
+00:07:17,571 --> 00:07:22,509
+First, I convert the RGB image
+into LAB and extract the lightness.
+
+109
+00:07:23,944 --> 00:07:27,014
+Then, I convert lightness to a CGImage
+
+110
+00:07:27,047 --> 00:07:30,050
+and prepare the input
+for the Core ML model.
+
+111
+00:07:31,585 --> 00:07:33,921
+Finally, I run the prediction.
+
+112
+00:07:33,954 --> 00:07:37,658
+To extract the L channel
+from the input RGB image,
+
+113
+00:07:37,691 --> 00:07:41,094
+I first convert the RGB image
+into a LAB image,
+
+114
+00:07:41,128 --> 00:07:45,365
+using the new CIFilter convertRGBtoLab.
+
+115
+00:07:45,399 --> 00:07:49,570
+The values of the lightness
+are set between 0 and 100.
+
+116
+00:07:51,038 --> 00:07:54,708
+Then, I multiply the Lab image
+with a color matrix
+
+117
+00:07:54,741 --> 00:07:59,613
+and discard the color channels
+and return the lightness to the caller.
+
+118
+00:07:59,646 --> 00:08:02,983
+Let's now analyze what happens
+at the output of the model.
+
+119
+00:08:04,751 --> 00:08:07,921
+The Core ML model returns
+two MLShapedArrays
+
+120
+00:08:07,955 --> 00:08:10,624
+containing the estimated color components.
+
+121
+00:08:12,326 --> 00:08:18,031
+So after the prediction, I convert
+the two MLShapedArray into two CIImages.
+
+122
+00:08:19,533 --> 00:08:23,937
+Finally, I combine them
+with the model input lightness.
+
+123
+00:08:23,971 --> 00:08:28,075
+This generates a new LAB image
+that I convert to RGB and return it.
+
+124
+00:08:30,344 --> 00:08:34,715
+To convert the two MLShapedArrays
+into two CIImages,
+
+125
+00:08:34,748 --> 00:08:38,752
+I first extract the values
+from each shaped array.
+
+126
+00:08:38,785 --> 00:08:42,356
+Then, I create two core images
+representing the two color channels
+
+127
+00:08:42,389 --> 00:08:44,958
+and return them.
+
+128
+00:08:44,992 --> 00:08:47,961
+To combine the lightness
+with the estimated color channels,
+
+129
+00:08:47,995 --> 00:08:51,498
+I use a custom CIKernel that takes
+
+130
+00:08:51,532 --> 00:08:55,068
+the three channels as input
+and returns a CIImage.
+
+131
+00:08:56,503 --> 00:09:00,107
+Then, I use the new CIFilter
+convertLabToRGB
+
+132
+00:09:00,140 --> 00:09:04,978
+to convert the Lab image to RGB
+and return it to the caller.
+
+133
+00:09:05,012 --> 00:09:08,015
+This is the source code
+for the custom CIKernel I use
+
+134
+00:09:08,048 --> 00:09:12,052
+to combine the lightness
+with the two estimated color channels
+
+135
+00:09:12,085 --> 00:09:13,754
+in a single CIImage.
+
+136
+00:09:14,888 --> 00:09:19,359
+For more information about
+the new CI filters to convert RGB images
+
+137
+00:09:19,393 --> 00:09:23,664
+to LAB images and vice versa,
+please refer to the session
+
+138
+00:09:23,697 --> 00:09:27,734
+"Display EDR content with Core Image,
+Metal, and SwiftUI."
+
+139
+00:09:29,002 --> 00:09:32,472
+Now that I completed the integration
+of this ML feature in my app,
+
+140
+00:09:32,506 --> 00:09:34,541
+let's see it in action.
+
+141
+00:09:34,575 --> 00:09:36,443
+But wait.
+
+142
+00:09:36,476 --> 00:09:41,014
+How will I colorize my old family photos
+in real time with my application?
+
+143
+00:09:41,048 --> 00:09:45,519
+I could spend some time to digitize
+each of them and import them in my app.
+
+144
+00:09:46,653 --> 00:09:48,956
+I think I have a better idea.
+
+145
+00:09:48,989 --> 00:09:51,925
+What if I use my iPad camera
+to scan these photos
+
+146
+00:09:51,959 --> 00:09:54,061
+and colorize them live?
+
+147
+00:09:54,094 --> 00:09:58,465
+I think it would be really fun, and I have
+everything I need to accomplish this.
+
+148
+00:09:58,498 --> 00:10:01,535
+But first, I have to solve a problem.
+
+149
+00:10:02,970 --> 00:10:06,607
+My model needs 90 milliseconds
+to process an image.
+
+150
+00:10:06,640 --> 00:10:09,877
+If I want to process a video,
+I would need something faster.
+
+151
+00:10:11,111 --> 00:10:13,013
+For a smooth user experience,
+
+152
+00:10:13,046 --> 00:10:16,850
+I'd like to run the device camera
+at least 30 fps.
+
+153
+00:10:17,885 --> 00:10:22,256
+That means the camera will produce
+a frame about every 30 milliseconds.
+
+154
+00:10:24,191 --> 00:10:28,529
+But since the model needs about
+90 milliseconds to colorize a video frame,
+
+155
+00:10:28,562 --> 00:10:32,566
+I am going to lose 2 or 3 frames
+during each colorization.
+
+156
+00:10:35,269 --> 00:10:39,406
+The total prediction time of a model
+is a function of both its architecture
+
+157
+00:10:39,439 --> 00:10:44,111
+as well as the compute units operations
+it gets mapped to.
+
+158
+00:10:44,144 --> 00:10:48,515
+Looking at the performance report again,
+I notice that my model has a total
+
+159
+00:10:48,549 --> 00:10:54,188
+of 61 operations running on a combination
+of the neural engine and CPU.
+
+160
+00:10:55,622 --> 00:10:59,726
+If I want a faster prediction time,
+I will have to change the model.
+
+161
+00:11:00,694 --> 00:11:03,530
+I decided to experiment
+with the model's architecture
+
+162
+00:11:03,564 --> 00:11:06,967
+and explore some alternatives
+that may be faster.
+
+163
+00:11:07,000 --> 00:11:11,972
+However, a change in the architecture
+means I need to retrain the network.
+
+164
+00:11:13,941 --> 00:11:15,609
+Apple offers different solutions
+
+165
+00:11:15,642 --> 00:11:19,112
+that allow me to train machine learning
+models directly on my Mac.
+
+166
+00:11:20,514 --> 00:11:25,018
+In my case, since the original model
+was developed in PyTorch,
+
+167
+00:11:25,052 --> 00:11:27,888
+I decided to use the new PyTorch on Metal,
+
+168
+00:11:27,921 --> 00:11:31,625
+so I can take advantage
+of the tremendous hardware acceleration
+
+169
+00:11:31,658 --> 00:11:33,660
+provided by Apple Silicon.
+
+170
+00:11:35,696 --> 00:11:40,167
+If you are interested in knowing more
+about the PyTorch accelerated with Metal,
+
+171
+00:11:40,200 --> 00:11:43,937
+please check the session,
+"Accelerate machine learning with Metal"
+
+172
+00:11:46,173 --> 00:11:49,810
+Because of this change,
+our journey needs to take a step back.
+
+173
+00:11:50,878 --> 00:11:53,914
+After retraining,
+I will have to convert the result
+
+174
+00:11:53,947 --> 00:11:57,317
+to Core ML format
+and run the verification again.
+
+175
+00:11:59,052 --> 00:12:01,455
+This time, model integration consists
+
+176
+00:12:01,488 --> 00:12:04,725
+of simply swapping the old model
+with the new one.
+
+177
+00:12:04,758 --> 00:12:08,195
+After retraining a few candidate
+alternative models,
+
+178
+00:12:08,228 --> 00:12:11,932
+I have verified one
+that will meet my requirements.
+
+179
+00:12:11,965 --> 00:12:16,537
+Here it is with
+the corresponding performance report.
+
+180
+00:12:16,570 --> 00:12:18,672
+It runs entirely on the neural engine
+
+181
+00:12:18,705 --> 00:12:22,843
+and the prediction time is now
+around 16 milliseconds,
+
+182
+00:12:22,876 --> 00:12:24,545
+which works for video.
+
+183
+00:12:27,347 --> 00:12:32,186
+But Performance Report tells me only one
+aspect of the performance of my app.
+
+184
+00:12:33,353 --> 00:12:36,723
+Indeed, after running my app,
+I notice immediately
+
+185
+00:12:36,757 --> 00:12:40,294
+that colorization is not as smooth
+as I expect.
+
+186
+00:12:40,327 --> 00:12:43,697
+So what happens in my app at runtime?
+
+187
+00:12:45,132 --> 00:12:50,103
+In order to understand that, I can use
+the new Core ML template in Instruments.
+
+188
+00:12:52,706 --> 00:12:55,576
+Analyzing the initial portion
+of the Core ML trace,
+
+189
+00:12:55,609 --> 00:13:00,514
+after loading the model, I notice
+that the app accumulates predictions.
+
+190
+00:13:00,547 --> 00:13:02,549
+And this is unexpected.
+
+191
+00:13:02,583 --> 00:13:06,587
+Instead, I'd expect to have
+a single prediction per frame.
+
+192
+00:13:08,121 --> 00:13:12,826
+Zooming in the trace
+and checking the very first predictions,
+
+193
+00:13:12,860 --> 00:13:16,296
+I observe that the app requests
+a second Core ML prediction
+
+194
+00:13:16,330 --> 00:13:18,565
+before the first one is finished.
+
+195
+00:13:19,800 --> 00:13:23,904
+Here, the Neural Engine is
+still working on the first request
+
+196
+00:13:23,937 --> 00:13:26,440
+when the second is given to Core ML.
+
+197
+00:13:27,574 --> 00:13:30,310
+Similarly, the third prediction starts
+
+198
+00:13:30,344 --> 00:13:33,413
+while still processing the second one.
+
+199
+00:13:33,447 --> 00:13:35,549
+Even after four predictions,
+
+200
+00:13:35,582 --> 00:13:39,052
+the lag between the request and execution
+
+201
+00:13:39,086 --> 00:13:42,055
+is already about 20 milliseconds.
+
+202
+00:13:42,089 --> 00:13:45,759
+Instead, I need to make sure
+that a new prediction starts
+
+203
+00:13:45,792 --> 00:13:50,330
+only if the previous one is finished
+to avoid cascading these lags.
+
+204
+00:13:51,798 --> 00:13:55,936
+While fixing this problem,
+I also found out that I accidentally set
+
+205
+00:13:55,969 --> 00:14:01,175
+the camera frame rate to 60 fps
+instead of the desired 30fps.
+
+206
+00:14:03,377 --> 00:14:06,513
+After making sure that the apps process
+a new frame
+
+207
+00:14:06,547 --> 00:14:08,849
+after the previous prediction completes
+
+208
+00:14:08,882 --> 00:14:12,219
+and setting the camera frame rate
+to 30 fps,
+
+209
+00:14:12,252 --> 00:14:15,923
+I can see that Core ML dispatches
+correctly a single prediction
+
+210
+00:14:15,956 --> 00:14:20,160
+to the Apple Neural Engine,
+and now the app runs smoothly.
+
+211
+00:14:22,362 --> 00:14:24,731
+So we reached the end of our journey.
+
+212
+00:14:26,066 --> 00:14:28,869
+Let's test the app
+on my old family photos.
+
+213
+00:14:34,508 --> 00:14:38,512
+Here are my black and white photos
+that I found in my basement.
+
+214
+00:14:38,545 --> 00:14:42,583
+They capture some of the places
+in Italy I visited a long time ago.
+
+215
+00:14:49,389 --> 00:14:52,426
+Here is a great photo
+of the Colosseum in Rome.
+
+216
+00:14:53,760 --> 00:14:56,730
+The color of the walls
+and the sky are so realistic.
+
+217
+00:14:59,266 --> 00:15:01,034
+Let's check this one.
+
+218
+00:15:03,370 --> 00:15:06,240
+This is Castel del Monte
+in the South of Italy.
+
+219
+00:15:06,273 --> 00:15:07,741
+Really nice.
+
+220
+00:15:09,643 --> 00:15:12,513
+And this is my hometown, Grottaglie.
+
+221
+00:15:12,546 --> 00:15:15,949
+Adding colors to these images
+triggered so many memories.
+
+222
+00:15:17,184 --> 00:15:20,554
+Notice that I am applying
+the colorization only to the photo
+
+223
+00:15:20,587 --> 00:15:23,390
+while keeping the rest of the scene
+black and white.
+
+224
+00:15:26,326 --> 00:15:29,796
+Here, I am taking advantage
+of the rectangle detection algorithm
+
+225
+00:15:29,830 --> 00:15:32,432
+available in the Vision framework.
+
+226
+00:15:32,466 --> 00:15:37,204
+Using VNDetectRectangleRequest,
+I can isolate the photo in the scene
+
+227
+00:15:37,237 --> 00:15:39,806
+and use it as input
+to the Colorizer model.
+
+228
+00:15:41,041 --> 00:15:43,277
+And now let me recap.
+
+229
+00:15:44,645 --> 00:15:48,982
+During our journey, I explored
+the enormous amount of frameworks,
+
+230
+00:15:49,016 --> 00:15:52,819
+APIs, and tools Apple provides
+to prepare, integrate,
+
+231
+00:15:52,853 --> 00:15:56,423
+and evaluate machine learning
+functionality for your apps.
+
+232
+00:15:56,456 --> 00:15:59,660
+I started this journey
+identifying a problem
+
+233
+00:15:59,693 --> 00:16:02,863
+that required an open source
+machine learning model to solve it.
+
+234
+00:16:03,964 --> 00:16:06,800
+I found an open source model
+with desired functionality
+
+235
+00:16:06,834 --> 00:16:10,304
+and made it compatible
+with Apple platforms.
+
+236
+00:16:10,337 --> 00:16:13,440
+I assessed the model performance
+directly on the device
+
+237
+00:16:13,473 --> 00:16:16,276
+using the new Performance Report.
+
+238
+00:16:16,310 --> 00:16:19,379
+I integrated the model in my app
+using the tools
+
+239
+00:16:19,413 --> 00:16:21,548
+and the frameworks you are familiar with.
+
+240
+00:16:22,983 --> 00:16:27,154
+I optimized the model using
+the new Core ML Template in Instruments.
+
+241
+00:16:27,187 --> 00:16:30,524
+With Apple tools and frameworks,
+I can take care of each phase
+
+242
+00:16:30,557 --> 00:16:34,828
+of the development process
+directly on Apple devices and platforms
+
+243
+00:16:34,862 --> 00:16:38,866
+from data preparation, training,
+integration, and optimization.
+
+244
+00:16:40,901 --> 00:16:44,938
+Today, we just scratched the surface
+of what you, the developer,
+
+245
+00:16:44,972 --> 00:16:49,042
+can achieve with the frameworks
+and tools Apple provides you.
+
+246
+00:16:49,076 --> 00:16:52,446
+Please, refer to previous sessions,
+linked to this,
+
+247
+00:16:52,479 --> 00:16:56,950
+for additional inspiring ideas
+to bring machine learning to your apps.
+
+248
+00:16:56,984 --> 00:16:59,786
+Explore and try frameworks and tools.
+
+249
+00:16:59,820 --> 00:17:03,724
+Take advantage of the great synergy
+between software and hardware
+
+250
+00:17:03,757 --> 00:17:06,026
+to accelerate
+your machine learning features
+
+251
+00:17:06,059 --> 00:17:09,196
+and enrich the user experience
+of your apps.
+
+252
+00:17:09,229 --> 00:17:12,332
+Have a great WWDC, and arrivederci.  ♪ ♪
+

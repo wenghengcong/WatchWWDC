@@ -1,0 +1,1589 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:10,177 --> 00:00:11,612
+Hi, I'm Richard,
+
+3
+00:00:11,645 --> 00:00:14,281
+I'm an engineer
+on the Swift Standard Library team.
+
+4
+00:00:14,314 --> 00:00:18,585
+Today, let's embark on a journey
+beyond the basics of Swift Regex.
+
+5
+00:00:18,619 --> 00:00:23,390
+Swift 5.7 is gaining powerful
+new capabilities for string processing.
+
+6
+00:00:23,423 --> 00:00:25,492
+They start with the 'Regex' type,
+
+7
+00:00:25,526 --> 00:00:28,795
+a new type in the Swift Standard Library.
+
+8
+00:00:28,829 --> 00:00:31,498
+A language built-in Regex literal syntax,
+
+9
+00:00:31,532 --> 00:00:36,270
+which makes this powerful and
+familiar concept even more first-class.
+
+10
+00:00:36,303 --> 00:00:40,874
+And finally, a result builder API
+called RegexBuilder.
+
+11
+00:00:40,908 --> 00:00:44,645
+It is a domain-specific language,
+or DSL,
+
+12
+00:00:44,678 --> 00:00:47,981
+that takes advantage
+of the syntactic simplicity
+
+13
+00:00:48,015 --> 00:00:50,484
+and composability of result builders,
+
+14
+00:00:50,517 --> 00:00:53,954
+and pushes the readability
+of Regex to a whole new level.
+
+15
+00:00:54,922 --> 00:00:59,560
+For background as to why Swift Regex
+makes it easier to process strings,
+
+16
+00:00:59,593 --> 00:01:04,031
+check out the Meet Swift Regex session
+by my colleague Michael.
+
+17
+00:01:04,064 --> 00:01:07,868
+Let's look at a very simple example
+of Swift Regex.
+
+18
+00:01:07,901 --> 00:01:10,337
+Let's say I have a string of data,
+
+19
+00:01:10,370 --> 00:01:14,908
+and like to match and extract
+the user ID from this string.
+
+20
+00:01:14,942 --> 00:01:18,045
+I can create a regular expression
+from text
+
+21
+00:01:18,078 --> 00:01:21,882
+like I normally do with
+'NSRegularExpression'.
+
+22
+00:01:21,915 --> 00:01:25,018
+It matches "user_id" colon
+
+23
+00:01:25,052 --> 00:01:27,921
+followed by zero or more whitespaces
+
+24
+00:01:27,955 --> 00:01:30,791
+followed by one or more digits
+
+25
+00:01:30,824 --> 00:01:32,192
+What's different this time
+
+26
+00:01:32,226 --> 00:01:35,495
+is that we are creating
+a value of type Regex.
+
+27
+00:01:35,529 --> 00:01:39,399
+This is a new type
+in the Swift Standard Library.
+
+28
+00:01:39,433 --> 00:01:42,603
+I can then use string's
+'firstMatch' algorithm
+
+29
+00:01:42,636 --> 00:01:46,740
+to find the first occurrence
+of the pattern defined by this Regex,
+
+30
+00:01:46,773 --> 00:01:50,611
+and print the whole match,
+just like that.
+
+31
+00:01:50,644 --> 00:01:54,047
+Because my Regex string
+is known at compile-time,
+
+32
+00:01:54,081 --> 00:01:58,785
+I can switch to using a Regex literal
+so that the compiler would check
+
+33
+00:01:58,819 --> 00:02:03,524
+for syntax errors
+and Xcode can show syntax highlighting.
+
+34
+00:02:03,557 --> 00:02:06,426
+But for ultimate readability
+and customizations,
+
+35
+00:02:06,460 --> 00:02:09,863
+I can use the Regex builder DSL.
+
+36
+00:02:09,897 --> 00:02:13,166
+With Regex builder,
+reading the content of a Regex
+
+37
+00:02:13,200 --> 00:02:17,204
+is as easy as reading native Swift API.
+
+38
+00:02:17,237 --> 00:02:20,174
+In this session I will show you
+how Regex works
+
+39
+00:02:20,207 --> 00:02:23,777
+and how you can apply Regex
+in your workflow.
+
+40
+00:02:23,810 --> 00:02:29,383
+A Regex is a program that is to be
+executed by its underlying Regex engine.
+
+41
+00:02:29,416 --> 00:02:33,487
+When executing a Regex,
+the Regex engine takes an input string,
+
+42
+00:02:33,520 --> 00:02:38,025
+and performs matching
+from the start to the end of the string.
+
+43
+00:02:38,058 --> 00:02:40,961
+Let's take a look at a very simple Regex.
+
+44
+00:02:40,994 --> 00:02:45,766
+This Regex matches a string
+that starts with one or more of letter "a"
+
+45
+00:02:45,799 --> 00:02:48,468
+followed by one or more digits.
+
+46
+00:02:48,502 --> 00:02:51,839
+I use one of the matching algorithms,
+'wholeMatch',
+
+47
+00:02:51,872 --> 00:02:56,076
+to match input "aaa12".
+
+48
+00:02:56,109 --> 00:03:00,347
+The Regex engine will start
+from the first character of the input.
+
+49
+00:03:00,380 --> 00:03:04,551
+First, it matches
+one or more of character a.
+
+50
+00:03:04,585 --> 00:03:07,688
+At this point,
+it reaches character "1"
+
+51
+00:03:07,721 --> 00:03:11,558
+and tries to match this character
+against character "a".
+
+52
+00:03:11,592 --> 00:03:13,994
+But it doesn't match.
+
+53
+00:03:14,027 --> 00:03:17,831
+So the Regex engine moves
+to the next pattern in the Regex,
+
+54
+00:03:17,865 --> 00:03:21,235
+to match one or more digits.
+
+55
+00:03:21,268 --> 00:03:25,672
+As we reach the end of the string,
+matching succeeds.
+
+56
+00:03:25,706 --> 00:03:27,407
+In the rest of this session,
+
+57
+00:03:27,441 --> 00:03:31,712
+I will explain a bit more
+about this execution model.
+
+58
+00:03:31,745 --> 00:03:35,249
+With Regex built on its underlying
+Regex engine,
+
+59
+00:03:35,282 --> 00:03:36,917
+the Regex builder DSL
+
+60
+00:03:36,950 --> 00:03:42,256
+and Regex-powered algorithms expand
+the power and expressivity of Regex.
+
+61
+00:03:43,457 --> 00:03:46,693
+Regex-powered algorithms
+are collection-based APIs
+
+62
+00:03:46,727 --> 00:03:51,031
+that provide some of the most
+common operations such as first match,
+
+63
+00:03:51,064 --> 00:03:55,068
+which finds the first occurrence
+of a Regex in a string,
+
+64
+00:03:55,102 --> 00:04:00,207
+'wholeMatch', which matches
+the entire string against a Regex,
+
+65
+00:04:00,240 --> 00:04:05,579
+'prefixMatch', which matches the prefix
+of a string against a Regex.
+
+66
+00:04:05,612 --> 00:04:09,983
+Besides matching,
+the Swift standard library also added APIs
+
+67
+00:04:10,017 --> 00:04:14,288
+for Regex-based predication, replacement,
+
+68
+00:04:14,321 --> 00:04:17,624
+trimming, and splitting.
+
+69
+00:04:17,658 --> 00:04:22,696
+Also, Regex can now be used
+in Swift's pattern matching syntax
+
+70
+00:04:22,729 --> 00:04:24,765
+in control flow statements,
+
+71
+00:04:24,798 --> 00:04:28,468
+making it easier than ever
+to switch on strings.
+
+72
+00:04:28,502 --> 00:04:32,739
+Finally, on top of Regex builder
+and Regex-powered algorithms,
+
+73
+00:04:32,773 --> 00:04:36,844
+this year, Foundation introduced
+its own Regex support
+
+74
+00:04:36,877 --> 00:04:40,814
+that works seamlessly with Regex builder.
+
+75
+00:04:40,848 --> 00:04:44,952
+The Regex support in Foundation is
+none other than the formatters
+
+76
+00:04:44,985 --> 00:04:48,288
+and parsers
+that you are probably already using,
+
+77
+00:04:48,322 --> 00:04:51,425
+such as those for Date and Number.
+
+78
+00:04:51,458 --> 00:04:53,894
+If you want to learn
+more about these APIs,
+
+79
+00:04:53,927 --> 00:04:59,099
+watch the What's new in Foundation
+session from WWDC21.
+
+80
+00:04:59,132 --> 00:05:05,472
+This year, Foundation is adding support
+for formatting and parsing URLs as well.
+
+81
+00:05:05,506 --> 00:05:07,741
+With Regex support in Foundation,
+
+82
+00:05:07,774 --> 00:05:12,212
+you can embed the Foundation parsers
+directly in Regex builder.
+
+83
+00:05:12,246 --> 00:05:16,116
+For example,
+to parse a bank statement like this,
+
+84
+00:05:16,149 --> 00:05:21,455
+I can use a Foundation-provided
+date parser with a custom format
+
+85
+00:05:21,488 --> 00:05:26,059
+and a currency parser
+with a domain-specific parse strategy.
+
+86
+00:05:26,093 --> 00:05:30,163
+This is a really big deal
+because you can create Regexes
+
+87
+00:05:30,197 --> 00:05:34,568
+out of existing battle-tested parsers
+that take care of corner cases
+
+88
+00:05:34,601 --> 00:05:36,503
+and support localization,
+
+89
+00:05:36,537 --> 00:05:41,808
+and compose them with the expressivity
+of the Regex builder DSL.
+
+90
+00:05:41,842 --> 00:05:44,778
+To show you how you can apply
+Swift Regex to your workflow,
+
+91
+00:05:44,811 --> 00:05:47,314
+let's work out an example together.
+
+92
+00:05:47,347 --> 00:05:50,017
+I have been writing a script
+to parse the logs
+
+93
+00:05:50,050 --> 00:05:53,453
+from running XCTest-based unit tests.
+
+94
+00:05:53,487 --> 00:05:58,559
+A test log starts and ends
+with the status of a test suite.
+
+95
+00:05:58,592 --> 00:06:05,299
+Then XCTest runs every test case
+and reports the status of the test case.
+
+96
+00:06:05,332 --> 00:06:09,403
+Today let's parse the first
+and the last lines of the log.
+
+97
+00:06:09,436 --> 00:06:12,372
+It's information about a test suite.
+
+98
+00:06:12,406 --> 00:06:16,076
+First, I import RegexBuilder.
+
+99
+00:06:16,109 --> 00:06:19,746
+RegexBuilder is a new module
+in the Swift Standard Library
+
+100
+00:06:19,780 --> 00:06:23,450
+that provides the RegexBuilder DSL.
+
+101
+00:06:23,483 --> 00:06:27,221
+Regex can be initialized
+with a trailing closure
+
+102
+00:06:27,254 --> 00:06:30,490
+that represents the body of the Regex.
+
+103
+00:06:30,524 --> 00:06:33,460
+Let's look at an example log message.
+
+104
+00:06:33,493 --> 00:06:38,131
+There are three variable substrings
+that we care about in this log;
+
+105
+00:06:38,165 --> 00:06:41,001
+the test suite's name,
+the status,
+
+106
+00:06:41,034 --> 00:06:44,037
+whether it started, passed, or failed,
+
+107
+00:06:44,071 --> 00:06:46,573
+and the timestamp.
+
+108
+00:06:46,607 --> 00:06:49,576
+I can parse
+other parts of this line verbatim,
+
+109
+00:06:49,610 --> 00:06:54,715
+while coming up with a pattern
+to parse the three variable substrings.
+
+110
+00:06:54,748 --> 00:06:58,519
+The log message starts
+with the word "test suite",
+
+111
+00:06:58,552 --> 00:07:02,589
+followed by a space and a single quote.
+
+112
+00:07:02,623 --> 00:07:05,225
+Then we parse the test suite's name.
+
+113
+00:07:05,259 --> 00:07:07,628
+The name is an identifier,
+
+114
+00:07:07,661 --> 00:07:12,199
+which can contain lowercase or uppercase
+letters or digits,
+
+115
+00:07:12,232 --> 00:07:15,035
+but the first character
+can never be a digit.
+
+116
+00:07:16,270 --> 00:07:21,942
+So we create a custom character class
+to match a letter as the first character.
+
+117
+00:07:21,975 --> 00:07:24,444
+Then I match zero or more characters
+
+118
+00:07:24,478 --> 00:07:29,349
+that are either a letter
+or a digit from zero to nine.
+
+119
+00:07:29,383 --> 00:07:32,019
+This is very clear and readable,
+
+120
+00:07:32,052 --> 00:07:34,221
+but it's a little cumbersome.
+
+121
+00:07:34,254 --> 00:07:38,825
+Many of you may be familiar
+with the textual Regex syntax.
+
+122
+00:07:38,859 --> 00:07:43,797
+In RegexBuilder, I can actually embed
+a concise Regex literal
+
+123
+00:07:43,830 --> 00:07:46,200
+directly in the body.
+
+124
+00:07:46,233 --> 00:07:50,137
+A Regex literal
+starts and ends with a slash.
+
+125
+00:07:50,170 --> 00:07:53,841
+Swift infers the correct
+strong type for it.
+
+126
+00:07:53,874 --> 00:07:59,313
+This Regex, for example,
+matches the substring, "Hello, WWDC!".
+
+127
+00:07:59,346 --> 00:08:02,549
+So its output type is substring.
+
+128
+00:08:02,583 --> 00:08:06,053
+But what's really cool about
+a first-class Regex literal
+
+129
+00:08:06,086 --> 00:08:09,389
+is strongly typed capturing groups.
+
+130
+00:08:09,423 --> 00:08:15,696
+For example, I can write a capturing group
+to capture two digits as the year.
+
+131
+00:08:15,729 --> 00:08:19,533
+And give a name
+to this capturing group, "year".
+
+132
+00:08:19,566 --> 00:08:24,738
+When I do this, another substring
+will appear in the output type.
+
+133
+00:08:24,771 --> 00:08:28,475
+Later in this talk, I will show you
+how you can use captures
+
+134
+00:08:28,509 --> 00:08:30,944
+to extract information from a string.
+
+135
+00:08:30,978 --> 00:08:33,514
+Besides standard Regex literals,
+
+136
+00:08:33,547 --> 00:08:36,884
+Swift also supports
+extended Regex literals,
+
+137
+00:08:36,917 --> 00:08:41,488
+starting with pound slash
+and ending with slash pound.
+
+138
+00:08:41,522 --> 00:08:46,093
+The extended literal allows
+non-semantic whitespaces.
+
+139
+00:08:46,126 --> 00:08:51,298
+In this mode you can split your patterns
+into multiple lines.
+
+140
+00:08:51,331 --> 00:08:54,568
+With a Regex literal embedded
+in my RegexBuilder,
+
+141
+00:08:54,601 --> 00:08:57,804
+it's clean and yet familiar.
+
+142
+00:08:57,838 --> 00:08:59,907
+After I parse the test name,
+
+143
+00:08:59,940 --> 00:09:03,443
+I parse a single quote and a whitespace.
+
+144
+00:09:03,477 --> 00:09:05,913
+Now I reach the test status.
+
+145
+00:09:05,946 --> 00:09:11,919
+There are multiple types of test status:
+started, failed, and passed.
+
+146
+00:09:11,952 --> 00:09:16,557
+To match one of these options,
+we use 'ChoiceOf'.
+
+147
+00:09:16,590 --> 00:09:19,593
+'ChoiceOf' matches one of
+multiple subpatterns
+
+148
+00:09:19,626 --> 00:09:22,796
+and it's exactly what we need.
+
+149
+00:09:22,829 --> 00:09:26,834
+Next we parse what comes
+immediately after the status,
+
+150
+00:09:26,867 --> 00:09:32,172
+a space followed by
+"at" followed by a space.
+
+151
+00:09:32,206 --> 00:09:34,942
+The rest of the string is a timestamp.
+
+152
+00:09:34,975 --> 00:09:39,112
+We can match this
+as one or more of any character.
+
+153
+00:09:39,146 --> 00:09:41,648
+But as I look at some more examples,
+
+154
+00:09:41,682 --> 00:09:45,419
+a log message sometimes ends
+with a period.
+
+155
+00:09:45,452 --> 00:09:49,523
+We still want to use 'Optionally'
+to match the period when it exists.
+
+156
+00:09:51,158 --> 00:09:53,493
+To match an input against a Regex,
+
+157
+00:09:53,527 --> 00:09:56,697
+use one of the provided
+matching algorithms.
+
+158
+00:09:56,730 --> 00:10:02,369
+Let's use 'wholeMatch', which matches
+the entire string against a Regex.
+
+159
+00:10:02,402 --> 00:10:05,772
+With 'wholeMatch',
+I match each of these log messages,
+
+160
+00:10:05,806 --> 00:10:08,675
+and print the matched content.
+
+161
+00:10:08,709 --> 00:10:10,077
+It matched!
+
+162
+00:10:10,110 --> 00:10:12,980
+But we don't just want to know
+whether it matches the strings.
+
+163
+00:10:13,013 --> 00:10:16,183
+We also want to extract information
+that we care about,
+
+164
+00:10:16,216 --> 00:10:17,651
+such as the test name,
+
+165
+00:10:17,684 --> 00:10:20,988
+the status, and the timestamp.
+
+166
+00:10:21,021 --> 00:10:24,691
+So let's go ahead and do this
+with one of the coolest features of Regex,
+
+167
+00:10:24,725 --> 00:10:26,093
+Captures!
+
+168
+00:10:26,126 --> 00:10:30,397
+A Capture saves a portion of the input
+during matching.
+
+169
+00:10:30,430 --> 00:10:33,667
+It is available as "Capture"
+in RegexBuilder
+
+170
+00:10:33,700 --> 00:10:38,539
+and as a pair of parentheses
+in Regex syntax.
+
+171
+00:10:38,572 --> 00:10:44,044
+Capturing appends the matched substring
+to the output tuple type.
+
+172
+00:10:44,077 --> 00:10:47,548
+An output tuple type starts with
+the whole substring
+
+173
+00:10:47,581 --> 00:10:52,819
+that matched the entire Regex,
+followed by the first capture,
+
+174
+00:10:52,853 --> 00:10:55,956
+the second capture, and so on.
+
+175
+00:10:55,989 --> 00:10:59,426
+The matching algorithm
+returns a Regex Match,
+
+176
+00:10:59,459 --> 00:11:03,263
+from which you can obtain
+the output tuple.
+
+177
+00:11:03,297 --> 00:11:06,600
+The whole match, the first capture,
+
+178
+00:11:06,633 --> 00:11:08,435
+and the second capture.
+
+179
+00:11:09,870 --> 00:11:13,974
+Let me use captures
+in my test suite log Regex.
+
+180
+00:11:14,007 --> 00:11:18,011
+I capture the test suite's name,
+the status,
+
+181
+00:11:18,045 --> 00:11:20,981
+and the timestamp.
+
+182
+00:11:21,014 --> 00:11:23,917
+Let's again run this Regex
+on some inputs,
+
+183
+00:11:23,951 --> 00:11:27,321
+and print the three things
+that we captured.
+
+184
+00:11:27,354 --> 00:11:30,557
+That looks like a successful match!
+
+185
+00:11:30,591 --> 00:11:34,862
+It printed the name,
+the status, and the timestamp.
+
+186
+00:11:36,096 --> 00:11:40,667
+But as I look closely,
+something in the date is a little off.
+
+187
+00:11:40,701 --> 00:11:45,472
+It included the period in the input
+as part of the capture.
+
+188
+00:11:45,506 --> 00:11:49,843
+So let me go back and check
+the Regex for errors.
+
+189
+00:11:49,877 --> 00:11:53,647
+I want to focus on the timestamp Regex
+and see what's wrong with it.
+
+190
+00:11:53,680 --> 00:11:57,317
+Then I realize, the pattern
+"one or more of any character"
+
+191
+00:11:57,351 --> 00:12:01,188
+consumes everything from
+the first digit of the timestamp,
+
+192
+00:12:01,221 --> 00:12:04,191
+all the way to the end of the line.
+
+193
+00:12:04,224 --> 00:12:08,095
+So the "Optionally period" pattern
+below it never matched.
+
+194
+00:12:09,796 --> 00:12:14,268
+I can fix this by making this
+OneOrMore reluctant.
+
+195
+00:12:14,301 --> 00:12:18,172
+"Reluctant" is a case
+of repetition behaviors.
+
+196
+00:12:18,205 --> 00:12:22,442
+One or more, zero or more,
+optionally, and repeat
+
+197
+00:12:22,476 --> 00:12:25,846
+are what Swift Regex calls repetitions.
+
+198
+00:12:25,879 --> 00:12:28,982
+A repetition is eager by default.
+
+199
+00:12:29,016 --> 00:12:32,753
+It matches as many occurrences
+as possible.
+
+200
+00:12:32,786 --> 00:12:35,689
+Let me use the example from earlier.
+
+201
+00:12:35,722 --> 00:12:40,661
+When the Regex engine tries to match
+OneOrMore of any character eagerly,
+
+202
+00:12:40,694 --> 00:12:43,397
+it starts with the first character,
+
+203
+00:12:43,430 --> 00:12:48,702
+and it accepts any character along the way
+till the end of the input.
+
+204
+00:12:48,735 --> 00:12:53,607
+Then the Regex engine moves on
+to match Optionally period.
+
+205
+00:12:53,640 --> 00:12:59,413
+There's no more period to match,
+but it's optional anyway, so it succeeds.
+
+206
+00:12:59,446 --> 00:13:02,015
+Because we're running
+the 'wholeMatch' algorithm,
+
+207
+00:13:02,049 --> 00:13:05,886
+and both the input
+and the Regex pattern reach the end,
+
+208
+00:13:05,919 --> 00:13:08,922
+matching succeeds.
+
+209
+00:13:08,956 --> 00:13:13,160
+Although matching succeeded,
+the period had already been captured
+
+210
+00:13:13,193 --> 00:13:16,163
+unexpectedly as part of the OneOrMore.
+
+211
+00:13:18,632 --> 00:13:22,069
+When we change
+the repetition behavior to reluctant,
+
+212
+00:13:22,102 --> 00:13:26,640
+the Regex engine matches
+the repetition a little differently.
+
+213
+00:13:26,673 --> 00:13:30,711
+It matches as few characters as possible.
+
+214
+00:13:30,744 --> 00:13:35,048
+So when the Regex engine matches
+the input string this time,
+
+215
+00:13:35,082 --> 00:13:38,652
+It carefully marches forward
+by always trying to match
+
+216
+00:13:38,685 --> 00:13:40,721
+the rest of the Regex first,
+
+217
+00:13:40,754 --> 00:13:44,024
+before consuming a repetition occurrence.
+
+218
+00:13:44,057 --> 00:13:46,627
+When the rest of the Regex doesn't match,
+
+219
+00:13:46,660 --> 00:13:49,663
+the engine backtracks to the repetition
+
+220
+00:13:49,696 --> 00:13:53,033
+and consumes an additional occurrence.
+
+221
+00:13:53,066 --> 00:13:57,771
+Let's fast forward to the last character,
+the period.
+
+222
+00:13:57,804 --> 00:13:59,673
+Unlike eager behavior,
+
+223
+00:13:59,706 --> 00:14:02,476
+the Regex engine did not consume
+the period initially
+
+224
+00:14:02,509 --> 00:14:04,344
+as part of the OneOrMore,
+
+225
+00:14:04,378 --> 00:14:08,549
+but tries to match
+the "Optionally period" pattern instead.
+
+226
+00:14:08,582 --> 00:14:13,320
+This matches, and the Regex engine
+reaches the end of the pattern.
+
+227
+00:14:13,353 --> 00:14:15,589
+So matching succeeds,
+
+228
+00:14:15,622 --> 00:14:19,593
+and it produces the correct capture
+without a trailing period in it.
+
+229
+00:14:21,028 --> 00:14:23,797
+Because eager is the default behavior,
+
+230
+00:14:23,830 --> 00:14:26,800
+as you create your Regex
+using a repetition,
+
+231
+00:14:26,834 --> 00:14:30,671
+you should think about its implications
+on your intended match.
+
+232
+00:14:30,704 --> 00:14:33,807
+You can specify the behavior
+at a per-repetition level,
+
+233
+00:14:33,841 --> 00:14:36,977
+by passing an extra argument,
+
+234
+00:14:37,010 --> 00:14:40,547
+or, you can use
+the 'repetitionBehavior' modifier
+
+235
+00:14:40,581 --> 00:14:45,919
+to override it for all repetitions
+that did not specify a behavior.
+
+236
+00:14:45,953 --> 00:14:50,424
+As we've modified the repetition behavior
+for the timestamp to be reluctant,
+
+237
+00:14:50,457 --> 00:14:53,760
+Matching now extracts the right timestamp
+
+238
+00:14:53,794 --> 00:14:55,863
+without including the period.
+
+239
+00:14:58,932 --> 00:15:01,568
+Let's come back to the Regex.
+
+240
+00:15:01,602 --> 00:15:05,873
+As I use Capture to extract
+the test status from the input,
+
+241
+00:15:05,906 --> 00:15:08,242
+its type is Substring.
+
+242
+00:15:08,275 --> 00:15:11,111
+But it would be much better
+if I can convert the substring
+
+243
+00:15:11,144 --> 00:15:14,014
+into something more programming friendly,
+
+244
+00:15:14,047 --> 00:15:16,283
+like a custom data structure.
+
+245
+00:15:16,316 --> 00:15:19,853
+To do this,
+I can use a transforming capture.
+
+246
+00:15:19,887 --> 00:15:25,192
+A transforming capture is a Capture
+with a transform closure.
+
+247
+00:15:25,225 --> 00:15:29,229
+Upon matching, the Regex engine calls
+the transform closure
+
+248
+00:15:29,263 --> 00:15:31,465
+on the matched substring,
+
+249
+00:15:31,498 --> 00:15:36,436
+which produces a result
+of the desired type.
+
+250
+00:15:36,470 --> 00:15:41,942
+The corresponding Regex output type
+becomes the closure's return type.
+
+251
+00:15:41,975 --> 00:15:46,713
+Here, by transforming the capture
+with Int's initializer from String,
+
+252
+00:15:46,747 --> 00:15:50,584
+I get an optional Int
+in the output tuple type.
+
+253
+00:15:50,617 --> 00:15:55,122
+To obtain a non-optional output,
+TryCapture can help.
+
+254
+00:15:55,155 --> 00:15:59,660
+TryCapture is a variant of Capture
+which accepts a transform
+
+255
+00:15:59,693 --> 00:16:02,062
+that returns an optional
+
+256
+00:16:02,095 --> 00:16:05,499
+and removes the optionality
+in the output type.
+
+257
+00:16:05,532 --> 00:16:10,437
+Returning nil during matching will cause
+the Regex engine to backtrack
+
+258
+00:16:10,470 --> 00:16:13,240
+and try an alternative path.
+
+259
+00:16:13,273 --> 00:16:17,477
+TryCapture is most useful
+when you transform a capture
+
+260
+00:16:17,511 --> 00:16:20,180
+with a failable initializer.
+
+261
+00:16:20,214 --> 00:16:25,919
+A natural fit for storing the captured
+test status, would be an enumeration.
+
+262
+00:16:25,953 --> 00:16:28,255
+So let's define one.
+
+263
+00:16:28,288 --> 00:16:31,725
+I defined a TestStatus enum
+with three cases:
+
+264
+00:16:31,758 --> 00:16:34,428
+started, passed, and failed.
+
+265
+00:16:34,461 --> 00:16:39,032
+The raw string values makes
+this enum initializable from a string.
+
+266
+00:16:40,434 --> 00:16:44,938
+In the Regex,
+I switch to 'TryCapture' with a transform.
+
+267
+00:16:44,972 --> 00:16:48,942
+In the transform closure,
+I call the TestStatus initializer
+
+268
+00:16:48,976 --> 00:16:53,780
+to convert the matched substring
+to a TestStatus value.
+
+269
+00:16:53,814 --> 00:16:57,417
+Now the corresponding output type
+is TestStatus.
+
+270
+00:16:57,451 --> 00:16:59,686
+Using a custom data structure like this
+
+271
+00:16:59,720 --> 00:17:03,156
+makes the Regex match output type safe.
+
+272
+00:17:03,190 --> 00:17:04,658
+Back to the Regex.
+
+273
+00:17:04,691 --> 00:17:08,061
+There is one additional improvement
+I'd like to make.
+
+274
+00:17:08,095 --> 00:17:12,633
+Currently, I match the timestamp
+using a wildcard pattern.
+
+275
+00:17:12,666 --> 00:17:15,202
+It's going to produce a substring.
+
+276
+00:17:15,235 --> 00:17:19,106
+This means that if my app wants
+to understand the timestamp,
+
+277
+00:17:19,139 --> 00:17:24,444
+it'd have to parse the substring again
+into another data structure.
+
+278
+00:17:24,478 --> 00:17:27,447
+Earlier in the session,
+I mentioned that Foundation
+
+279
+00:17:27,481 --> 00:17:29,750
+now supports Swift Regex,
+
+280
+00:17:29,783 --> 00:17:33,820
+providing industry-strength parsers
+as Regexes.
+
+281
+00:17:33,854 --> 00:17:36,790
+So instead of parsing the date
+as a substring,
+
+282
+00:17:36,823 --> 00:17:41,395
+I can switch to Foundation's ISO 8601
+date parser
+
+283
+00:17:41,428 --> 00:17:45,098
+to parse the timestamp as a date.
+
+284
+00:17:45,132 --> 00:17:49,036
+Now the inferred type shows
+that this Regex outputs a Date.
+
+285
+00:17:50,437 --> 00:17:52,773
+As I run 'wholeMatch' on the inputs,
+
+286
+00:17:52,806 --> 00:17:58,345
+I can see that the date string was parsed
+into a Foundation Date value.
+
+287
+00:17:58,378 --> 00:18:01,615
+Having access to
+battle-tested parsers as a Regex,
+
+288
+00:18:01,648 --> 00:18:03,450
+like the Foundation date parser,
+
+289
+00:18:03,483 --> 00:18:07,688
+is incredibly handy
+in day-to-day string processing tasks.
+
+290
+00:18:07,721 --> 00:18:10,691
+Next, I will show you an advanced feature,
+
+291
+00:18:10,724 --> 00:18:16,296
+re-using a pre-existing parser
+defined elsewhere in a Swift Regex.
+
+292
+00:18:16,330 --> 00:18:20,734
+Let's look at an example where we want
+to parse the duration of a test case.
+
+293
+00:18:20,767 --> 00:18:26,039
+Duration is a floating point number,
+such as, 0.001.
+
+294
+00:18:26,073 --> 00:18:28,342
+The best way to do this is, of course,
+
+295
+00:18:28,375 --> 00:18:31,745
+using the Foundation-provided
+floating point parser
+
+296
+00:18:31,778 --> 00:18:34,481
+with full support for localization.
+
+297
+00:18:34,515 --> 00:18:37,384
+But today, I want to show you
+what's under the hood
+
+298
+00:18:37,417 --> 00:18:40,454
+and how you can hook
+into the Regex engine yourself
+
+299
+00:18:40,487 --> 00:18:42,856
+to leverage an existing parser
+
+300
+00:18:42,890 --> 00:18:46,627
+to parse the duration
+floating-point number.
+
+301
+00:18:46,660 --> 00:18:51,532
+'strtod' is a function
+from the C standard library.
+
+302
+00:18:51,565 --> 00:18:55,536
+It takes a string pointer,
+parses the underlying string,
+
+303
+00:18:55,569 --> 00:19:00,007
+and assigns the end position
+of the match to the end pointer.
+
+304
+00:19:00,040 --> 00:19:03,410
+Let's parse the duration, the C way.
+
+305
+00:19:03,443 --> 00:19:07,080
+To do this,
+I can define a parser type on my own,
+
+306
+00:19:07,114 --> 00:19:11,885
+and make it conform to the
+CustomConsumingRegexComponent protocol.
+
+307
+00:19:12,886 --> 00:19:16,723
+I define a structure named CDoubleParser.
+
+308
+00:19:16,757 --> 00:19:19,660
+Its 'RegexOutput' is Double,
+
+309
+00:19:19,693 --> 00:19:22,696
+because we are parsing a Double number.
+
+310
+00:19:22,729 --> 00:19:25,999
+In the "consuming" method,
+we make a call to the double parser
+
+311
+00:19:26,033 --> 00:19:28,368
+from the C standard library,
+
+312
+00:19:28,402 --> 00:19:30,504
+passing the string pointers to it,
+
+313
+00:19:30,537 --> 00:19:33,507
+and getting a number back.
+
+314
+00:19:33,540 --> 00:19:37,211
+In the method body,
+I use the withCString method
+
+315
+00:19:37,244 --> 00:19:41,048
+to obtain the start address.
+
+316
+00:19:41,081 --> 00:19:43,951
+Then I call the 'strtod' C function,
+
+317
+00:19:43,984 --> 00:19:45,485
+passing the start address
+
+318
+00:19:45,519 --> 00:19:49,523
+and a pointer
+to receive the result end address.
+
+319
+00:19:49,556 --> 00:19:51,658
+I then check for errors.
+
+320
+00:19:51,692 --> 00:19:53,460
+When parsing succeeds,
+
+321
+00:19:53,493 --> 00:19:57,364
+the end address is greater
+than the start address.
+
+322
+00:19:57,397 --> 00:20:01,702
+Otherwise, it is a parse failure,
+so I return nil.
+
+323
+00:20:01,735 --> 00:20:07,274
+I compute the upper bound of the match
+from the pointer produced by the C API.
+
+324
+00:20:07,307 --> 00:20:12,646
+And finally, I return the upper bound
+of the match, and the number output.
+
+325
+00:20:12,679 --> 00:20:19,353
+I can come back to the Regex and use
+my 'CDoubleParser' directly in the Regex.
+
+326
+00:20:19,386 --> 00:20:23,090
+The output type is inferred to be Double.
+
+327
+00:20:23,123 --> 00:20:26,493
+When I call 'wholeMatch'
+and print the parsed number,
+
+328
+00:20:26,527 --> 00:20:30,597
+it outputs 0.001, like I expected.
+
+329
+00:20:30,631 --> 00:20:33,300
+In summary,
+today we talked about some common
+
+330
+00:20:33,333 --> 00:20:35,469
+and advanced use of Swift Regex,
+
+331
+00:20:35,502 --> 00:20:38,438
+a new feature in Swift 5.7
+that enables you
+
+332
+00:20:38,472 --> 00:20:41,975
+to integrate the power
+of string processing in your apps.
+
+333
+00:20:42,009 --> 00:20:46,313
+A good practice when using Swift Regex
+is to try to strike a good balance
+
+334
+00:20:46,346 --> 00:20:48,782
+between concision and readability,
+
+335
+00:20:48,815 --> 00:20:53,487
+especially when you mix the RegexBuilder
+DSL and Regex literals.
+
+336
+00:20:53,520 --> 00:20:57,291
+When you encounter common patterns
+such as date and URL,
+
+337
+00:20:57,324 --> 00:21:01,728
+always prefer the industry-strength
+parsers provided by Foundation,
+
+338
+00:21:01,762 --> 00:21:05,866
+as parsing these patterns
+with custom code can be prone to errors.
+
+339
+00:21:07,801 --> 00:21:09,937
+For more information about Swift Regex,
+
+340
+00:21:09,970 --> 00:21:13,173
+check out the series
+of declarative string processing proposals
+
+341
+00:21:13,207 --> 00:21:14,608
+on Swift Evolution.
+
+342
+00:21:14,641 --> 00:21:18,779
+I hope you'll enjoy
+processing strings with Swift.
+
+343
+00:21:18,812 --> 00:21:22,115
+Thank you, and have a great WWDC.
+

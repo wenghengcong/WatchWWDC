@@ -1,0 +1,1737 @@
+1
+00:00:00,000 --> 00:00:03,036
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,036 --> 00:00:09,610
+♪
+
+3
+00:00:09,610 --> 00:00:12,045
+Welcome to
+"Use SwiftUI with AppKit."
+
+4
+00:00:12,045 --> 00:00:16,350
+I'm Ian, an engineer
+working on Shortcuts.
+
+5
+00:00:16,350 --> 00:00:20,120
+In macOS Monterey,
+Shortcuts came to macOS.
+
+6
+00:00:20,120 --> 00:00:23,757
+Shortcuts uses a lot
+of SwiftUI on the Mac.
+
+7
+00:00:23,757 --> 00:00:26,760
+SwiftUI helps customize
+the experience for the platform,
+
+8
+00:00:26,760 --> 00:00:28,862
+while sharing common views
+with the apps
+
+9
+00:00:28,862 --> 00:00:31,398
+on iOS and watchOS.
+
+10
+00:00:31,398 --> 00:00:33,333
+In this video, I'm going to show
+
+11
+00:00:33,333 --> 00:00:36,703
+how you can start adopting
+SwiftUI in your Mac app,
+
+12
+00:00:36,703 --> 00:00:40,707
+by looking at some examples
+from Shortcuts.
+
+13
+00:00:40,707 --> 00:00:42,542
+First, I'll show you an example
+
+14
+00:00:42,542 --> 00:00:45,512
+of how to host
+SwiftUI views in your app,
+
+15
+00:00:45,512 --> 00:00:47,447
+and then talk about
+how to pass data
+
+16
+00:00:47,447 --> 00:00:50,817
+between AppKit and SwiftUI.
+
+17
+00:00:50,817 --> 00:00:53,086
+I'll also cover
+hosting SwiftUI views
+
+18
+00:00:53,086 --> 00:00:55,989
+in the cells of a collection
+or table view,
+
+19
+00:00:55,989 --> 00:00:58,926
+how to handle layout
+and sizing of SwiftUI views
+
+20
+00:00:58,926 --> 00:01:01,495
+when they are embedded
+in AppKit,
+
+21
+00:01:01,495 --> 00:01:03,931
+how to make
+your SwiftUI views participate
+
+22
+00:01:03,931 --> 00:01:07,000
+in the responder chain
+and be focusable,
+
+23
+00:01:07,000 --> 00:01:12,439
+and, finally, how to host
+an AppKit view in SwiftUI.
+
+24
+00:01:12,439 --> 00:01:16,877
+Alright, I'll start with
+how to host SwiftUI in AppKit.
+
+25
+00:01:16,877 --> 00:01:18,578
+In Shortcuts,
+
+26
+00:01:18,578 --> 00:01:23,150
+the main window contains
+an AppKit split view controller
+
+27
+00:01:23,150 --> 00:01:28,588
+and the sidebar on the left
+is written using SwiftUI.
+
+28
+00:01:28,588 --> 00:01:32,326
+The sidebar view is implemented
+as a SwiftUI List,
+
+29
+00:01:32,326 --> 00:01:35,896
+and the list shows sections
+with rows for all of the places
+
+30
+00:01:35,896 --> 00:01:38,899
+you can navigate to in the app.
+
+31
+00:01:38,899 --> 00:01:42,302
+The view keeps track
+of which item is selected,
+
+32
+00:01:42,302 --> 00:01:45,806
+through the selected item
+binding.
+
+33
+00:01:45,806 --> 00:01:47,908
+The possible items
+that can be selected
+
+34
+00:01:47,908 --> 00:01:53,113
+are represented as cases
+in the SidebarItem type.
+
+35
+00:01:53,113 --> 00:01:56,850
+In this case, since there's a
+split view controller already.
+
+36
+00:01:56,850 --> 00:01:58,986
+To host this sidebar view,
+
+37
+00:01:58,986 --> 00:02:03,890
+we use a class from SwiftUI
+called NSHostingController.
+
+38
+00:02:03,890 --> 00:02:06,727
+The SwiftUI sidebar view
+is passed in
+
+39
+00:02:06,727 --> 00:02:10,897
+as the root view
+of that hosting controller.
+
+40
+00:02:10,897 --> 00:02:12,632
+Since a hosting controller
+can be used
+
+41
+00:02:12,632 --> 00:02:14,801
+like any other view controller,
+
+42
+00:02:14,801 --> 00:02:19,072
+here, we configure it
+as a splitViewItem
+
+43
+00:02:19,072 --> 00:02:23,076
+and add that
+to the splitViewController.
+
+44
+00:02:23,076 --> 00:02:26,213
+Now the sidebar is hosted
+in the split view,
+
+45
+00:02:26,213 --> 00:02:29,983
+but for it to work
+when the selection changes,
+
+46
+00:02:29,983 --> 00:02:35,522
+the right side of the split view
+needs to show a different page.
+
+47
+00:02:35,522 --> 00:02:37,791
+Currently,
+the selected item state
+
+48
+00:02:37,791 --> 00:02:40,527
+only exists within SwiftUI.
+
+49
+00:02:40,527 --> 00:02:43,864
+What we need to do is move that
+to a place that can be shared
+
+50
+00:02:43,864 --> 00:02:47,234
+between the split view
+and the sidebar.
+
+51
+00:02:47,234 --> 00:02:50,704
+A good way to do this
+is to create a model object
+
+52
+00:02:50,704 --> 00:02:54,241
+that can be stored outside
+of SwiftUI and contain the state
+
+53
+00:02:54,241 --> 00:02:56,109
+that needs to be shared.
+
+54
+00:02:56,109 --> 00:02:59,479
+I'll call this object
+the SelectionModel.
+
+55
+00:02:59,479 --> 00:03:02,582
+Now, the sidebar can still
+read and write the state
+
+56
+00:03:02,582 --> 00:03:05,285
+in the SelectionModel.
+
+57
+00:03:05,285 --> 00:03:08,989
+In code, the SelectionModel
+is a class that conforms
+
+58
+00:03:08,989 --> 00:03:11,425
+to ObservableObject.
+
+59
+00:03:11,425 --> 00:03:15,195
+Being an observable object
+lets SwiftUI reload the view
+
+60
+00:03:15,195 --> 00:03:18,799
+when the state stored
+in the model changes.
+
+61
+00:03:18,799 --> 00:03:23,103
+It stores which sidebar item
+is currently selected.
+
+62
+00:03:23,103 --> 00:03:27,240
+This property is published
+so that the SwiftUI sidebar view
+
+63
+00:03:27,240 --> 00:03:31,211
+can update when
+the selected item changes.
+
+64
+00:03:31,211 --> 00:03:34,314
+Whenever someone changes
+the selection in the sidebar,
+
+65
+00:03:34,314 --> 00:03:39,119
+the model can show a new page
+in the detail view.
+
+66
+00:03:39,119 --> 00:03:42,856
+Now that I've covered
+how to host SwiftUI in AppKit,
+
+67
+00:03:42,856 --> 00:03:46,760
+let's move on to collection
+and table cells.
+
+68
+00:03:46,760 --> 00:03:50,730
+When bringing Shortcuts
+from other platforms to macOS,
+
+69
+00:03:50,730 --> 00:03:53,600
+there was already
+an iconic SwiftUI view
+
+70
+00:03:53,600 --> 00:03:57,137
+built to display a shortcut
+in a collection view cell
+
+71
+00:03:57,137 --> 00:04:00,006
+or a Home Screen widget.
+
+72
+00:04:00,006 --> 00:04:03,777
+On macOS, these same views
+are displayed in the cells
+
+73
+00:04:03,777 --> 00:04:06,880
+of an NSCollectionView.
+
+74
+00:04:06,880 --> 00:04:10,317
+In a collection or table view
+with lots of items,
+
+75
+00:04:10,317 --> 00:04:13,653
+each cell view is recycled
+as you scroll,
+
+76
+00:04:13,653 --> 00:04:17,023
+showing different content
+over time.
+
+77
+00:04:17,023 --> 00:04:20,026
+To make sure the cell reuse
+is performant,
+
+78
+00:04:20,026 --> 00:04:22,763
+you need to avoid
+adding and removing subviews
+
+79
+00:04:22,763 --> 00:04:26,800
+from the cells
+as the user scrolls.
+
+80
+00:04:26,800 --> 00:04:29,803
+When displaying a SwiftUI view
+in each cell,
+
+81
+00:04:29,803 --> 00:04:32,539
+use a single hosting view
+and update it
+
+82
+00:04:32,539 --> 00:04:35,542
+with a different root view
+when the cell's content
+
+83
+00:04:35,542 --> 00:04:37,778
+needs to change.
+
+84
+00:04:37,778 --> 00:04:40,280
+Here's all you need
+to build a collection view cell
+
+85
+00:04:40,280 --> 00:04:42,249
+to host SwiftUI.
+
+86
+00:04:42,249 --> 00:04:43,683
+In the example here,
+
+87
+00:04:43,683 --> 00:04:47,687
+I'm building the cell
+that displays a shortcut view.
+
+88
+00:04:47,687 --> 00:04:52,359
+Each cell contains an
+NSHostingView to host SwiftUI.
+
+89
+00:04:52,359 --> 00:04:54,094
+Since cells are created
+
+90
+00:04:54,094 --> 00:04:56,663
+before they are configured
+with any content,
+
+91
+00:04:56,663 --> 00:04:58,565
+this will start off as nil,
+
+92
+00:04:58,565 --> 00:05:00,300
+and will be set the first time
+
+93
+00:05:00,300 --> 00:05:03,503
+a shortcut
+is ready to be displayed.
+
+94
+00:05:03,503 --> 00:05:06,773
+The displayShortcut method
+is called by the data source
+
+95
+00:05:06,773 --> 00:05:10,343
+when configuring the cell
+to display a shortcut.
+
+96
+00:05:10,343 --> 00:05:14,614
+This method creates
+a SwiftUI ShortcutView.
+
+97
+00:05:14,614 --> 00:05:17,551
+Then, if there's already
+a hostingView,
+
+98
+00:05:17,551 --> 00:05:21,988
+the rootView of that hostingView
+is set to the new view.
+
+99
+00:05:21,988 --> 00:05:24,291
+Otherwise,
+if it's the first time,
+
+100
+00:05:24,291 --> 00:05:26,927
+a newHostingView
+is created and added
+
+101
+00:05:26,927 --> 00:05:30,263
+as a subview of the cell.
+
+102
+00:05:30,263 --> 00:05:34,000
+Here's the lifecycle of the cell
+that's hosting SwiftUI.
+
+103
+00:05:34,000 --> 00:05:38,772
+First, the cell is initialized
+and it starts with no subviews,
+
+104
+00:05:38,772 --> 00:05:41,908
+since there is not
+a shortcut to display yet.
+
+105
+00:05:41,908 --> 00:05:44,711
+The first time
+displayShortcut is called,
+
+106
+00:05:44,711 --> 00:05:49,683
+the hostingView is created with
+the shortcutView to display.
+
+107
+00:05:49,683 --> 00:05:52,319
+This creates
+a SwiftUI view hierarchy,
+
+108
+00:05:52,319 --> 00:05:59,993
+containing a VStack, an image,
+a spacer, and two text views.
+
+109
+00:05:59,993 --> 00:06:02,896
+If this cell is then scrolled
+off screen,
+
+110
+00:06:02,896 --> 00:06:05,565
+it will be potentially
+dequeued by the system
+
+111
+00:06:05,565 --> 00:06:08,268
+and need to show
+a different shortcut.
+
+112
+00:06:08,268 --> 00:06:12,072
+When this happens,
+a new ShortcutView is created
+
+113
+00:06:12,072 --> 00:06:15,041
+and given to the HostingView.
+
+114
+00:06:15,041 --> 00:06:17,510
+Since the HostingView
+was already displaying
+
+115
+00:06:17,510 --> 00:06:19,312
+a different shortcut view,
+
+116
+00:06:19,312 --> 00:06:22,549
+it will reuse the overall
+structure of the view,
+
+117
+00:06:22,549 --> 00:06:25,385
+including the VStack
+and the spacer,
+
+118
+00:06:25,385 --> 00:06:30,790
+and only update the image, text,
+and background that changed.
+
+119
+00:06:30,790 --> 00:06:35,595
+Alright, next, let's talk about
+layout and sizing.
+
+120
+00:06:35,595 --> 00:06:37,797
+Hosting controllers
+and hosting views
+
+121
+00:06:37,797 --> 00:06:39,899
+have intrinsic sizes
+
+122
+00:06:39,899 --> 00:06:43,603
+based on the SwiftUI view's
+ideal width and height.
+
+123
+00:06:43,603 --> 00:06:46,273
+SwiftUI automatically
+creates and updates
+
+124
+00:06:46,273 --> 00:06:49,843
+Auto Layout constraints,
+which the AppKit layout system
+
+125
+00:06:49,843 --> 00:06:53,313
+uses to size the view
+appropriately.
+
+126
+00:06:53,313 --> 00:06:56,349
+Views are also flexible,
+meaning they support
+
+127
+00:06:56,349 --> 00:07:00,854
+a variety of sizes,
+between a minimum and a maximum.
+
+128
+00:07:00,854 --> 00:07:05,358
+SwiftUI creates constraints
+for these as well.
+
+129
+00:07:05,358 --> 00:07:08,762
+When embedding SwiftUI
+hosting views in your hierarchy,
+
+130
+00:07:08,762 --> 00:07:11,865
+you should apply your own
+Auto Layout constraints
+
+131
+00:07:11,865 --> 00:07:15,935
+to the superview
+or to other adjacent views.
+
+132
+00:07:15,935 --> 00:07:19,506
+Using the frame modifier
+or other SwiftUI layout
+
+133
+00:07:19,506 --> 00:07:23,376
+will result in an update to the
+constraints that are created,
+
+134
+00:07:23,376 --> 00:07:28,214
+such as overriding the width
+to be a fixed size.
+
+135
+00:07:28,214 --> 00:07:31,184
+Since windows can be resized
+by the user,
+
+136
+00:07:31,184 --> 00:07:35,088
+they have a minimum
+and a maximum size.
+
+137
+00:07:35,088 --> 00:07:36,723
+When HostingViews are set
+
+138
+00:07:36,723 --> 00:07:39,793
+as the top-level contentView
+of a window,
+
+139
+00:07:39,793 --> 00:07:43,096
+SwiftUI will automatically
+update that window's minimum
+
+140
+00:07:43,096 --> 00:07:47,400
+and maximum size based on
+the content being displayed.
+
+141
+00:07:47,400 --> 00:07:49,669
+And this lets windows
+be resizable
+
+142
+00:07:49,669 --> 00:07:52,672
+either vertically,
+horizontally, or both,
+
+143
+00:07:52,672 --> 00:07:55,275
+depending on the content.
+
+144
+00:07:55,275 --> 00:07:58,411
+SwiftUI views,
+placed in hosting controllers,
+
+145
+00:07:58,411 --> 00:08:02,349
+also are sized based on the
+content when presented modally.
+
+146
+00:08:02,349 --> 00:08:05,585
+For example, you can easily
+place SwiftUI views
+
+147
+00:08:05,585 --> 00:08:07,520
+into an AppKit popover,
+
+148
+00:08:07,520 --> 00:08:09,556
+by presenting
+a hosting controller
+
+149
+00:08:09,556 --> 00:08:13,259
+using the popover presentation
+API on NSViewController,
+
+150
+00:08:13,259 --> 00:08:15,261
+as shown here.
+
+151
+00:08:15,261 --> 00:08:18,031
+You can also present
+SwiftUI views as sheets,
+
+152
+00:08:18,031 --> 00:08:20,967
+using the presentAsSheet
+method.
+
+153
+00:08:20,967 --> 00:08:23,570
+And finally, for a modal window,
+
+154
+00:08:23,570 --> 00:08:26,606
+you can use the
+presentAsModalWindow method
+
+155
+00:08:26,606 --> 00:08:30,777
+to present a window that
+blocks interaction until closed.
+
+156
+00:08:30,777 --> 00:08:34,614
+The window is sized
+to fit the content.
+
+157
+00:08:34,614 --> 00:08:37,550
+In macOS Ventura,
+there are new APIs
+
+158
+00:08:37,550 --> 00:08:40,720
+on NSHostingView
+and NSHostingController
+
+159
+00:08:40,720 --> 00:08:42,922
+that allow you to customize
+the constraints
+
+160
+00:08:42,922 --> 00:08:45,458
+that are automatically added.
+
+161
+00:08:45,458 --> 00:08:47,961
+By default,
+hosting controllers and views
+
+162
+00:08:47,961 --> 00:08:50,497
+create constraints
+for the minimum size,
+
+163
+00:08:50,497 --> 00:08:53,867
+intrinsic size,
+and maximum size.
+
+164
+00:08:53,867 --> 00:08:56,903
+You may want to disable some of
+these for performance reasons
+
+165
+00:08:56,903 --> 00:09:00,173
+if you want the view
+to always be flexibly sized,
+
+166
+00:09:00,173 --> 00:09:02,208
+or the constraints
+are already added
+
+167
+00:09:02,208 --> 00:09:05,345
+to surrounding views in AppKit.
+
+168
+00:09:05,345 --> 00:09:06,746
+For hosting controllers,
+
+169
+00:09:06,746 --> 00:09:08,681
+to let the ideal size
+of the view
+
+170
+00:09:08,681 --> 00:09:11,618
+determine the preferred
+content size,
+
+171
+00:09:11,618 --> 00:09:15,622
+you can enable the
+preferredContentSize option.
+
+172
+00:09:15,622 --> 00:09:18,825
+When you start adding
+SwiftUI views to your app,
+
+173
+00:09:18,825 --> 00:09:21,594
+it's important that they take
+part in the responder chain
+
+174
+00:09:21,594 --> 00:09:26,199
+and focus system just like
+other views in your app.
+
+175
+00:09:26,199 --> 00:09:29,302
+In Shortcuts,
+our editor is implemented
+
+176
+00:09:29,302 --> 00:09:32,038
+as a SwiftUI View.
+
+177
+00:09:32,038 --> 00:09:35,008
+But the editor needs to handle
+menu bar commands
+
+178
+00:09:35,008 --> 00:09:40,013
+defined in the main menu,
+which is implemented in AppKit.
+
+179
+00:09:40,013 --> 00:09:45,084
+These commands include
+cut, copy, paste, and others.
+
+180
+00:09:45,084 --> 00:09:49,088
+We implemented a few of our
+own custom menu items as well,
+
+181
+00:09:49,088 --> 00:09:52,525
+for moving actions up and down.
+
+182
+00:09:52,525 --> 00:09:56,229
+In AppKit, your view hierarchy
+makes up a chain of views
+
+183
+00:09:56,229 --> 00:09:58,898
+called "the responder chain."
+
+184
+00:09:58,898 --> 00:10:02,902
+The focused responder
+is called the first responder.
+
+185
+00:10:02,902 --> 00:10:04,838
+When a menu item is selected,
+
+186
+00:10:04,838 --> 00:10:08,708
+the selector for that item
+is sent to the first responder.
+
+187
+00:10:08,708 --> 00:10:10,210
+But if the first responder
+
+188
+00:10:10,210 --> 00:10:12,145
+doesn't respond
+to that selector,
+
+189
+00:10:12,145 --> 00:10:15,215
+then the selector is sent
+to each next responder,
+
+190
+00:10:15,215 --> 00:10:17,650
+until something
+handles the selector,
+
+191
+00:10:17,650 --> 00:10:20,653
+or it reaches the app.
+
+192
+00:10:20,653 --> 00:10:23,790
+The equivalent to the first
+responder in SwiftUI
+
+193
+00:10:23,790 --> 00:10:26,993
+is the focused view.
+
+194
+00:10:26,993 --> 00:10:31,097
+Focusable SwiftUI views
+can respond to keyboard input
+
+195
+00:10:31,097 --> 00:10:35,602
+and handle selectors
+sent to the responder chain.
+
+196
+00:10:35,602 --> 00:10:40,206
+Some views like text fields
+are already focusable,
+
+197
+00:10:40,206 --> 00:10:42,909
+but you can use
+the focusable modifier
+
+198
+00:10:42,909 --> 00:10:46,312
+to make other views
+focusable too.
+
+199
+00:10:46,312 --> 00:10:50,016
+SwiftUI has a few modifiers
+to handle common commands,
+
+200
+00:10:50,016 --> 00:10:52,886
+such as copy, cut, and paste.
+
+201
+00:10:52,886 --> 00:10:55,555
+These pass values
+in and out of the pasteboard,
+
+202
+00:10:55,555 --> 00:10:58,391
+and it's an easy way
+to let people transfer data
+
+203
+00:10:58,391 --> 00:11:00,994
+in and out of your app.
+
+204
+00:11:00,994 --> 00:11:03,763
+The shortcuts editor uses
+the onMoveCommand
+
+205
+00:11:03,763 --> 00:11:07,333
+and onExit command modifiers
+to handle the arrow keys
+
+206
+00:11:07,333 --> 00:11:09,602
+and escape keys.
+
+207
+00:11:09,602 --> 00:11:12,272
+The onCommand modifier
+can be used to handle
+
+208
+00:11:12,272 --> 00:11:14,674
+any of the common selectors
+from AppKit
+
+209
+00:11:14,674 --> 00:11:17,844
+or your own custom selectors
+defined in your app.
+
+210
+00:11:17,844 --> 00:11:21,748
+Here, we handle the
+selectAll command from AppKit
+
+211
+00:11:21,748 --> 00:11:25,685
+and the moveActionUp
+and moveActionDown commands
+
+212
+00:11:25,685 --> 00:11:28,855
+defined in the Shortcuts app.
+
+213
+00:11:28,855 --> 00:11:32,091
+When testing focus and keyboard
+navigability in your app,
+
+214
+00:11:32,091 --> 00:11:34,627
+make sure to open
+Keyboard System Settings
+
+215
+00:11:34,627 --> 00:11:36,896
+and test with
+Full Keyboard Navigation
+
+216
+00:11:36,896 --> 00:11:39,632
+turned both on and off,
+
+217
+00:11:39,632 --> 00:11:44,370
+since many controls are only
+focusable when that's enabled.
+
+218
+00:11:44,370 --> 00:11:46,005
+There's a lot more you can do
+
+219
+00:11:46,005 --> 00:11:48,775
+to make your app work great
+with the keyboard.
+
+220
+00:11:48,775 --> 00:11:52,579
+For example, there are APIs
+such as FocusState
+
+221
+00:11:52,579 --> 00:11:54,314
+and the focused modifier
+
+222
+00:11:54,314 --> 00:11:58,217
+that let you programmatically
+change which view is focused.
+
+223
+00:11:58,217 --> 00:12:01,054
+To learn more about focus
+and the keyboard,
+
+224
+00:12:01,054 --> 00:12:02,221
+you should go watch
+
+225
+00:12:02,221 --> 00:12:06,326
+the "Direct and reflect
+focus in SwiftUI" video.
+
+226
+00:12:06,326 --> 00:12:11,931
+Finally, let's talk about
+hosting AppKit views in SwiftUI.
+
+227
+00:12:11,931 --> 00:12:13,266
+There are some instances
+
+228
+00:12:13,266 --> 00:12:15,602
+where Shortcuts
+is hosting AppKit views
+
+229
+00:12:15,602 --> 00:12:17,971
+inside of a SwiftUI layout,
+
+230
+00:12:17,971 --> 00:12:20,640
+and you may need to host
+AppKit views, too,
+
+231
+00:12:20,640 --> 00:12:24,243
+as you adopt SwiftUI
+in your app.
+
+232
+00:12:24,243 --> 00:12:29,482
+One example is inside
+of the SwiftUI shortcuts editor,
+
+233
+00:12:29,482 --> 00:12:32,051
+where there's an embedded
+AppleScript editor view,
+
+234
+00:12:32,051 --> 00:12:33,920
+which is an AppKit control
+
+235
+00:12:33,920 --> 00:12:37,624
+shared with a few
+other system apps on macOS.
+
+236
+00:12:37,624 --> 00:12:40,693
+SwiftUI provides two
+representable protocols
+
+237
+00:12:40,693 --> 00:12:43,363
+that allow AppKit views
+and view controllers
+
+238
+00:12:43,363 --> 00:12:48,401
+to be embedded within
+a SwiftUI view hierarchy.
+
+239
+00:12:48,401 --> 00:12:50,336
+Like SwiftUI views,
+
+240
+00:12:50,336 --> 00:12:54,007
+representables are descriptions
+for how to create and update
+
+241
+00:12:54,007 --> 00:12:57,310
+AppKit views.
+
+242
+00:12:57,310 --> 00:13:01,481
+Since many classes in AppKit
+have delegates, observers,
+
+243
+00:13:01,481 --> 00:13:06,052
+or rely on KVO or notifications
+to be observed,
+
+244
+00:13:06,052 --> 00:13:09,822
+the protocols also include
+an optional coordinator object
+
+245
+00:13:09,822 --> 00:13:12,325
+that you can implement
+to accompany your view
+
+246
+00:13:12,325 --> 00:13:15,662
+or view controller.
+
+247
+00:13:15,662 --> 00:13:18,231
+Here's the lifecycle
+of the hosted object
+
+248
+00:13:18,231 --> 00:13:20,266
+and its coordinator.
+
+249
+00:13:20,266 --> 00:13:23,603
+We start with the hosted view
+being initialized.
+
+250
+00:13:23,603 --> 00:13:26,139
+This happens when the view
+is about to be displayed
+
+251
+00:13:26,139 --> 00:13:28,608
+for the first time.
+
+252
+00:13:28,608 --> 00:13:31,644
+The first thing SwiftUI
+does during initialization
+
+253
+00:13:31,644 --> 00:13:33,446
+is make the coordinator.
+
+254
+00:13:33,446 --> 00:13:35,948
+This is optional,
+but you can define your own type
+
+255
+00:13:35,948 --> 00:13:37,950
+and return it from
+makeCoordinator
+
+256
+00:13:37,950 --> 00:13:41,821
+if you need it for delegation
+or state management.
+
+257
+00:13:41,821 --> 00:13:43,690
+A single instance
+of the coordinator
+
+258
+00:13:43,690 --> 00:13:47,593
+will stay around
+for the lifetime of the view.
+
+259
+00:13:47,593 --> 00:13:50,329
+Second, either the makeNSView
+
+260
+00:13:50,329 --> 00:13:53,966
+or makeNSViewController method
+is called.
+
+261
+00:13:53,966 --> 00:13:56,202
+This is where
+you describe to SwiftUI
+
+262
+00:13:56,202 --> 00:14:00,406
+how to create
+a new instance of your view.
+
+263
+00:14:00,406 --> 00:14:03,810
+The context contains the
+coordinator that was just made,
+
+264
+00:14:03,810 --> 00:14:07,447
+if any, so here's a good place
+to assign the coordinator
+
+265
+00:14:07,447 --> 00:14:13,386
+as the view's delegate
+or other type of observer.
+
+266
+00:14:13,386 --> 00:14:15,354
+Once the view has been created,
+
+267
+00:14:15,354 --> 00:14:17,490
+the update view method
+will be called
+
+268
+00:14:17,490 --> 00:14:22,128
+whenever the SwiftUI state
+or environment changes.
+
+269
+00:14:22,128 --> 00:14:25,965
+Here, it's your responsibility
+to update any properties
+
+270
+00:14:25,965 --> 00:14:28,835
+or state stored
+in the AppKit view
+
+271
+00:14:28,835 --> 00:14:31,637
+to keep it in sync with
+the surrounding SwiftUI state
+
+272
+00:14:31,637 --> 00:14:33,473
+and environment.
+
+273
+00:14:33,473 --> 00:14:35,842
+The update method
+can be called often,
+
+274
+00:14:35,842 --> 00:14:38,010
+so the changes you make
+to the view
+
+275
+00:14:38,010 --> 00:14:40,747
+should be
+as minimal as possible.
+
+276
+00:14:40,747 --> 00:14:42,749
+You should check
+for what has changed
+
+277
+00:14:42,749 --> 00:14:45,184
+and only reload the affected
+part of the view
+
+278
+00:14:45,184 --> 00:14:47,854
+when changes are made.
+
+279
+00:14:47,854 --> 00:14:50,690
+When SwiftUI is done displaying
+the hosted view,
+
+280
+00:14:50,690 --> 00:14:53,092
+it will be dismantled.
+
+281
+00:14:53,092 --> 00:14:57,296
+The hosted view and coordinator
+will both be deallocated.
+
+282
+00:14:57,296 --> 00:15:00,633
+Before these are deallocated,
+the representable protocols
+
+283
+00:15:00,633 --> 00:15:02,835
+give you an optional method
+to implement,
+
+284
+00:15:02,835 --> 00:15:06,105
+where you can clean up
+state if needed.
+
+285
+00:15:06,105 --> 00:15:08,674
+Alright, now that you know
+the lifecycle
+
+286
+00:15:08,674 --> 00:15:12,111
+and are familiar with
+the representable protocols,
+
+287
+00:15:12,111 --> 00:15:14,380
+I'm going to show you
+how Shortcuts hosts
+
+288
+00:15:14,380 --> 00:15:18,117
+the custom script editor view
+in the app.
+
+289
+00:15:18,117 --> 00:15:22,989
+The script editor is an NSView
+called ScriptEditorView.
+
+290
+00:15:22,989 --> 00:15:25,658
+The code that's written
+in the editor can be accessed
+
+291
+00:15:25,658 --> 00:15:28,661
+and modified through
+the sourceCode property,
+
+292
+00:15:28,661 --> 00:15:30,363
+and the view can be disabled
+
+293
+00:15:30,363 --> 00:15:32,999
+to prevent changes
+from being made.
+
+294
+00:15:32,999 --> 00:15:35,735
+The script editor
+also has a delegate,
+
+295
+00:15:35,735 --> 00:15:38,371
+which is notified any time
+someone modifies
+
+296
+00:15:38,371 --> 00:15:40,773
+the source code.
+
+297
+00:15:40,773 --> 00:15:42,975
+When hosting an AppKit view,
+
+298
+00:15:42,975 --> 00:15:46,612
+first think about where the
+view will be placed in SwiftUI,
+
+299
+00:15:46,612 --> 00:15:50,449
+and what data needs
+to be passed in and out.
+
+300
+00:15:50,449 --> 00:15:54,153
+In Shortcuts, this view
+is placed into a container view
+
+301
+00:15:54,153 --> 00:15:57,290
+next to the compile button.
+
+302
+00:15:57,290 --> 00:16:00,760
+The compile button's handler
+needs to access the source code
+
+303
+00:16:00,760 --> 00:16:03,596
+that's entered into the view.
+
+304
+00:16:03,596 --> 00:16:05,998
+The source code
+is stored in SwiftUI
+
+305
+00:16:05,998 --> 00:16:08,501
+using the State property
+wrapper.
+
+306
+00:16:08,501 --> 00:16:10,436
+The representable
+will need to both read
+
+307
+00:16:10,436 --> 00:16:13,406
+and write to this state.
+
+308
+00:16:13,406 --> 00:16:15,107
+To build the representable,
+
+309
+00:16:15,107 --> 00:16:19,212
+start by creating a type that
+conforms to NSViewRepresentable,
+
+310
+00:16:19,212 --> 00:16:22,915
+since it will host an NSView.
+
+311
+00:16:22,915 --> 00:16:26,352
+Add properties for each thing
+that needs to be configurable
+
+312
+00:16:26,352 --> 00:16:28,154
+from SwiftUI.
+
+313
+00:16:28,154 --> 00:16:31,057
+For the source code
+a binding is used,
+
+314
+00:16:31,057 --> 00:16:36,128
+which will read and write
+the state stored in SwiftUI.
+
+315
+00:16:36,128 --> 00:16:40,166
+The first method you need
+to implement is makeNSView.
+
+316
+00:16:40,166 --> 00:16:41,467
+Here is where you describe
+
+317
+00:16:41,467 --> 00:16:44,003
+how to create a new instance
+of the view,
+
+318
+00:16:44,003 --> 00:16:47,974
+and where you should do any
+one-time setup that's required.
+
+319
+00:16:47,974 --> 00:16:51,143
+Here, the delegate is set
+to the coordinator.
+
+320
+00:16:51,143 --> 00:16:55,248
+I'll talk about the coordinator
+more in a bit.
+
+321
+00:16:55,248 --> 00:16:58,551
+Next, implement updateNSView.
+
+322
+00:16:58,551 --> 00:17:01,220
+This will be called when
+either the sourceCode changes,
+
+323
+00:17:01,220 --> 00:17:05,091
+or when the
+SwiftUI environment changes.
+
+324
+00:17:05,091 --> 00:17:07,627
+Since the script editor
+does a bunch of work
+
+325
+00:17:07,627 --> 00:17:09,829
+when the sourceCode property
+is set,
+
+326
+00:17:09,829 --> 00:17:12,198
+we compare the value
+already in the view,
+
+327
+00:17:12,198 --> 00:17:15,034
+and only set the property
+if it changes
+
+328
+00:17:15,034 --> 00:17:17,937
+to avoid unnecessary work.
+
+329
+00:17:17,937 --> 00:17:20,907
+The context passed
+to updateNSView
+
+330
+00:17:20,907 --> 00:17:23,542
+contains
+the SwiftUI environment.
+
+331
+00:17:23,542 --> 00:17:25,745
+The isEnabled environment key
+
+332
+00:17:25,745 --> 00:17:30,016
+is passed to the isEditable
+property on the script editor,
+
+333
+00:17:30,016 --> 00:17:31,717
+so editing is disabled
+
+334
+00:17:31,717 --> 00:17:35,688
+if the rest of the
+SwiftUI view hierarchy is.
+
+335
+00:17:35,688 --> 00:17:39,191
+Whenever someone modifies
+the source code in the view,
+
+336
+00:17:39,191 --> 00:17:42,828
+the source code binding
+needs to capture the new value.
+
+337
+00:17:42,828 --> 00:17:44,931
+To do this,
+we'll build a coordinator
+
+338
+00:17:44,931 --> 00:17:49,268
+that conforms to the
+ScriptEditorViewDelegate.
+
+339
+00:17:49,268 --> 00:17:52,204
+The coordinator will store
+the representable value,
+
+340
+00:17:52,204 --> 00:17:56,242
+which contains the source code
+binding that it needs to update.
+
+341
+00:17:56,242 --> 00:17:59,178
+And in the
+sourceCodeDidChange method,
+
+342
+00:17:59,178 --> 00:18:01,514
+the binding is set
+to the new string value
+
+343
+00:18:01,514 --> 00:18:04,317
+from the view.
+
+344
+00:18:04,317 --> 00:18:07,553
+Finally, we need to tell
+the SwiftUI representable
+
+345
+00:18:07,553 --> 00:18:10,489
+how to make and update
+the coordinator.
+
+346
+00:18:10,489 --> 00:18:14,093
+First, you need to implement
+the makeCoordinator method
+
+347
+00:18:14,093 --> 00:18:17,296
+to create a new coordinator.
+
+348
+00:18:17,296 --> 00:18:21,067
+Coordinators have the same
+lifetime as the hosted view,
+
+349
+00:18:21,067 --> 00:18:23,202
+and like hosted views,
+
+350
+00:18:23,202 --> 00:18:25,304
+properties you add
+to the coordinator
+
+351
+00:18:25,304 --> 00:18:29,375
+need to remain up to date
+as the representable changes.
+
+352
+00:18:29,375 --> 00:18:31,544
+Since updateNSView is called
+
+353
+00:18:31,544 --> 00:18:34,947
+when the values stored
+in the representable change,
+
+354
+00:18:34,947 --> 00:18:40,319
+here, the representable property
+on the coordinator is updated.
+
+355
+00:18:40,319 --> 00:18:43,622
+Now that you know how to add
+AppKit into SwiftUI,
+
+356
+00:18:43,622 --> 00:18:46,726
+and also add SwiftUI
+into AppKit,
+
+357
+00:18:46,726 --> 00:18:50,396
+you should start integrating
+SwiftUI into your app.
+
+358
+00:18:50,396 --> 00:18:52,765
+A great place to start
+is in your sidebar,
+
+359
+00:18:52,765 --> 00:18:55,534
+or table
+and collection view cells.
+
+360
+00:18:55,534 --> 00:18:58,070
+Make sure your views are sizing
+themselves correctly
+
+361
+00:18:58,070 --> 00:19:01,507
+and handling common commands
+and focus.
+
+362
+00:19:01,507 --> 00:19:02,508
+Thanks for your time,
+
+363
+00:19:02,508 --> 00:19:05,044
+and I can't wait
+to see what you build
+
+364
+00:19:05,044 --> 00:19:08,981
+♪
+

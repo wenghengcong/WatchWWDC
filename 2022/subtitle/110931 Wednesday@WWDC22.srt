@@ -1,0 +1,135 @@
+1
+00:00:00,000 --> 00:00:03,570
+♪ Bass-heavy electronic music ♪
+
+2
+00:00:03,570 --> 00:00:05,205
+Now that I have
+your attention,
+
+3
+00:00:05,205 --> 00:00:07,341
+here's your day three
+status report.
+
+4
+00:00:07,341 --> 00:00:09,643
+♪
+
+5
+00:00:09,643 --> 00:00:11,311
+We started our training
+with Lynn
+
+6
+00:00:11,311 --> 00:00:14,314
+exploring new ways
+to design shortcuts for apps.
+
+7
+00:00:14,314 --> 00:00:15,816
+- You're well on your way
+to an amazing
+
+8
+00:00:15,816 --> 00:00:17,050
+App Shortcuts experience.
+
+9
+00:00:17,050 --> 00:00:19,887
+- Then we discovered how
+to make desktop-class iPad apps
+
+10
+00:00:19,887 --> 00:00:20,888
+with Mohammed.
+
+11
+00:00:20,888 --> 00:00:22,923
+- This allows apps
+to express the layout
+
+12
+00:00:22,923 --> 00:00:24,925
+that's most appropriate
+to their content,
+
+13
+00:00:24,925 --> 00:00:26,727
+while bringing
+more functionality
+
+14
+00:00:26,727 --> 00:00:27,995
+to the forefront of the UI.
+
+15
+00:00:27,995 --> 00:00:29,596
+- Then found out
+how to take advantage
+
+16
+00:00:29,596 --> 00:00:32,099
+of the latest iOS
+camera capture features.
+
+17
+00:00:32,099 --> 00:00:33,867
+- This app has one more trick
+up its sleeve.
+
+18
+00:00:33,867 --> 00:00:35,669
+I can tap around
+and point a spotlight
+
+19
+00:00:35,669 --> 00:00:36,904
+at different objects
+in the scene.
+
+20
+00:00:36,904 --> 00:00:38,772
+- We also showed off
+powerful tools
+
+21
+00:00:38,772 --> 00:00:42,442
+to create cool new layouts
+and views for apps with SwiftUI.
+
+22
+00:00:42,442 --> 00:00:44,845
+- SwiftUI provides
+a rich set of building blocks
+
+23
+00:00:44,845 --> 00:00:47,414
+that you use to compose
+your app's interface.
+
+24
+00:00:47,414 --> 00:00:50,350
+- Tomorrow's reports
+look something like this.
+
+25
+00:00:50,350 --> 00:01:10,938
+♪
+
+26
+00:01:10,938 --> 00:01:12,072
+- Go get 'em, tiger.
+
+27
+00:01:12,072 --> 00:01:13,674
+- That's all for now.
+
+28
+00:01:13,674 --> 00:01:15,976
+Await further instructions.
+
+29
+00:01:15,976 --> 00:01:20,981
+♪
+

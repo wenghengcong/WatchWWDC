@@ -1,0 +1,942 @@
+1
+00:00:00,133 --> 00:00:03,136
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,136 --> 00:00:09,643
+♪
+
+3
+00:00:09,643 --> 00:00:12,880
+Hey, my name is Daniel, and I'm
+on the Security Engineering
+
+4
+00:00:12,880 --> 00:00:14,314
+and Architecture team.
+
+5
+00:00:14,314 --> 00:00:18,218
+I'm going to give you
+an update on Endpoint Security.
+
+6
+00:00:18,218 --> 00:00:20,621
+Endpoint Security
+is an API that we provide,
+
+7
+00:00:20,621 --> 00:00:23,490
+so you can build
+security products for the Mac.
+
+8
+00:00:23,490 --> 00:00:26,593
+It is a C API, providing a rich
+security event stream
+
+9
+00:00:26,593 --> 00:00:28,295
+to third-party anti-virus,
+
+10
+00:00:28,295 --> 00:00:30,163
+Endpoint Detection
+and Response,
+
+11
+00:00:30,163 --> 00:00:33,100
+and data-leakage
+prevention solutions.
+
+12
+00:00:33,100 --> 00:00:36,136
+We first introduced Endpoint
+Security in macOS Catalina
+
+13
+00:00:36,136 --> 00:00:39,640
+as a replacement for
+the deprecated KAuth KPI,
+
+14
+00:00:39,640 --> 00:00:41,975
+the unsupported MAC
+Kernel Framework,
+
+15
+00:00:41,975 --> 00:00:45,412
+and the also deprecated
+OpenBSM audit trail.
+
+16
+00:00:45,412 --> 00:00:47,514
+By making this functionality
+available
+
+17
+00:00:47,514 --> 00:00:49,950
+in the Endpoint Security API,
+we removed the need
+
+18
+00:00:49,950 --> 00:00:53,120
+for you to have to develop
+kernel extensions.
+
+19
+00:00:53,120 --> 00:00:54,922
+The introduction
+of Endpoint Security
+
+20
+00:00:54,922 --> 00:00:56,723
+has been
+a resounding success.
+
+21
+00:00:56,723 --> 00:00:59,192
+We are thrilled with
+the positive feedback we receive
+
+22
+00:00:59,192 --> 00:01:02,562
+and with the security products
+that it is enabling.
+
+23
+00:01:02,562 --> 00:01:04,698
+For an introduction
+to Endpoint Security,
+
+24
+00:01:04,698 --> 00:01:07,901
+refer to
+the WWDC 2020 session
+
+25
+00:01:07,901 --> 00:01:10,103
+"Build an
+Endpoint Security app."
+
+26
+00:01:10,103 --> 00:01:11,305
+In this session,
+
+27
+00:01:11,305 --> 00:01:14,641
+we'll be covering new events
+added in macOS Ventura,
+
+28
+00:01:14,641 --> 00:01:17,144
+improvements
+to muting functionality,
+
+29
+00:01:17,144 --> 00:01:20,948
+as well as a new utility
+called eslogger.
+
+30
+00:01:20,948 --> 00:01:23,784
+Let's start with the new events.
+
+31
+00:01:23,784 --> 00:01:25,385
+As of macOS Monterey,
+
+32
+00:01:25,385 --> 00:01:28,989
+Endpoint Security supports
+over a hundred event types.
+
+33
+00:01:28,989 --> 00:01:31,992
+Up until now, these events
+focused on critical events
+
+34
+00:01:31,992 --> 00:01:35,228
+that happen within the kernel,
+such as forking a process
+
+35
+00:01:35,228 --> 00:01:36,964
+or opening a file.
+
+36
+00:01:36,964 --> 00:01:39,733
+In macOS Ventura,
+we're expanding the set
+
+37
+00:01:39,733 --> 00:01:42,469
+of observable events to include
+security-relevant events
+
+38
+00:01:42,469 --> 00:01:44,504
+happening in user space.
+
+39
+00:01:44,504 --> 00:01:48,208
+Specifically, we are adding
+visibility into authentication,
+
+40
+00:01:48,208 --> 00:01:52,846
+login and logout,
+and Gatekeeper's XProtect.
+
+41
+00:01:52,846 --> 00:01:55,782
+The new authentication event
+covers the situation
+
+42
+00:01:55,782 --> 00:01:59,252
+where a user authenticates
+to the operating system.
+
+43
+00:01:59,252 --> 00:02:02,189
+This includes logging
+into local user accounts,
+
+44
+00:02:02,189 --> 00:02:04,791
+but also authenticating
+in other places,
+
+45
+00:02:04,791 --> 00:02:08,662
+such as to authorize an
+operation as an administrator.
+
+46
+00:02:08,662 --> 00:02:11,164
+These events are typically
+used by security products
+
+47
+00:02:11,164 --> 00:02:14,701
+that wish to observe
+suspicious access patterns.
+
+48
+00:02:14,701 --> 00:02:18,972
+Previously, if you wished to
+observe authentication events,
+
+49
+00:02:18,972 --> 00:02:22,476
+you still had to rely on the
+deprecated OpenBSM audit trail
+
+50
+00:02:22,476 --> 00:02:26,079
+to do so; this will now
+no longer be necessary.
+
+51
+00:02:26,079 --> 00:02:28,482
+And compared
+to their audit counterparts,
+
+52
+00:02:28,482 --> 00:02:31,184
+these new events are
+much richer in information,
+
+53
+00:02:31,184 --> 00:02:35,255
+and also provide visibility into
+Auto Unlock using Apple Watch,
+
+54
+00:02:35,255 --> 00:02:38,825
+which wasn't available in audit.
+
+55
+00:02:38,825 --> 00:02:43,663
+In a similar vein, we're adding
+visibility into user sessions.
+
+56
+00:02:43,663 --> 00:02:46,633
+Login events cover situations
+where someone or something
+
+57
+00:02:46,633 --> 00:02:49,936
+logs on to the system,
+either locally at the console
+
+58
+00:02:49,936 --> 00:02:52,472
+or remotely over one
+of the supported methods
+
+59
+00:02:52,472 --> 00:02:54,808
+of remote access.
+
+60
+00:02:54,808 --> 00:02:57,611
+These events go substantially
+beyond what was available
+
+61
+00:02:57,611 --> 00:03:00,013
+with the OpenBSM audit trail.
+
+62
+00:03:00,013 --> 00:03:02,783
+They allow you to gain
+more comprehensive visibility
+
+63
+00:03:02,783 --> 00:03:04,684
+into access to systems,
+
+64
+00:03:04,684 --> 00:03:09,089
+including lateral movement
+across enterprise fleets.
+
+65
+00:03:09,089 --> 00:03:11,992
+Part of Gatekeeper's mission
+is to detect and block
+
+66
+00:03:11,992 --> 00:03:14,127
+known malicious software.
+
+67
+00:03:14,127 --> 00:03:16,029
+Starting with macOS Ventura,
+
+68
+00:03:16,029 --> 00:03:18,265
+Endpoint Security
+will provide visibility
+
+69
+00:03:18,265 --> 00:03:20,934
+into both the detection
+of malicious software
+
+70
+00:03:20,934 --> 00:03:25,439
+and into actions taken to stop
+and remove malicious software.
+
+71
+00:03:25,439 --> 00:03:29,176
+This information was previously
+unavailable in a structured way.
+
+72
+00:03:29,176 --> 00:03:33,780
+It is now available through
+the Endpoint Security API.
+
+73
+00:03:33,780 --> 00:03:35,816
+We expect that
+with these additions,
+
+74
+00:03:35,816 --> 00:03:38,018
+most Endpoint Security clients
+no longer need
+
+75
+00:03:38,018 --> 00:03:42,656
+to rely onto the deprecated
+OpenBSM audit trail at all.
+
+76
+00:03:42,656 --> 00:03:45,926
+The audit trail has been
+deprecated since macOS Big Sur
+
+77
+00:03:45,926 --> 00:03:49,563
+and will be removed
+in a future version of macOS.
+
+78
+00:03:49,563 --> 00:03:52,032
+Let's move on to muting.
+
+79
+00:03:52,032 --> 00:03:55,402
+Since macOS Catalina, we have
+supported muting processes
+
+80
+00:03:55,402 --> 00:03:59,072
+by audit token
+or executable image path.
+
+81
+00:03:59,072 --> 00:04:01,408
+Muting is an important tool
+we give you
+
+82
+00:04:01,408 --> 00:04:05,078
+to prevent deadlocks, hangs,
+and watchdog timeouts,
+
+83
+00:04:05,078 --> 00:04:07,948
+and to manage the performance
+impact of your solutions
+
+84
+00:04:07,948 --> 00:04:10,383
+based on Endpoint Security.
+
+85
+00:04:10,383 --> 00:04:13,653
+In macOS Monterey last year,
+we started to address
+
+86
+00:04:13,653 --> 00:04:16,289
+frequent causes
+of system instability
+
+87
+00:04:16,289 --> 00:04:17,858
+by muting some event types
+
+88
+00:04:17,858 --> 00:04:21,294
+for a small set
+of executables by default.
+
+89
+00:04:21,294 --> 00:04:24,131
+You are free to unmute those,
+but we do recommend
+
+90
+00:04:24,131 --> 00:04:28,001
+you keep them muted in the
+interest of system stability.
+
+91
+00:04:28,001 --> 00:04:31,605
+In macOS Ventura, we are
+taking muting one step further
+
+92
+00:04:31,605 --> 00:04:35,175
+by introducing muting
+based on target path.
+
+93
+00:04:35,175 --> 00:04:37,110
+For many real-world use cases,
+
+94
+00:04:37,110 --> 00:04:40,614
+this allows for scalpel-like
+precision over muting.
+
+95
+00:04:40,614 --> 00:04:43,950
+You can now mute file events
+pertaining to certain paths
+
+96
+00:04:43,950 --> 00:04:46,353
+or path prefixes
+that your application
+
+97
+00:04:46,353 --> 00:04:49,656
+is not interested in receiving.
+
+98
+00:04:49,656 --> 00:04:51,758
+This shows how
+you might mute all events
+
+99
+00:04:51,758 --> 00:04:54,427
+having a target path
+under /var/log
+
+100
+00:04:54,427 --> 00:04:59,432
+when you're not interested
+in events for log files.
+
+101
+00:04:59,432 --> 00:05:01,735
+The second example shows
+how you might use
+
+102
+00:05:01,735 --> 00:05:05,205
+es_mute_path_events
+to mute only write events
+
+103
+00:05:05,205 --> 00:05:09,309
+to a single file,
+such as /dev/null.
+
+104
+00:05:09,309 --> 00:05:12,179
+And what's more, we're even
+introducing the possibility
+
+105
+00:05:12,179 --> 00:05:14,347
+to invert muting logic.
+
+106
+00:05:14,347 --> 00:05:17,751
+Instead of suppressing events
+based on specified process,
+
+107
+00:05:17,751 --> 00:05:21,188
+executable path, or target path,
+we now allow you to invert
+
+108
+00:05:21,188 --> 00:05:24,157
+any of these
+three types of muting.
+
+109
+00:05:24,157 --> 00:05:28,295
+Effectively, you can now select
+processes, executable paths,
+
+110
+00:05:28,295 --> 00:05:30,730
+or target paths
+you are interested in
+
+111
+00:05:30,730 --> 00:05:32,499
+to only receive events
+that match --
+
+112
+00:05:32,499 --> 00:05:35,769
+instead of don't match --
+anything you've muted.
+
+113
+00:05:35,769 --> 00:05:39,439
+For example, this now allows you
+to select file events
+
+114
+00:05:39,439 --> 00:05:42,909
+only for certain
+persistence locations.
+
+115
+00:05:42,909 --> 00:05:45,312
+Here's how you would use
+es_invert_muting
+
+116
+00:05:45,312 --> 00:05:48,615
+to invert muting
+for target paths.
+
+117
+00:05:48,615 --> 00:05:52,385
+You would then proceed to remove
+previously existing target paths
+
+118
+00:05:52,385 --> 00:05:55,488
+from the mute set,
+and then select only events
+
+119
+00:05:55,488 --> 00:05:58,858
+with the target-path prefix
+that you are interested in.
+
+120
+00:05:58,858 --> 00:06:02,562
+We expect this to allow for much
+improved muting strategies,
+
+121
+00:06:02,562 --> 00:06:04,364
+and ultimately,
+to make it easier
+
+122
+00:06:04,364 --> 00:06:06,266
+to provide a great
+user experience
+
+123
+00:06:06,266 --> 00:06:09,436
+with products
+based on Endpoint Security.
+
+124
+00:06:09,436 --> 00:06:12,973
+And finally,
+we're introducing eslogger.
+
+125
+00:06:12,973 --> 00:06:15,875
+We have had many requests
+for a capability
+
+126
+00:06:15,875 --> 00:06:17,877
+to provide
+Endpoint Security events
+
+127
+00:06:17,877 --> 00:06:20,680
+without the need
+to write a native client.
+
+128
+00:06:20,680 --> 00:06:24,017
+Starting in macOS Ventura,
+you will be able to harness
+
+129
+00:06:24,017 --> 00:06:27,587
+the power of Endpoint Security
+via a command-line utility
+
+130
+00:06:27,587 --> 00:06:31,625
+that brings deep introspection
+into the OS.
+
+131
+00:06:31,625 --> 00:06:34,527
+eslogger taps into the
+Endpoint Security event stream
+
+132
+00:06:34,527 --> 00:06:37,931
+for specific events and emits
+JSON-formatted event data
+
+133
+00:06:37,931 --> 00:06:42,469
+to standard output or
+to the unified logging system.
+
+134
+00:06:42,469 --> 00:06:45,071
+Data is structured just
+like the C representation
+
+135
+00:06:45,071 --> 00:06:47,474
+native clients use.
+
+136
+00:06:47,474 --> 00:06:50,043
+eslogger supports all
+80 NOTIFY events
+
+137
+00:06:50,043 --> 00:06:54,114
+that Endpoint Security
+supports in macOS Ventura.
+
+138
+00:06:54,114 --> 00:06:57,450
+We hope eslogger will be useful
+not only for engineers
+
+139
+00:06:57,450 --> 00:06:59,686
+working on
+Endpoint Security clients,
+
+140
+00:06:59,686 --> 00:07:03,590
+but also for security analysts
+and other security practitioners
+
+141
+00:07:03,590 --> 00:07:06,493
+who need visibility into
+security-relevant events
+
+142
+00:07:06,493 --> 00:07:08,161
+on macOS.
+
+143
+00:07:09,929 --> 00:07:13,266
+eslogger ships with the OS
+and is already entitled
+
+144
+00:07:13,266 --> 00:07:15,368
+for Endpoint Security.
+
+145
+00:07:15,368 --> 00:07:17,771
+Like all Endpoint Security
+clients,
+
+146
+00:07:17,771 --> 00:07:19,906
+eslogger must be run
+as superuser
+
+147
+00:07:19,906 --> 00:07:22,008
+and requires the user
+to have authorized
+
+148
+00:07:22,008 --> 00:07:25,378
+the responsible process
+for Full Disk Access,
+
+149
+00:07:25,378 --> 00:07:29,582
+such as Terminal.app or SSH.
+
+150
+00:07:29,582 --> 00:07:33,586
+eslogger is not intended
+to be used by applications.
+
+151
+00:07:33,586 --> 00:07:37,157
+Its output is subject to change
+in software updates.
+
+152
+00:07:37,157 --> 00:07:39,092
+It is neither meant
+to provide the same
+
+153
+00:07:39,092 --> 00:07:42,295
+performance characteristics,
+nor the same feature set,
+
+154
+00:07:42,295 --> 00:07:46,766
+as natively interfacing with
+the Endpoint Security API does.
+
+155
+00:07:46,766 --> 00:07:51,171
+Applications will continue
+to interface natively.
+
+156
+00:07:51,171 --> 00:07:53,540
+With that out of the way,
+let's use eslogger
+
+157
+00:07:53,540 --> 00:07:56,943
+to explore some
+of the new events.
+
+158
+00:07:56,943 --> 00:07:59,713
+I'm going to use eslogger
+to log the start
+
+159
+00:07:59,713 --> 00:08:02,549
+and end of an SSH session
+by subscribing
+
+160
+00:08:02,549 --> 00:08:05,719
+to the openssh_login
+and _logout events
+
+161
+00:08:05,719 --> 00:08:07,854
+and redirecting output
+to a file.
+
+162
+00:08:10,857 --> 00:08:13,293
+Now in this other tab,
+I'm using SSH
+
+163
+00:08:13,293 --> 00:08:16,363
+to locally log in
+and log out again.
+
+164
+00:08:18,164 --> 00:08:20,734
+[KEYSTROKES]
+
+165
+00:08:21,701 --> 00:08:25,372
+Back in the first tab,
+I'm interrupting eslogger.
+
+166
+00:08:28,808 --> 00:08:31,411
+Let's have a look at the
+Endpoint Security event data
+
+167
+00:08:31,411 --> 00:08:34,247
+in its raw JSON form.
+
+168
+00:08:34,247 --> 00:08:37,450
+[KEYSTROKES]
+
+169
+00:08:37,450 --> 00:08:40,253
+It's very likely that you will
+have your own favorite way
+
+170
+00:08:40,253 --> 00:08:42,155
+to work with JSON data.
+
+171
+00:08:42,155 --> 00:08:46,226
+Here, I will use jq
+to examine the events further.
+
+172
+00:08:46,226 --> 00:08:49,295
+[KEYSTROKES]
+
+173
+00:08:50,830 --> 00:08:52,799
+This is a lot of information.
+
+174
+00:08:52,799 --> 00:08:55,668
+I'll just drill down
+to some interesting fields.
+
+175
+00:08:55,668 --> 00:08:57,804
+Like all Endpoint Security
+events,
+
+176
+00:08:57,804 --> 00:09:01,007
+we have information on
+the process that emitted them.
+
+177
+00:09:01,007 --> 00:09:08,681
+[KEYSTROKES]
+
+178
+00:09:11,050 --> 00:09:15,021
+We can see that both events
+were emitted by the SSH daemon.
+
+179
+00:09:15,021 --> 00:09:16,990
+We can also inspect,
+for instance,
+
+180
+00:09:16,990 --> 00:09:19,626
+its audit token to glean
+the PID of the process
+
+181
+00:09:19,626 --> 00:09:22,462
+that emitted the events.
+
+182
+00:09:22,462 --> 00:09:27,333
+[KEYSTROKES]
+
+183
+00:09:28,902 --> 00:09:31,538
+And finally, let's have a look
+at the event-specific fields
+
+184
+00:09:31,538 --> 00:09:34,007
+of these events.
+
+185
+00:09:34,007 --> 00:09:38,077
+[KEYSTROKES]
+
+186
+00:09:38,077 --> 00:09:40,847
+We can see that this was
+a successful SSH login
+
+187
+00:09:40,847 --> 00:09:44,584
+into my user account,
+followed by a logout.
+
+188
+00:09:44,584 --> 00:09:46,820
+I love how I can get visibility
+
+189
+00:09:46,820 --> 00:09:49,088
+into Endpoint Security
+events this way,
+
+190
+00:09:49,088 --> 00:09:52,058
+whether I want to observe
+malicious software behavior,
+
+191
+00:09:52,058 --> 00:09:55,995
+or to just quickly prototype
+a detection approach.
+
+192
+00:09:55,995 --> 00:09:58,264
+We look forward to seeing
+your security solutions
+
+193
+00:09:58,264 --> 00:09:59,933
+take advantage
+of the new events
+
+194
+00:09:59,933 --> 00:10:03,837
+as well as of the improved
+muting capabilities.
+
+195
+00:10:03,837 --> 00:10:06,773
+Thanks for joining us at WWDC.
+
+196
+00:10:06,773 --> 00:10:11,077
+♪
+

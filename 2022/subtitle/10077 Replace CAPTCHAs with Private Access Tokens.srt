@@ -1,0 +1,902 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,843 --> 00:00:12,212
+Tommy Pauly: Hi, I'm Tommy Pauly,
+
+3
+00:00:12,246 --> 00:00:16,483
+and I'm excited to share how your apps
+and websites can work together
+
+4
+00:00:16,517 --> 00:00:21,021
+with Apple and fraud prevention providers
+across the industry
+
+5
+00:00:21,054 --> 00:00:23,857
+to reduce the need for CAPTCHAs.
+
+6
+00:00:23,891 --> 00:00:27,027
+Today, I'll talk about:
+Private Access Tokens,
+
+7
+00:00:27,060 --> 00:00:31,431
+and how they can be powerful tools
+for fraud prevention;
+
+8
+00:00:31,465 --> 00:00:34,334
+how to enable support
+for Private Access Tokens
+
+9
+00:00:34,368 --> 00:00:37,171
+on the servers you operate;
+
+10
+00:00:37,204 --> 00:00:40,908
+and, how you can use these tokens
+in your apps.
+
+11
+00:00:42,276 --> 00:00:44,678
+To introduce Private Access Tokens,
+
+12
+00:00:44,711 --> 00:00:49,583
+I'll start by explaining why
+CAPTCHAs are used in the first place.
+
+13
+00:00:49,616 --> 00:00:53,954
+Chances are, if you've signed up
+for a new account on a website,
+
+14
+00:00:53,987 --> 00:00:56,857
+or tried to sign in
+with an existing account,
+
+15
+00:00:56,890 --> 00:01:00,694
+you've encountered CAPTCHAs like these
+at some point.
+
+16
+00:01:00,727 --> 00:01:03,897
+Sometimes,
+a CAPTCHA is just a button to press,
+
+17
+00:01:03,931 --> 00:01:06,466
+but others can be a challenge to fill out.
+
+18
+00:01:07,768 --> 00:01:11,004
+You likely don't enjoy being
+interrupted by these.
+
+19
+00:01:11,038 --> 00:01:13,473
+I certainly don't.
+
+20
+00:01:13,507 --> 00:01:16,276
+The reason these experiences exist
+
+21
+00:01:16,310 --> 00:01:19,179
+is to prevent fraudulent activity.
+
+22
+00:01:20,380 --> 00:01:25,185
+If you run a server, you don't want it
+to be overwhelmed by fraud.
+
+23
+00:01:25,219 --> 00:01:29,089
+Some attempts to create accounts
+or buy products
+
+24
+00:01:29,122 --> 00:01:31,592
+come from legitimate users.
+
+25
+00:01:31,625 --> 00:01:36,096
+But other attempts
+may be from attackers or bots.
+
+26
+00:01:36,129 --> 00:01:39,733
+Unfortunately,
+the common tools to prevent fraud,
+
+27
+00:01:39,766 --> 00:01:41,468
+like CAPTCHAs,
+
+28
+00:01:41,502 --> 00:01:45,405
+often make it harder
+for people to use your app or website.
+
+29
+00:01:45,973 --> 00:01:49,009
+Finding the right balance
+between a good experience
+
+30
+00:01:49,042 --> 00:01:52,379
+and preventing fraud is a challenge.
+
+31
+00:01:53,881 --> 00:01:58,886
+CAPTCHAs often lead to a slower
+and more complex user experience.
+
+32
+00:01:58,919 --> 00:02:00,954
+By trying to prevent attacks,
+
+33
+00:02:00,988 --> 00:02:03,624
+you may also lose valuable customers.
+
+34
+00:02:04,992 --> 00:02:08,595
+CAPTCHAs can also pose a privacy risk.
+
+35
+00:02:08,629 --> 00:02:11,465
+In order to determine
+if a client is trusted
+
+36
+00:02:11,498 --> 00:02:13,734
+and can get an easier CAPTCHA,
+
+37
+00:02:13,767 --> 00:02:17,738
+servers often rely on tracking
+or fingerprinting clients
+
+38
+00:02:17,771 --> 00:02:20,941
+by using their IP address.
+
+39
+00:02:20,974 --> 00:02:25,279
+This kind of tracking is at odds
+with the direction of internet privacy
+
+40
+00:02:25,312 --> 00:02:29,316
+being taken by Safari,
+Mail Privacy Protection,
+
+41
+00:02:29,349 --> 00:02:31,418
+and iCloud Private Relay.
+
+42
+00:02:32,886 --> 00:02:37,024
+And CAPTCHAs can pose a serious problem
+for accessibility.
+
+43
+00:02:37,057 --> 00:02:39,927
+By trying to prevent access from bots,
+
+44
+00:02:39,960 --> 00:02:43,864
+they also block out real humans
+who have disabilities
+
+45
+00:02:43,897 --> 00:02:46,133
+or language barriers.
+
+46
+00:02:46,166 --> 00:02:48,635
+There is a better way.
+
+47
+00:02:48,669 --> 00:02:52,840
+Even if someone is interacting
+with your website for the first time,
+
+48
+00:02:52,873 --> 00:02:56,710
+if they are loading it through an app
+or browser like Safari,
+
+49
+00:02:56,743 --> 00:03:02,482
+they've already performed many actions
+that are hard for a bot to imitate.
+
+50
+00:03:02,516 --> 00:03:06,286
+First, they have an iPhone, iPad, or Mac,
+
+51
+00:03:06,320 --> 00:03:09,323
+and they've unlocked the device
+with their password,
+
+52
+00:03:09,356 --> 00:03:12,092
+Touch ID, or Face ID.
+
+53
+00:03:12,125 --> 00:03:16,697
+They're almost always signed in
+to the device with their Apple ID.
+
+54
+00:03:16,730 --> 00:03:19,399
+And they've launched a code-signed app.
+
+55
+00:03:20,767 --> 00:03:25,239
+This information can help your servers
+trust legitimate clients
+
+56
+00:03:25,272 --> 00:03:28,976
+and prevent fraud,
+without relying on CAPTCHAs,
+
+57
+00:03:29,009 --> 00:03:34,181
+and without compromising privacy
+by tracking clients.
+
+58
+00:03:34,214 --> 00:03:37,784
+Private Access Tokens
+are what allow your servers
+
+59
+00:03:37,818 --> 00:03:40,420
+to automatically trust clients,
+
+60
+00:03:40,454 --> 00:03:44,725
+new in iOS 16 and macOS Ventura.
+
+61
+00:03:44,758 --> 00:03:47,561
+Before explaining how these tokens work,
+
+62
+00:03:47,594 --> 00:03:49,863
+I'm going to show them in action.
+
+63
+00:03:49,897 --> 00:03:52,032
+You're going to love this.
+
+64
+00:03:52,065 --> 00:03:55,602
+I want to read an article
+on the Financial Times website.
+
+65
+00:03:55,636 --> 00:03:58,639
+I'm very excited
+about these cinnamon buns.
+
+66
+00:03:58,672 --> 00:04:01,408
+And I've loaded the site
+on two different phones:
+
+67
+00:04:01,441 --> 00:04:06,280
+one running iOS 15
+and one running iOS 16,
+
+68
+00:04:06,313 --> 00:04:09,683
+which supports Private Access Tokens.
+
+69
+00:04:09,716 --> 00:04:12,119
+Starting with the iOS 15 phone,
+
+70
+00:04:12,152 --> 00:04:14,221
+I click Sign In,
+
+71
+00:04:14,254 --> 00:04:17,558
+and fill out my account and password.
+
+72
+00:04:17,591 --> 00:04:20,494
+But then, I get hit with a CAPTCHA.
+
+73
+00:04:20,527 --> 00:04:25,265
+I need to type in the letters
+before being able to read that article.
+
+74
+00:04:26,800 --> 00:04:30,470
+When I do the exact same thing
+on the iOS 16 phone
+
+75
+00:04:30,504 --> 00:04:33,740
+that supports Private Access Tokens,
+
+76
+00:04:33,774 --> 00:04:36,610
+I get right through.
+
+77
+00:04:36,643 --> 00:04:40,781
+This is going to save a lot of people,
+a lot of time,
+
+78
+00:04:40,814 --> 00:04:44,685
+and your customers
+will appreciate being trusted.
+
+79
+00:04:44,718 --> 00:04:50,224
+Private Access Tokens let servers
+avoid CAPTCHAs, like you just saw,
+
+80
+00:04:50,257 --> 00:04:56,663
+by using technology being standardized
+in the IETF Privacy Pass working group.
+
+81
+00:04:56,697 --> 00:05:00,801
+Apple is working with companies
+across the industry to make this possible.
+
+82
+00:05:02,302 --> 00:05:06,139
+Using this protocol,
+servers can request tokens
+
+83
+00:05:06,173 --> 00:05:09,443
+using a new HTTP authentication method,
+
+84
+00:05:09,476 --> 00:05:11,612
+PrivateToken.
+
+85
+00:05:11,645 --> 00:05:14,982
+These tokens use RSA Blind Signatures
+
+86
+00:05:15,015 --> 00:05:17,284
+to cryptographically sign the fact
+
+87
+00:05:17,317 --> 00:05:21,488
+that a client was able to pass
+an attestation check.
+
+88
+00:05:21,522 --> 00:05:23,991
+These signatures are "unlinkable",
+
+89
+00:05:24,024 --> 00:05:27,027
+which means that servers
+that receive tokens
+
+90
+00:05:27,060 --> 00:05:29,296
+can only check that they are valid,
+
+91
+00:05:29,329 --> 00:05:35,469
+but they cannot discover client identities
+or recognize clients over time.
+
+92
+00:05:35,502 --> 00:05:37,504
+Here's how the protocol works.
+
+93
+00:05:39,206 --> 00:05:45,712
+First, when the iOS or macOS client
+accesses a server over HTTP,
+
+94
+00:05:45,746 --> 00:05:48,348
+the server sends back a challenge using
+
+95
+00:05:48,382 --> 00:05:51,785
+the PrivateToken authentication scheme.
+
+96
+00:05:51,818 --> 00:05:56,089
+This specifies a token issuer
+that is trusted by the server.
+
+97
+00:05:58,292 --> 00:06:00,627
+When the client needs to fetch a token,
+
+98
+00:06:00,661 --> 00:06:03,063
+it contacts an iCloud attester
+
+99
+00:06:03,096 --> 00:06:05,566
+and sends a token request.
+
+100
+00:06:05,599 --> 00:06:07,734
+This token request is "blinded"
+
+101
+00:06:07,768 --> 00:06:11,805
+so it can't be linked
+to the server challenge.
+
+102
+00:06:11,839 --> 00:06:14,608
+The attester performs device attestation,
+
+103
+00:06:14,641 --> 00:06:18,879
+using certificates stored
+in the device's Secure Enclave,
+
+104
+00:06:18,912 --> 00:06:21,982
+and verifies
+that the account is in good standing.
+
+105
+00:06:23,116 --> 00:06:25,819
+This attester
+can also perform rate-limiting,
+
+106
+00:06:25,853 --> 00:06:30,190
+to recognize if the client device
+is following normal patterns,
+
+107
+00:06:30,224 --> 00:06:34,962
+or may have been compromised
+or used as part of a farm of devices.
+
+108
+00:06:36,129 --> 00:06:38,098
+If the client can be validated,
+
+109
+00:06:38,131 --> 00:06:42,436
+the attester sends the request
+for a new token to the issuer.
+
+110
+00:06:44,204 --> 00:06:46,507
+When the token issuer gets the request,
+
+111
+00:06:46,540 --> 00:06:49,309
+it doesn't know anything about the client.
+
+112
+00:06:49,343 --> 00:06:52,012
+But since it trusts the iCloud attester,
+
+113
+00:06:52,045 --> 00:06:53,747
+it signs the token.
+
+114
+00:06:56,216 --> 00:07:00,020
+The client then receives the signed token,
+and transforms it
+
+115
+00:07:00,053 --> 00:07:02,389
+in a process called "unblinding"
+
+116
+00:07:02,422 --> 00:07:05,158
+so the original server can verify it.
+
+117
+00:07:06,393 --> 00:07:11,365
+And finally, the client presents
+the signed token to the server.
+
+118
+00:07:11,398 --> 00:07:15,035
+The server can check
+that this token is signed by the Issuer,
+
+119
+00:07:15,068 --> 00:07:19,940
+but it cannot use the token
+to identify or recognize the client.
+
+120
+00:07:19,973 --> 00:07:26,146
+So how can you take advantage
+of this technology on your servers?
+
+121
+00:07:26,180 --> 00:07:31,351
+There are three steps to adopting
+Private Access Tokens on your server.
+
+122
+00:07:31,385 --> 00:07:34,588
+First, you'll need to select
+a token issuer.
+
+123
+00:07:34,621 --> 00:07:39,993
+Second, your server will need to send out
+HTTP authentication challenges
+
+124
+00:07:40,027 --> 00:07:42,629
+when you want to validate clients.
+
+125
+00:07:42,663 --> 00:07:47,935
+And third, your server will need
+to validate the tokens sent by clients.
+
+126
+00:07:48,836 --> 00:07:52,406
+The token issuer you select
+is a trusted provider
+
+127
+00:07:52,439 --> 00:07:55,943
+that can sign tokens
+that your server validates.
+
+128
+00:07:55,976 --> 00:07:58,745
+This may be your existing
+CAPTCHA provider,
+
+129
+00:07:58,779 --> 00:08:00,747
+your web hosting service,
+
+130
+00:08:00,781 --> 00:08:03,350
+or your content delivery network,
+
+131
+00:08:03,383 --> 00:08:06,453
+also called a CDN.
+
+132
+00:08:06,486 --> 00:08:10,490
+In the iOS 16 and macOS Ventura betas,
+
+133
+00:08:10,524 --> 00:08:15,262
+there are two token issuers
+that you can already start testing with.
+
+134
+00:08:15,295 --> 00:08:18,899
+Fastly and Cloudflare are two CDNs
+
+135
+00:08:18,932 --> 00:08:22,336
+that have been developing
+the Privacy Pass standards,
+
+136
+00:08:22,369 --> 00:08:27,274
+and have already made
+their issuer services available.
+
+137
+00:08:27,307 --> 00:08:32,079
+Other CAPTCHA providers,
+web hosting services, and CDNs
+
+138
+00:08:32,112 --> 00:08:37,751
+will also be able to run token issuers
+that will work with Apple devices.
+
+139
+00:08:37,784 --> 00:08:43,457
+Issuers will be able to sign up
+later this year at register.apple.com.
+
+140
+00:08:44,992 --> 00:08:48,395
+It's important that the use
+of a specific token issuer
+
+141
+00:08:48,428 --> 00:08:53,267
+doesn't become a way to identify
+what websites a client is accessing–
+
+142
+00:08:53,300 --> 00:08:56,069
+that would be a problem for privacy.
+
+143
+00:08:56,103 --> 00:09:00,407
+So each token issuer needs to be
+a large service
+
+144
+00:09:00,440 --> 00:09:03,410
+that work with
+at least hundreds of servers.
+
+145
+00:09:06,446 --> 00:09:08,849
+When a client accesses your server,
+
+146
+00:09:08,882 --> 00:09:13,487
+you can request tokens by sending
+an HTTP authentication challenge
+
+147
+00:09:13,520 --> 00:09:16,290
+with the PrivateToken scheme.
+
+148
+00:09:16,323 --> 00:09:19,126
+To do this, you have two options:
+
+149
+00:09:19,159 --> 00:09:23,664
+Either you can work with your existing
+CAPTCHA or fraud prevention provider
+
+150
+00:09:23,697 --> 00:09:26,400
+to build the challenge into their scripts,
+
+151
+00:09:26,433 --> 00:09:29,503
+so it is handled automatically for you,
+
+152
+00:09:29,536 --> 00:09:34,041
+or you can choose to send these challenges
+directly from your server.
+
+153
+00:09:35,342 --> 00:09:37,845
+If you're doing this
+as part of your website,
+
+154
+00:09:37,878 --> 00:09:41,114
+the challenge must come from
+a first-party domain–
+
+155
+00:09:41,148 --> 00:09:43,817
+a subdomain of your main URL
+
+156
+00:09:43,851 --> 00:09:48,121
+and not a separate third-party domain
+embedded on your site.
+
+157
+00:09:50,023 --> 00:09:52,326
+When clients return tokens to you,
+
+158
+00:09:52,359 --> 00:09:57,264
+you'll need to check their validity
+using your issuer's public key.
+
+159
+00:09:57,297 --> 00:10:01,001
+You may also want to enforce checks
+to prevent replay attacks,
+
+160
+00:10:01,034 --> 00:10:05,138
+where a client could try to present
+a token multiple times.
+
+161
+00:10:05,172 --> 00:10:09,042
+Tokens are meant to be one-time use only.
+
+162
+00:10:09,076 --> 00:10:12,479
+You can prevent replay attacks
+either by remembering
+
+163
+00:10:12,513 --> 00:10:15,249
+what tokens were sent previously,
+
+164
+00:10:15,282 --> 00:10:21,121
+or requiring that tokens sign
+a unique value sent in your challenge.
+
+165
+00:10:23,323 --> 00:10:25,993
+Your site still needs to work
+with legacy clients
+
+166
+00:10:26,026 --> 00:10:29,563
+that won't respond
+to this authentication challenge.
+
+167
+00:10:29,596 --> 00:10:34,434
+So it's important that the authentication
+should not block your main page load,
+
+168
+00:10:34,468 --> 00:10:38,972
+but instead be treated
+as an optional way to trust a client.
+
+169
+00:10:39,006 --> 00:10:44,578
+Web servers that are accessed through
+Safari and WebKit will work automatically,
+
+170
+00:10:44,611 --> 00:10:49,116
+but you can also use Private Access Tokens
+within your app directly.
+
+171
+00:10:49,149 --> 00:10:54,488
+Private Access Tokens require iOS 16
+or macOS Ventura
+
+172
+00:10:54,521 --> 00:10:58,258
+on a device that has
+an Apple ID signed in.
+
+173
+00:10:58,292 --> 00:11:01,461
+This Apple ID is only used
+for attestation,
+
+174
+00:11:01,495 --> 00:11:05,999
+and is not shared with the servers
+that receive tokens.
+
+175
+00:11:06,033 --> 00:11:11,738
+Within your app, tokens are available
+if you use WebKit or URLSession
+
+176
+00:11:11,772 --> 00:11:15,275
+to contact your servers using HTTP.
+
+177
+00:11:15,309 --> 00:11:19,680
+Then anytime your app receives
+a challenge while it's in the foreground,
+
+178
+00:11:19,713 --> 00:11:23,617
+the system will automatically send a token
+as authentication.
+
+179
+00:11:25,118 --> 00:11:27,187
+If you're using URLSession,
+
+180
+00:11:27,221 --> 00:11:29,389
+you don't need to do anything explicitly
+
+181
+00:11:29,423 --> 00:11:32,392
+to make Private Access Tokens work.
+
+182
+00:11:32,426 --> 00:11:35,996
+URLSession will automatically respond
+to challenges
+
+183
+00:11:36,029 --> 00:11:41,034
+using the PrivateToken HTTP
+authentication scheme.
+
+184
+00:11:41,068 --> 00:11:44,171
+However, if there's an error
+in fetching a token,
+
+185
+00:11:44,204 --> 00:11:46,773
+such as if your app
+isn't in the foreground
+
+186
+00:11:46,807 --> 00:11:50,043
+or the device doesn't have
+an Apple ID signed in,
+
+187
+00:11:50,077 --> 00:11:53,847
+your app will receive
+the 401 HTTP response
+
+188
+00:11:53,881 --> 00:11:56,316
+that included the token challenge.
+
+189
+00:11:56,350 --> 00:12:00,454
+This allows your app to know
+that the token challenge was received,
+
+190
+00:12:00,487 --> 00:12:05,425
+and provides a chance to handle the error
+correctly for your use case.
+
+191
+00:12:05,459 --> 00:12:08,996
+Make apps and websites better
+experiences for everyone
+
+192
+00:12:09,029 --> 00:12:13,734
+by avoiding CAPTCHAs whenever
+Private Access Tokens are available.
+
+193
+00:12:13,767 --> 00:12:19,540
+Go and enable your servers to
+send token challenges and validate tokens.
+
+194
+00:12:19,573 --> 00:12:23,377
+And, in your apps,
+use URLSession or WebKit
+
+195
+00:12:23,410 --> 00:12:27,014
+to automatically support
+Private Access Tokens.
+
+196
+00:12:27,047 --> 00:12:31,518
+I'm looking forward to the CAPTCHA-free
+experiences you will build.
+

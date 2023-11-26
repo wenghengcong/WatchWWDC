@@ -1,0 +1,1644 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,977 --> 00:00:12,846
+Zheng Naiwei:
+Hello and welcome to WWDC.
+
+3
+00:00:12,880 --> 00:00:16,750
+My name is Zheng Naiwei
+from Apple's AVFoundation Team.
+
+4
+00:00:16,783 --> 00:00:20,120
+In this session we are going to talk about
+how to improve
+
+5
+00:00:20,153 --> 00:00:25,492
+streaming delivery reliability with new
+features we added to HLS Content Steering.
+
+6
+00:00:26,660 --> 00:00:29,029
+We will cover three topics today.
+
+7
+00:00:29,062 --> 00:00:31,798
+If you haven't heard of Content Steering,
+don't worry.
+
+8
+00:00:31,832 --> 00:00:33,967
+It's a piece of HLS technology
+
+9
+00:00:34,001 --> 00:00:37,104
+that can dynamically steer
+streaming traffic,
+
+10
+00:00:37,137 --> 00:00:39,907
+to improve streaming service quality.
+
+11
+00:00:39,940 --> 00:00:42,976
+I will give you a short review
+to help you get on track.
+
+12
+00:00:44,878 --> 00:00:48,182
+Then I will present
+the new Pathway cloning feature,
+
+13
+00:00:48,215 --> 00:00:52,219
+which can bring
+dynamic steering ability beyond limits,
+
+14
+00:00:52,252 --> 00:00:55,689
+to further improve the reliability
+of your streaming service.
+
+15
+00:00:56,990 --> 00:01:04,031
+Finally, I will use concrete examples
+to guide you through how to influence
+
+16
+00:01:04,063 --> 00:01:06,533
+server-side logic for steering traffic.
+Let's wait no more and get started.
+
+17
+00:01:07,768 --> 00:01:10,571
+Back in the time we don't have
+Content Steering,
+
+18
+00:01:10,604 --> 00:01:14,074
+variant selection in case of error
+fallback wasn't standardized
+
+19
+00:01:14,107 --> 00:01:16,310
+in the HLS specification.
+
+20
+00:01:16,343 --> 00:01:19,580
+And different client implementations
+can behave differently
+
+21
+00:01:19,613 --> 00:01:22,349
+in choosing the next fallback variant.
+
+22
+00:01:22,382 --> 00:01:25,586
+But a typical way to do this
+is to follow the variant ordering
+
+23
+00:01:25,619 --> 00:01:27,354
+in the multivariant playlist.
+
+24
+00:01:28,255 --> 00:01:32,826
+If a streaming provider wants to specify
+a set of fallback CDNs,
+
+25
+00:01:32,860 --> 00:01:35,863
+they need to list every variant
+from every CDN
+
+26
+00:01:35,896 --> 00:01:38,866
+and properly order them
+in the multivariant playlist.
+
+27
+00:01:38,899 --> 00:01:42,302
+This way, in case the client player
+encountered a failure
+
+28
+00:01:42,336 --> 00:01:46,106
+in the first variant,
+it can move on to the next variant
+
+29
+00:01:46,139 --> 00:01:50,511
+in the playlist with the failed variant
+penalized from selection.
+
+30
+00:01:50,544 --> 00:01:55,249
+In this case, we see that the client
+player had trouble with the 6 Mbps variant
+
+31
+00:01:55,282 --> 00:02:01,088
+from CDN1 and thus moved on
+to the next 3 Mbps variant from CDN1,
+
+32
+00:02:01,121 --> 00:02:04,758
+following the order
+in the multivariant playlist.
+
+33
+00:02:04,791 --> 00:02:10,097
+If unfortunately the 3 Mbps variant
+from CDN1 also failed,
+
+34
+00:02:10,130 --> 00:02:14,201
+the client player would be left
+with no variants from CDN1,
+
+35
+00:02:14,234 --> 00:02:18,672
+and move on to
+the 6 Mbps variant from CDN2.
+
+36
+00:02:18,705 --> 00:02:22,776
+It can do this on and on
+until no variant to fallback to.
+
+37
+00:02:22,809 --> 00:02:26,780
+However, even though the playlist
+authoring server can control the ordering
+
+38
+00:02:26,813 --> 00:02:28,248
+of the fallback variants,
+
+39
+00:02:28,282 --> 00:02:30,117
+such control only happens
+
+40
+00:02:30,150 --> 00:02:34,354
+at the point of client
+requesting the multivariant playlist,
+
+41
+00:02:34,388 --> 00:02:36,390
+and once the playlist was handed out,
+
+42
+00:02:36,423 --> 00:02:39,459
+there's no way
+to change the fallback ordering.
+
+43
+00:02:39,493 --> 00:02:42,863
+This is where Content Steering
+comes into the picture.
+
+44
+00:02:42,896 --> 00:02:45,165
+With Content Steering,
+the streaming provider
+
+45
+00:02:45,199 --> 00:02:49,203
+can now group variants into Pathways
+with different CDN hosts.
+
+46
+00:02:50,904 --> 00:02:55,542
+The error fallback behavior is
+now standardized for Content Steering.
+
+47
+00:02:55,576 --> 00:02:57,377
+Pathways are ordered by preference.
+
+48
+00:02:57,411 --> 00:03:00,514
+In this example,
+the CDN1 Pathway at the top
+
+49
+00:03:00,547 --> 00:03:05,452
+is most preferred,
+following CDN2 and CDN3.
+
+50
+00:03:05,485 --> 00:03:08,922
+The streaming provider also hosts
+a Steering Server,
+
+51
+00:03:08,956 --> 00:03:13,160
+generating Steering Manifests
+for each client player.
+
+52
+00:03:13,193 --> 00:03:16,964
+A Steering Manifest defines rules
+of Pathway priorities,
+
+53
+00:03:16,997 --> 00:03:18,565
+so the player can follow the rules
+
+54
+00:03:18,599 --> 00:03:22,169
+in selecting and fallback between
+variant streams.
+
+55
+00:03:23,036 --> 00:03:27,241
+Let's say for example the streaming
+provider is trying to offload
+
+56
+00:03:27,274 --> 00:03:31,378
+some of the traffic from CDN1 to CND2.
+
+57
+00:03:31,411 --> 00:03:33,547
+It would generate a Steering Manifest
+
+58
+00:03:33,580 --> 00:03:36,283
+with the new Pathway priority rules,
+
+59
+00:03:36,316 --> 00:03:39,086
+and when a client player playing from CDN1
+
+60
+00:03:39,119 --> 00:03:42,122
+requests for a Steering Manifest update,
+
+61
+00:03:42,155 --> 00:03:45,526
+the Steering Server can send
+the prepared Steering Manifest
+
+62
+00:03:45,559 --> 00:03:48,395
+with the rule changes to the client.
+
+63
+00:03:48,428 --> 00:03:52,065
+The client will parse and see
+the new Pathway Priority rules,
+
+64
+00:03:52,099 --> 00:03:55,936
+and apply it to its playback session.
+
+65
+00:03:55,969 --> 00:03:59,106
+In this case the rule change
+switched preference order
+
+66
+00:03:59,139 --> 00:04:02,209
+between Pathway CDN1 and CDN2
+
+67
+00:04:02,242 --> 00:04:07,514
+so that the client player will switch
+and play from CDN2 immediately.
+
+68
+00:04:07,548 --> 00:04:09,850
+Then, in case of failures,
+
+69
+00:04:09,883 --> 00:04:14,988
+the client will first exhaust fallback
+variants within the current Pathway,
+
+70
+00:04:15,022 --> 00:04:17,424
+and fallback to the most preferred Pathway
+
+71
+00:04:17,457 --> 00:04:20,627
+according to its current Pathway Priority.
+
+72
+00:04:20,661 --> 00:04:24,498
+In this case, if all variants
+from CDN2 were errored out,
+
+73
+00:04:24,531 --> 00:04:28,168
+the client player can start to choose
+from variants from CDN1,
+
+74
+00:04:28,202 --> 00:04:30,737
+which is the next preferred Pathway.
+
+75
+00:04:30,771 --> 00:04:34,041
+When we apply Content Steering
+to the global scale,
+
+76
+00:04:34,074 --> 00:04:37,644
+it can solve bigger regional
+load balancing problems.
+
+77
+00:04:37,678 --> 00:04:41,782
+Let's say our streaming service provider
+operates all around the world,
+
+78
+00:04:41,815 --> 00:04:44,284
+with two main CDN providers.
+
+79
+00:04:44,318 --> 00:04:47,788
+To assign these CDNs
+to client players globally,
+
+80
+00:04:47,821 --> 00:04:51,158
+the Steering Server prepared two
+different Steering Manifests,
+
+81
+00:04:51,191 --> 00:04:56,230
+one prefers CDN1,
+and the other prefers CDN2.
+
+82
+00:04:56,263 --> 00:04:58,699
+Then it distributes
+these Steering Manifests
+
+83
+00:04:58,732 --> 00:05:02,002
+based on the client player's region
+
+84
+00:05:02,035 --> 00:05:06,306
+so that the North and South America
+utilizes CDN1
+
+85
+00:05:06,340 --> 00:05:10,143
+and the rest of the world utilizes CDN2.
+
+86
+00:05:10,177 --> 00:05:13,981
+At the top of the world map
+we show a horizontal stacked bar
+
+87
+00:05:14,014 --> 00:05:18,719
+representing the distribution of traffic
+between CDN1 and CDN2.
+
+88
+00:05:18,752 --> 00:05:23,123
+As of right now, both CDNs are serving
+half of the worldwide traffic.
+
+89
+00:05:24,024 --> 00:05:27,995
+However, over time the streaming
+service provider observed
+
+90
+00:05:28,028 --> 00:05:31,798
+a significant increase of traffic
+towards CDN2
+
+91
+00:05:31,832 --> 00:05:34,635
+because of global daylight shift.
+
+92
+00:05:34,668 --> 00:05:38,372
+At the same time,
+the traffics toward CDN1 is decreasing.
+
+93
+00:05:39,640 --> 00:05:44,711
+So the streaming provider decided
+to steer the Europe region to use CDN1.
+
+94
+00:05:44,745 --> 00:05:48,749
+It does so by preparing
+a Steering Manifest that prefers CDN1,
+
+95
+00:05:48,782 --> 00:05:52,653
+and sends it to clients
+from the Europe region.
+
+96
+00:05:52,686 --> 00:05:56,757
+Now those client players in that region
+will steer traffic to CDN1,
+
+97
+00:05:56,790 --> 00:05:58,792
+offloading from CDN2.
+
+98
+00:05:58,825 --> 00:06:01,461
+And the global traffic
+became more balanced.
+
+99
+00:06:01,495 --> 00:06:05,632
+Now let's take a look at
+an HLS multivariant playlist
+
+100
+00:06:05,666 --> 00:06:07,801
+with Content Steering support.
+
+101
+00:06:07,835 --> 00:06:11,805
+First we see
+the EXT-X-CONTENT-STEERING tag
+
+102
+00:06:11,839 --> 00:06:16,610
+that indicates this multivariant playlist
+uses Content Steering.
+
+103
+00:06:16,643 --> 00:06:19,713
+Then we have a SERVER-URI attribute
+
+104
+00:06:19,746 --> 00:06:24,017
+specifying where the client should request
+Steering Manifest updates from.
+
+105
+00:06:25,252 --> 00:06:29,957
+Then the next PATHWAY-ID attribute
+specifies the initial pathway to choose
+
+106
+00:06:29,990 --> 00:06:32,993
+for playback at startup.
+
+107
+00:06:33,026 --> 00:06:38,198
+Then we can see that each variant stream
+were given an PATHWAY-ID attribute
+
+108
+00:06:38,232 --> 00:06:40,267
+to group them into Pathways.
+
+109
+00:06:40,300 --> 00:06:43,470
+Each Pathway should have
+the same set of variant streams,
+
+110
+00:06:43,504 --> 00:06:47,975
+with only difference being their URIs
+and media group names.
+
+111
+00:06:48,008 --> 00:06:51,011
+In this example, we have two Pathways,
+
+112
+00:06:51,044 --> 00:06:53,847
+namely CDN1 and CDN2.
+
+113
+00:06:53,881 --> 00:06:58,585
+Both contains two variant streams,
+one 6 Mbps high resolution video
+
+114
+00:06:58,619 --> 00:07:02,956
+and one 3 Mbps lower resolution video.
+
+115
+00:07:02,990 --> 00:07:06,260
+With the only difference
+being their URI hostname.
+
+116
+00:07:06,293 --> 00:07:09,663
+There are also two distinct audio groups
+for each Pathway
+
+117
+00:07:09,696 --> 00:07:13,100
+where they have different URI hostnames.
+
+118
+00:07:13,133 --> 00:07:17,404
+Here is an example Steering Manifest,
+which is a JSON document.
+
+119
+00:07:17,437 --> 00:07:22,176
+The PATHWAY-PRIORITY field is a list
+of Pathway IDs in the preference order.
+
+120
+00:07:22,209 --> 00:07:27,347
+So in this case, the receiving
+client player would prefer CDN1 over CDN2.
+
+121
+00:07:27,381 --> 00:07:30,784
+This is the Steering Manifest
+the Steering Server would provide
+
+122
+00:07:30,817 --> 00:07:34,922
+to the European clients,
+to let them prefer CDN1.
+
+123
+00:07:34,955 --> 00:07:38,258
+By altering the PATHWAY-PRIORITY field
+in a Steering Manifest,
+
+124
+00:07:38,292 --> 00:07:42,095
+a Steering Server can control
+the steering policy for every client.
+
+125
+00:07:42,129 --> 00:07:45,699
+That's it for a quick overview
+of Content Steering.
+
+126
+00:07:45,732 --> 00:07:48,402
+If you want a more in-depth explanation,
+
+127
+00:07:48,435 --> 00:07:51,772
+feel free to check out my WWDC21 talk,
+
+128
+00:07:51,805 --> 00:07:56,710
+Improve global streaming availability
+with HLS Content Steering.
+
+129
+00:07:56,743 --> 00:07:59,713
+However, our journey for
+supporting a more scalable
+
+130
+00:07:59,746 --> 00:08:03,417
+and more reliable streaming service
+doesn't stop here.
+
+131
+00:08:03,450 --> 00:08:08,188
+Nowadays companies can access
+more versatile cloud infrastructures
+
+132
+00:08:08,222 --> 00:08:12,659
+and tools to achieve things
+unimaginable in the past,
+
+133
+00:08:12,693 --> 00:08:16,463
+and we have to catch up
+in the leap in technology.
+
+134
+00:08:16,496 --> 00:08:20,267
+Let's say our streaming service provider
+has grown larger this year,
+
+135
+00:08:20,300 --> 00:08:24,872
+and they are experimenting with a new way
+to satisfy the dynamic traffic demands
+
+136
+00:08:24,905 --> 00:08:27,040
+of its growing user base.
+
+137
+00:08:27,074 --> 00:08:31,845
+They are doing it by dynamically spawning
+fleets of CDN servers in real-time
+
+138
+00:08:31,879 --> 00:08:35,215
+to alleviate temporal traffics stresses.
+
+139
+00:08:35,249 --> 00:08:38,819
+For example,
+it can spawn a new fleet of CDN3
+
+140
+00:08:38,852 --> 00:08:41,788
+and want to advertise it
+to existing clients.
+
+141
+00:08:41,822 --> 00:08:45,926
+However the challenge here
+is that the dynamically spawned CDN info
+
+142
+00:08:45,959 --> 00:08:48,428
+is not included
+in the multivariant playlists
+
+143
+00:08:48,462 --> 00:08:50,964
+when existing client requested it,
+
+144
+00:08:50,998 --> 00:08:53,133
+because it just didn't exist.
+
+145
+00:08:53,166 --> 00:08:58,438
+So what can we do to tell our client
+players of the emergence of a new CDN?
+
+146
+00:08:59,273 --> 00:09:03,043
+This is where our new Pathway Cloning
+feature comes in handy.
+
+147
+00:09:03,076 --> 00:09:06,113
+It's a new feature
+with backward compatibility
+
+148
+00:09:06,146 --> 00:09:11,118
+with Content Steering 1.2
+introduced in WWDC21.
+
+149
+00:09:11,151 --> 00:09:15,022
+With Pathway Cloning,
+the Steering Server can announce new CDNs
+
+150
+00:09:15,055 --> 00:09:16,790
+to existing clients
+
+151
+00:09:16,823 --> 00:09:20,160
+using a compact manifest definition.
+
+152
+00:09:20,194 --> 00:09:22,896
+By assuming Pathways
+are structure-identical,
+
+153
+00:09:22,930 --> 00:09:27,901
+new Pathways can be created by copying
+and modifying existing Pathways.
+
+154
+00:09:27,935 --> 00:09:31,672
+Let's take a look
+at the structure of a Pathway.
+
+155
+00:09:31,705 --> 00:09:35,108
+A Pathway consists of one
+or many variant streams.
+
+156
+00:09:35,142 --> 00:09:39,046
+Each variant stream can only be
+in one and only one Pathway.
+
+157
+00:09:39,079 --> 00:09:41,748
+If not specified
+the PATHWAY-ID attribute,
+
+158
+00:09:41,782 --> 00:09:45,619
+it implicitly belongs
+to the default “dot” Pathway.
+
+159
+00:09:45,652 --> 00:09:50,858
+Each variant stream may refer to zero
+or one media group for each media type,
+
+160
+00:09:50,891 --> 00:09:54,027
+out of audio, subtitle,
+and closed-caption.
+
+161
+00:09:54,061 --> 00:09:57,497
+Each media group may be referenced
+by multiple variant streams,
+
+162
+00:09:57,531 --> 00:09:59,600
+even from different Pathways.
+
+163
+00:09:59,633 --> 00:10:02,636
+When we clone a new Pathway
+out of an existing one,
+
+164
+00:10:02,669 --> 00:10:05,005
+we should not only clone
+its variant streams,
+
+165
+00:10:05,038 --> 00:10:08,108
+but also the referenced media groups,
+if any.
+
+166
+00:10:10,844 --> 00:10:13,180
+Then, to make it a new Pathway,
+
+167
+00:10:13,213 --> 00:10:16,783
+we need to modify the URIs
+of the variant and rendition streams
+
+168
+00:10:16,817 --> 00:10:19,720
+of the newly cloned Pathway.
+
+169
+00:10:19,753 --> 00:10:24,491
+Let's take the 6 Mbps variant stream
+from the cloned Pathway for example.
+
+170
+00:10:25,993 --> 00:10:30,330
+Let's say this particular variant stream
+has the URI as shown.
+
+171
+00:10:30,364 --> 00:10:33,867
+To modify it to become the URI
+for the new Pathway,
+
+172
+00:10:33,901 --> 00:10:38,839
+the most flexible way
+is to replace the full URI line in whole.
+
+173
+00:10:38,872 --> 00:10:42,709
+This means we need to store a full set
+of URIs in the Steering Manifest
+
+174
+00:10:42,743 --> 00:10:44,478
+for each cloned Pathway.
+
+175
+00:10:44,511 --> 00:10:48,415
+However, in practice
+we can usually do better than that.
+
+176
+00:10:48,448 --> 00:10:51,285
+It is common in the industry
+to deploy streaming assets
+
+177
+00:10:51,318 --> 00:10:56,056
+across multiple CDNs
+retaining the same URI path structure.
+
+178
+00:10:56,089 --> 00:11:00,661
+And assets served from the same
+URI share the same URI hostname
+
+179
+00:11:00,694 --> 00:11:02,829
+and query parameters.
+
+180
+00:11:03,664 --> 00:11:06,767
+If it's the case,
+we only need to store the replacement
+
+181
+00:11:06,800 --> 00:11:09,970
+of host and query parameters
+in the manifest,
+
+182
+00:11:10,003 --> 00:11:14,308
+and replace the components of all cloned
+URIs and we got the new Pathway.
+
+183
+00:11:15,976 --> 00:11:21,381
+Let's take a look at how we can define
+the Pathway Clone in a Manifest object.
+
+184
+00:11:21,415 --> 00:11:25,953
+We added the PATHWAY-CLONES field
+with an array of Pathway Clone objects.
+
+185
+00:11:25,986 --> 00:11:31,558
+Each Pathway Clone object defines a new
+Pathway cloned from an existing Pathway.
+
+186
+00:11:31,592 --> 00:11:35,062
+In this example,
+we have one Pathway Clone object.
+
+187
+00:11:35,095 --> 00:11:41,335
+The BASE-ID field specifies CDN1
+to be the original Pathway to clone from.
+
+188
+00:11:41,368 --> 00:11:46,673
+The ID field specifies
+the new Pathway ID to be CDN3.
+
+189
+00:11:46,707 --> 00:11:52,479
+Next, we have the URI-REPLACEMENT field
+with an object of URI replacement rules.
+
+190
+00:11:54,081 --> 00:11:58,785
+In this example, we are using the HOST
+and query parameters replacement rules,
+
+191
+00:11:58,819 --> 00:12:00,587
+which should replace the host part,
+
+192
+00:12:00,621 --> 00:12:06,527
+and insert or replace query parameters
+of the stream URIs respectively.
+
+193
+00:12:06,560 --> 00:12:09,029
+In this case,
+we are replacing the host part
+
+194
+00:12:09,062 --> 00:12:11,465
+to be cdn3.example.com,
+
+195
+00:12:11,498 --> 00:12:15,936
+and adding or setting query parameter
+“foo” with value xyz,
+
+196
+00:12:15,969 --> 00:12:19,973
+and query parameter “bar” with value 123.
+
+197
+00:12:21,241 --> 00:12:24,645
+Let's try to apply the host
+and parameter URI replacement
+
+198
+00:12:24,678 --> 00:12:27,714
+on our previous example URI.
+
+199
+00:12:27,748 --> 00:12:30,317
+First we have the resolved
+variant stream URI
+
+200
+00:12:30,350 --> 00:12:33,220
+based on the multivariant playlist's URI.
+
+201
+00:12:34,288 --> 00:12:38,225
+In the Steering Manifest
+we used HOST URI replacement rule.
+
+202
+00:12:38,258 --> 00:12:40,727
+So for the host part of the URI,
+
+203
+00:12:40,761 --> 00:12:44,498
+we replace it with cdn3.example.com,
+
+204
+00:12:44,531 --> 00:12:48,035
+and got the new host part for the new URI.
+
+205
+00:12:51,505 --> 00:12:55,943
+Then we retain the URI path component
+from the cloned URI.
+
+206
+00:12:59,179 --> 00:13:03,784
+Finally, we apply the URI query
+parameter replacement rule.
+
+207
+00:13:03,817 --> 00:13:08,956
+Here we replace the “foo” parameter
+because it exists on the original URI.
+
+208
+00:13:08,989 --> 00:13:13,927
+Then we append the “bar” parameter
+because it's a new parameter.
+
+209
+00:13:13,961 --> 00:13:19,132
+Then we have the replaced
+query parameter part of the new URI.
+
+210
+00:13:19,166 --> 00:13:23,737
+The final result URI would be the URI
+for the 6 Mbps variant stream
+
+211
+00:13:23,770 --> 00:13:26,440
+from the new Pathway CDN3.
+
+212
+00:13:27,608 --> 00:13:31,512
+We apply the same URI replacement rule
+to the rest of the variants
+
+213
+00:13:31,545 --> 00:13:34,381
+and renditions in the cloned Pathway.
+
+214
+00:13:34,414 --> 00:13:39,253
+For the 3 Mbps variant stream,
+we have the original URI,
+
+215
+00:13:39,286 --> 00:13:44,758
+and apply the host and parameter
+replacement rule to get the new URI.
+
+216
+00:13:44,791 --> 00:13:48,362
+We do the same for the audio
+and subtitle renditions.
+
+217
+00:13:48,395 --> 00:13:53,400
+After we apply the URI replacement rule
+to all cloned variants and renditions,
+
+218
+00:13:53,433 --> 00:13:57,538
+we have a new Pathway
+that serves from the new CDN host.
+
+219
+00:13:58,505 --> 00:14:02,376
+Let's take another example
+and let's say the streaming provider
+
+220
+00:14:02,409 --> 00:14:06,413
+wants to serve their highest bandwidth
+video and audio streams
+
+221
+00:14:06,446 --> 00:14:09,917
+from a specially tuned, fastest CDN host,
+
+222
+00:14:09,950 --> 00:14:13,287
+different from the rest of
+the lower bitrate streams.
+
+223
+00:14:13,320 --> 00:14:18,625
+This is where per-stable-ID
+URI replacement rule comes in handy.
+
+224
+00:14:18,659 --> 00:14:23,497
+In HLS, STABLE-VARIANT-ID
+and STABLE-RENDITION-ID attributes
+
+225
+00:14:23,530 --> 00:14:27,501
+were introduced to identify
+variant and rendition streams.
+
+226
+00:14:27,534 --> 00:14:30,237
+By setting them
+in the multivariant playlist,
+
+227
+00:14:30,270 --> 00:14:33,674
+we can later reference each variant
+or rendition stream,
+
+228
+00:14:33,707 --> 00:14:36,310
+by their stable ID
+in the Pathway Clone object,
+
+229
+00:14:36,343 --> 00:14:38,045
+in the Steering Manifest,
+
+230
+00:14:38,078 --> 00:14:41,081
+and assign per-stream
+URI replacement rules.
+
+231
+00:14:41,915 --> 00:14:45,519
+To define these particular special URI
+replacement rules,
+
+232
+00:14:45,552 --> 00:14:49,156
+we need to assign stable IDs
+to all the variant and rendition streams
+
+233
+00:14:49,189 --> 00:14:51,358
+in the multivariant playlist.
+
+234
+00:14:51,391 --> 00:14:56,430
+For example we assign STABLE-RENDITION-ID
+"audio-en-ac3"
+
+235
+00:14:56,463 --> 00:14:58,599
+to the AC3 English audio,
+
+236
+00:14:58,632 --> 00:15:01,902
+and STABLE-VARIANT-ID "video-4k-dv"
+
+237
+00:15:01,935 --> 00:15:05,572
+to the 25 Mbps 4K variant stream.
+
+238
+00:15:05,606 --> 00:15:07,508
+Then, in the Steering Manifest,
+
+239
+00:15:07,541 --> 00:15:10,444
+we can add the two
+flexible replacement rules
+
+240
+00:15:10,477 --> 00:15:13,213
+by referencing their stable IDs.
+
+241
+00:15:13,247 --> 00:15:17,217
+For variant streams,
+we added "PER-VARIANT-URIS" field
+
+242
+00:15:17,251 --> 00:15:19,453
+to the "URI-REPLACEMENT" object,
+
+243
+00:15:19,486 --> 00:15:24,324
+with a dictionary
+of STABLE-VARIANT-ID to URI records.
+
+244
+00:15:24,358 --> 00:15:27,895
+Here we specify to replace the URI
+of the variant stream
+
+245
+00:15:27,928 --> 00:15:33,934
+with STABLE-VARIANT-ID
+"video-4k-dv" with the following URI.
+
+246
+00:15:33,967 --> 00:15:37,905
+For the rendition stream,
+we added "PER-RENDITION-URIS" field
+
+247
+00:15:37,938 --> 00:15:40,007
+to the "URI-REPLACEMENT" object,
+
+248
+00:15:40,040 --> 00:15:44,912
+with a dictionary of
+STABLE-RENDITION-ID to URI records.
+
+249
+00:15:44,945 --> 00:15:48,148
+Here we specify to replace
+the URI of rendition stream
+
+250
+00:15:48,182 --> 00:15:53,887
+with STABLE-RENDITION-ID
+"audio-en-ac3" with the following URI.
+
+251
+00:15:55,622 --> 00:15:58,725
+Here we see that
+after applying the URI replacement,
+
+252
+00:15:58,759 --> 00:16:03,897
+all streams are serving from the new
+cdn3.exmaple.com host
+
+253
+00:16:03,931 --> 00:16:08,869
+except the 4K video variant
+and AC3 English audio rendition,
+
+254
+00:16:08,902 --> 00:16:11,605
+where they have
+special URI replacement rules
+
+255
+00:16:11,638 --> 00:16:15,175
+pointing them
+to the faster.example.com host,
+
+256
+00:16:15,209 --> 00:16:18,745
+and with different URI path
+and query components.
+
+257
+00:16:20,414 --> 00:16:24,284
+With Pathway Cloning, when the
+streaming provider dynamically spawn
+
+258
+00:16:24,318 --> 00:16:28,021
+new CDN fleet, in this example, CDN3,
+
+259
+00:16:28,055 --> 00:16:30,424
+the steering server can add CDN3
+
+260
+00:16:30,457 --> 00:16:35,762
+as a Pathway Clone for existing clients
+in their Steering Manifest.
+
+261
+00:16:35,796 --> 00:16:39,800
+It can also choose a region,
+for example Europe,
+
+262
+00:16:39,833 --> 00:16:44,271
+to prioritize CDN3 as the primary Pathway.
+
+263
+00:16:44,304 --> 00:16:47,975
+When clients in Europe got
+the Steering Manifest update,
+
+264
+00:16:48,008 --> 00:16:51,745
+they will steer their traffics
+toward CDN3.
+
+265
+00:16:51,778 --> 00:16:54,114
+For the final part of this talk,
+
+266
+00:16:54,147 --> 00:16:57,818
+let's switch our focus
+to the details of Steering Server,
+
+267
+00:16:57,851 --> 00:17:00,754
+to explain how to implement
+the server logic,
+
+268
+00:17:00,787 --> 00:17:05,959
+with concrete examples, to steer client
+player traffics for load balancing.
+
+269
+00:17:06,660 --> 00:17:09,796
+One way to manage and orchestrate
+a swamp of client players
+
+270
+00:17:09,830 --> 00:17:14,268
+and apply partitioned rules
+is to put every client into a bucket,
+
+271
+00:17:14,301 --> 00:17:16,904
+and apply the rules at the buckets level.
+
+272
+00:17:16,937 --> 00:17:20,240
+It's simple to implement
+the bucketing at the Steering Server
+
+273
+00:17:20,274 --> 00:17:23,343
+without maintaining
+any client session states.
+
+274
+00:17:23,377 --> 00:17:27,014
+When a client player requests
+for the initial Steering Manifest,
+
+275
+00:17:27,047 --> 00:17:31,585
+it makes an HTTP GET request
+at the Steering Server URI.
+
+276
+00:17:31,618 --> 00:17:37,791
+The server then generates a uniform random
+number out of 12 possible buckets.
+
+277
+00:17:37,824 --> 00:17:41,528
+When returning the Steering Manifest,
+the server adds the bucket number,
+
+278
+00:17:41,562 --> 00:17:45,199
+in this case, 7,
+to the RELOAD-URI attribute,
+
+279
+00:17:45,232 --> 00:17:47,568
+which will be the Steering Manifest URI
+
+280
+00:17:47,601 --> 00:17:50,270
+for the next request
+from the client player.
+
+281
+00:17:50,304 --> 00:17:54,007
+So that the next time the client player
+request for Steering Manifest,
+
+282
+00:17:54,041 --> 00:17:57,578
+it will carry the bucket number
+in its request parameter,
+
+283
+00:17:57,611 --> 00:18:02,382
+and the server can extract it and apply
+steering rules based on the bucket number.
+
+284
+00:18:03,183 --> 00:18:06,753
+Now let's take a look
+at a simple bipartition steering rule.
+
+285
+00:18:06,787 --> 00:18:09,923
+In this case,
+we want to steer 50% traffic
+
+286
+00:18:09,957 --> 00:18:15,462
+to prefer CDN1
+and the other 50% of the traffic to prefer CDN2.
+
+287
+00:18:15,495 --> 00:18:18,599
+We can write such rule
+in terms of the bucket number.
+
+288
+00:18:18,632 --> 00:18:22,603
+If the client player's bucket number
+falls in the first 6 buckets,
+
+289
+00:18:22,636 --> 00:18:27,641
+we return Steering Manifest
+with PATHWAY-PRIORITY prefers CDN1,
+
+290
+00:18:27,674 --> 00:18:32,946
+and otherwise return that
+with PATHWAY-PRIORITY prefers CDN2.
+
+291
+00:18:32,980 --> 00:18:36,650
+Since clients are assigned
+to buckets uniformly,
+
+292
+00:18:36,683 --> 00:18:42,256
+dividing the 12 buckets into 6 buckets
+can bipartition the traffics evenly.
+
+293
+00:18:43,590 --> 00:18:49,596
+Now let's say a new Pathway
+called CDN3 is dynamically spawned.
+
+294
+00:18:49,630 --> 00:18:53,300
+The Steering Server can advertise it
+using Pathway cloning
+
+295
+00:18:53,333 --> 00:18:57,204
+to clients that don’t know it from
+their multivariant playlists.
+
+296
+00:18:57,237 --> 00:19:00,541
+One common question when
+constructing a Steering Manifest
+
+297
+00:19:00,574 --> 00:19:04,311
+with Pathway Cloning,
+is to determine the set of Pathways
+
+298
+00:19:04,344 --> 00:19:07,981
+that need to be included
+in the PATHWAY-CLONES array.
+
+299
+00:19:08,015 --> 00:19:12,986
+The rule is to clone Pathways that are
+not in the client's multivariant playlist.
+
+300
+00:19:13,020 --> 00:19:15,622
+However, without maintaining
+any server side states
+
+301
+00:19:15,656 --> 00:19:18,926
+about the client session,
+how can the Steering Server
+
+302
+00:19:18,959 --> 00:19:22,863
+know the set of Pathways
+in the client's multivariant playlist?
+
+303
+00:19:24,164 --> 00:19:27,534
+One way to do it
+is to include the set of Pathways
+
+304
+00:19:27,568 --> 00:19:32,172
+in the initial steering server URI
+as a query parameter,
+
+305
+00:19:32,206 --> 00:19:35,509
+during the generation of
+the multivariant playlist.
+
+306
+00:19:35,542 --> 00:19:39,546
+In this case, the multivariant playlist
+contains two pathways,
+
+307
+00:19:39,580 --> 00:19:42,115
+CDN1 and CDN2.
+
+308
+00:19:42,149 --> 00:19:45,853
+Therefore, it includes them
+in the SERVER-URI attribute
+
+309
+00:19:45,886 --> 00:19:48,121
+as a query parameter.
+
+310
+00:19:48,155 --> 00:19:52,492
+Then the client player
+would send request to the URI,
+
+311
+00:19:52,526 --> 00:19:56,063
+carrying the parameters
+to the steering server.
+
+312
+00:19:56,096 --> 00:19:58,832
+Then the steering server
+can extract the parameter
+
+313
+00:19:58,866 --> 00:20:03,270
+as the set of Pathways
+in the client's multivariant playlist.
+
+314
+00:20:03,303 --> 00:20:06,573
+Then it can calculate the set
+of Pathways to be cloned,
+
+315
+00:20:06,607 --> 00:20:09,476
+by subtracting the set
+of available Pathways
+
+316
+00:20:09,510 --> 00:20:13,313
+with the set of Pathways
+in the client's multivariant playlist.
+
+317
+00:20:13,347 --> 00:20:17,851
+In this case,
+the available Pathways are CDN1, 2, and 3,
+
+318
+00:20:17,885 --> 00:20:22,856
+and the Pathways in the client's
+multivariant playlist are CDN1 and CDN2,
+
+319
+00:20:22,890 --> 00:20:25,526
+therefore,
+the Pathway that needs to be included
+
+320
+00:20:25,559 --> 00:20:29,096
+in the PATHWAY-CLONES array is CDN3.
+
+321
+00:20:31,231 --> 00:20:33,700
+Let's also take a look
+how the Steering Server
+
+322
+00:20:33,734 --> 00:20:38,472
+can change its steering rules
+when there are three available Pathways.
+
+323
+00:20:38,505 --> 00:20:41,241
+In this case,
+the server wants to partition
+
+324
+00:20:41,275 --> 00:20:45,379
+the client traffics evenly
+across CDN1, 2, and 3.
+
+325
+00:20:45,412 --> 00:20:50,817
+We write this rule by returning
+PATHWAY-PRIORITY that prefers CDN1
+
+326
+00:20:50,851 --> 00:20:57,157
+if the client's bucket number falls in
+the first third of the 12 buckets,
+
+327
+00:20:57,191 --> 00:21:00,794
+returning PATHWAY-PRIORITY
+that prefers CDN2
+
+328
+00:21:00,827 --> 00:21:05,365
+if the client's bucket number falls
+in the second third range,
+
+329
+00:21:05,399 --> 00:21:10,237
+and otherwise returning
+PATHWAY-PRIORITY that prefers CDN3.
+
+330
+00:21:10,270 --> 00:21:15,142
+This way each Pathway would serve
+a third of the client traffics.
+
+331
+00:21:15,175 --> 00:21:18,745
+With everything we covered,
+you are now fully equipped
+
+332
+00:21:18,779 --> 00:21:23,350
+to build your Steering Server
+with your own dynamic steering rules.
+
+333
+00:21:23,383 --> 00:21:27,020
+Doing so can further improve
+the reliability of your streaming service.
+
+334
+00:21:28,555 --> 00:21:32,259
+That's it for our updates
+in Content Steering this year.
+
+335
+00:21:32,292 --> 00:21:33,627
+If you haven't done it yet,
+
+336
+00:21:33,660 --> 00:21:38,432
+try adopting Content Steering
+as your HLS CDN fallback mechanism
+
+337
+00:21:38,465 --> 00:21:43,303
+as it's more versatile
+and provides dynamic traffic steering.
+
+338
+00:21:43,337 --> 00:21:47,541
+Please also take advantage of
+the new Pathway Cloning feature
+
+339
+00:21:47,574 --> 00:21:50,410
+to improve your service's reliability.
+
+340
+00:21:50,444 --> 00:21:57,417
+As usual, check out the latest IETF HLS
+specification for more technical details.
+
+341
+00:21:57,451 --> 00:22:01,421
+And remember to utilize
+our HTTP Live Streaming Tools
+
+342
+00:22:01,455 --> 00:22:04,858
+to validate your playlists
+as you make changes.
+
+343
+00:22:04,892 --> 00:22:07,928
+Finally, if you have more questions
+or suggestion,
+
+344
+00:22:07,961 --> 00:22:13,033
+feel free to reach out
+at hls-interest@ietf.org.
+
+345
+00:22:13,066 --> 00:22:16,436
+Thank you for joining,
+and have a great day.
+

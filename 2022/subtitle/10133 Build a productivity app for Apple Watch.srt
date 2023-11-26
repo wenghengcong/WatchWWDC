@@ -1,0 +1,2080 @@
+1
+00:00:01,268 --> 00:00:07,274
+[spacey music]
+
+2
+00:00:09,977 --> 00:00:12,079
+Anne: Hello, and welcome!
+
+3
+00:00:12,112 --> 00:00:13,247
+I'm Anne Hitchcock,
+
+4
+00:00:13,280 --> 00:00:15,616
+and I'm a watchOS software engineer.
+
+5
+00:00:15,649 --> 00:00:17,017
+Today, I want to show you
+
+6
+00:00:17,050 --> 00:00:18,585
+how to create a productivity app
+
+7
+00:00:18,619 --> 00:00:20,521
+on watchOS.
+
+8
+00:00:20,554 --> 00:00:22,422
+Since the introduction of SwiftUI
+
+9
+00:00:22,456 --> 00:00:25,292
+and Independent Watch apps in watchOS 6,
+
+10
+00:00:25,325 --> 00:00:27,961
+you've been able to do more
+in your Watch apps.
+
+11
+00:00:28,529 --> 00:00:33,166
+Each year, SwiftUI on watchOS gets
+more capabilities.
+
+12
+00:00:33,200 --> 00:00:34,501
+At the same time,
+
+13
+00:00:34,535 --> 00:00:37,771
+watchOS has gotten new features,
+like the keyboard,
+
+14
+00:00:37,804 --> 00:00:41,208
+that let you build whole new kinds of apps
+for Watch.
+
+15
+00:00:41,875 --> 00:00:45,045
+I'd like to show you how to knit together
+some of those features
+
+16
+00:00:45,078 --> 00:00:48,182
+to build an app to track
+a list of things to get done.
+
+17
+00:00:49,016 --> 00:00:52,319
+We're going to create a new Watch app,
+
+18
+00:00:52,352 --> 00:00:55,889
+add a simple list of items to display,
+
+19
+00:00:55,923 --> 00:00:58,225
+Let people add items to the list,
+
+20
+00:00:58,258 --> 00:00:59,927
+and then edit the items.
+
+21
+00:01:00,894 --> 00:01:02,596
+As we add these features,
+
+22
+00:01:02,629 --> 00:01:06,700
+we'll talk about common app
+navigation strategies in Watch apps
+
+23
+00:01:06,733 --> 00:01:08,735
+and how to pick the correct one.
+
+24
+00:01:10,103 --> 00:01:13,106
+We'll share items with a friend
+to share the load.
+
+25
+00:01:14,241 --> 00:01:16,243
+Then we'll add a chart to our app
+
+26
+00:01:16,276 --> 00:01:20,080
+to help us spot productivity trends
+and keep us motivated.
+
+27
+00:01:21,281 --> 00:01:23,150
+And we'll use the Digital Crown to make
+
+28
+00:01:23,183 --> 00:01:24,751
+our chart scrollable
+
+29
+00:01:24,785 --> 00:01:27,054
+to show a larger data range.
+
+30
+00:01:28,188 --> 00:01:31,158
+Let's get started by creating
+a new app.
+
+31
+00:01:32,492 --> 00:01:34,361
+Create a new project in Xcode.
+
+32
+00:01:35,262 --> 00:01:39,032
+In the watchOS tab, choose App
+and click Next.
+
+33
+00:01:40,400 --> 00:01:44,605
+After choosing a product name,
+you have a couple of choices.
+
+34
+00:01:44,638 --> 00:01:46,073
+The most important one
+
+35
+00:01:46,106 --> 00:01:48,775
+is whether to create a Watch-only App
+
+36
+00:01:48,809 --> 00:01:52,246
+or to create a Watch app
+with a companion iOS app.
+
+37
+00:01:52,846 --> 00:01:55,849
+Let's talk about what makes
+a great Watch app
+
+38
+00:01:55,883 --> 00:01:58,919
+and when you want a companion iOS app.
+
+39
+00:01:59,953 --> 00:02:03,156
+Great Watch apps enable quick interaction,
+
+40
+00:02:03,190 --> 00:02:04,992
+like the interface in Workout
+
+41
+00:02:05,025 --> 00:02:08,595
+that allows you to start
+your favorite workouts quickly.
+
+42
+00:02:08,629 --> 00:02:11,532
+No one wants to stand around,
+holding up their arm,
+
+43
+00:02:11,565 --> 00:02:13,267
+tapping through to try to find something.
+
+44
+00:02:14,101 --> 00:02:18,038
+Great Watch apps make it easy
+to access important information
+
+45
+00:02:18,071 --> 00:02:19,206
+and features.
+
+46
+00:02:20,707 --> 00:02:24,011
+Great Watch apps focus
+on the essential purpose of the app.
+
+47
+00:02:24,912 --> 00:02:29,283
+For example, the Weather app displays
+the forecast for today,
+
+48
+00:02:29,316 --> 00:02:33,353
+relevant current conditions,
+and a simple 10-day forecast.
+
+49
+00:02:34,488 --> 00:02:36,690
+Focus on the essentials in your app
+
+50
+00:02:36,723 --> 00:02:39,159
+so people can easily find the information
+
+51
+00:02:39,193 --> 00:02:40,694
+and actions they need.
+
+52
+00:02:42,229 --> 00:02:44,698
+A great Watch app is designed to be used
+
+53
+00:02:44,731 --> 00:02:47,034
+independently of the companion iPhone.
+
+54
+00:02:47,901 --> 00:02:52,172
+The Contacts app, for example,
+synchronizes with your phone,
+
+55
+00:02:52,206 --> 00:02:54,608
+but doesn't require your iPhone
+to be nearby
+
+56
+00:02:54,641 --> 00:02:56,376
+to access contact information
+
+57
+00:02:56,410 --> 00:02:57,878
+on your Apple Watch.
+
+58
+00:02:59,479 --> 00:03:02,049
+There are many reasons you might also want
+
+59
+00:03:02,082 --> 00:03:05,118
+a companion iOS app for your Watch app,
+
+60
+00:03:05,152 --> 00:03:10,090
+including providing a historical record
+of data captured by Apple Watch
+
+61
+00:03:10,123 --> 00:03:13,794
+or detailed analysis of trends,
+as in the Fitness app.
+
+62
+00:03:15,729 --> 00:03:18,432
+Since our app has a focused feature set,
+
+63
+00:03:18,465 --> 00:03:20,901
+quick interaction, and limited data,
+
+64
+00:03:20,934 --> 00:03:23,003
+we're going to create a Watch-only app.
+
+65
+00:03:24,705 --> 00:03:27,508
+At this point,
+I want to spend a few minutes
+
+66
+00:03:27,541 --> 00:03:29,810
+talking about the targets that
+are created.
+
+67
+00:03:31,612 --> 00:03:33,714
+If you've built a Watch app in the past,
+
+68
+00:03:33,747 --> 00:03:36,550
+your project has two targets for Watch:
+
+69
+00:03:36,583 --> 00:03:39,086
+a WatchKit App target with a storyboard,
+
+70
+00:03:39,119 --> 00:03:42,990
+assets, and perhaps
+some localization-related files,
+
+71
+00:03:43,023 --> 00:03:47,160
+and a WatchKit Extension target
+with all of your app code.
+
+72
+00:03:47,194 --> 00:03:49,897
+These dual targets are a holdover
+
+73
+00:03:49,930 --> 00:03:52,199
+from the early days of watchOS,
+
+74
+00:03:52,232 --> 00:03:56,737
+and there really isn't a good reason
+for multiple Watch targets anymore.
+
+75
+00:03:57,671 --> 00:04:03,510
+Starting in Xcode 14, new Watch apps
+have a single Watch app target.
+
+76
+00:04:03,544 --> 00:04:06,547
+All of the code, assets, localizations,
+
+77
+00:04:06,580 --> 00:04:08,916
+and Siri Intent and Widget extensions
+
+78
+00:04:08,949 --> 00:04:10,551
+associated with your Watch app
+
+79
+00:04:10,584 --> 00:04:12,085
+belong in this target.
+
+80
+00:04:13,353 --> 00:04:16,623
+The great news is
+that single-target Watch apps
+
+81
+00:04:16,657 --> 00:04:19,526
+are supported back to watchOS 7!
+
+82
+00:04:19,560 --> 00:04:24,097
+You can simplify your project structure
+and reduce confusion and duplication
+
+83
+00:04:24,131 --> 00:04:26,800
+while still supporting customers
+who aren't running
+
+84
+00:04:26,834 --> 00:04:28,168
+the latest watchOS.
+
+85
+00:04:29,636 --> 00:04:31,338
+If you have an existing app
+
+86
+00:04:31,371 --> 00:04:33,307
+with a WatchKit Extension target,
+
+87
+00:04:33,340 --> 00:04:34,942
+it will continue to work,
+
+88
+00:04:34,975 --> 00:04:38,245
+and you can continue
+to update your app using Xcode
+
+89
+00:04:38,278 --> 00:04:40,848
+and publish your app
+through the App Store.
+
+90
+00:04:42,282 --> 00:04:44,284
+If you already have a Watch app that uses
+
+91
+00:04:44,318 --> 00:04:46,286
+the SwiftUI lifecycle,
+
+92
+00:04:46,320 --> 00:04:52,626
+transitioning to a single target is easy
+using the migration tool in Xcode 14.
+
+93
+00:04:52,659 --> 00:04:55,562
+Select your target and choose
+Validate Settings
+
+94
+00:04:55,596 --> 00:04:57,598
+from the Editor menu.
+
+95
+00:04:57,631 --> 00:04:59,967
+The target collapsing option
+will be offered
+
+96
+00:05:00,000 --> 00:05:02,936
+if your deployment target
+is watchOS 7 or later.
+
+97
+00:05:04,705 --> 00:05:06,673
+If you haven't already made the leap,
+
+98
+00:05:06,707 --> 00:05:08,876
+now is a good time to start the process
+
+99
+00:05:08,909 --> 00:05:12,179
+of converting your app to use
+the SwiftUI life cycle
+
+100
+00:05:12,212 --> 00:05:15,749
+to enjoy the simplicity
+of a single-target Watch app
+
+101
+00:05:15,782 --> 00:05:18,585
+and all of the features of SwiftUI.
+
+102
+00:05:20,087 --> 00:05:24,391
+The targets aren't the only thing
+we simplified in Xcode 14!
+
+103
+00:05:24,424 --> 00:05:26,426
+We've also made it a lot easier
+
+104
+00:05:26,460 --> 00:05:28,295
+to add an icon for your app
+
+105
+00:05:28,328 --> 00:05:33,000
+by only requiring
+a single 1024x1024 pixel image.
+
+106
+00:05:34,067 --> 00:05:35,903
+The app icon image will be scaled
+
+107
+00:05:35,936 --> 00:05:38,172
+for display on all Watch devices.
+
+108
+00:05:39,473 --> 00:05:41,074
+Be sure to test with your app icon
+
+109
+00:05:41,108 --> 00:05:43,310
+on devices on the home screen,
+
+110
+00:05:43,343 --> 00:05:45,479
+in notifications,
+
+111
+00:05:45,512 --> 00:05:47,381
+and in the settings for your app
+
+112
+00:05:47,414 --> 00:05:49,216
+in the Watch app on the iPhone.
+
+113
+00:05:50,584 --> 00:05:52,286
+You can add custom images
+
+114
+00:05:52,319 --> 00:05:55,756
+for specific smaller sizes if necessary.
+
+115
+00:05:55,789 --> 00:05:56,823
+For example,
+
+116
+00:05:56,857 --> 00:05:59,359
+if your app icon has details in the image
+
+117
+00:05:59,393 --> 00:06:01,795
+that get lost at smaller sizes,
+
+118
+00:06:01,828 --> 00:06:04,932
+you can add specific icon images
+for those sizes
+
+119
+00:06:04,965 --> 00:06:07,234
+with the image details removed.
+
+120
+00:06:07,267 --> 00:06:09,803
+Now let's add some functionality
+to our app
+
+121
+00:06:09,837 --> 00:06:12,072
+by adding a list of task items.
+
+122
+00:06:12,806 --> 00:06:14,775
+We'll start by creating a data model
+
+123
+00:06:14,808 --> 00:06:16,944
+for our list of tasks.
+
+124
+00:06:16,977 --> 00:06:20,647
+The ListItem struct
+will be Identifiable and Hashable,
+
+125
+00:06:20,681 --> 00:06:22,816
+and we'll give it a description
+to display.
+
+126
+00:06:24,284 --> 00:06:27,387
+Then, create a simple model to store
+our data
+
+127
+00:06:27,421 --> 00:06:29,489
+and publish the array of list items.
+
+128
+00:06:30,624 --> 00:06:33,927
+And finally, add the model
+as an environment object
+
+129
+00:06:33,961 --> 00:06:35,929
+so our views can access our model.
+
+130
+00:06:37,397 --> 00:06:41,502
+Now let's create a List in SwiftUI
+with our data model.
+
+131
+00:06:41,535 --> 00:06:44,037
+Since there are no tasks yet,
+
+132
+00:06:44,071 --> 00:06:46,607
+when we preview this,
+we get an empty list.
+
+133
+00:06:47,641 --> 00:06:50,010
+We need to do something about that.
+
+134
+00:06:50,043 --> 00:06:53,447
+We should give people a way to add
+some tasks to their list.
+
+135
+00:06:54,448 --> 00:06:57,017
+We'd like to add a Button
+that people can tap
+
+136
+00:06:57,050 --> 00:06:59,052
+to add a new item to the list.
+
+137
+00:06:59,887 --> 00:07:03,023
+Text field link, new in watchOS 9,
+
+138
+00:07:03,056 --> 00:07:06,159
+lets you invoke text input options
+from a button,
+
+139
+00:07:06,193 --> 00:07:08,028
+and offers several styling options
+
+140
+00:07:08,061 --> 00:07:10,697
+to make it feel right at home in your app.
+
+141
+00:07:12,266 --> 00:07:16,436
+You can create a TextFieldLink
+with a simple string
+
+142
+00:07:16,470 --> 00:07:19,039
+or use a Label for a more custom button.
+
+143
+00:07:20,374 --> 00:07:23,477
+Modify the button's appearance
+with view modifiers,
+
+144
+00:07:23,510 --> 00:07:25,746
+including foregroundColor,
+
+145
+00:07:25,779 --> 00:07:27,814
+foregroundStyle,
+
+146
+00:07:27,848 --> 00:07:29,249
+and buttonStyle.
+
+147
+00:07:30,784 --> 00:07:33,086
+We'll create an AddItemLink view
+
+148
+00:07:33,120 --> 00:07:35,689
+to encapsulate the styling and behavior
+
+149
+00:07:35,722 --> 00:07:38,525
+of the TextFieldLink
+we're using in our app.
+
+150
+00:07:39,593 --> 00:07:42,462
+We'll use a custom label for the button,
+
+151
+00:07:42,496 --> 00:07:44,231
+and when someone enters text,
+
+152
+00:07:44,264 --> 00:07:46,366
+we'll add the new item to our list.
+
+153
+00:07:47,734 --> 00:07:49,870
+Now that we've decided
+to use TextFieldLink
+
+154
+00:07:49,903 --> 00:07:52,806
+to add a button to add a new list item,
+
+155
+00:07:52,840 --> 00:07:55,876
+we need to think about where to put
+the TextFieldLink.
+
+156
+00:07:57,644 --> 00:08:00,280
+When adding actions to lists
+in Watch apps,
+
+157
+00:08:00,314 --> 00:08:02,783
+we have a couple of options.
+
+158
+00:08:02,816 --> 00:08:06,320
+Use a button, navigation link,
+or TextFieldLink
+
+159
+00:08:06,353 --> 00:08:11,859
+at the end of the list
+for primary actions in short lists.
+
+160
+00:08:11,892 --> 00:08:15,262
+Adding an action as an item
+at the end of a list
+
+161
+00:08:15,295 --> 00:08:17,531
+is a good choice for a primary action
+
+162
+00:08:17,564 --> 00:08:18,966
+in a short list of items
+
+163
+00:08:18,999 --> 00:08:21,068
+like the list of cities in World Clock.
+
+164
+00:08:21,802 --> 00:08:23,036
+However,
+
+165
+00:08:23,070 --> 00:08:25,439
+if you anticipate a long list of items,
+
+166
+00:08:25,472 --> 00:08:27,975
+people will have to keep scrolling
+to the end of the list
+
+167
+00:08:28,008 --> 00:08:31,578
+each time they want to do the action.
+
+168
+00:08:31,612 --> 00:08:33,046
+For commonly used actions
+
+169
+00:08:33,080 --> 00:08:36,083
+with longer lists, use a toolbar item.
+
+170
+00:08:37,451 --> 00:08:41,755
+To add a toolbar item,
+add the toolbar modifier to the list,
+
+171
+00:08:41,788 --> 00:08:44,791
+and use your action view as the content.
+
+172
+00:08:44,825 --> 00:08:47,594
+This will add a single toolbar item
+to the list
+
+173
+00:08:47,628 --> 00:08:50,097
+with automatic toolbar item placement.
+
+174
+00:08:50,130 --> 00:08:52,466
+While I'd like to think I'll always keep
+
+175
+00:08:52,499 --> 00:08:53,800
+my to-do list short,
+
+176
+00:08:53,834 --> 00:08:55,836
+I'm fairly sure that I won't.
+
+177
+00:08:55,869 --> 00:08:58,705
+So I'm going to put the text field links
+in a toolbar item
+
+178
+00:08:58,739 --> 00:09:00,707
+to make it easy to access.
+
+179
+00:09:02,242 --> 00:09:05,479
+Let's take a moment to review
+what we've accomplished.
+
+180
+00:09:05,512 --> 00:09:08,315
+We've created a model for our list items,
+
+181
+00:09:08,348 --> 00:09:11,485
+stored it as an environment object,
+
+182
+00:09:11,518 --> 00:09:13,554
+created a list to display the items,
+
+183
+00:09:13,587 --> 00:09:16,723
+and added a text field link
+to add new items.
+
+184
+00:09:23,330 --> 00:09:25,432
+Creating an item with only a description
+
+185
+00:09:25,465 --> 00:09:28,535
+is simple, but it isn't very useful.
+
+186
+00:09:28,569 --> 00:09:31,638
+We're going to need
+to mark the item as complete,
+
+187
+00:09:31,672 --> 00:09:34,041
+and we might want a way to set a priority
+
+188
+00:09:34,074 --> 00:09:36,143
+or add an estimate of the amount of work
+
+189
+00:09:36,176 --> 00:09:37,778
+for a task.
+
+190
+00:09:37,811 --> 00:09:40,781
+To do this, we'll add a detail view.
+
+191
+00:09:40,814 --> 00:09:42,783
+Before we do this, I want to review
+
+192
+00:09:42,816 --> 00:09:45,052
+the options for app navigation structure
+
+193
+00:09:45,085 --> 00:09:47,387
+in SwiftUI on Watch.
+
+194
+00:09:48,222 --> 00:09:50,657
+Hierarchical navigation is used for views
+
+195
+00:09:50,691 --> 00:09:53,594
+with a list-detail relationship.
+
+196
+00:09:53,627 --> 00:09:57,397
+Starting in watchOS 9,
+use the SwiftUI NavigationStack
+
+197
+00:09:57,431 --> 00:10:00,834
+to create interfaces
+with this type of navigation structure.
+
+198
+00:10:02,135 --> 00:10:04,571
+Page-based navigation is used for views
+
+199
+00:10:04,605 --> 00:10:06,173
+with a flat structure,
+
+200
+00:10:06,206 --> 00:10:08,242
+where all of the views are peers.
+
+201
+00:10:09,510 --> 00:10:12,212
+A great example of page-based navigation
+
+202
+00:10:12,246 --> 00:10:15,015
+is the in-workout view of the Workout app,
+
+203
+00:10:15,048 --> 00:10:16,650
+where people can easily swipe
+
+204
+00:10:16,683 --> 00:10:20,587
+between the workout controls, metrics,
+and playback controls
+
+205
+00:10:20,621 --> 00:10:21,788
+during a workout.
+
+206
+00:10:23,223 --> 00:10:25,459
+A full-screen app has a single view
+
+207
+00:10:25,492 --> 00:10:27,861
+that uses the entire display.
+
+208
+00:10:27,895 --> 00:10:30,464
+This is generally used for apps like games
+
+209
+00:10:30,497 --> 00:10:32,966
+and other apps
+that have a single main view.
+
+210
+00:10:34,234 --> 00:10:38,205
+For a full-screen view,
+use the ignoresSafeArea modifier
+
+211
+00:10:38,238 --> 00:10:41,642
+to extend your content
+to the edges of the display,
+
+212
+00:10:41,675 --> 00:10:45,245
+and the toolbar modifier
+with a visibility value of hidden
+
+213
+00:10:45,279 --> 00:10:46,914
+to hide the navigation bar.
+
+214
+00:10:48,415 --> 00:10:50,450
+A modal sheet is a full-screen view
+
+215
+00:10:50,484 --> 00:10:52,653
+that slides over the current view.
+
+216
+00:10:52,686 --> 00:10:54,755
+It should be used for important tasks
+
+217
+00:10:54,788 --> 00:10:57,491
+that should be completed
+as part of the current workflow.
+
+218
+00:10:58,892 --> 00:11:00,727
+It's important to differentiate
+
+219
+00:11:00,761 --> 00:11:03,197
+when to use a hierarchical flow
+
+220
+00:11:03,230 --> 00:11:05,532
+versus when to use a modal sheet.
+
+221
+00:11:07,000 --> 00:11:11,839
+Mail uses a hierarchical style
+to display the list of messages
+
+222
+00:11:11,872 --> 00:11:15,976
+and show each message or thread
+as a detail view.
+
+223
+00:11:16,009 --> 00:11:18,979
+There are actions you can do
+from the message detail,
+
+224
+00:11:19,012 --> 00:11:21,014
+but there is nothing you must do
+
+225
+00:11:21,048 --> 00:11:22,816
+before returning to the list.
+
+226
+00:11:23,917 --> 00:11:27,387
+If you go back to the list,
+and tap New Message,
+
+227
+00:11:27,421 --> 00:11:31,225
+Mail uses a modal sheet to show
+the New Message view.
+
+228
+00:11:32,125 --> 00:11:34,294
+A modal sheet is the right choice
+
+229
+00:11:34,328 --> 00:11:37,598
+because you need to fill in the details
+of the new message, or cancel,
+
+230
+00:11:37,631 --> 00:11:39,233
+before continuing.
+
+231
+00:11:40,267 --> 00:11:41,935
+To display a modal sheet,
+
+232
+00:11:41,969 --> 00:11:46,173
+create a property to control
+the sheet presentation state.
+
+233
+00:11:46,206 --> 00:11:50,344
+Set the property based on an action in
+the user interface,
+
+234
+00:11:50,377 --> 00:11:52,145
+and use the sheet modifier
+
+235
+00:11:52,179 --> 00:11:54,681
+to display the custom modal sheet content
+
+236
+00:11:54,715 --> 00:11:57,317
+when the presentation state property
+is true.
+
+237
+00:11:58,986 --> 00:12:01,889
+To add custom toolbar items
+to the modal sheet,
+
+238
+00:12:01,922 --> 00:12:04,558
+add a toolbar with your items.
+
+239
+00:12:04,591 --> 00:12:07,661
+Note that your toolbar items should use
+modal placements
+
+240
+00:12:07,694 --> 00:12:09,530
+like confirmationAction,
+
+241
+00:12:09,563 --> 00:12:11,031
+cancellationAction,
+
+242
+00:12:11,064 --> 00:12:12,432
+and destructiveAction.
+
+243
+00:12:14,201 --> 00:12:17,070
+We're going to use the modal sheet
+for our detail view
+
+244
+00:12:17,104 --> 00:12:18,972
+because we're editing an item
+
+245
+00:12:19,006 --> 00:12:21,241
+and we want to focus on this single task
+
+246
+00:12:21,275 --> 00:12:23,544
+until we've finished and tapped Done.
+
+247
+00:12:24,745 --> 00:12:27,514
+To learn more about navigation in SwiftUI,
+
+248
+00:12:27,548 --> 00:12:30,083
+including more details
+about NavigationStack
+
+249
+00:12:30,117 --> 00:12:31,885
+and programmatic navigation,
+
+250
+00:12:31,919 --> 00:12:35,189
+check out "The SwiftUI cookbook
+for navigation."
+
+251
+00:12:36,757 --> 00:12:40,060
+Now that we've decided how to navigate
+to our detail view,
+
+252
+00:12:40,093 --> 00:12:42,396
+we'll update our list item struct.
+
+253
+00:12:42,429 --> 00:12:45,132
+We have new properties to store
+estimated work,
+
+254
+00:12:45,165 --> 00:12:47,568
+creation date, and completion date.
+
+255
+00:12:49,102 --> 00:12:52,206
+Let's give people a way to view and edit
+these details.
+
+256
+00:12:53,240 --> 00:12:57,444
+We'll create a detail view
+with a TextField to edit the description
+
+257
+00:12:57,477 --> 00:13:01,648
+and a toggle to mark the task as complete
+or not.
+
+258
+00:13:01,682 --> 00:13:05,285
+But what should we do
+with the estimated work?
+
+259
+00:13:05,319 --> 00:13:07,721
+We know the values will all be numbers,
+
+260
+00:13:07,754 --> 00:13:10,657
+and we can specify a range
+of valid values.
+
+261
+00:13:11,758 --> 00:13:14,228
+Beginning in watchOS 9,
+
+262
+00:13:14,261 --> 00:13:16,697
+we can use the Stepper.
+
+263
+00:13:16,730 --> 00:13:18,699
+The Stepper is a great option
+
+264
+00:13:18,732 --> 00:13:22,469
+when you want to provide granular control
+to edit sequential values.
+
+265
+00:13:23,470 --> 00:13:27,774
+You can specify a range
+of values and optionally provide a step.
+
+266
+00:13:29,543 --> 00:13:33,113
+You can also use the Stepper to edit
+logically sequential,
+
+267
+00:13:33,146 --> 00:13:35,749
+but not necessarily numeric values.
+
+268
+00:13:36,683 --> 00:13:39,286
+For example, maybe we want to note
+
+269
+00:13:39,319 --> 00:13:41,588
+the estimated stress level for an item.
+
+270
+00:13:42,623 --> 00:13:44,791
+We could create an array of emoji
+
+271
+00:13:44,825 --> 00:13:47,294
+to indicate the stress level,
+
+272
+00:13:47,327 --> 00:13:49,730
+then create a Stepper,
+
+273
+00:13:49,763 --> 00:13:54,601
+binding the value to the selected index
+in the stress level emoji array
+
+274
+00:13:54,635 --> 00:13:58,672
+and setting the range to the range
+of emoji indices.
+
+275
+00:13:58,705 --> 00:14:00,073
+Stepping through the values
+
+276
+00:14:00,107 --> 00:14:01,675
+increases or decreases
+
+277
+00:14:01,708 --> 00:14:04,178
+the stress level we're estimating
+for the item.
+
+278
+00:14:05,312 --> 00:14:08,582
+Preparing a WWDC session is fun,
+
+279
+00:14:08,615 --> 00:14:12,019
+but sharing great Watch app development
+with all of you is a party.
+
+280
+00:14:12,853 --> 00:14:15,589
+When I have stressful items on my list,
+
+281
+00:14:15,622 --> 00:14:19,459
+or just a lot of items on my list
+that are making me feel stressed,
+
+282
+00:14:19,493 --> 00:14:21,962
+I'd like to share an item from my list
+with a friend
+
+283
+00:14:21,995 --> 00:14:23,230
+to ask for help.
+
+284
+00:14:24,498 --> 00:14:27,301
+We're going to add a button
+to our detail view
+
+285
+00:14:27,334 --> 00:14:29,036
+to allow people to share an item
+
+286
+00:14:29,069 --> 00:14:31,171
+using the share sheet.
+
+287
+00:14:31,205 --> 00:14:33,674
+I want to be able to tap a button
+on my detail view
+
+288
+00:14:33,707 --> 00:14:35,375
+to share the item,
+
+289
+00:14:35,409 --> 00:14:38,178
+pick from a list of friends
+to ask for help,
+
+290
+00:14:38,212 --> 00:14:40,080
+edit my message, and send it.
+
+291
+00:14:41,348 --> 00:14:43,817
+To do this, we're going to use a new tool
+
+292
+00:14:43,851 --> 00:14:47,588
+available to us in SwiftUI on watchOS 9:
+
+293
+00:14:47,621 --> 00:14:49,723
+ShareLink.
+
+294
+00:14:49,756 --> 00:14:53,827
+We can share our list item by creating
+a ShareLink with our item.
+
+295
+00:14:53,861 --> 00:14:55,495
+We can optionally customize
+
+296
+00:14:55,529 --> 00:14:57,130
+the initial text of the message
+
+297
+00:14:57,164 --> 00:15:00,033
+with a subject and message.
+
+298
+00:15:00,067 --> 00:15:02,936
+And provide a Preview
+to display in the Share Sheet
+
+299
+00:15:02,970 --> 00:15:05,539
+when someone shares the item.
+
+300
+00:15:05,572 --> 00:15:08,876
+You can use ShareLink to share
+from your SwiftUI app
+
+301
+00:15:08,909 --> 00:15:12,513
+in iOS, macOS, and watchOS.
+
+302
+00:15:13,847 --> 00:15:15,983
+Be sure to check out "Meet Transferable"
+
+303
+00:15:16,016 --> 00:15:18,051
+to learn more details and options
+
+304
+00:15:18,085 --> 00:15:19,786
+for ShareLink.
+
+305
+00:15:19,820 --> 00:15:22,890
+Now that I can track when I completed
+items
+
+306
+00:15:22,923 --> 00:15:25,492
+and call for help to get things done,
+
+307
+00:15:25,526 --> 00:15:27,294
+I'd also like to add a chart
+
+308
+00:15:27,327 --> 00:15:29,096
+to see my productivity.
+
+309
+00:15:29,863 --> 00:15:32,199
+I've chosen to use a bar chart
+
+310
+00:15:32,232 --> 00:15:34,468
+because I have a single data series
+
+311
+00:15:34,501 --> 00:15:36,136
+and distinct data values.
+
+312
+00:15:37,037 --> 00:15:38,705
+A bar chart will clearly show
+
+313
+00:15:38,739 --> 00:15:40,774
+this data on a Watch display
+
+314
+00:15:40,807 --> 00:15:45,779
+as long as I limit the amount of data
+I display at one time.
+
+315
+00:15:45,812 --> 00:15:48,015
+We're going to start by adding
+the chart view
+
+316
+00:15:48,048 --> 00:15:50,717
+to our app's navigation structure.
+
+317
+00:15:50,751 --> 00:15:53,654
+I've chosen
+a page-based navigation strategy
+
+318
+00:15:53,687 --> 00:15:55,989
+because there is
+no list-detail relationship
+
+319
+00:15:56,023 --> 00:15:57,991
+between the item list and the chart.
+
+320
+00:15:58,759 --> 00:16:00,427
+Someone can swipe between the list
+
+321
+00:16:00,460 --> 00:16:02,029
+and the chart at any time.
+
+322
+00:16:03,664 --> 00:16:05,432
+To add the page-based navigation
+
+323
+00:16:05,465 --> 00:16:07,234
+for our list and chart,
+
+324
+00:16:07,267 --> 00:16:11,405
+let's start by creating an ItemList struct
+to encapsulate the list view.
+
+325
+00:16:12,940 --> 00:16:15,642
+I moved the entire content
+of the content view
+
+326
+00:16:15,676 --> 00:16:18,045
+to this new item list.
+
+327
+00:16:18,078 --> 00:16:20,948
+Encapsulating the item list here
+will allow us
+
+328
+00:16:20,981 --> 00:16:23,584
+to have simple, easy-to-read tab view code
+
+329
+00:16:23,617 --> 00:16:24,852
+in the content view.
+
+330
+00:16:26,553 --> 00:16:29,623
+We also need to create a struct
+for our chart view.
+
+331
+00:16:31,225 --> 00:16:33,527
+I'll temporarily put in a placeholder
+
+332
+00:16:33,560 --> 00:16:36,096
+so we can focus
+on our navigation structure
+
+333
+00:16:36,129 --> 00:16:37,898
+before we build our chart.
+
+334
+00:16:39,466 --> 00:16:42,069
+Now we'll set up a content view
+
+335
+00:16:42,102 --> 00:16:44,972
+with a page-style tab view with 2 tabs:
+
+336
+00:16:45,005 --> 00:16:47,274
+the item list and the chart.
+
+337
+00:16:49,309 --> 00:16:51,845
+Since we've set up
+our navigation structure,
+
+338
+00:16:51,879 --> 00:16:53,914
+let's talk about how to build this chart.
+
+339
+00:16:54,615 --> 00:16:57,117
+I know I could use a SwiftUI Canvas
+
+340
+00:16:57,150 --> 00:16:58,952
+and draw a chart,
+
+341
+00:16:58,986 --> 00:17:00,687
+but starting in watchOS 9,
+
+342
+00:17:00,721 --> 00:17:04,091
+we have an easier answer: Swift Charts.
+
+343
+00:17:04,825 --> 00:17:09,563
+Swift Charts are also available on iOS,
+macOS, and tvOS,
+
+344
+00:17:09,596 --> 00:17:13,267
+so you can reuse your charts anywhere
+you're using SwiftUI.
+
+345
+00:17:14,401 --> 00:17:16,803
+We'll aggregate the data we want to chart
+
+346
+00:17:16,837 --> 00:17:19,406
+and then let Swift Charts display it
+for us.
+
+347
+00:17:21,041 --> 00:17:25,712
+For our chart, we want to show the number
+of items completed by date.
+
+348
+00:17:25,746 --> 00:17:28,815
+We'll create a struct
+to store the aggregate data for the chart.
+
+349
+00:17:30,050 --> 00:17:31,685
+Then we'll write a small method
+
+350
+00:17:31,718 --> 00:17:33,453
+to aggregate our list item data
+
+351
+00:17:33,487 --> 00:17:35,155
+into chart data elements.
+
+352
+00:17:36,690 --> 00:17:41,128
+Display a simple chart by specifying
+the data to display
+
+353
+00:17:41,161 --> 00:17:43,997
+and defining the series from the data.
+
+354
+00:17:44,031 --> 00:17:46,633
+We're using the date as the x-value
+
+355
+00:17:46,667 --> 00:17:49,603
+and the number of items completed
+as the y-value.
+
+356
+00:17:51,338 --> 00:17:54,541
+To achieve the appearance I want
+on my Watch display,
+
+357
+00:17:54,575 --> 00:17:56,844
+I'm customizing the x-axis
+
+358
+00:17:56,877 --> 00:18:00,013
+using the Chart's chartXAxis modifier.
+
+359
+00:18:00,614 --> 00:18:04,818
+I'm specifying a format style
+for the axis value labels.
+
+360
+00:18:04,852 --> 00:18:07,254
+I also don't want vertical gridlines,
+
+361
+00:18:07,287 --> 00:18:10,791
+so I omitted an AxisGridLine mark.
+
+362
+00:18:10,824 --> 00:18:16,029
+I'm also customizing the y-axis using
+the chartYAxis modifier.
+
+363
+00:18:16,063 --> 00:18:20,767
+I specify a gridline style that looks
+good with my chart on Watch.
+
+364
+00:18:20,801 --> 00:18:23,937
+I'm formatting the axis value labels
+as integers
+
+365
+00:18:23,971 --> 00:18:25,873
+and omitting the top label
+
+366
+00:18:25,906 --> 00:18:29,142
+to prevent it from being clipped
+at the top of the chart.
+
+367
+00:18:29,176 --> 00:18:33,747
+To learn more about the amazing things
+you can achieve with Swift Charts,
+
+368
+00:18:33,780 --> 00:18:36,283
+check out "Hello Swift Charts"
+
+369
+00:18:36,316 --> 00:18:39,319
+and "Swift Charts: Raise the bar."
+
+370
+00:18:40,854 --> 00:18:42,689
+Our chart looks pretty good,
+
+371
+00:18:42,723 --> 00:18:44,925
+but I'd like to show a little more data
+
+372
+00:18:44,958 --> 00:18:47,828
+but still keep a great Watch experience,
+
+373
+00:18:47,861 --> 00:18:50,297
+so I'm going to make it scrollable.
+
+374
+00:18:50,330 --> 00:18:52,900
+To accomplish this, we're going to use
+
+375
+00:18:52,933 --> 00:18:55,636
+a new digitalCrownRotation modifier
+
+376
+00:18:55,669 --> 00:18:57,838
+that allows us to set a callback
+
+377
+00:18:57,871 --> 00:18:59,773
+for digital crown events,
+
+378
+00:18:59,806 --> 00:19:01,041
+and we're going to implement
+
+379
+00:19:01,074 --> 00:19:03,610
+a custom scrolling behavior for our chart.
+
+380
+00:19:05,412 --> 00:19:08,549
+Let's get ready to add
+the digitalCrownRotation modifier
+
+381
+00:19:08,582 --> 00:19:10,984
+by adding some properties to store
+the state
+
+382
+00:19:11,018 --> 00:19:12,920
+as someone scrolls across the chart.
+
+383
+00:19:13,854 --> 00:19:17,824
+The highlightedDateIndex
+is the index of the data point
+
+384
+00:19:17,858 --> 00:19:20,027
+for the current scroll position.
+
+385
+00:19:21,061 --> 00:19:22,729
+We'll store the crown offset
+
+386
+00:19:22,763 --> 00:19:25,232
+so we can display
+the current crown position
+
+387
+00:19:25,265 --> 00:19:27,634
+as the person is scrolling
+across the chart.
+
+388
+00:19:28,368 --> 00:19:32,239
+This is an intermediate value,
+on or between data points,
+
+389
+00:19:32,272 --> 00:19:34,208
+while the crown is moving.
+
+390
+00:19:35,409 --> 00:19:38,478
+To keep track of whether
+someone is actively scrolling,
+
+391
+00:19:38,512 --> 00:19:40,848
+we'll store the the idle state.
+
+392
+00:19:40,881 --> 00:19:42,316
+We'll use this information
+
+393
+00:19:42,349 --> 00:19:44,017
+to add a little animation
+
+394
+00:19:44,051 --> 00:19:46,854
+as crown scrolling stops and starts.
+
+395
+00:19:48,856 --> 00:19:52,059
+Now that we have the properties
+to store values,
+
+396
+00:19:52,092 --> 00:19:54,828
+we can add
+the digitalCrownRotation modifier.
+
+397
+00:19:56,129 --> 00:20:00,033
+We'll bind the detent value
+to the highlightedDateIndex property.
+
+398
+00:20:01,134 --> 00:20:04,771
+In mechanical terms,
+a detent is a mechanism
+
+399
+00:20:04,805 --> 00:20:06,507
+that holds something in a position
+
+400
+00:20:06,540 --> 00:20:09,309
+until enough force is applied to move it.
+
+401
+00:20:09,343 --> 00:20:12,446
+For instance, when I open my car door,
+
+402
+00:20:12,479 --> 00:20:15,516
+there is a "stop" position
+where the door will settle.
+
+403
+00:20:15,549 --> 00:20:17,017
+I can push a little harder
+
+404
+00:20:17,050 --> 00:20:19,953
+and open the door wider to another "stop."
+
+405
+00:20:19,987 --> 00:20:22,656
+To close it, I need to pull hard enough
+
+406
+00:20:22,689 --> 00:20:26,527
+to overcome the resistance
+to pull it out of the "stop."
+
+407
+00:20:26,560 --> 00:20:30,631
+Otherwise, it will spring back
+into that resting position.
+
+408
+00:20:30,664 --> 00:20:32,599
+This is a detent.
+
+409
+00:20:33,367 --> 00:20:34,735
+The stop for the car door
+
+410
+00:20:34,768 --> 00:20:37,504
+helps us understand detent in this API.
+
+411
+00:20:38,338 --> 00:20:40,741
+The detent is the resting notch position
+
+412
+00:20:40,774 --> 00:20:42,376
+of the crown on your view.
+
+413
+00:20:44,211 --> 00:20:46,980
+In the handler for the onChange callback,
+
+414
+00:20:47,014 --> 00:20:49,983
+we'll set the value for isCrownIdle
+to false,
+
+415
+00:20:50,017 --> 00:20:52,686
+since we know that the crown is scrolling,
+
+416
+00:20:52,719 --> 00:20:55,789
+and we'll set the crownOffset value
+to the current value
+
+417
+00:20:55,822 --> 00:20:59,560
+to let us show the current position
+on the chart during scrolling.
+
+418
+00:21:00,827 --> 00:21:03,564
+In the handler for the onIdle callback,
+
+419
+00:21:03,597 --> 00:21:06,466
+we'll set the value for isCrownIdle
+to true.
+
+420
+00:21:08,068 --> 00:21:10,270
+Now we can display the position
+of the crown
+
+421
+00:21:10,304 --> 00:21:11,872
+as we scroll on the chart.
+
+422
+00:21:12,773 --> 00:21:16,777
+To do this, we can use
+the RuleMark from Swift Charts.
+
+423
+00:21:17,644 --> 00:21:20,881
+A RuleMark is
+a straight line on your chart.
+
+424
+00:21:20,914 --> 00:21:24,351
+You can use it to display
+a horizontal or vertical line,
+
+425
+00:21:24,384 --> 00:21:26,787
+to display a threshold, for example,
+
+426
+00:21:26,820 --> 00:21:28,555
+or to display a sloped line.
+
+427
+00:21:29,656 --> 00:21:31,592
+We're going to create a RuleMark
+
+428
+00:21:31,625 --> 00:21:33,393
+with the crown offset date value
+
+429
+00:21:33,427 --> 00:21:36,363
+to display the current location
+of crown scrolling.
+
+430
+00:21:38,031 --> 00:21:40,033
+Just to make this look a little better,
+
+431
+00:21:40,067 --> 00:21:42,703
+I'd like to have
+the crown position line fade
+
+432
+00:21:42,736 --> 00:21:44,238
+when the crown stops moving.
+
+433
+00:21:45,072 --> 00:21:46,840
+It's simple to animate this
+
+434
+00:21:46,874 --> 00:21:49,643
+using the isCrownIdle property we added.
+
+435
+00:21:50,777 --> 00:21:54,147
+We'll add a property to store the opacity
+for the color we're using
+
+436
+00:21:54,181 --> 00:21:56,650
+in the foregroundStyle for the RuleMark.
+
+437
+00:21:57,985 --> 00:22:01,054
+And add an onChange modifier to the chart
+
+438
+00:22:01,088 --> 00:22:04,391
+to animate
+the crownPositionOpacity value change
+
+439
+00:22:04,424 --> 00:22:07,160
+when the isCrownIdle value changes.
+
+440
+00:22:08,262 --> 00:22:12,766
+Then update the foregroundStyle
+for the RuleMark to use the opacity.
+
+441
+00:22:14,568 --> 00:22:18,705
+To display the value next to the bar
+on the chart as we scroll,
+
+442
+00:22:18,739 --> 00:22:21,208
+we can add an annotation to the BarMark.
+
+443
+00:22:21,975 --> 00:22:26,246
+We'll position the annotation
+on the top leading side of the bar
+
+444
+00:22:26,280 --> 00:22:28,348
+when it's the last bar.
+
+445
+00:22:28,382 --> 00:22:29,917
+Otherwise, we'll position it
+
+446
+00:22:29,950 --> 00:22:31,785
+on the top trailing side.
+
+447
+00:22:33,387 --> 00:22:35,722
+Let's take a moment to see
+what we've accomplished
+
+448
+00:22:35,756 --> 00:22:38,559
+with just
+the digitalCrownRotation modifier,
+
+449
+00:22:38,592 --> 00:22:40,494
+the RuleMark in Swift Charts,
+
+450
+00:22:40,527 --> 00:22:42,829
+and a simple SwiftUI animation.
+
+451
+00:22:44,731 --> 00:22:48,202
+The final step to creating
+our custom scrollable chart
+
+452
+00:22:48,235 --> 00:22:52,606
+is adjusting the data range for the chart
+as someone scrolls.
+
+453
+00:22:52,639 --> 00:22:54,975
+Create a property to store
+the visible range.
+
+454
+00:22:56,009 --> 00:23:00,414
+Create the chartData variable to provide
+the data in the range to the chart.
+
+455
+00:23:01,281 --> 00:23:04,284
+When the highlightedDateIndex changes,
+
+456
+00:23:04,318 --> 00:23:07,020
+call a method to check the chartDataRange
+
+457
+00:23:07,054 --> 00:23:09,056
+and update it if necessary.
+
+458
+00:23:10,157 --> 00:23:14,161
+As someone scrolls across the chart using
+the Digital Crown,
+
+459
+00:23:14,194 --> 00:23:16,897
+the chart will scroll to display
+the available data.
+
+460
+00:23:17,865 --> 00:23:21,602
+Now we've finished implementing
+all the features we had planned.
+
+461
+00:23:23,303 --> 00:23:26,139
+To learn more
+about the new SwiftUI features
+
+462
+00:23:26,173 --> 00:23:28,008
+available in watchOS 9,
+
+463
+00:23:28,041 --> 00:23:30,911
+check out "What's New in SwiftUI."
+
+464
+00:23:31,712 --> 00:23:33,614
+As you're planning your Watch app,
+
+465
+00:23:33,647 --> 00:23:35,716
+or your new Watch app features,
+
+466
+00:23:35,749 --> 00:23:36,783
+think about what makes
+
+467
+00:23:36,817 --> 00:23:38,785
+a great Watch app experience.
+
+468
+00:23:39,686 --> 00:23:41,421
+While you're designing your app,
+
+469
+00:23:41,455 --> 00:23:43,891
+consider your app navigation strategy
+
+470
+00:23:43,924 --> 00:23:46,960
+to ensure that your app is easy
+and intuitive.
+
+471
+00:23:47,828 --> 00:23:52,165
+And use SwiftUI for simpler
+and richer development options.
+
+472
+00:23:52,199 --> 00:23:54,868
+Keep building great Watch apps.
+
+473
+00:23:54,902 --> 00:23:56,203
+And remember,
+
+474
+00:23:56,236 --> 00:23:58,438
+because of you, there's an app for that!
+
+475
+00:23:59,006 --> 00:24:01,074
+[spacey music]
+

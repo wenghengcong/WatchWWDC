@@ -1,0 +1,1421 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,778
+Christian: Hi, my name is Christian.
+
+3
+00:00:11,812 --> 00:00:14,214
+I'm an engineer on the ARKit team,
+
+4
+00:00:14,248 --> 00:00:18,452
+and I would like to welcome you
+to our session, Discover ARKit 6.
+
+5
+00:00:18,485 --> 00:00:21,688
+You'll learn how to make use
+of the latest advancements
+
+6
+00:00:21,722 --> 00:00:24,691
+in our Augmented Reality framework.
+
+7
+00:00:24,725 --> 00:00:28,996
+We are delighted to see what you have been
+creating over the last several years
+
+8
+00:00:29,029 --> 00:00:30,497
+with ARKit.
+
+9
+00:00:30,531 --> 00:00:33,967
+We are seeing some amazing apps
+in interior design,
+
+10
+00:00:34,001 --> 00:00:36,103
+travel, virtual exhibitions,
+
+11
+00:00:36,136 --> 00:00:38,372
+games, and so many others.
+
+12
+00:00:38,405 --> 00:00:42,009
+Our team here at Apple has
+paid close attention to your feedback,
+
+13
+00:00:42,042 --> 00:00:45,546
+and we have incorporated a lot of it
+into ARKit 6.
+
+14
+00:00:45,579 --> 00:00:46,647
+Let's have a look.
+
+15
+00:00:46,680 --> 00:00:51,618
+We are introducing a new 4K video mode
+that lets you run the camera stream
+
+16
+00:00:51,652 --> 00:00:54,421
+in the highest image resolution yet.
+
+17
+00:00:54,454 --> 00:00:58,392
+After that, I'll talk about some
+additional camera enhancements we made
+
+18
+00:00:58,425 --> 00:01:01,762
+that give you more control
+of the video backdrop.
+
+19
+00:01:01,795 --> 00:01:05,566
+We also have updates
+on the behavior of plane anchors,
+
+20
+00:01:05,599 --> 00:01:08,435
+additions to the Motion Capture API,
+
+21
+00:01:08,468 --> 00:01:12,739
+and finally share new cities
+where location anchors will be supported.
+
+22
+00:01:14,441 --> 00:01:17,477
+Let's start with 4K video.
+
+23
+00:01:17,511 --> 00:01:20,347
+Over the course of the past several years,
+
+24
+00:01:20,380 --> 00:01:24,184
+we saw a lot of demand
+for high resolution content,
+
+25
+00:01:24,218 --> 00:01:28,055
+especially those apps which leverage
+the power of Augmented Reality
+
+26
+00:01:28,088 --> 00:01:32,492
+for filmmaking,
+are ever hungry for more pixels.
+
+27
+00:01:32,526 --> 00:01:36,530
+Let me show you how images are captured
+and processed for ARKit.
+
+28
+00:01:36,563 --> 00:01:39,933
+This is the camera module
+of an iPhone 13 Pro.
+
+29
+00:01:39,967 --> 00:01:43,036
+If we open it up, we can see its setup.
+
+30
+00:01:43,070 --> 00:01:46,406
+Let us talk about the Wide
+and the Ultrawide camera.
+
+31
+00:01:46,440 --> 00:01:50,844
+Both these cameras can be used
+for different computer vision tasks,
+
+32
+00:01:50,878 --> 00:01:55,415
+such as world tracking,
+motion capture, or person segmentation.
+
+33
+00:01:55,449 --> 00:01:58,719
+The wide camera
+has a special place in our heart,
+
+34
+00:01:58,752 --> 00:02:02,489
+since it delivers the images
+for the rendering backdrop.
+
+35
+00:02:02,523 --> 00:02:06,326
+It's important to understand
+how images are processed for rendering,
+
+36
+00:02:06,360 --> 00:02:09,129
+so let me zoom in to the sensor level.
+
+37
+00:02:13,100 --> 00:02:17,838
+When capturing images for ARKit,
+we use a large part of the image sensor.
+
+38
+00:02:17,871 --> 00:02:23,343
+To be more precise,
+it's an area of 3840x2880 pixels
+
+39
+00:02:23,377 --> 00:02:25,546
+on this particular model.
+
+40
+00:02:25,579 --> 00:02:28,815
+After capture,
+we use a process called binning.
+
+41
+00:02:28,849 --> 00:02:31,852
+It works as follows:
+
+42
+00:02:31,885 --> 00:02:36,123
+Binning takes a region of 2x2 pixels,
+
+43
+00:02:36,156 --> 00:02:38,525
+averages the pixel values,
+
+44
+00:02:38,559 --> 00:02:41,895
+and writes back a single pixel.
+
+45
+00:02:41,929 --> 00:02:44,731
+This has two significant advantages.
+
+46
+00:02:44,765 --> 00:02:48,535
+First, image dimensions are reduced
+by a factor of two,
+
+47
+00:02:48,569 --> 00:02:53,240
+in this case,
+it downscales to 1920x1440 pixels.
+
+48
+00:02:53,273 --> 00:02:58,579
+As a result of this, each frame consumes
+way less memory and processing power.
+
+49
+00:02:58,612 --> 00:03:02,883
+This allows the device to run the camera
+at up to 60 frames per second
+
+50
+00:03:02,916 --> 00:03:05,819
+and frees up resources for rendering.
+
+51
+00:03:05,853 --> 00:03:09,022
+Secondly,
+this process offers an advantage
+
+52
+00:03:09,056 --> 00:03:10,724
+in low light environments,
+
+53
+00:03:10,757 --> 00:03:15,062
+where the averaging of pixel values
+reduces the effects of sensor noise.
+
+54
+00:03:15,796 --> 00:03:21,869
+We end up with a camera stream
+that provides an image at HD resolution
+
+55
+00:03:21,902 --> 00:03:24,972
+roughly every 17 milliseconds.
+
+56
+00:03:25,005 --> 00:03:29,042
+After using the current frame
+for various computer vision tasks,
+
+57
+00:03:29,076 --> 00:03:33,347
+ARKit surfaces the current frame
+for rendering.
+
+58
+00:03:33,380 --> 00:03:35,983
+In case you are writing
+your own Metal renderer,
+
+59
+00:03:36,016 --> 00:03:41,088
+you have access to it via
+ARSession's currentFrame.capturedImage.
+
+60
+00:03:42,623 --> 00:03:47,227
+If you are using RealityKit, the image
+is automatically processed further
+
+61
+00:03:47,261 --> 00:03:49,129
+for use as a backdrop.
+
+62
+00:03:49,162 --> 00:03:55,302
+It is scaled on-device to match
+the screen width of 2532 pixels
+
+63
+00:03:55,335 --> 00:04:00,374
+and is cropped to match
+the display aspect ratio.
+
+64
+00:04:00,407 --> 00:04:05,379
+RealityKit performs the task of rendering
+and compositing the virtual content,
+
+65
+00:04:05,412 --> 00:04:06,847
+like this pirate ship,
+
+66
+00:04:06,880 --> 00:04:10,817
+on top of the frame and displays
+the final result on screen.
+
+67
+00:04:10,851 --> 00:04:13,453
+Now, with the power
+of our latest hardware,
+
+68
+00:04:13,487 --> 00:04:17,891
+we enable full 4K video mode in ARKit.
+
+69
+00:04:17,925 --> 00:04:21,461
+Your app can now take advantage
+of a higher resolution image
+
+70
+00:04:21,495 --> 00:04:27,701
+by skipping the binning step and directly
+accessing it in full 4K resolution.
+
+71
+00:04:27,734 --> 00:04:34,241
+In 4K mode,
+an image area of 3840x2160 pixels is used
+
+72
+00:04:34,274 --> 00:04:37,878
+and you can capture video
+at 30 frames per second.
+
+73
+00:04:37,911 --> 00:04:41,515
+Apart from these changes, your app
+will work the same way as before.
+
+74
+00:04:41,548 --> 00:04:44,685
+If you use RealityKit,
+it performs scaling, cropping,
+
+75
+00:04:44,718 --> 00:04:46,420
+and rendering for you.
+
+76
+00:04:49,723 --> 00:04:54,528
+You can enable the 4K mode
+using a few simple steps.
+
+77
+00:04:54,561 --> 00:04:56,964
+Let's see how that looks in code.
+
+78
+00:04:58,866 --> 00:05:02,236
+'ARConfiguration' has a new convenience
+function
+
+79
+00:05:02,269 --> 00:05:08,675
+'recommendedVideoFormatFor4KResolution'
+that returns a 4K video format
+
+80
+00:05:08,709 --> 00:05:11,812
+if that mode is supported
+on your device.
+
+81
+00:05:11,845 --> 00:05:17,317
+If the device or configuration do not
+support 4K, this function will return nil.
+
+82
+00:05:17,351 --> 00:05:20,854
+You can then assign this video format
+to your configuration,
+
+83
+00:05:20,888 --> 00:05:24,291
+then you run your session
+with that adjusted configuration.
+
+84
+00:05:25,826 --> 00:05:30,464
+The 4K video mode is available
+on iPhone 11 and up
+
+85
+00:05:30,497 --> 00:05:34,034
+and on any iPad Pro with an M1 chip.
+
+86
+00:05:34,067 --> 00:05:40,807
+The resolution is 3840x2160 pixels
+at 30 frames per second.
+
+87
+00:05:40,841 --> 00:05:43,544
+The aspect ratio is 16:9,
+
+88
+00:05:43,577 --> 00:05:47,748
+for iPad that means that images have to be
+cropped at the sides
+
+89
+00:05:47,781 --> 00:05:52,286
+for full screen display and the final
+render might look zoomed in.
+
+90
+00:05:53,453 --> 00:05:57,658
+When using ARKit,
+especially in the new 4K resolution,
+
+91
+00:05:57,691 --> 00:06:01,728
+it's important to follow some
+best practices for optimal results.
+
+92
+00:06:01,762 --> 00:06:04,531
+Do not hold on to an ARFrame for too long.
+
+93
+00:06:04,565 --> 00:06:08,402
+This might prevent the system
+from freeing up memory,
+
+94
+00:06:08,435 --> 00:06:12,406
+which might further stop ARKit
+from surfacing newer frames to you.
+
+95
+00:06:12,439 --> 00:06:15,876
+This will become visible through
+frame drops in your rendering.
+
+96
+00:06:15,909 --> 00:06:20,714
+Ultimately, the ARCamera's tracking state
+might fall back to limited.
+
+97
+00:06:20,747 --> 00:06:23,817
+Check for console warnings
+to make sure you do not retain
+
+98
+00:06:23,851 --> 00:06:26,753
+too many images at any given time.
+
+99
+00:06:26,787 --> 00:06:32,693
+Also consider if the new 4K video format
+is indeed the right option for your app.
+
+100
+00:06:32,726 --> 00:06:36,697
+Apps that benefit from high resolution
+video are good candidates,
+
+101
+00:06:36,730 --> 00:06:40,868
+such as video, filmmaking,
+and virtual production apps.
+
+102
+00:06:40,901 --> 00:06:45,205
+Dealing with higher resolution images
+takes up additional system resources,
+
+103
+00:06:45,239 --> 00:06:49,009
+so for games and other apps
+that rely on a high refresh rate,
+
+104
+00:06:49,042 --> 00:06:54,047
+we still suggest using full HD video
+at 60 frames per second.
+
+105
+00:06:55,048 --> 00:06:58,685
+On top of the new 4K mode,
+there are some additional enhancements
+
+106
+00:06:58,719 --> 00:07:03,090
+that allow you to get more control
+over your camera.
+
+107
+00:07:03,123 --> 00:07:08,161
+I will start by introducing the hi-res
+background photo API
+
+108
+00:07:08,195 --> 00:07:12,599
+and show how to enable the new HDR mode.
+
+109
+00:07:12,633 --> 00:07:15,836
+Further, I will demonstrate how to get access
+
+110
+00:07:15,869 --> 00:07:20,807
+to the underlying AVCaptureDevice
+for more fine grained control
+
+111
+00:07:20,841 --> 00:07:24,678
+and show you how to read EXIF tags
+in ARKit.
+
+112
+00:07:24,711 --> 00:07:29,283
+Let's jump into the new
+hi-res background photo API.
+
+113
+00:07:30,317 --> 00:07:31,985
+While running an ARSession,
+
+114
+00:07:32,019 --> 00:07:35,923
+you still get access
+to the video stream as usual.
+
+115
+00:07:35,956 --> 00:07:41,628
+In addition, ARKit lets you request
+the capture of single photos on demand
+
+116
+00:07:41,662 --> 00:07:42,996
+in the background,
+
+117
+00:07:43,030 --> 00:07:46,133
+while the video stream is running
+uninterrupted.
+
+118
+00:07:46,166 --> 00:07:50,571
+Those single photo frames take
+full advantage of your camera sensor.
+
+119
+00:07:50,604 --> 00:07:55,843
+On my iPhone 13 that means
+the full 12 megapixels of the wide camera.
+
+120
+00:07:55,876 --> 00:07:58,212
+When preparing for WWDC,
+
+121
+00:07:58,245 --> 00:08:01,548
+we at ARKit had a fun idea
+for a Photography app
+
+122
+00:08:01,582 --> 00:08:06,153
+that highlights what this new API
+can help you create.
+
+123
+00:08:06,186 --> 00:08:09,423
+In our example,
+we take you back in time
+
+124
+00:08:09,456 --> 00:08:13,227
+to April 1st, 2016,
+when the famous pirate flag
+
+125
+00:08:13,260 --> 00:08:16,430
+was flying over
+the Apple Infinite Loop Campus.
+
+126
+00:08:16,463 --> 00:08:19,600
+I asked Tommy,
+the original photographer,
+
+127
+00:08:19,633 --> 00:08:23,036
+where exactly he shot that photo
+six years ago.
+
+128
+00:08:25,005 --> 00:08:29,376
+Based on this coordinate,
+we can create a location anchor
+
+129
+00:08:29,409 --> 00:08:35,148
+that guides you to the exact same spot
+where Tommy stood in April 2016,
+
+130
+00:08:35,182 --> 00:08:38,785
+as indicated by the big blue dot.
+
+131
+00:08:38,819 --> 00:08:42,956
+Upon reaching that spot,
+it helps you frame that perfect picture
+
+132
+00:08:42,990 --> 00:08:45,292
+by showing a focus square.
+
+133
+00:08:45,325 --> 00:08:51,265
+Finally, the app lets your take a photo
+by tapping the screen.
+
+134
+00:08:51,298 --> 00:08:54,434
+That photo can be taken
+in native camera resolution
+
+135
+00:08:54,468 --> 00:08:56,737
+while the current ARKit session
+is running,
+
+136
+00:08:56,770 --> 00:09:00,607
+without the need to spin up
+another AVCapture session.
+
+137
+00:09:00,641 --> 00:09:05,345
+We're excited to see which ideas you have
+that combine the power of AR
+
+138
+00:09:05,379 --> 00:09:06,613
+and photography.
+
+139
+00:09:06,647 --> 00:09:11,118
+Another use case that will greatly benefit
+by this API
+
+140
+00:09:11,151 --> 00:09:14,688
+is the creation of 3D models
+using Object Capture.
+
+141
+00:09:15,489 --> 00:09:19,893
+Object capture takes in photos
+of a real world object,
+
+142
+00:09:19,927 --> 00:09:21,395
+like this running shoe,
+
+143
+00:09:21,428 --> 00:09:24,831
+and using our latest photogrammetry
+algorithms,
+
+144
+00:09:24,865 --> 00:09:30,103
+it turns them into a 3D model
+ready for deployment in your AR app.
+
+145
+00:09:30,137 --> 00:09:35,008
+With ARKit you can overlay a 3D UI
+on top of a physical object
+
+146
+00:09:35,042 --> 00:09:37,277
+and provide better capture guidance.
+
+147
+00:09:37,311 --> 00:09:41,448
+And now with the new high resolution
+background image API,
+
+148
+00:09:41,481 --> 00:09:44,418
+you can take higher-resolution photos
+of the object
+
+149
+00:09:44,451 --> 00:09:47,754
+and create even more realistic 3D models.
+
+150
+00:09:47,788 --> 00:09:49,756
+I'm a big fan of photogrammetry,
+
+151
+00:09:49,790 --> 00:09:53,126
+so I'd highly recommend
+that you check out this year's
+
+152
+00:09:53,160 --> 00:09:56,296
+"Bring your world to augmented reality"
+session.
+
+153
+00:09:56,330 --> 00:10:01,034
+Let me show you how you can enable
+high-resolution photo captures in code.
+
+154
+00:10:01,935 --> 00:10:07,574
+First, we check for a video format
+that supports hiResCapture.
+
+155
+00:10:07,608 --> 00:10:09,510
+We can use the convenience function
+
+156
+00:10:09,543 --> 00:10:15,582
+'recommendedVideoFormatForHighResolution
+FrameCapturing' for that.
+
+157
+00:10:15,616 --> 00:10:18,619
+After we make sure
+that the format is supported,
+
+158
+00:10:18,652 --> 00:10:22,456
+we can set the new video format
+and run the session.
+
+159
+00:10:22,489 --> 00:10:27,294
+We further have to tell ARKit
+when to capture a hi-res image.
+
+160
+00:10:27,327 --> 00:10:29,062
+In our earlier example,
+
+161
+00:10:29,096 --> 00:10:32,733
+the capture of a photo is triggered
+by a tap on the screen.
+
+162
+00:10:32,766 --> 00:10:36,436
+In your own application, you might want
+to react to different events
+
+163
+00:10:36,470 --> 00:10:39,206
+that trigger high-resolution
+frame captures.
+
+164
+00:10:39,239 --> 00:10:42,075
+It really depends on your use case.
+
+165
+00:10:42,109 --> 00:10:47,414
+The ARSession has a new function
+called captureHighResolutionFrame.
+
+166
+00:10:47,447 --> 00:10:51,351
+Calling this function
+triggers an out-of-band capture
+
+167
+00:10:51,385 --> 00:10:54,087
+of a high-resolution image.
+
+168
+00:10:54,121 --> 00:10:57,658
+You get access to an ARFrame
+containing the high-resolution image
+
+169
+00:10:57,691 --> 00:11:00,227
+and all other frame properties
+
+170
+00:11:00,260 --> 00:11:03,163
+asynchronously in the completion handler.
+
+171
+00:11:03,197 --> 00:11:05,766
+You should check
+if the frame capture was successful
+
+172
+00:11:05,799 --> 00:11:08,168
+before accessing its contents.
+
+173
+00:11:08,202 --> 00:11:11,672
+In this example
+we store the frame to disk.
+
+174
+00:11:11,705 --> 00:11:15,209
+Also keep in mind our best practices
+on image retention
+
+175
+00:11:15,242 --> 00:11:16,543
+that I mentioned earlier,
+
+176
+00:11:16,577 --> 00:11:22,616
+especially since these images use
+the full resolution of the image sensor.
+
+177
+00:11:22,649 --> 00:11:26,386
+Next, let's talk about HDR.
+
+178
+00:11:26,420 --> 00:11:29,389
+High Dynamic Range captures
+a wider range of colors
+
+179
+00:11:29,423 --> 00:11:31,792
+and maps those to your display.
+
+180
+00:11:31,825 --> 00:11:35,896
+This is most visible in environments
+with high contrast.
+
+181
+00:11:35,929 --> 00:11:38,599
+Here's a good example from my backyard.
+
+182
+00:11:38,632 --> 00:11:41,668
+This scene features both very dark areas–
+
+183
+00:11:41,702 --> 00:11:43,470
+for example, on the wooden fence–
+
+184
+00:11:43,504 --> 00:11:47,541
+and some very bright areas
+like the clouds in the sky.
+
+185
+00:11:47,574 --> 00:11:50,377
+When turning on the HDR mode,
+as on the right,
+
+186
+00:11:50,410 --> 00:11:52,613
+you can see that details in these regions,
+
+187
+00:11:52,646 --> 00:11:58,051
+like the fluffiness in the clouds,
+are preserved much better in HDR.
+
+188
+00:11:58,085 --> 00:12:01,321
+Let's see how HDR is turned on in code.
+
+189
+00:12:01,355 --> 00:12:05,325
+You can query any video format
+if it supports HDR
+
+190
+00:12:05,359 --> 00:12:09,162
+through its
+'isVideoHDRSupported' property.
+
+191
+00:12:09,196 --> 00:12:13,700
+Currently, only non-binned video formats
+support HDR.
+
+192
+00:12:13,734 --> 00:12:18,939
+If HDR is supported, set videoHDRAllowed
+in the config to true
+
+193
+00:12:18,972 --> 00:12:22,309
+and run your session
+with that configuration.
+
+194
+00:12:22,342 --> 00:12:25,712
+Turning on HDR
+will have a performance impact,
+
+195
+00:12:25,746 --> 00:12:29,283
+so make sure to only use it
+when there is a need for it.
+
+196
+00:12:29,316 --> 00:12:31,919
+In use cases where you prefer
+manual control
+
+197
+00:12:31,952 --> 00:12:35,489
+over settings such as exposure
+or white balance,
+
+198
+00:12:35,522 --> 00:12:40,227
+there is now convenient way
+to directly access an AVCaptureDevice
+
+199
+00:12:40,260 --> 00:12:42,996
+and change any of its settings.
+
+200
+00:12:43,030 --> 00:12:44,498
+In our code example,
+
+201
+00:12:44,531 --> 00:12:48,702
+call 'configurableCaptureDevice
+ForPrimaryCamera'
+
+202
+00:12:48,735 --> 00:12:54,308
+of your configuration to get access
+to the underlying 'AVCaptureDevice'.
+
+203
+00:12:54,341 --> 00:12:58,779
+Use this capability to create custom looks
+for your ARKit app,
+
+204
+00:12:58,812 --> 00:13:03,083
+but keep in mind that the image is
+not only used as a rendering backdrop,
+
+205
+00:13:03,116 --> 00:13:07,321
+but is also actively used by ARKit
+to analyze the scene.
+
+206
+00:13:07,354 --> 00:13:11,725
+So any changes like strong overexposure
+might have a negative effect
+
+207
+00:13:11,758 --> 00:13:14,595
+on the output quality of ARKit.
+
+208
+00:13:14,628 --> 00:13:19,566
+You can also perform some advanced
+operations, like triggering focus events.
+
+209
+00:13:19,600 --> 00:13:23,437
+For more information on how to configure
+AVCaptureSessions,
+
+210
+00:13:23,470 --> 00:13:29,009
+please refer to the AVCapture
+documentation on developer.apple.com.
+
+211
+00:13:29,042 --> 00:13:33,313
+Finally, ARKit exposes EXIF tags
+to your app.
+
+212
+00:13:33,347 --> 00:13:36,984
+They are now available with every ARFrame.
+
+213
+00:13:37,017 --> 00:13:40,420
+EXIF tags contain useful information
+about white balance,
+
+214
+00:13:40,454 --> 00:13:45,259
+exposure, and other settings
+that can be valuable for post-processing.
+
+215
+00:13:45,292 --> 00:13:49,062
+That concludes all updates
+on the image capture pipeline.
+
+216
+00:13:49,096 --> 00:13:51,932
+Let's see which changes we have
+for Plane Anchors.
+
+217
+00:13:53,200 --> 00:13:58,805
+Plane anchors have been a popular feature
+since the very first version of ARKit.
+
+218
+00:13:58,839 --> 00:14:03,577
+Many of you expressed the need to have
+a cleaner separation of plane anchors
+
+219
+00:14:03,610 --> 00:14:05,879
+and the underlying plane geometry.
+
+220
+00:14:05,913 --> 00:14:08,348
+For that reason, we are announcing updates
+
+221
+00:14:08,382 --> 00:14:12,786
+on the behavior of the plane anchor
+and the geometry of the plane.
+
+222
+00:14:12,819 --> 00:14:17,925
+This is an example of a typical
+plane anchor in iOS 15.
+
+223
+00:14:17,958 --> 00:14:20,961
+At the beginning of the AR session,
+it fits the plane
+
+224
+00:14:20,994 --> 00:14:24,198
+to this well-textured notebook
+on the table.
+
+225
+00:14:24,231 --> 00:14:27,301
+When running the session,
+the plane is gradually updated
+
+226
+00:14:27,334 --> 00:14:31,238
+to account for new parts of the table
+that come into view.
+
+227
+00:14:31,271 --> 00:14:33,740
+Every time the plane geometry is updated,
+
+228
+00:14:33,774 --> 00:14:36,243
+the anchor rotation is updated as well
+
+229
+00:14:36,276 --> 00:14:39,213
+to reflect the new orientation
+of the plane.
+
+230
+00:14:39,246 --> 00:14:44,218
+With iOS 16, we introduce a cleaner
+separation between plane anchors
+
+231
+00:14:44,251 --> 00:14:45,986
+and their plane geometry.
+
+232
+00:14:47,154 --> 00:14:52,659
+Plane anchor and geometry updates
+are now fully decoupled.
+
+233
+00:14:52,693 --> 00:14:56,230
+While the plane is extending
+and updating its geometry
+
+234
+00:14:56,263 --> 00:14:58,465
+as the full table comes into view,
+
+235
+00:14:58,498 --> 00:15:02,236
+the anchor rotation itself
+remains constant.
+
+236
+00:15:06,807 --> 00:15:09,943
+When contrasting with the old behavior
+on the left hand side,
+
+237
+00:15:09,977 --> 00:15:13,680
+you can see that the plane anchor
+in iOS 16 has stayed
+
+238
+00:15:13,714 --> 00:15:16,850
+at the same orientation,
+aligned to the notebook,
+
+239
+00:15:16,884 --> 00:15:19,653
+throughout the whole AR Session.
+
+240
+00:15:21,421 --> 00:15:24,224
+All information on plane geometry
+
+241
+00:15:24,258 --> 00:15:28,529
+is now contained in a class
+called ARPlaneExtent.
+
+242
+00:15:28,562 --> 00:15:33,800
+Rotation updates are no longer expressed
+through rotating the plane anchor itself.
+
+243
+00:15:33,834 --> 00:15:39,339
+Instead, ARPlaneExtent contains
+a new property, rotationOnYAxis,
+
+244
+00:15:39,373 --> 00:15:42,176
+that represents the angle of rotation.
+
+245
+00:15:42,209 --> 00:15:44,444
+In addition to this new property,
+
+246
+00:15:44,478 --> 00:15:48,348
+planes are fully defined
+by width and height,
+
+247
+00:15:48,382 --> 00:15:52,252
+as well as the center coordinate
+of the PlaneAnchor.
+
+248
+00:15:52,286 --> 00:15:56,423
+Let me show you how to create this
+plane visualization in code.
+
+249
+00:15:58,525 --> 00:16:02,396
+First, we generate an entity
+based on a plane mesh
+
+250
+00:16:02,429 --> 00:16:06,500
+according to the specified
+width and height.
+
+251
+00:16:06,533 --> 00:16:11,672
+Then we set the entities transform
+according to the rotation on y axis
+
+252
+00:16:11,705 --> 00:16:16,176
+and also offset it by the value
+of the center property.
+
+253
+00:16:16,210 --> 00:16:21,081
+Every time the plane is updated, we have
+to account for the fact that width,
+
+254
+00:16:21,114 --> 00:16:26,787
+height, and center coordinate and
+the new rotationOnYAxis might change.
+
+255
+00:16:26,820 --> 00:16:31,391
+To make use of this new behavior,
+set your deployment target to iOS 16
+
+256
+00:16:31,425 --> 00:16:34,194
+in your Xcode settings.
+
+257
+00:16:34,228 --> 00:16:37,097
+The next update is on MotionCapture,
+
+258
+00:16:37,130 --> 00:16:42,202
+our machine learning masterminds worked
+hard to make further improvements.
+
+259
+00:16:42,236 --> 00:16:44,338
+There is a whole suite of updates,
+
+260
+00:16:44,371 --> 00:16:49,176
+both for the 2D skeleton,
+as well as for the 3D joints.
+
+261
+00:16:49,209 --> 00:16:52,946
+For the 2D skeleton
+we are tracking two new joints:
+
+262
+00:16:52,980 --> 00:16:55,449
+the left and the right ear.
+
+263
+00:16:55,482 --> 00:16:59,086
+We also improved
+the overall pose detection.
+
+264
+00:16:59,119 --> 00:17:02,856
+On iPhone 12 and up,
+as well as on the latest iPad Pro
+
+265
+00:17:02,890 --> 00:17:05,325
+and iPad Air models with the M1 chip,
+
+266
+00:17:05,359 --> 00:17:09,096
+the 3D skeleton, as shown in red,
+has been improved.
+
+267
+00:17:09,129 --> 00:17:14,535
+You will experience less jitter
+and overall more temporal consistency.
+
+268
+00:17:14,568 --> 00:17:18,472
+Tracking is also more stable
+if parts of the person are occluded
+
+269
+00:17:18,505 --> 00:17:21,308
+or when walking up close to the camera.
+
+270
+00:17:21,341 --> 00:17:26,180
+To make use of the improved MotionCapture,
+set your deployment target to iOS 16
+
+271
+00:17:26,213 --> 00:17:29,249
+in your Xcode settings.
+
+272
+00:17:29,283 --> 00:17:33,820
+Next, I would also like to announce
+new cities and countries
+
+273
+00:17:33,854 --> 00:17:35,989
+where LocationAnchors will be supported.
+
+274
+00:17:36,023 --> 00:17:40,060
+As a small reminder,
+Apple Maps uses the LocationAnchor API
+
+275
+00:17:40,093 --> 00:17:42,496
+to power its pedestrian walking
+instructions.
+
+276
+00:17:42,529 --> 00:17:47,167
+In this example you can see that it can
+lead you through the streets of London,
+
+277
+00:17:47,201 --> 00:17:50,938
+thanks to the power of LocationAnchors.
+
+278
+00:17:50,971 --> 00:17:54,041
+LocationAnchors are already available
+in a growing number of cities
+
+279
+00:17:54,074 --> 00:17:57,311
+in the United States and in London, UK.
+
+280
+00:17:57,344 --> 00:18:01,415
+Starting today, they will be available
+in the Canadian cities of Vancouver,
+
+281
+00:18:01,448 --> 00:18:03,483
+Toronto, and Montreal.
+
+282
+00:18:03,517 --> 00:18:06,086
+We are also enabling them in Singapore,
+
+283
+00:18:06,119 --> 00:18:10,157
+and in seven metropolitan areas in Japan,
+including Tokyo.
+
+284
+00:18:10,190 --> 00:18:14,294
+As well as in Melbourne and Sydney,
+Australia.
+
+285
+00:18:14,328 --> 00:18:17,431
+Later this year,
+we will make them available in
+
+286
+00:18:17,464 --> 00:18:19,233
+Auckland, New Zealand,
+
+287
+00:18:19,266 --> 00:18:22,970
+Tel Aviv, Israel,
+and Paris, France
+
+288
+00:18:23,003 --> 00:18:26,073
+If you are interested to know
+if LocationAnchors are supported
+
+289
+00:18:26,106 --> 00:18:27,941
+at a particular coordinate,
+
+290
+00:18:27,975 --> 00:18:33,146
+just use the checkAvailability method
+of ARGeoTrackingConfiguration.
+
+291
+00:18:33,981 --> 00:18:37,284
+And those were all the updates to ARKit 6.
+
+292
+00:18:37,317 --> 00:18:43,223
+To summarize, I presented how to run ARKit
+in the new 4K video format.
+
+293
+00:18:43,257 --> 00:18:47,427
+For advanced use cases,
+I demonstrated how to enable HDR
+
+294
+00:18:47,461 --> 00:18:51,698
+or get manual control
+over the AVCaptureDevice.
+
+295
+00:18:51,732 --> 00:18:54,134
+For even more pixel hungry applications,
+
+296
+00:18:54,168 --> 00:18:59,173
+I demonstrated how to get high resolution
+photos from an ARKit session.
+
+297
+00:18:59,206 --> 00:19:01,942
+We talked about the new behavior
+of Plane Anchors,
+
+298
+00:19:01,975 --> 00:19:03,977
+and I presented the new ear joints
+
+299
+00:19:04,011 --> 00:19:07,080
+and other improvements in MotionCapture.
+
+300
+00:19:07,114 --> 00:19:10,284
+You also got to know
+in which countries LocationAnchors
+
+301
+00:19:10,317 --> 00:19:12,986
+will be available later this year.
+
+302
+00:19:14,321 --> 00:19:15,656
+Thanks for tuning in.
+
+303
+00:19:15,689 --> 00:19:20,093
+Have a great WWDC 2022!
+

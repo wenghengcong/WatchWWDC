@@ -1,0 +1,1510 @@
+1
+00:00:00,334 --> 00:00:06,340
+[upbeat music]
+
+2
+00:00:12,112 --> 00:00:13,180
+Andy: Hi there.
+
+3
+00:00:13,213 --> 00:00:17,117
+Welcome to "Adopt desktop class
+editing interactions."
+
+4
+00:00:17,150 --> 00:00:20,654
+I'm Andy, a UIKit frameworks engineer,
+
+5
+00:00:20,687 --> 00:00:24,491
+and I will be joined later
+by my colleague, James.
+
+6
+00:00:24,525 --> 00:00:27,027
+The iPad is continuously evolving,
+
+7
+00:00:27,060 --> 00:00:32,366
+without compromising the interactions
+that make it simple and easy to use.
+
+8
+00:00:32,399 --> 00:00:36,670
+In this video, you'll learn about the
+exciting new editing interactions
+
+9
+00:00:36,703 --> 00:00:41,642
+that will transform your app
+to become more desktop class.
+
+10
+00:00:41,675 --> 00:00:48,282
+First, I'll go over the new edit menus,
+which received a major facelift in iOS 16.
+
+11
+00:00:49,283 --> 00:00:55,322
+Later, James will dive into the new system
+find and replace experience.
+
+12
+00:00:55,355 --> 00:00:59,860
+In iOS 16, the edit menu
+features an all-new design
+
+13
+00:00:59,893 --> 00:01:03,063
+that remains familiar
+but is more interactive
+
+14
+00:01:03,096 --> 00:01:05,799
+and is easier to discover actions.
+
+15
+00:01:06,733 --> 00:01:09,503
+The edit menu now
+has alternate presentations
+
+16
+00:01:09,536 --> 00:01:12,673
+based on the input method used.
+
+17
+00:01:12,706 --> 00:01:13,974
+For touch interactions,
+
+18
+00:01:14,007 --> 00:01:17,811
+the edit menu still has
+the familiar compact appearance,
+
+19
+00:01:17,845 --> 00:01:20,013
+but with an improved paging behavior,
+
+20
+00:01:20,047 --> 00:01:23,483
+allowing actions to be more
+discoverable than before.
+
+21
+00:01:26,486 --> 00:01:29,423
+With the Magic Keyboard or a trackpad,
+
+22
+00:01:29,456 --> 00:01:33,160
+a context menu is presented
+on secondary or right click
+
+23
+00:01:33,193 --> 00:01:38,966
+for a more desktop class experience.
+
+24
+00:01:38,999 --> 00:01:45,072
+Similarly, touch interaction on the iPhone
+will display the new edit menu.
+
+25
+00:01:46,707 --> 00:01:48,809
+And for Mac Catalyst apps,
+
+26
+00:01:48,842 --> 00:01:53,647
+context menus that Mac users
+are familiar with is presented.
+
+27
+00:01:53,680 --> 00:01:59,019
+In iOS 16, the text edit menu
+gets a major power-up
+
+28
+00:01:59,052 --> 00:02:02,022
+with new data detectors integration.
+
+29
+00:02:02,055 --> 00:02:06,126
+This includes inline unit
+and currency conversions,
+
+30
+00:02:06,159 --> 00:02:07,728
+as well as smart lookup
+
+31
+00:02:07,761 --> 00:02:13,467
+which displays contextual actions
+depending on the selected text.
+
+32
+00:02:13,500 --> 00:02:14,868
+For example,
+
+33
+00:02:14,902 --> 00:02:17,404
+if you select an address in Safari,
+
+34
+00:02:17,437 --> 00:02:19,406
+you will get Maps-based actions,
+
+35
+00:02:19,439 --> 00:02:22,843
+like "Get Directions" or "Open in Maps,"
+
+36
+00:02:22,876 --> 00:02:27,114
+on top of the existing edit menu actions.
+
+37
+00:02:27,147 --> 00:02:31,118
+The best part is,
+there is no adoption required!
+
+38
+00:02:31,151 --> 00:02:34,955
+These features are available
+in every text edit menu,
+
+39
+00:02:34,988 --> 00:02:40,794
+including text interaction views,
+WebKit and Safari, as well as PDFKit.
+
+40
+00:02:42,996 --> 00:02:48,302
+To insert actions into a text view's menu,
+implement the new TextViewDelegate method
+
+41
+00:02:48,335 --> 00:02:51,705
+to customize the displayed menu
+for text in the given range
+
+42
+00:02:51,738 --> 00:02:55,008
+with system provided actions.
+
+43
+00:02:55,042 --> 00:02:57,244
+If you don't need to customize anything,
+
+44
+00:02:57,277 --> 00:03:01,415
+return nil
+to get the standard system menu.
+
+45
+00:03:01,448 --> 00:03:06,119
+There are also similar methods
+on UITextFieldDelegate and UITextInput
+
+46
+00:03:06,153 --> 00:03:08,655
+to customize the menu there too.
+
+47
+00:03:08,689 --> 00:03:13,026
+Please note that inserting menu items
+using UIMenuController
+
+48
+00:03:13,060 --> 00:03:15,896
+is now deprecated in iOS 16,
+
+49
+00:03:15,929 --> 00:03:18,365
+and you should instead
+move to use the new methods
+
+50
+00:03:18,398 --> 00:03:21,802
+to add menu elements
+into your text edit menus,
+
+51
+00:03:21,835 --> 00:03:26,673
+because where we're going,
+we don't need menu controllers!
+
+52
+00:03:27,574 --> 00:03:31,979
+Here is an example of a text view
+with some custom actions.
+
+53
+00:03:32,012 --> 00:03:35,182
+When a menu is presented
+on some text selection,
+
+54
+00:03:35,215 --> 00:03:38,452
+a custom "Highlight" and
+"Insert Photo" action is shown
+
+55
+00:03:38,485 --> 00:03:41,622
+after the system suggested actions.
+
+56
+00:03:41,655 --> 00:03:47,661
+Selecting the highlight action performs
+a highlight on the text as expected.
+
+57
+00:03:47,694 --> 00:03:52,332
+Next, when the menu is presented
+without any text selection
+
+58
+00:03:52,366 --> 00:03:54,568
+where there is nothing to highlight,
+
+59
+00:03:54,601 --> 00:03:57,404
+the menu only displays
+the "Insert Photo" action
+
+60
+00:03:57,437 --> 00:04:01,008
+after the system suggested actions.
+
+61
+00:04:01,041 --> 00:04:05,612
+I'll show you how to add these actions
+using the new API.
+
+62
+00:04:05,646 --> 00:04:09,616
+To insert actions into the menu
+dynamically on presentation,
+
+63
+00:04:09,650 --> 00:04:12,753
+implement the UITextViewDelegate method
+
+64
+00:04:12,786 --> 00:04:17,758
+textView editMenuForTextIn range
+suggestedActions
+
+65
+00:04:17,791 --> 00:04:21,228
+In this example,
+I only want to add the "Highlight" action
+
+66
+00:04:21,261 --> 00:04:23,363
+when there is selected text,
+
+67
+00:04:23,397 --> 00:04:27,467
+so I can add the action dynamically
+through this method.
+
+68
+00:04:29,803 --> 00:04:32,906
+The "Insert Photo" action is always valid,
+
+69
+00:04:32,940 --> 00:04:39,847
+so I can add it into the array
+to always display the action in the menu.
+
+70
+00:04:39,880 --> 00:04:44,551
+Finally, I'll append my actions
+to the system suggested actions,
+
+71
+00:04:44,585 --> 00:04:49,990
+which includes items like Cut, Copy,
+and Paste, and return the menu.
+
+72
+00:04:50,023 --> 00:04:54,361
+And that's it!
+
+73
+00:04:54,394 --> 00:05:01,001
+UIEditMenuInteraction is the UIInteraction
+API that powers the new edit menu.
+
+74
+00:05:02,002 --> 00:05:04,471
+The interaction allows you
+to programmatically present
+
+75
+00:05:04,505 --> 00:05:07,541
+the lightweight edit menu
+outside of text views
+
+76
+00:05:07,574 --> 00:05:09,977
+based on your own gesture,
+
+77
+00:05:10,010 --> 00:05:15,782
+and has native support to present
+a context menu on secondary click.
+
+78
+00:05:15,816 --> 00:05:20,821
+In iOS 16, UIMenuController
+and all of its related APIs
+
+79
+00:05:20,854 --> 00:05:24,124
+are replaced by the new edit menu
+interaction.
+
+80
+00:05:25,425 --> 00:05:28,095
+To present an edit menu from scratch,
+
+81
+00:05:28,128 --> 00:05:33,700
+first, create the interaction
+and add it to the view.
+
+82
+00:05:33,734 --> 00:05:39,006
+Next, configure a gesture recognizer
+to present the menu from.
+
+83
+00:05:39,039 --> 00:05:42,009
+To ensure that the menu
+only appears on direct touch
+
+84
+00:05:42,042 --> 00:05:44,678
+and not from indirect pointer clicks,
+
+85
+00:05:44,711 --> 00:05:46,947
+be sure to set
+the allowedTouchTypes property
+
+86
+00:05:46,980 --> 00:05:50,784
+of the gesture recognizer
+to be direct touch only.
+
+87
+00:05:50,817 --> 00:05:56,290
+Then, add the gesture recognizer
+to the view.
+
+88
+00:05:56,323 --> 00:05:59,626
+Finally,
+when the gesture recognizer fires,
+
+89
+00:05:59,660 --> 00:06:02,796
+determine if there is content
+at the location of the gesture
+
+90
+00:06:02,829 --> 00:06:06,066
+that could display the menu.
+
+91
+00:06:06,099 --> 00:06:08,936
+Then, create an edit menu configuration
+
+92
+00:06:08,969 --> 00:06:12,773
+with a source point
+at the gesture's location.
+
+93
+00:06:12,806 --> 00:06:16,009
+The source point is used to
+determine performable actions
+
+94
+00:06:16,043 --> 00:06:20,180
+in the interaction's view
+to display in the menu.
+
+95
+00:06:22,316 --> 00:06:26,453
+Once configured,
+call presentEditMenu(with: configuration)
+
+96
+00:06:26,486 --> 00:06:28,789
+to show the menu.
+
+97
+00:06:30,891 --> 00:06:35,295
+When I right-click anywhere within
+the selected "Jello there!" view,
+
+98
+00:06:35,329 --> 00:06:38,832
+a context menu is presented
+with performable system actions
+
+99
+00:06:38,866 --> 00:06:41,535
+for the app's content.
+
+100
+00:06:41,568 --> 00:06:44,838
+Even more,
+when I tap on the selected view,
+
+101
+00:06:44,872 --> 00:06:48,041
+the edit menu is presented
+where my touch occurred,
+
+102
+00:06:48,075 --> 00:06:52,012
+showing the same actions
+as the context menu.
+
+103
+00:06:52,045 --> 00:06:55,682
+This is good, but it can be better.
+
+104
+00:06:55,716 --> 00:06:58,752
+While it is nice that the menu appears
+where the touch occurred,
+
+105
+00:06:58,785 --> 00:07:02,422
+it's actually blocking
+the selected view's content.
+
+106
+00:07:02,456 --> 00:07:07,127
+Moreover, I want to insert
+a new "Duplicate" action into the menu,
+
+107
+00:07:07,160 --> 00:07:10,397
+which is not a system default action.
+
+108
+00:07:10,430 --> 00:07:12,900
+Let's go back and change this.
+
+109
+00:07:12,933 --> 00:07:15,836
+To show the menu around the selected view,
+
+110
+00:07:15,869 --> 00:07:17,571
+implement the delegate method
+
+111
+00:07:17,604 --> 00:07:22,176
+editMenuInteraction
+targetRectFor configuration
+
+112
+00:07:22,209 --> 00:07:27,014
+This method returns a CGRect used to
+determine where to present the menu from
+
+113
+00:07:27,047 --> 00:07:32,819
+and is in the coordinate space
+of the interaction's view.
+
+114
+00:07:32,853 --> 00:07:37,958
+If the method is not implemented
+or a null CGRect is provided,
+
+115
+00:07:37,991 --> 00:07:42,896
+the menu will be presented from
+the source point of the configuration.
+
+116
+00:07:42,930 --> 00:07:46,867
+In this case, to prevent the menu
+from occluding the selected view,
+
+117
+00:07:46,900 --> 00:07:49,403
+return its frame.
+
+118
+00:07:49,436 --> 00:07:52,272
+Next, to add the "Duplicate" action,
+
+119
+00:07:52,306 --> 00:07:57,578
+implement editMenuInteraction
+menuFor configuration suggestedActions
+
+120
+00:07:57,611 --> 00:08:01,515
+and append the custom action
+after the system suggested actions,
+
+121
+00:08:01,548 --> 00:08:06,587
+similar to how you would insert actions
+into a text view's menu before.
+
+122
+00:08:07,588 --> 00:08:10,791
+Now, when I tap again
+on the selected view,
+
+123
+00:08:10,824 --> 00:08:15,562
+the menu no longer occludes "Jello there!"
+and instead presents around it.
+
+124
+00:08:15,596 --> 00:08:19,900
+The new "Duplicate" action is also
+included when the menu is presented,
+
+125
+00:08:19,933 --> 00:08:22,669
+all with just a few lines of code.
+
+126
+00:08:22,703 --> 00:08:23,871
+Brilliant!
+
+127
+00:08:25,906 --> 00:08:27,574
+For Mac Catalyst apps,
+
+128
+00:08:27,608 --> 00:08:30,644
+the edit menu bridges
+to the familiar context menus
+
+129
+00:08:30,677 --> 00:08:32,479
+that users expect on the Mac
+
+130
+00:08:32,513 --> 00:08:36,216
+when they right click
+on the interaction's view.
+
+131
+00:08:36,250 --> 00:08:38,719
+For iPad idiom Mac Catalyst apps,
+
+132
+00:08:38,752 --> 00:08:44,291
+programmatically presented edit menus
+also bridge into context menus.
+
+133
+00:08:44,324 --> 00:08:48,262
+Please note that programmatic presentation
+of the edit menu is not supported
+
+134
+00:08:48,295 --> 00:08:53,734
+for Mac idiom apps.
+
+135
+00:08:53,767 --> 00:08:57,437
+To offer seamless bridging
+between different presentation styles,
+
+136
+00:08:57,471 --> 00:09:02,976
+UIEditMenuInteraction is built on top
+of the UIMenuElement family of APIs.
+
+137
+00:09:03,010 --> 00:09:07,014
+These offer more flexibility
+and customizability than before,
+
+138
+00:09:07,047 --> 00:09:10,651
+including support for submenus and images.
+
+139
+00:09:10,684 --> 00:09:13,086
+If this is your first time using UIMenus,
+
+140
+00:09:13,120 --> 00:09:19,993
+watch "Modernizing Your UI for iOS 13"
+to learn more about menus and actions.
+
+141
+00:09:20,027 --> 00:09:22,930
+Building on top of UIMenuElement
+also means that
+
+142
+00:09:22,963 --> 00:09:26,633
+the edit menu has access
+to a wide variety of APIs,
+
+143
+00:09:26,667 --> 00:09:31,238
+like UIMenuSystem,
+that support menus already.
+
+144
+00:09:31,271 --> 00:09:36,176
+The edit menu uses the existing
+UIMenuSystem.context system
+
+145
+00:09:36,210 --> 00:09:38,445
+to build its menus.
+
+146
+00:09:38,478 --> 00:09:40,614
+To find out more about the menu builder,
+
+147
+00:09:40,647 --> 00:09:45,219
+as well as a deeper dive on responder
+chain traversal and command validation,
+
+148
+00:09:45,252 --> 00:09:50,290
+watch "Taking your iPad apps
+to the next level."
+
+149
+00:09:51,892 --> 00:09:57,598
+Speaking of menus, there are several
+new enhancements to UIMenu in iOS 16.
+
+150
+00:09:57,631 --> 00:10:00,701
+UIMenu now has a preferred
+element size property that allows
+
+151
+00:10:00,734 --> 00:10:06,106
+you to choose between different layouts
+in the context menu.
+
+152
+00:10:06,139 --> 00:10:10,811
+The small size gives the menu
+a more compact side-by-side appearance,
+
+153
+00:10:10,844 --> 00:10:15,148
+fitting more actions in a single row.
+
+154
+00:10:15,182 --> 00:10:19,086
+The medium size also displays actions
+in a side-by-side appearance
+
+155
+00:10:19,119 --> 00:10:21,388
+but with a little more detail.
+
+156
+00:10:21,421 --> 00:10:26,894
+This is used by the text edit menu
+to display the standard edit menu.
+
+157
+00:10:26,927 --> 00:10:30,764
+And finally, the large element size
+gives the menu its default,
+
+158
+00:10:30,797 --> 00:10:34,334
+full-width appearance.
+
+159
+00:10:34,368 --> 00:10:38,005
+Additionally, there is a new
+.keepsMenuPresented attribute
+
+160
+00:10:38,038 --> 00:10:41,074
+on UIMenuElement to keep menus presented
+
+161
+00:10:41,108 --> 00:10:44,211
+after an action is performed.
+
+162
+00:10:44,244 --> 00:10:48,048
+Use this attribute to allow actions
+to be performed multiple times
+
+163
+00:10:48,081 --> 00:10:50,984
+without re-presenting the menu.
+
+164
+00:10:51,018 --> 00:10:55,189
+That's just the tip of the iceberg
+for the new edit menu.
+
+165
+00:10:55,222 --> 00:11:00,627
+Extend text editing functionality
+by customizing the text edit menu.
+
+166
+00:11:00,661 --> 00:11:03,463
+Make sure that your actions
+have titles and images
+
+167
+00:11:03,497 --> 00:11:08,468
+so that the menus look complete
+in different presentation styles.
+
+168
+00:11:08,502 --> 00:11:12,472
+Most importantly,
+adopt the new UIEditMenuInteraction
+
+169
+00:11:12,506 --> 00:11:16,710
+for better customizability
+and improved consistency across platforms
+
+170
+00:11:16,743 --> 00:11:19,046
+and different input methods.
+
+171
+00:11:19,079 --> 00:11:24,084
+Adding support for the new edit menu
+is a great first step.
+
+172
+00:11:24,117 --> 00:11:27,154
+To complete the desktop class
+editing experience,
+
+173
+00:11:27,187 --> 00:11:29,289
+I'll hand it over to James to talk about
+
+174
+00:11:29,323 --> 00:11:32,492
+the new system
+find and replace experience.
+
+175
+00:11:34,194 --> 00:11:37,197
+James Magahern: Ah, there it is!
+
+176
+00:11:37,231 --> 00:11:41,201
+Hi, I'm James Magahern, a UIKit engineer,
+
+177
+00:11:41,235 --> 00:11:44,905
+and I'm here to talk about
+find and replace.
+
+178
+00:11:44,938 --> 00:11:46,707
+New in iOS 16,
+
+179
+00:11:46,740 --> 00:11:51,912
+we introduced a new UI component
+for finding and replacing text in apps.
+
+180
+00:11:51,945 --> 00:11:53,881
+It's standard across the system
+
+181
+00:11:53,914 --> 00:11:56,283
+and included with
+many of the built-in apps,
+
+182
+00:11:56,316 --> 00:11:58,552
+and allows your users to flex their
+muscle memory
+
+183
+00:11:58,585 --> 00:12:02,322
+with even more commonly used
+editing shortcuts.
+
+184
+00:12:02,356 --> 00:12:06,493
+This is the new
+find panel running on iPad.
+
+185
+00:12:06,527 --> 00:12:10,464
+We will automatically transition from
+floating inline with the shortcut bar
+
+186
+00:12:10,497 --> 00:12:12,766
+when a hardware keyboard is attached,
+
+187
+00:12:12,799 --> 00:12:19,206
+to resting on top of the software keyboard
+when used without a hardware keyboard.
+
+188
+00:12:19,239 --> 00:12:22,543
+On iPhone, we'll adapt
+to the smaller screen size
+
+189
+00:12:22,576 --> 00:12:25,779
+by using a more compact layout.
+
+190
+00:12:25,812 --> 00:12:29,316
+Automatic dismissal, minimization,
+and keyboard avoidance
+
+191
+00:12:29,349 --> 00:12:33,387
+are all taken care of by the system.
+
+192
+00:12:33,420 --> 00:12:35,222
+When running your app on a Mac,
+
+193
+00:12:35,255 --> 00:12:38,192
+we'll present the find panel inline
+with your content,
+
+194
+00:12:38,225 --> 00:12:41,128
+behaving just like the AppKit find bar,
+
+195
+00:12:41,161 --> 00:12:44,965
+and using a familiar layout
+that users expect on the Mac.
+
+196
+00:12:46,466 --> 00:12:51,471
+If you're using UITextView,
+WKWebView, or PDFViews
+
+197
+00:12:51,505 --> 00:12:54,408
+to display text content in your apps,
+
+198
+00:12:54,441 --> 00:12:59,847
+all you need to do to get started is set
+isFindInteractionEnabled to true
+
+199
+00:12:59,880 --> 00:13:02,182
+on the built-in find interaction.
+
+200
+00:13:02,216 --> 00:13:04,551
+It's that simple!
+
+201
+00:13:04,585 --> 00:13:08,922
+In addition, if you're using
+QuickLook to display text content,
+
+202
+00:13:08,956 --> 00:13:12,626
+this will already be available
+without any work from you.
+
+203
+00:13:14,795 --> 00:13:16,597
+With a hardware keyboard,
+
+204
+00:13:16,630 --> 00:13:20,534
+all of the standard system shortcuts
+like command+F for find,
+
+205
+00:13:20,567 --> 00:13:22,269
+command+G for find next,
+
+206
+00:13:22,302 --> 00:13:28,442
+command+shift+G for find previous,
+et cetera, will work just as expected.
+
+207
+00:13:28,475 --> 00:13:33,213
+Access to these commands are available
+via the menu bar when running on a Mac.
+
+208
+00:13:33,247 --> 00:13:36,850
+All you need to do is make sure
+the view displaying the content
+
+209
+00:13:36,884 --> 00:13:40,521
+can and does become first responder.
+
+210
+00:13:40,554 --> 00:13:43,190
+For users who are not using
+a hardware keyboard,
+
+211
+00:13:43,223 --> 00:13:46,293
+you can invoke the find interaction
+programmatically
+
+212
+00:13:46,326 --> 00:13:51,732
+via presentFindNavigator,
+on the included find interaction property.
+
+213
+00:13:51,765 --> 00:13:53,667
+It might be a good idea
+to make this available
+
+214
+00:13:53,700 --> 00:13:56,703
+via a navigation bar item, for example.
+
+215
+00:13:58,172 --> 00:14:02,176
+When running on a Mac, there's a couple
+other things to keep in mind.
+
+216
+00:14:02,209 --> 00:14:05,379
+For instance, on iOS,
+the find panel is presented
+
+217
+00:14:05,412 --> 00:14:09,316
+as part of the software keyboard
+or shortcut bar.
+
+218
+00:14:09,349 --> 00:14:13,554
+On the Mac, we'll display it
+inline with your content.
+
+219
+00:14:13,587 --> 00:14:16,590
+If you're installing the find interaction
+on a scroll view,
+
+220
+00:14:16,623 --> 00:14:21,195
+we’ll automatically adjust the content
+insets to accommodate the find panel,
+
+221
+00:14:21,228 --> 00:14:25,866
+and adapt to trait collection
+changes automatically.
+
+222
+00:14:25,899 --> 00:14:28,202
+You should otherwise make sure
+that there's enough room
+
+223
+00:14:28,235 --> 00:14:31,805
+to host the find panel
+in your UI on macOS.
+
+224
+00:14:33,140 --> 00:14:38,679
+Additionally, we'll show a menu containing
+a standard set of find options available
+
+225
+00:14:38,712 --> 00:14:41,915
+when tapping on the magnifying glass icon.
+
+226
+00:14:41,949 --> 00:14:44,451
+You can customize the contents
+of this menu
+
+227
+00:14:44,484 --> 00:14:49,857
+by using the optionsMenuProvider
+property on UIFindInteraction.
+
+228
+00:14:49,890 --> 00:14:53,594
+This will be more important
+with custom implementations.
+
+229
+00:14:53,627 --> 00:14:55,863
+And that's all it takes if you're using
+
+230
+00:14:55,896 --> 00:14:59,633
+one of the built-in views
+that I mentioned before.
+
+231
+00:14:59,666 --> 00:15:02,870
+If your app is displaying textual content
+by other means,
+
+232
+00:15:02,903 --> 00:15:08,075
+like a completely custom view
+or something like a list view, shown here,
+
+233
+00:15:08,108 --> 00:15:11,478
+you can still add the find interaction
+to your app.
+
+234
+00:15:11,512 --> 00:15:12,946
+Let me show you how.
+
+235
+00:15:14,515 --> 00:15:16,717
+The good news about find interaction
+
+236
+00:15:16,750 --> 00:15:21,021
+is that you can install it
+on any arbitrary view.
+
+237
+00:15:21,054 --> 00:15:24,892
+If you have an existing find and replace
+implementation in your app,
+
+238
+00:15:24,925 --> 00:15:28,061
+it's a snap to bridge over
+to UIFindInteraction
+
+239
+00:15:28,095 --> 00:15:32,266
+and take advantage of the system's UI.
+
+240
+00:15:32,299 --> 00:15:37,037
+If you don't already have an existing find
+implementation for your custom view,
+
+241
+00:15:37,070 --> 00:15:39,339
+it's still super easy to get started,
+
+242
+00:15:39,373 --> 00:15:43,677
+especially if you've already implemented
+the UITextInput protocol
+
+243
+00:15:43,710 --> 00:15:46,246
+in order to work with the system keyboard.
+
+244
+00:15:46,280 --> 00:15:51,084
+Here's how UIFindInteraction works
+with custom views.
+
+245
+00:15:51,118 --> 00:15:55,355
+After installing UIFindInteraction
+on your custom view,
+
+246
+00:15:55,389 --> 00:15:58,892
+set up a find interaction delegate.
+
+247
+00:15:58,926 --> 00:16:01,995
+The find interaction delegate,
+besides being notified
+
+248
+00:16:02,029 --> 00:16:05,499
+about when a find session begins or ends,
+
+249
+00:16:05,532 --> 00:16:10,537
+is responsible for dealing out
+UIFindSessions.
+
+250
+00:16:10,571 --> 00:16:14,107
+UIFindSession is an abstract base class
+
+251
+00:16:14,141 --> 00:16:17,811
+that encapsulates all of the state
+for a given session,
+
+252
+00:16:17,845 --> 00:16:21,582
+such as the currently highlighted result.
+
+253
+00:16:21,615 --> 00:16:25,352
+It also services all actions
+requested from the UI,
+
+254
+00:16:25,385 --> 00:16:30,090
+such as "go to the next result,"
+or "search for this string."
+
+255
+00:16:30,123 --> 00:16:32,826
+If you want to manage
+all of this state yourself,
+
+256
+00:16:32,860 --> 00:16:37,164
+you can choose to vend
+a subclass of UIFindSession
+
+257
+00:16:37,197 --> 00:16:39,032
+from your find interaction delegate.
+
+258
+00:16:40,601 --> 00:16:43,770
+This is a good option
+if you already have an existing
+
+259
+00:16:43,804 --> 00:16:46,573
+find and replace implementation
+in your app,
+
+260
+00:16:46,607 --> 00:16:50,043
+and want to bridge it over
+to the system UI.
+
+261
+00:16:50,077 --> 00:16:52,513
+Otherwise, it would be a much better idea
+
+262
+00:16:52,546 --> 00:16:55,482
+to let the system take care
+of the state for you,
+
+263
+00:16:55,516 --> 00:16:59,186
+and instead adopt
+the UITextSearching protocol
+
+264
+00:16:59,219 --> 00:17:05,259
+on whatever class encapsulates the content
+of the document being displayed.
+
+265
+00:17:05,292 --> 00:17:09,897
+To do this, you would return
+a UITextSearchingFindSession,
+
+266
+00:17:09,930 --> 00:17:12,733
+and connect it with your document class.
+
+267
+00:17:13,534 --> 00:17:16,403
+This is the best option
+if you don't yet have
+
+268
+00:17:16,436 --> 00:17:19,640
+a find implementation
+for your custom view.
+
+269
+00:17:19,673 --> 00:17:21,475
+Here's how to do this in code.
+
+270
+00:17:22,709 --> 00:17:25,546
+This example has a custom document class
+
+271
+00:17:25,579 --> 00:17:30,584
+and a custom view
+which displays this document.
+
+272
+00:17:30,617 --> 00:17:34,421
+The UIFindInteraction
+will be installed on this view,
+
+273
+00:17:34,454 --> 00:17:38,458
+and a UITextSearchingFindSession
+will be provided with this document
+
+274
+00:17:38,492 --> 00:17:41,995
+as the "searchable object."
+
+275
+00:17:42,029 --> 00:17:45,299
+Make sure either your view controller
+or your custom view
+
+276
+00:17:45,332 --> 00:17:50,537
+can become first responder
+so keyboard shortcuts work as expected.
+
+277
+00:17:51,872 --> 00:17:55,042
+Create the find interaction,
+and provide a session delegate
+
+278
+00:17:55,075 --> 00:17:57,311
+to deal out find sessions.
+
+279
+00:17:57,344 --> 00:18:01,181
+Here, the view controller
+is the session delegate.
+
+280
+00:18:01,215 --> 00:18:04,718
+Then, when asked for a find session
+by the interaction,
+
+281
+00:18:04,751 --> 00:18:08,088
+just return a new
+UITextSearchingFindSession
+
+282
+00:18:08,121 --> 00:18:12,426
+providing your document
+as the searchable object.
+
+283
+00:18:12,459 --> 00:18:15,062
+You will of course need to make sure
+that your document class
+
+284
+00:18:15,095 --> 00:18:17,898
+conforms to the UITextSearching protocol.
+
+285
+00:18:19,867 --> 00:18:23,237
+The class which implements
+the UITextSearching protocol
+
+286
+00:18:23,270 --> 00:18:27,975
+is responsible for actually finding
+text in your document.
+
+287
+00:18:28,008 --> 00:18:31,111
+The system will call performTextSearch,
+
+288
+00:18:31,144 --> 00:18:36,750
+and hand you an aggregator object
+to which you can provide results.
+
+289
+00:18:36,783 --> 00:18:42,823
+The aggregator works with UITextRange
+to represent results in your document.
+
+290
+00:18:42,856 --> 00:18:46,293
+This is another abstract class
+that you can use
+
+291
+00:18:46,326 --> 00:18:51,765
+to encapsulate whatever data
+makes sense for how you store text.
+
+292
+00:18:51,798 --> 00:18:54,535
+For example,
+this could represent a DOM range
+
+293
+00:18:54,568 --> 00:18:58,405
+for clients who use WebKit to render text.
+
+294
+00:18:58,438 --> 00:19:00,507
+The aggregator is also thread-safe,
+
+295
+00:19:00,541 --> 00:19:04,545
+so you can provide it results
+on a background thread.
+
+296
+00:19:04,578 --> 00:19:06,780
+Finally, since the find interaction
+
+297
+00:19:06,813 --> 00:19:11,018
+doesn't know how to display results
+using your custom view,
+
+298
+00:19:11,051 --> 00:19:16,490
+you'll also need to decorate results for
+a given style when decorate() is called.
+
+299
+00:19:16,523 --> 00:19:19,393
+The UITextSearching find session
+and protocol
+
+300
+00:19:19,426 --> 00:19:23,830
+also support multiplexing
+across multiple visible documents
+
+301
+00:19:23,864 --> 00:19:25,699
+using the same interaction.
+
+302
+00:19:26,567 --> 00:19:28,936
+In other words,
+if your app displays content
+
+303
+00:19:28,969 --> 00:19:32,439
+in a manner similar
+to Mail's conversation view,
+
+304
+00:19:32,472 --> 00:19:36,343
+where each "document" in that case
+is a mail message,
+
+305
+00:19:36,376 --> 00:19:41,381
+you can install a single find interaction
+on the root level collection view
+
+306
+00:19:41,415 --> 00:19:45,719
+and perform a find across all documents
+at the same time,
+
+307
+00:19:45,752 --> 00:19:52,059
+allowing your users to jump between
+results in different documents with ease.
+
+308
+00:19:52,092 --> 00:19:57,331
+So that's all it takes to get started
+with the new find interaction in iOS 16.
+
+309
+00:19:57,364 --> 00:20:00,334
+For system views
+that display a lot of text content,
+
+310
+00:20:00,367 --> 00:20:04,371
+make sure to enable
+isFindInteractionEnabled.
+
+311
+00:20:04,404 --> 00:20:08,709
+Move your existing find implementation
+to UIFindInteraction.
+
+312
+00:20:08,742 --> 00:20:13,080
+Implement UITextSearching
+and use UITextSearchingFindSession
+
+313
+00:20:13,113 --> 00:20:16,383
+if you don't yet have
+text searching in your app.
+
+314
+00:20:16,416 --> 00:20:19,286
+And lastly, check and make sure
+you don't have any conflicting
+
+315
+00:20:19,319 --> 00:20:22,723
+keyboard shortcuts in your app.
+
+316
+00:20:22,756 --> 00:20:27,761
+And that is what it takes to refresh your
+app's editing interactions for iOS 16
+
+317
+00:20:27,794 --> 00:20:30,764
+and make them truly desktop class.
+
+318
+00:20:31,498 --> 00:20:34,535
+Try the new text edit menu in your app,
+
+319
+00:20:34,568 --> 00:20:38,272
+and adopt the edit menu interaction
+for custom UI.
+
+320
+00:20:38,305 --> 00:20:42,843
+And boost productivity by making
+your app's text content searchable.
+
+321
+00:20:42,876 --> 00:20:47,714
+I'm looking forward to finding
+these great new features in your app.
+
+322
+00:20:47,748 --> 00:20:52,286
+Thanks for watching!
+Make sure to like, comment, and subscribe.
+
+323
+00:20:52,319 --> 00:20:55,322
+[upbeat music]
+

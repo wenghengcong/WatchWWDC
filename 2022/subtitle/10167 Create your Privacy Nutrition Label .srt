@@ -1,0 +1,1017 @@
+1
+00:00:09,309 --> 00:00:11,678
+Hi, I'm Ben,
+from Privacy Engineering,
+
+2
+00:00:11,712 --> 00:00:14,815
+and welcome
+to Create your Privacy Nutrition Label.
+
+3
+00:00:14,848 --> 00:00:17,818
+At WWDC 2020,
+
+4
+00:00:17,851 --> 00:00:19,853
+we announced privacy nutrition labels
+to provide people
+
+5
+00:00:19,887 --> 00:00:23,891
+with an easily glanceable
+and understandable summary
+
+6
+00:00:23,924 --> 00:00:27,828
+about how the apps they use
+collect and use data.
+
+7
+00:00:27,861 --> 00:00:32,032
+In this talk, we'll discuss strategies
+for creating an accurate label
+
+8
+00:00:32,065 --> 00:00:33,667
+and highlight some definitions
+
+9
+00:00:33,700 --> 00:00:36,904
+and examples to keep in mind
+as you build your label.
+
+10
+00:00:37,938 --> 00:00:40,974
+Nutrition labels are one of many ways
+you can communicate
+
+11
+00:00:41,008 --> 00:00:42,776
+your app's privacy practices,
+
+12
+00:00:42,809 --> 00:00:46,680
+in addition to a privacy policy
+and App Privacy Report.
+
+13
+00:00:46,713 --> 00:00:51,552
+Labels can help you explain to people
+how you use the data your app collects.
+
+14
+00:00:51,585 --> 00:00:54,188
+Additionally, sharing a label is
+a requirement
+
+15
+00:00:54,221 --> 00:00:56,523
+for all apps in the App Store.
+
+16
+00:00:56,557 --> 00:00:59,793
+On an app's nutrition label,
+you can see data the app collects
+
+17
+00:00:59,826 --> 00:01:03,297
+that is used for tracking,
+data that is linked to identity,
+
+18
+00:01:03,330 --> 00:01:06,033
+or associated with an account or profile,
+
+19
+00:01:06,066 --> 00:01:08,135
+and data that is not linked to identity.
+
+20
+00:01:08,936 --> 00:01:12,439
+In each section, the categories
+of data collected are shown.
+
+21
+00:01:13,040 --> 00:01:17,578
+Alternatively, if data is not collected,
+an alternate label is shown.
+
+22
+00:01:18,312 --> 00:01:20,747
+From an app's product page
+in the App Store,
+
+23
+00:01:20,781 --> 00:01:24,184
+you can also view a more detailed version
+of the nutrition label
+
+24
+00:01:24,218 --> 00:01:27,354
+that includes the specific types of data
+the app collects
+
+25
+00:01:27,387 --> 00:01:29,189
+and how that data is used.
+
+26
+00:01:29,990 --> 00:01:34,328
+Today we'll be looking
+at nutrition labels in more detail.
+
+27
+00:01:34,361 --> 00:01:37,231
+We'll walk through the process
+for how to create your label
+
+28
+00:01:37,264 --> 00:01:38,498
+in App Store Connect,
+
+29
+00:01:38,532 --> 00:01:41,168
+and I'll share some resources
+along the way.
+
+30
+00:01:42,870 --> 00:01:46,039
+Additionally, we'll provide
+some more detailed definitions
+
+31
+00:01:46,073 --> 00:01:50,377
+and examples to help you
+answer privacy questions for your app.
+
+32
+00:01:51,178 --> 00:01:54,715
+Let's begin with label creation process.
+
+33
+00:01:54,748 --> 00:01:58,585
+To create your label, you'll be asked
+about what data your app collects,
+
+34
+00:01:58,619 --> 00:02:03,090
+use cases for each type of data,
+and how that data is stored.
+
+35
+00:02:03,123 --> 00:02:06,026
+You might want to start
+with creating an inventory
+
+36
+00:02:06,059 --> 00:02:08,729
+of your app's features
+and data collection.
+
+37
+00:02:08,762 --> 00:02:12,266
+An inventory can be a helpful resource
+for the next step,
+
+38
+00:02:12,299 --> 00:02:15,469
+where you'll enter information
+about your app's privacy practices
+
+39
+00:02:15,502 --> 00:02:17,604
+into App Store Connect.
+
+40
+00:02:17,638 --> 00:02:21,742
+After you submit your label,
+and as you update your data practices,
+
+41
+00:02:21,775 --> 00:02:24,344
+you should keep your label updated
+as appropriate.
+
+42
+00:02:25,379 --> 00:02:29,016
+Lets dive right in and look
+at how you can go about crafting
+
+43
+00:02:29,049 --> 00:02:30,851
+an inventory for your app.
+
+44
+00:02:31,818 --> 00:02:34,254
+When you submit
+your label to App Store Connect,
+
+45
+00:02:34,288 --> 00:02:37,691
+you'll answer some questions
+about how your app uses data.
+
+46
+00:02:37,724 --> 00:02:41,361
+You'll be asked about the categories
+of data collected by your app,
+
+47
+00:02:41,395 --> 00:02:43,530
+the use cases for the data,
+
+48
+00:02:43,564 --> 00:02:45,699
+whether the data is linked to identity,
+
+49
+00:02:45,732 --> 00:02:48,135
+and whether the data is used for tracking.
+
+50
+00:02:49,102 --> 00:02:51,905
+However, as a developer,
+you might not be thinking
+
+51
+00:02:51,939 --> 00:02:53,941
+about data categories in your app.
+
+52
+00:02:53,974 --> 00:02:56,143
+You're probably thinking about features,
+
+53
+00:02:56,176 --> 00:02:59,046
+and if you're not sure where to start
+on building the nutrition label,
+
+54
+00:02:59,079 --> 00:03:00,981
+list out your app's features.
+
+55
+00:03:01,915 --> 00:03:05,085
+Then consider what data powers
+each feature,
+
+56
+00:03:05,118 --> 00:03:09,323
+including what data is retained
+and how that data is used.
+
+57
+00:03:09,356 --> 00:03:12,426
+You can then keep this list
+as a reference for when you're asked
+
+58
+00:03:12,459 --> 00:03:15,462
+to enter specific details
+into App Store Connect.
+
+59
+00:03:15,495 --> 00:03:18,532
+We recommend finding a framework
+to document this information
+
+60
+00:03:18,565 --> 00:03:21,702
+that works for your app,
+and you may have many strategies
+
+61
+00:03:21,735 --> 00:03:24,438
+to build an inventory
+or other documentation.
+
+62
+00:03:25,506 --> 00:03:28,575
+When creating this inventory,
+there are a number of resources
+
+63
+00:03:28,609 --> 00:03:30,811
+that you can use along the way.
+
+64
+00:03:30,844 --> 00:03:34,281
+Make sure to reach out to the stakeholders
+working on your app.
+
+65
+00:03:34,314 --> 00:03:36,884
+For example,
+you can check with your marketing team
+
+66
+00:03:36,917 --> 00:03:38,852
+to understand what data they use
+
+67
+00:03:38,886 --> 00:03:42,623
+and work with legal counsel to ensure
+you document all data uses
+
+68
+00:03:42,656 --> 00:03:44,758
+described in your app's privacy policy.
+
+69
+00:03:45,526 --> 00:03:49,863
+We also recommend consulting
+internal documentation in this process.
+
+70
+00:03:50,797 --> 00:03:53,267
+Consider looking
+at your app's network traffic
+
+71
+00:03:53,300 --> 00:03:57,304
+using App Privacy Report
+or a network proxy tool.
+
+72
+00:03:57,337 --> 00:04:01,308
+You can use this information to learn
+what domains your app is contacting
+
+73
+00:04:01,341 --> 00:04:03,877
+and follow up with the owners
+of those endpoints
+
+74
+00:04:03,911 --> 00:04:06,146
+to understand how data is being used.
+
+75
+00:04:06,180 --> 00:04:09,883
+Keep in mind that while a network audit
+may be helpful in discovering
+
+76
+00:04:09,917 --> 00:04:12,986
+where your app sends data,
+it is not comprehensive,
+
+77
+00:04:13,020 --> 00:04:15,789
+and you should use it
+in combination with other strategies.
+
+78
+00:04:16,690 --> 00:04:20,127
+You should also audit any data
+you retain on a server,
+
+79
+00:04:20,160 --> 00:04:22,129
+such as by reviewing database schemas
+
+80
+00:04:22,162 --> 00:04:24,464
+and checking what systems
+have access to data.
+
+81
+00:04:26,200 --> 00:04:29,203
+Additionally, make sure to check
+with any partners
+
+82
+00:04:29,236 --> 00:04:31,271
+that may be processing your app's data,
+
+83
+00:04:31,305 --> 00:04:34,541
+as you are responsible
+for declaring the collection practices
+
+84
+00:04:34,575 --> 00:04:36,777
+of all data collected from your app,
+
+85
+00:04:36,810 --> 00:04:39,847
+including data collected
+by third-party SDKs,
+
+86
+00:04:39,880 --> 00:04:43,984
+analytics tools, advertising networks,
+or other external vendors.
+
+87
+00:04:44,885 --> 00:04:48,522
+Many SDKs provide documentation
+of their privacy practices,
+
+88
+00:04:48,555 --> 00:04:51,859
+and some provide specific guidance
+for nutrition labels
+
+89
+00:04:51,892 --> 00:04:55,395
+which you can use to ensure
+your label is comprehensive.
+
+90
+00:04:56,463 --> 00:04:59,366
+When building this inventory,
+you might also discover
+
+91
+00:04:59,399 --> 00:05:02,202
+that there is data that you're collecting
+that you don't need.
+
+92
+00:05:02,236 --> 00:05:06,473
+Inventorying your privacy practices
+can be a way to identify opportunities
+
+93
+00:05:06,507 --> 00:05:10,477
+to make changes to your app's practices
+by minimizing data collection,
+
+94
+00:05:10,511 --> 00:05:14,581
+processing data on device,
+and storing data not linked to identity.
+
+95
+00:05:15,382 --> 00:05:19,853
+For some new technologies you can use,
+see What's New In Privacy.
+
+96
+00:05:19,887 --> 00:05:23,991
+Once you've built up an inventory
+or documented your data practices
+
+97
+00:05:24,024 --> 00:05:25,592
+through your preferred process,
+
+98
+00:05:25,626 --> 00:05:28,795
+you'll work though responding
+to the questions in App Store Connect.
+
+99
+00:05:29,796 --> 00:05:34,101
+In App Store Connect,
+account holders, admins, and app mangers
+
+100
+00:05:34,134 --> 00:05:36,503
+can enter your app's privacy label.
+
+101
+00:05:36,537 --> 00:05:39,773
+From your app's page,
+open the App Privacy section.
+
+102
+00:05:40,574 --> 00:05:44,578
+First, you'll be asked
+about whether your app collects data.
+
+103
+00:05:44,611 --> 00:05:48,682
+Data is considered collected when it
+is transmitted off device in a way
+
+104
+00:05:48,715 --> 00:05:52,386
+that is accessible for longer than
+to service the request in real time.
+
+105
+00:05:52,419 --> 00:05:56,456
+So if you or any of your partners
+retain data about interaction with the app
+
+106
+00:05:56,490 --> 00:05:59,560
+on a server,
+such as server logs, a user profile,
+
+107
+00:05:59,593 --> 00:06:02,629
+or analytics,
+your app likely collects data.
+
+108
+00:06:04,531 --> 00:06:08,101
+We designed labels
+to describe all data apps collect.
+
+109
+00:06:08,135 --> 00:06:10,704
+You should declare all data
+collected by your app,
+
+110
+00:06:10,737 --> 00:06:14,374
+even if people agree elsewhere
+to the data collection or use.
+
+111
+00:06:15,342 --> 00:06:17,711
+Labels are a supplement
+to a privacy policy
+
+112
+00:06:17,744 --> 00:06:18,779
+and any requirements
+
+113
+00:06:18,812 --> 00:06:21,849
+for user transparency
+or consent for data collection.
+
+114
+00:06:22,516 --> 00:06:26,653
+We recommend working with legal counsel
+to evaluate those requirements.
+
+115
+00:06:26,687 --> 00:06:29,823
+If you do collect data,
+you'll be asked to declare
+
+116
+00:06:29,857 --> 00:06:32,125
+the categories of data
+collected from your app,
+
+117
+00:06:32,159 --> 00:06:35,162
+such as email address,
+phone number, or payment info.
+
+118
+00:06:36,230 --> 00:06:38,832
+You'll then be able to preview
+your label in progress
+
+119
+00:06:38,866 --> 00:06:41,668
+and provide more detail
+for each data category.
+
+120
+00:06:42,269 --> 00:06:44,505
+Let's work on phone number.
+
+121
+00:06:44,538 --> 00:06:48,342
+For each category of data,
+you'll be asked to declare what use cases
+
+122
+00:06:48,375 --> 00:06:49,810
+the data collection supports,
+
+123
+00:06:49,843 --> 00:06:52,679
+such as analytics
+or product personalization.
+
+124
+00:06:53,614 --> 00:06:55,649
+You'll then be asked to disclose
+
+125
+00:06:55,682 --> 00:06:57,851
+whether data is linked
+to a user's identity.
+
+126
+00:06:59,553 --> 00:07:03,824
+Data is considered linked to identity
+if it is associated with an account,
+
+127
+00:07:03,857 --> 00:07:06,059
+device, or user profile.
+
+128
+00:07:06,093 --> 00:07:09,263
+This can be an opportunity
+for you to evaluate whether you need
+
+129
+00:07:09,296 --> 00:07:13,000
+to store data linked to identity,
+and whether you can store data
+
+130
+00:07:13,033 --> 00:07:16,303
+in a way that isn't linkable
+to any account or profile.
+
+131
+00:07:17,304 --> 00:07:20,741
+Finally, you'll be asked
+whether each data type is used
+
+132
+00:07:20,774 --> 00:07:22,309
+for tracking purposes.
+
+133
+00:07:23,043 --> 00:07:26,680
+"Tracking" refers to linking data
+collected from your app
+
+134
+00:07:26,713 --> 00:07:31,185
+about a particular end user or device,
+such as a user identifier,
+
+135
+00:07:31,218 --> 00:07:35,222
+device identifier, or profile,
+with third-party data
+
+136
+00:07:35,255 --> 00:07:38,825
+for targeted advertising
+or advertising measurement purposes,
+
+137
+00:07:38,859 --> 00:07:41,161
+or sharing data collected from your app
+
+138
+00:07:41,195 --> 00:07:44,998
+about a particular end user
+or device with a data broker.
+
+139
+00:07:45,799 --> 00:07:49,403
+As mentioned earlier,
+nutrition labels are intended to reflect
+
+140
+00:07:49,436 --> 00:07:51,672
+all data your app may collect,
+
+141
+00:07:51,705 --> 00:07:54,074
+even for features where people
+using your app
+
+142
+00:07:54,107 --> 00:07:57,344
+agree separately
+to data collection or use.
+
+143
+00:07:57,377 --> 00:08:02,416
+Ensure you disclose any data categories
+used for tracking on your nutrition label.
+
+144
+00:08:02,449 --> 00:08:05,485
+Additionally,
+as all tracking must be with permission,
+
+145
+00:08:05,519 --> 00:08:09,389
+adopt App Tracking Transparency
+if appropriate for your app.
+
+146
+00:08:10,290 --> 00:08:15,128
+For more information about tracking,
+see Explore App Tracking Transparency.
+
+147
+00:08:17,531 --> 00:08:21,235
+Once you've submitted this information
+for all data your app collects,
+
+148
+00:08:21,268 --> 00:08:24,238
+you'll be able
+to preview and publish your label.
+
+149
+00:08:24,271 --> 00:08:29,142
+Your label will be published immediately,
+independent from any updates to your app.
+
+150
+00:08:30,377 --> 00:08:32,179
+Now that you've created your label,
+
+151
+00:08:32,212 --> 00:08:34,982
+let's consider
+when you'll need to update it.
+
+152
+00:08:35,015 --> 00:08:37,417
+You can update your label at any time,
+
+153
+00:08:37,451 --> 00:08:40,621
+and aren't required to release
+a new version of your app.
+
+154
+00:08:40,654 --> 00:08:42,823
+We recommend re-evaluating
+your app's label
+
+155
+00:08:42,856 --> 00:08:45,826
+when releasing new features
+and on an ongoing basis.
+
+156
+00:08:46,426 --> 00:08:48,495
+As you change how your app uses data,
+
+157
+00:08:48,529 --> 00:08:51,064
+ensure your label remains up to date.
+
+158
+00:08:51,098 --> 00:08:53,066
+If you're adding new features to your app,
+
+159
+00:08:53,100 --> 00:08:57,871
+implementing new or updated integrations
+with third-party partners or SDKs,
+
+160
+00:08:57,905 --> 00:09:00,541
+or using already-collected data
+in new ways,
+
+161
+00:09:00,574 --> 00:09:04,077
+make sure to evaluate
+whether any label changes are needed.
+
+162
+00:09:04,111 --> 00:09:08,916
+Now that we've worked through the process
+of building your privacy nutrition label,
+
+163
+00:09:08,949 --> 00:09:14,087
+we'll discuss some additional guidance
+around policy definitions and examples.
+
+164
+00:09:14,121 --> 00:09:18,392
+All of this information is available
+in the Apple Developer documentation.
+
+165
+00:09:18,425 --> 00:09:23,430
+Today I'll be highlighting a few examples
+based on our experience at Apple
+
+166
+00:09:23,463 --> 00:09:26,333
+building nutrition labels
+for our own apps,
+
+167
+00:09:26,366 --> 00:09:29,403
+and from some questions
+we have heard from developers.
+
+168
+00:09:30,037 --> 00:09:33,907
+You might wonder
+how to disclose use of IP address.
+
+169
+00:09:33,941 --> 00:09:36,677
+IP addresses can be used
+for multiple purposes,
+
+170
+00:09:36,710 --> 00:09:41,181
+including as an identifier
+or to infer approximate location.
+
+171
+00:09:41,215 --> 00:09:44,051
+Our guidance is to declare
+the collection categories
+
+172
+00:09:44,084 --> 00:09:47,554
+based on what the IP address is used for.
+
+173
+00:09:47,588 --> 00:09:51,024
+For example, if you use IP address
+to show local content
+
+174
+00:09:51,058 --> 00:09:54,728
+or for location analytics,
+declare location.
+
+175
+00:09:55,429 --> 00:09:59,266
+Another area to note is the categories
+including product interaction.
+
+176
+00:10:00,200 --> 00:10:04,004
+Product Interaction covers data
+collected about the user's interactions
+
+177
+00:10:04,037 --> 00:10:07,941
+inside the app, such as information
+about which screens people open.
+
+178
+00:10:08,976 --> 00:10:11,979
+Browsing history refers
+to collection of activity
+
+179
+00:10:12,012 --> 00:10:15,849
+that is not part of the app,
+such as an in-app browser.
+
+180
+00:10:15,883 --> 00:10:19,119
+Search History is searches
+performed within the app
+
+181
+00:10:19,152 --> 00:10:23,190
+for any content,
+both in the app or in in-app browsers.
+
+182
+00:10:24,191 --> 00:10:27,127
+Labels are intended
+to comprehensively describe
+
+183
+00:10:27,160 --> 00:10:28,862
+the app's primary functionality
+
+184
+00:10:28,896 --> 00:10:31,765
+and features encountered
+by all of your app's users.
+
+185
+00:10:32,599 --> 00:10:35,035
+However, there are certain types
+of collection
+
+186
+00:10:35,068 --> 00:10:37,271
+that are optional to disclose.
+
+187
+00:10:37,304 --> 00:10:40,541
+Collection that is infrequent, optional,
+and independent
+
+188
+00:10:40,574 --> 00:10:43,043
+from the app's primary functionality,
+
+189
+00:10:43,076 --> 00:10:46,413
+clearly discloses all collection
+at submission time,
+
+190
+00:10:46,446 --> 00:10:52,085
+and has limited use purposes, for example,
+not used for tracking or advertising,
+
+191
+00:10:52,119 --> 00:10:54,021
+may be optional to disclose.
+
+192
+00:10:54,821 --> 00:10:58,158
+Feedback forms and report-a-problem flows
+are some features
+
+193
+00:10:58,192 --> 00:10:59,927
+that may meet these requirements.
+
+194
+00:11:00,961 --> 00:11:04,264
+Full details and requirements
+for the optional disclosure policy
+
+195
+00:11:04,298 --> 00:11:08,202
+are available on the "App privacy details
+on the App Store" page
+
+196
+00:11:08,235 --> 00:11:10,637
+in Apple Developer documentation.
+
+197
+00:11:10,671 --> 00:11:12,439
+And that's a wrap!
+
+198
+00:11:12,472 --> 00:11:16,410
+Here are four things to keep
+in mind while building your label.
+
+199
+00:11:16,443 --> 00:11:20,180
+Make sure to reach out to all stakeholders
+working on your app
+
+200
+00:11:20,214 --> 00:11:24,051
+to inventory your collection
+and ensure your label is accurate.
+
+201
+00:11:25,118 --> 00:11:28,255
+Remember to include
+all collection from your app,
+
+202
+00:11:28,288 --> 00:11:30,791
+including from SDKs and other partners.
+
+203
+00:11:31,892 --> 00:11:36,763
+If applicable to your app, ensure
+you request permission for tracking,
+
+204
+00:11:36,797 --> 00:11:39,967
+in addition to disclosing
+any use on your nutrition label.
+
+205
+00:11:40,934 --> 00:11:45,305
+Finally, when you update your app
+or change how you use data,
+
+206
+00:11:45,339 --> 00:11:47,040
+ensure your label is updated.
+
+207
+00:11:48,175 --> 00:11:50,077
+Thanks for joining me today.
+
+208
+00:11:50,110 --> 00:11:52,746
+Privacy Nutrition Labels
+are a way to build trust
+
+209
+00:11:52,779 --> 00:11:54,548
+with people who use your app
+
+210
+00:11:54,581 --> 00:11:57,518
+and help people
+understand how you use data.
+
+211
+00:11:57,551 --> 00:12:00,921
+The Apple Developer Documentation
+and App Store Connect
+
+212
+00:12:00,954 --> 00:12:03,824
+have even more information
+to reference throughout the process
+
+213
+00:12:03,857 --> 00:12:06,059
+of building and updating your label.
+
+214
+00:12:06,960 --> 00:12:09,263
+♪ instrumental hip hop music ♪
+

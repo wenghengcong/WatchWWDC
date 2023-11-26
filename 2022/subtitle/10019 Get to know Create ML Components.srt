@@ -1,0 +1,2439 @@
+1
+00:00:00,033 --> 00:00:03,003
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,276
+♪
+
+3
+00:00:09,276 --> 00:00:11,011
+Hello, I'm Alejandro.
+
+4
+00:00:11,011 --> 00:00:13,247
+I'm an engineer
+on the CreateML team.
+
+5
+00:00:13,247 --> 00:00:15,582
+Today I'm going to talk about
+a brand-new API
+
+6
+00:00:15,582 --> 00:00:19,453
+for building machine learning
+models using components.
+
+7
+00:00:19,453 --> 00:00:21,655
+Create ML
+provides a simple API
+
+8
+00:00:21,655 --> 00:00:23,957
+for training
+machine learning models.
+
+9
+00:00:23,957 --> 00:00:25,826
+It is based on
+a set of supported tasks
+
+10
+00:00:25,826 --> 00:00:31,198
+like image classification,
+sound classification, and so on.
+
+11
+00:00:31,198 --> 00:00:33,567
+At WWDC 2021,
+
+12
+00:00:33,567 --> 00:00:36,937
+we presented two great talks
+on the Create ML framework.
+
+13
+00:00:36,937 --> 00:00:39,873
+Make sure to check those out
+if you haven't.
+
+14
+00:00:39,873 --> 00:00:42,943
+But I want to talk about
+going beyond predefined tasks.
+
+15
+00:00:42,943 --> 00:00:44,611
+What if you wanted
+to customize a task
+
+16
+00:00:44,611 --> 00:00:48,115
+to your particular problem
+beyond what Create ML offers?
+
+17
+00:00:48,115 --> 00:00:51,752
+Or what if you wanted to build
+a different type of task?
+
+18
+00:00:51,752 --> 00:00:54,254
+Using components,
+you can now compose tasks
+
+19
+00:00:54,254 --> 00:00:56,056
+in new and creative ways.
+
+20
+00:00:56,056 --> 00:00:58,325
+Let's dig in.
+
+21
+00:00:58,325 --> 00:01:00,427
+I'll start by breaking up
+an ML task
+
+22
+00:01:00,427 --> 00:01:03,397
+and explaining what
+each component does.
+
+23
+00:01:03,397 --> 00:01:07,234
+Then, I'll talk about how you
+can piece components together.
+
+24
+00:01:07,234 --> 00:01:10,404
+Followed with an example
+of a custom image task.
+
+25
+00:01:10,404 --> 00:01:13,507
+Then, I'll talk about
+tabular tasks.
+
+26
+00:01:13,507 --> 00:01:16,610
+And I'll end with
+deployment strategies.
+
+27
+00:01:16,610 --> 00:01:18,378
+Let me start by exploring
+the insides
+
+28
+00:01:18,378 --> 00:01:20,781
+of a machine learning task
+so that you understand
+
+29
+00:01:20,781 --> 00:01:23,216
+what goes into it
+and how it works.
+
+30
+00:01:23,216 --> 00:01:25,652
+This way, when we start
+building custom tasks,
+
+31
+00:01:25,652 --> 00:01:27,421
+you know what I'm talking about.
+
+32
+00:01:27,421 --> 00:01:31,158
+I'm going to use an image
+classifier as an example.
+
+33
+00:01:31,158 --> 00:01:34,094
+An image classifier
+uses a list of labeled images
+
+34
+00:01:34,094 --> 00:01:36,096
+to train a model.
+
+35
+00:01:36,096 --> 00:01:38,799
+In this example,
+I have images of cats and dogs
+
+36
+00:01:38,799 --> 00:01:41,234
+with their respective labels.
+
+37
+00:01:41,234 --> 00:01:45,339
+But let's explore how images
+are transformed at each step.
+
+38
+00:01:45,339 --> 00:01:48,208
+To do that, I'll expand
+the image classification task
+
+39
+00:01:48,208 --> 00:01:50,711
+to see what's inside.
+
+40
+00:01:50,711 --> 00:01:53,280
+Conceptually, an image
+classifier is very simple.
+
+41
+00:01:53,280 --> 00:01:56,650
+It consists of a feature
+extractor and a classifier.
+
+42
+00:01:56,650 --> 00:01:59,987
+But the important part
+is that Create ML components
+
+43
+00:01:59,987 --> 00:02:02,889
+gives you access to these
+components independently.
+
+44
+00:02:02,889 --> 00:02:07,761
+You can add, remove, or switch
+components to compose new tasks.
+
+45
+00:02:07,761 --> 00:02:10,664
+I'm going to represent
+components as boxes.
+
+46
+00:02:10,664 --> 00:02:12,899
+Arrows represent
+the flow of data.
+
+47
+00:02:12,899 --> 00:02:15,669
+Let's zoom into the first step
+of the image classifier:
+
+48
+00:02:15,669 --> 00:02:18,271
+feature extraction.
+
+49
+00:02:18,271 --> 00:02:21,308
+Generally, feature extractors
+reduce the dimensionality
+
+50
+00:02:21,308 --> 00:02:24,277
+of the input by keeping
+only the interesting parts --
+
+51
+00:02:24,277 --> 00:02:25,645
+the features.
+
+52
+00:02:25,645 --> 00:02:26,980
+In the case of images,
+
+53
+00:02:26,980 --> 00:02:31,018
+a feature extractor
+looks for patterns in the image.
+
+54
+00:02:31,018 --> 00:02:33,687
+Create ML uses
+Vision Feature Print,
+
+55
+00:02:33,687 --> 00:02:36,223
+which is an excellent
+image-feature extractor
+
+56
+00:02:36,223 --> 00:02:39,459
+provided
+by the Vision Framework.
+
+57
+00:02:39,459 --> 00:02:41,528
+Now, let's talk about
+the second piece:
+
+58
+00:02:41,528 --> 00:02:42,929
+the classifier.
+
+59
+00:02:42,929 --> 00:02:45,198
+A classifier
+uses a set of examples
+
+60
+00:02:45,198 --> 00:02:47,667
+to learn a classification.
+
+61
+00:02:47,667 --> 00:02:50,771
+Some common implementations
+are logistic regression,
+
+62
+00:02:50,771 --> 00:02:54,241
+boosted trees,
+and neural networks.
+
+63
+00:02:54,241 --> 00:02:57,711
+So training an image classifier
+starts with annotated images,
+
+64
+00:02:57,711 --> 00:03:02,249
+goes to annotated features,
+and ends with the classifier.
+
+65
+00:03:02,249 --> 00:03:05,118
+But why do we want
+to break it into pieces?
+
+66
+00:03:05,118 --> 00:03:08,688
+The reason is we want
+to expand the possibilities.
+
+67
+00:03:08,688 --> 00:03:10,657
+Maybe you want
+to do some preprocessing
+
+68
+00:03:10,657 --> 00:03:12,859
+by increasing the contrast.
+
+69
+00:03:12,859 --> 00:03:15,062
+Or maybe you want
+to normalize all images
+
+70
+00:03:15,062 --> 00:03:19,533
+so they have uniform brightness
+before you extract features.
+
+71
+00:03:19,533 --> 00:03:22,803
+Or maybe you want to try
+a different feature extractor.
+
+72
+00:03:22,803 --> 00:03:25,639
+Or maybe you want
+to try a different classifier.
+
+73
+00:03:25,639 --> 00:03:27,974
+The possibilities are endless.
+
+74
+00:03:27,974 --> 00:03:30,644
+These are just
+a few of the options.
+
+75
+00:03:30,644 --> 00:03:33,113
+That's why we've added
+support for ML components
+
+76
+00:03:33,113 --> 00:03:37,717
+in macOS, iOS, iPadOS, and tvOS.
+
+77
+00:03:37,717 --> 00:03:40,053
+Our hope is that you can
+compose new models
+
+78
+00:03:40,053 --> 00:03:41,721
+using some of the components
+we provide
+
+79
+00:03:41,721 --> 00:03:43,457
+together with
+your own components,
+
+80
+00:03:43,457 --> 00:03:46,226
+or even components built
+by others in the community.
+
+81
+00:03:46,226 --> 00:03:49,729
+And you can leverage it
+across all of our platforms.
+
+82
+00:03:49,729 --> 00:03:54,835
+Here are some of the components
+built into Create ML Components.
+
+83
+00:03:54,835 --> 00:03:58,238
+But let me take a step back
+and introduce some concepts.
+
+84
+00:03:58,238 --> 00:03:59,706
+There are two types
+of components:
+
+85
+00:03:59,706 --> 00:04:02,175
+transformers and estimators.
+
+86
+00:04:02,175 --> 00:04:04,010
+A transformer is simply a type
+
+87
+00:04:04,010 --> 00:04:07,013
+that is able to perform
+some transformation.
+
+88
+00:04:07,013 --> 00:04:10,350
+It defines an input type
+and an output type.
+
+89
+00:04:10,350 --> 00:04:14,221
+For example, an image-feature
+extractor takes an input image
+
+90
+00:04:14,221 --> 00:04:17,691
+and produces a shaped
+array of features.
+
+91
+00:04:17,691 --> 00:04:21,628
+An estimator, on the other hand,
+needs to learn from data.
+
+92
+00:04:21,628 --> 00:04:25,098
+It takes input examples,
+does some processing,
+
+93
+00:04:25,098 --> 00:04:27,267
+and produces a transformer.
+
+94
+00:04:27,267 --> 00:04:30,370
+We call this process "fitting."
+
+95
+00:04:30,370 --> 00:04:33,140
+Great. With those concepts
+out of the way,
+
+96
+00:04:33,140 --> 00:04:35,609
+let me talk about
+how Create ML Components
+
+97
+00:04:35,609 --> 00:04:37,711
+lets you build
+an image classifier
+
+98
+00:04:37,711 --> 00:04:41,181
+from its individual components
+using composition.
+
+99
+00:04:41,181 --> 00:04:44,084
+This is an image classifier
+using components.
+
+100
+00:04:44,084 --> 00:04:46,953
+It has ImageFeaturePrint
+as the feature extractor
+
+101
+00:04:46,953 --> 00:04:50,290
+and LogisticRegressionClassifier
+as the classifier.
+
+102
+00:04:50,290 --> 00:04:52,159
+Regardless of
+whether a component
+
+103
+00:04:52,159 --> 00:04:54,427
+is a transformer
+or an estimator,
+
+104
+00:04:54,427 --> 00:04:58,999
+you combine them using
+the appending method.
+
+105
+00:04:58,999 --> 00:05:02,502
+And this is where components
+provide unlimited possibilities.
+
+106
+00:05:02,502 --> 00:05:05,272
+You can use a fully connected
+neural network as a classifier
+
+107
+00:05:05,272 --> 00:05:09,442
+instead of logistic regression
+with a simple change.
+
+108
+00:05:09,442 --> 00:05:13,413
+Or you can use a custom feature
+extractor in a CoreML model.
+
+109
+00:05:13,413 --> 00:05:16,449
+For example,
+the headless ResNet-50 model
+
+110
+00:05:16,449 --> 00:05:19,786
+you can find
+in the model gallery.
+
+111
+00:05:19,786 --> 00:05:21,688
+When composing two components,
+
+112
+00:05:21,688 --> 00:05:23,390
+the output
+of the first component
+
+113
+00:05:23,390 --> 00:05:25,759
+must match
+the input of the second.
+
+114
+00:05:25,759 --> 00:05:27,994
+In the case
+of our image classifier,
+
+115
+00:05:27,994 --> 00:05:30,830
+the output of the feature
+extractor is a shaped array,
+
+116
+00:05:30,830 --> 00:05:32,666
+from the CoreML framework.
+
+117
+00:05:32,666 --> 00:05:36,503
+Which is also the input of a
+logistic regression classifier.
+
+118
+00:05:36,503 --> 00:05:39,739
+If you get a compiler error
+when using the appending method,
+
+119
+00:05:39,739 --> 00:05:41,908
+this is the first thing
+to check.
+
+120
+00:05:41,908 --> 00:05:44,444
+Make sure the types match.
+
+121
+00:05:44,444 --> 00:05:48,415
+But let me clarify an important
+point around fitting.
+
+122
+00:05:48,415 --> 00:05:50,550
+I said before that fitting
+is the process
+
+123
+00:05:50,550 --> 00:05:53,486
+of going from an estimator
+to a transformer.
+
+124
+00:05:53,486 --> 00:05:55,088
+Let's look at this
+from the perspective
+
+125
+00:05:55,088 --> 00:05:57,524
+of a composed estimator.
+
+126
+00:05:57,524 --> 00:05:58,825
+When your composed estimator
+
+127
+00:05:58,825 --> 00:06:01,061
+has both transformers
+and estimators,
+
+128
+00:06:01,061 --> 00:06:03,330
+like in the case
+of the image classifier,
+
+129
+00:06:03,330 --> 00:06:05,932
+only the estimator pieces
+are fitted.
+
+130
+00:06:05,932 --> 00:06:09,002
+But the transformers are
+an important part of the process
+
+131
+00:06:09,002 --> 00:06:11,271
+because they are used
+to feed the correct features
+
+132
+00:06:11,271 --> 00:06:14,307
+to the estimator's
+fitted method.
+
+133
+00:06:14,307 --> 00:06:15,508
+Here is the code.
+
+134
+00:06:15,508 --> 00:06:16,876
+The image classifier
+
+135
+00:06:16,876 --> 00:06:19,446
+needs a collection
+of annotated features
+
+136
+00:06:19,446 --> 00:06:24,251
+where the features are images
+and the annotations are strings.
+
+137
+00:06:24,251 --> 00:06:25,885
+We'll talk about
+loading the features
+
+138
+00:06:25,885 --> 00:06:28,955
+when we go into the demo.
+
+139
+00:06:28,955 --> 00:06:32,325
+Once I have the data,
+I can call the fitted method.
+
+140
+00:06:32,325 --> 00:06:37,264
+This returns the trained model,
+a transformer.
+
+141
+00:06:37,264 --> 00:06:39,933
+And it's important to note
+that the types used
+
+142
+00:06:39,933 --> 00:06:42,269
+when fitting are related
+but different
+
+143
+00:06:42,269 --> 00:06:44,971
+from the types
+of the resulting transformer.
+
+144
+00:06:44,971 --> 00:06:47,774
+In particular, the types used
+in the fitted method
+
+145
+00:06:47,774 --> 00:06:49,643
+are always collections.
+
+146
+00:06:49,643 --> 00:06:52,045
+And in the case
+of supervised estimators,
+
+147
+00:06:52,045 --> 00:06:55,415
+the features must include
+the annotations.
+
+148
+00:06:55,415 --> 00:06:58,485
+Create ML Components
+uses the AnnotatedFeature type
+
+149
+00:06:58,485 --> 00:07:03,056
+to represent a feature
+along with its annotation.
+
+150
+00:07:03,056 --> 00:07:06,226
+Once I have the model,
+I can do predictions.
+
+151
+00:07:06,226 --> 00:07:08,461
+It doesn't matter
+if it's a model I just fitted,
+
+152
+00:07:08,461 --> 00:07:11,765
+or if I'm loading
+the parameters from a disk.
+
+153
+00:07:11,765 --> 00:07:15,702
+The API is the same
+in both cases.
+
+154
+00:07:15,702 --> 00:07:17,570
+Since I am training
+a classifier,
+
+155
+00:07:17,570 --> 00:07:20,874
+the result is
+a classification distribution.
+
+156
+00:07:20,874 --> 00:07:25,312
+The distribution includes
+a probability for each label.
+
+157
+00:07:25,312 --> 00:07:27,681
+In this case, I'm just printing
+the most likely label
+
+158
+00:07:27,681 --> 00:07:30,817
+for the image.
+
+159
+00:07:30,817 --> 00:07:33,320
+The fitted method
+also provides a mechanism
+
+160
+00:07:33,320 --> 00:07:37,457
+to observe training events,
+including validation metrics.
+
+161
+00:07:37,457 --> 00:07:39,826
+In this example,
+I'm passing validation data
+
+162
+00:07:39,826 --> 00:07:43,096
+and printing
+the validation accuracy.
+
+163
+00:07:43,096 --> 00:07:44,798
+Note that only
+supervised estimators
+
+164
+00:07:44,798 --> 00:07:48,401
+provide validation metrics.
+
+165
+00:07:48,401 --> 00:07:50,003
+Once you train a model,
+
+166
+00:07:50,003 --> 00:07:52,372
+you can save
+the learned parameters,
+
+167
+00:07:52,372 --> 00:07:56,009
+either to reuse later
+or to deploy to an app.
+
+168
+00:07:56,009 --> 00:07:58,545
+You do this using
+the write method.
+
+169
+00:07:58,545 --> 00:08:02,248
+Later, you can read
+using the read method.
+
+170
+00:08:02,248 --> 00:08:04,184
+And that's composition.
+
+171
+00:08:04,184 --> 00:08:06,653
+This is where
+it gets interesting.
+
+172
+00:08:06,653 --> 00:08:08,755
+Let me talk about
+writing a new task,
+
+173
+00:08:08,755 --> 00:08:11,758
+something that Create ML
+didn't support until now.
+
+174
+00:08:13,727 --> 00:08:17,597
+What if you wanted to train
+a model to score images?
+
+175
+00:08:17,597 --> 00:08:19,632
+Let's say you have
+photos of fruit,
+
+176
+00:08:19,632 --> 00:08:21,601
+but instead of
+classifying the fruit,
+
+177
+00:08:21,601 --> 00:08:23,670
+you wanted to rate it.
+
+178
+00:08:23,670 --> 00:08:26,606
+Give it a score
+based on how ripe it is.
+
+179
+00:08:26,606 --> 00:08:28,808
+To do this,
+you need to do regression
+
+180
+00:08:28,808 --> 00:08:30,944
+instead of classification.
+
+181
+00:08:30,944 --> 00:08:33,046
+So let me write
+an image regressor
+
+182
+00:08:33,046 --> 00:08:37,550
+that gives a score to images
+of bananas based on ripeness.
+
+183
+00:08:37,550 --> 00:08:43,089
+I'll give each image a ripeness
+value between one and 10.
+
+184
+00:08:43,089 --> 00:08:47,594
+An image regressor is very
+similar to an image classifier.
+
+185
+00:08:47,594 --> 00:08:49,696
+The only difference
+is that our estimator
+
+186
+00:08:49,696 --> 00:08:54,167
+is going to be a regressor
+instead of a classifier.
+
+187
+00:08:54,167 --> 00:08:55,869
+As you may have
+already guessed,
+
+188
+00:08:55,869 --> 00:08:58,238
+this is going to be easy.
+
+189
+00:08:58,238 --> 00:09:01,875
+To refresh your memory,
+here is our image classifier.
+
+190
+00:09:01,875 --> 00:09:04,411
+And this is an image regressor.
+
+191
+00:09:04,411 --> 00:09:07,180
+I substituted the logistic
+regression classifier
+
+192
+00:09:07,180 --> 00:09:09,582
+with a linear regressor.
+
+193
+00:09:09,582 --> 00:09:12,786
+This simple change
+also changes the expected input
+
+194
+00:09:12,786 --> 00:09:15,121
+to the fitted method.
+
+195
+00:09:15,121 --> 00:09:17,791
+Before, it expected
+images and labels.
+
+196
+00:09:17,791 --> 00:09:20,960
+Now, it expects
+images and scores.
+
+197
+00:09:20,960 --> 00:09:22,429
+But enough about concepts.
+
+198
+00:09:22,429 --> 00:09:25,899
+Let me demo this
+with some actual code.
+
+199
+00:09:28,501 --> 00:09:31,538
+Let me show you how to write
+a custom image regressor.
+
+200
+00:09:31,538 --> 00:09:33,640
+I'll start by defining
+an ImageRegressor struct
+
+201
+00:09:33,640 --> 00:09:36,443
+to encapsulate the code.
+
+202
+00:09:38,445 --> 00:09:40,547
+I have a folder
+with images of bananas
+
+203
+00:09:40,547 --> 00:09:42,715
+at different levels of ripeness.
+
+204
+00:09:42,715 --> 00:09:46,119
+I'm going to start
+by defining that URL.
+
+205
+00:09:48,121 --> 00:09:51,124
+The next step
+is to add a train method.
+
+206
+00:09:51,124 --> 00:09:52,292
+This is where you use
+
+207
+00:09:52,292 --> 00:09:56,229
+training data
+to produce a model.
+
+208
+00:09:56,229 --> 00:09:59,265
+I'm going to use the "some"
+keyword on the return type
+
+209
+00:09:59,265 --> 00:10:00,967
+so that the return type
+doesn't change
+
+210
+00:10:00,967 --> 00:10:05,138
+as I add or modify steps
+in the composed estimator.
+
+211
+00:10:05,138 --> 00:10:07,340
+Now, I'm going to define
+the estimator.
+
+212
+00:10:07,340 --> 00:10:09,042
+It's simply
+the feature extractor
+
+213
+00:10:09,042 --> 00:10:14,047
+with the linear regressor
+appended.
+
+214
+00:10:14,047 --> 00:10:16,316
+And now, I need to load
+the training images
+
+215
+00:10:16,316 --> 00:10:17,584
+with their score.
+
+216
+00:10:17,584 --> 00:10:19,819
+I can use AnnotatedFiles,
+which is a collection
+
+217
+00:10:19,819 --> 00:10:24,157
+of AnnotatedFeatures containing
+URLs and string labels.
+
+218
+00:10:24,157 --> 00:10:29,729
+It provides a convenience
+initializer that fits my needs.
+
+219
+00:10:29,729 --> 00:10:32,599
+My files consist of a name,
+followed by a dash,
+
+220
+00:10:32,599 --> 00:10:34,200
+followed by the ripeness value.
+
+221
+00:10:34,200 --> 00:10:37,604
+So I'm going to specify
+that the separator is a dash
+
+222
+00:10:37,604 --> 00:10:39,305
+and the annotation
+is at index: 1
+
+223
+00:10:39,305 --> 00:10:41,307
+of the filename components.
+
+224
+00:10:41,307 --> 00:10:42,542
+I'm also going to request
+
+225
+00:10:42,542 --> 00:10:46,145
+only image files
+by using the type argument.
+
+226
+00:10:46,145 --> 00:10:49,682
+Now that I have URLs,
+I need to load the images.
+
+227
+00:10:49,682 --> 00:10:51,384
+I can use
+the mapFeatures method
+
+228
+00:10:51,384 --> 00:10:56,689
+and the ImageReader to do this.
+
+229
+00:10:56,689 --> 00:10:58,725
+I also need
+to convert the scores
+
+230
+00:10:58,725 --> 00:11:01,661
+from strings
+to floating point values.
+
+231
+00:11:01,661 --> 00:11:05,598
+I can use the mapAnnotations
+method to do this.
+
+232
+00:11:08,935 --> 00:11:12,005
+And with that,
+I have the training data.
+
+233
+00:11:12,005 --> 00:11:15,174
+But I want to put some of it
+aside for validation.
+
+234
+00:11:15,174 --> 00:11:17,911
+I can use the randomSplit
+method to do this.
+
+235
+00:11:17,911 --> 00:11:19,445
+I'll keep 80 percent
+for training
+
+236
+00:11:19,445 --> 00:11:25,218
+and use the rest for validation.
+
+237
+00:11:25,218 --> 00:11:27,220
+Now, I'm ready to fit.
+
+238
+00:11:29,956 --> 00:11:32,025
+And I'm going to save
+the trained parameters
+
+239
+00:11:32,025 --> 00:11:33,826
+so that I can deploy to my app.
+
+240
+00:11:33,826 --> 00:11:36,129
+I'll choose a location
+to save to.
+
+241
+00:11:40,033 --> 00:11:42,235
+And I'll call the write method.
+
+242
+00:11:44,671 --> 00:11:46,940
+Finally,
+I'll return the transformer.
+
+243
+00:11:50,944 --> 00:11:53,513
+This is the essence
+of defining and training a model
+
+244
+00:11:53,513 --> 00:11:55,248
+using components.
+
+245
+00:11:55,248 --> 00:11:57,650
+I defined
+my composed estimator,
+
+246
+00:11:57,650 --> 00:12:00,920
+I loaded my training data,
+I called the fitted method,
+
+247
+00:12:00,920 --> 00:12:03,256
+and I used write
+to save the parameters.
+
+248
+00:12:03,256 --> 00:12:05,592
+But there are some things
+I can improve.
+
+249
+00:12:05,592 --> 00:12:08,561
+For starters, I am passing
+a validation data set
+
+250
+00:12:08,561 --> 00:12:11,230
+but not observing
+the validation error,
+
+251
+00:12:11,230 --> 00:12:12,932
+so I'll do that.
+
+252
+00:12:12,932 --> 00:12:15,134
+The fitted method
+takes an event handler
+
+253
+00:12:15,134 --> 00:12:17,236
+that you can use
+to gather metrics.
+
+254
+00:12:21,374 --> 00:12:23,776
+For now, I'll just print
+both the training
+
+255
+00:12:23,776 --> 00:12:26,913
+and validation
+maximum-error values.
+
+256
+00:12:26,913 --> 00:12:30,750
+I also want the mean absolute
+error for the final model.
+
+257
+00:12:33,987 --> 00:12:36,356
+I compute that by applying
+the fitted transformer
+
+258
+00:12:36,356 --> 00:12:37,991
+to the validation features
+
+259
+00:12:37,991 --> 00:12:40,593
+and then passing that along
+with the actual scores
+
+260
+00:12:40,593 --> 00:12:44,564
+to the meanAbsoluteError
+function.
+
+261
+00:12:44,564 --> 00:12:46,799
+I ran this but I didn't get
+a great model -
+
+262
+00:12:46,799 --> 00:12:49,135
+the error was high.
+
+263
+00:12:49,135 --> 00:12:52,205
+This is because I don't have
+that many images of bananas.
+
+264
+00:12:52,205 --> 00:12:54,807
+I should get more images,
+but before I do that,
+
+265
+00:12:54,807 --> 00:12:57,243
+I can try augmenting my dataset.
+
+266
+00:12:57,243 --> 00:13:00,513
+I can rotate and scale my images
+to get more examples.
+
+267
+00:13:00,513 --> 00:13:02,482
+To do this, I'm going to write
+a new method
+
+268
+00:13:02,482 --> 00:13:05,585
+that takes an annotated image
+and augments it.
+
+269
+00:13:05,585 --> 00:13:08,154
+It returns an array
+of annotated images.
+
+270
+00:13:13,826 --> 00:13:17,664
+The first augmentation
+I'm going to do is rotation.
+
+271
+00:13:20,800 --> 00:13:23,703
+I'll randomly choose an angle
+between -pi and pi
+
+272
+00:13:23,703 --> 00:13:26,072
+and use it to rotate the image.
+
+273
+00:13:26,072 --> 00:13:28,541
+I'll also do a random scale.
+
+274
+00:13:31,144 --> 00:13:32,712
+And I'll return three images:
+
+275
+00:13:32,712 --> 00:13:36,082
+the original, the rotated one,
+and the scaled one.
+
+276
+00:13:39,118 --> 00:13:40,687
+Now that I have
+my augment function,
+
+277
+00:13:40,687 --> 00:13:44,691
+I'll use it to augment my
+training images using flatMap.
+
+278
+00:13:49,429 --> 00:13:53,366
+Each element of my dataset
+will be converted to an array.
+
+279
+00:13:53,366 --> 00:13:56,936
+FlatMap flattens that array
+of arrays into a single array,
+
+280
+00:13:56,936 --> 00:13:59,605
+which is what I need
+for the fitted method.
+
+281
+00:13:59,605 --> 00:14:02,408
+Note that augmentations
+only apply when fitting,
+
+282
+00:14:02,408 --> 00:14:04,944
+not when doing predictions.
+
+283
+00:14:04,944 --> 00:14:07,480
+OK, this increased my accuracy.
+
+284
+00:14:07,480 --> 00:14:09,382
+But let me talk about
+one more improvement
+
+285
+00:14:09,382 --> 00:14:12,218
+that is going to make
+my model even better.
+
+286
+00:14:12,218 --> 00:14:13,619
+I want to use
+the Vision framework
+
+287
+00:14:13,619 --> 00:14:16,923
+to crop the images
+to the salient object.
+
+288
+00:14:16,923 --> 00:14:19,325
+This is one of the images
+in my training data.
+
+289
+00:14:19,325 --> 00:14:23,096
+Someone is holding bananas with
+other fruits in the background.
+
+290
+00:14:23,096 --> 00:14:27,300
+The model may get confused by
+the other objects in the photo.
+
+291
+00:14:27,300 --> 00:14:29,268
+Using the Vision framework API,
+
+292
+00:14:29,268 --> 00:14:31,003
+I can automatically
+crop the image
+
+293
+00:14:31,003 --> 00:14:33,573
+to the most salient object.
+
+294
+00:14:33,573 --> 00:14:38,745
+To do this, please check out
+the Vision talk from WWDC 2019.
+
+295
+00:14:38,745 --> 00:14:41,948
+I can easily apply this
+transformation to all my images,
+
+296
+00:14:41,948 --> 00:14:44,183
+both when fitting
+and when getting predictions
+
+297
+00:14:44,183 --> 00:14:46,419
+if I write a custom transformer.
+
+298
+00:14:46,419 --> 00:14:47,987
+Let me show you how.
+
+299
+00:14:47,987 --> 00:14:49,422
+The only thing I need to do
+
+300
+00:14:49,422 --> 00:14:51,424
+to conform to
+a transformer protocol
+
+301
+00:14:51,424 --> 00:14:53,659
+is implement the applied method.
+
+302
+00:14:53,659 --> 00:14:55,895
+And in this case,
+I want it to take an image
+
+303
+00:14:55,895 --> 00:14:57,697
+and return an image.
+
+304
+00:14:57,697 --> 00:14:59,265
+I'm not going to go
+into this code,
+
+305
+00:14:59,265 --> 00:15:02,235
+except to say that if I don't
+get a salient object,
+
+306
+00:15:02,235 --> 00:15:06,305
+I'll just return
+the original image.
+
+307
+00:15:06,305 --> 00:15:08,141
+Now that I have
+my custom transformer,
+
+308
+00:15:08,141 --> 00:15:10,076
+I'll add it
+to my image regressor.
+
+309
+00:15:16,415 --> 00:15:18,217
+I just need to use
+my custom transformer
+
+310
+00:15:18,217 --> 00:15:19,986
+before feature extraction.
+
+311
+00:15:28,694 --> 00:15:31,430
+Now that saliency is part of
+my task definition,
+
+312
+00:15:31,430 --> 00:15:34,133
+it will be used to crop
+every training image,
+
+313
+00:15:34,133 --> 00:15:37,069
+and it will also be used
+when doing inference.
+
+314
+00:15:37,069 --> 00:15:39,705
+This is one of the advantages
+of sharing the task definition
+
+315
+00:15:39,705 --> 00:15:42,141
+between training and inference.
+
+316
+00:15:42,141 --> 00:15:44,377
+Before we go on
+to the next task,
+
+317
+00:15:44,377 --> 00:15:46,813
+let me highlight
+some important points.
+
+318
+00:15:46,813 --> 00:15:50,650
+Using components,
+I can now create custom tasks.
+
+319
+00:15:50,650 --> 00:15:53,452
+I did this by using
+the appending method.
+
+320
+00:15:53,452 --> 00:15:55,955
+I used AnnotatedFiles
+to load my files
+
+321
+00:15:55,955 --> 00:15:58,124
+with annotated file names,
+
+322
+00:15:58,124 --> 00:16:01,427
+but you can also load files
+annotated by directories.
+
+323
+00:16:01,427 --> 00:16:04,664
+I mapped the URL to images
+using ImageReader
+
+324
+00:16:04,664 --> 00:16:08,601
+and mapped the annotations
+from strings to values.
+
+325
+00:16:08,601 --> 00:16:12,238
+I used randomSplit to set aside
+a validation dataset,
+
+326
+00:16:12,238 --> 00:16:15,408
+and I saved the trained
+parameters for use later.
+
+327
+00:16:15,408 --> 00:16:18,277
+Then I added augmentations
+and defined a custom transformer
+
+328
+00:16:18,277 --> 00:16:20,313
+to improve my model.
+
+329
+00:16:20,313 --> 00:16:23,249
+But this works for more
+than just images.
+
+330
+00:16:23,249 --> 00:16:26,319
+I'll switch gears and talk about
+another type of task:
+
+331
+00:16:26,319 --> 00:16:28,187
+tabular tasks.
+
+332
+00:16:28,187 --> 00:16:30,957
+These are tasks
+that use tabular data.
+
+333
+00:16:30,957 --> 00:16:33,492
+Tabular data is characterized
+by having multiple features
+
+334
+00:16:33,492 --> 00:16:35,294
+of different types.
+
+335
+00:16:35,294 --> 00:16:37,129
+It can include
+both numerical data
+
+336
+00:16:37,129 --> 00:16:39,332
+as well as categorical data.
+
+337
+00:16:39,332 --> 00:16:42,401
+A popular example is
+house-pricing data.
+
+338
+00:16:42,401 --> 00:16:44,904
+You have things
+like area and age,
+
+339
+00:16:44,904 --> 00:16:46,505
+but also things
+like neighborhood,
+
+340
+00:16:46,505 --> 00:16:48,741
+type of building, et cetera.
+
+341
+00:16:48,741 --> 00:16:51,110
+And you want to learn
+to predict a value;
+
+342
+00:16:51,110 --> 00:16:53,779
+for example, the sale price.
+
+343
+00:16:53,779 --> 00:16:58,351
+In 2021, we introduced
+the TabularData framework.
+
+344
+00:16:58,351 --> 00:17:00,152
+Now you can use
+the TabularData framework
+
+345
+00:17:00,152 --> 00:17:02,355
+together with
+Create ML Components
+
+346
+00:17:02,355 --> 00:17:06,926
+to build and train tabular
+classifiers and regressors.
+
+347
+00:17:06,926 --> 00:17:09,695
+I also recommend the tech talk
+on TabularData.
+
+348
+00:17:09,695 --> 00:17:12,231
+It's a great introduction
+to data exploration,
+
+349
+00:17:12,231 --> 00:17:15,268
+which you will likely need
+when building a tabular task.
+
+350
+00:17:15,268 --> 00:17:17,970
+Let's dive in.
+
+351
+00:17:17,970 --> 00:17:21,407
+When dealing with tabular data,
+each column of the table
+
+352
+00:17:21,407 --> 00:17:23,876
+will have a different
+type of feature.
+
+353
+00:17:23,876 --> 00:17:26,412
+And you may want to process
+each column differently,
+
+354
+00:17:26,412 --> 00:17:28,447
+based on what type of
+information it contains;
+
+355
+00:17:28,447 --> 00:17:30,149
+the distribution,
+range of values,
+
+356
+00:17:30,149 --> 00:17:32,351
+and other factors.
+
+357
+00:17:32,351 --> 00:17:36,322
+Create ML Components lets you do
+this using the ColumnSelector.
+
+358
+00:17:36,322 --> 00:17:38,491
+Here is an example.
+
+359
+00:17:38,491 --> 00:17:42,028
+I mentioned house prices,
+but those are ridiculous.
+
+360
+00:17:42,028 --> 00:17:44,764
+I'm going to use
+avocado prices instead.
+
+361
+00:17:44,764 --> 00:17:47,266
+I have this table
+of avocado prices.
+
+362
+00:17:47,266 --> 00:17:49,235
+I want to build
+a tabular regressor
+
+363
+00:17:49,235 --> 00:17:52,104
+to predict avocado prices
+based on this.
+
+364
+00:17:52,104 --> 00:17:54,240
+It contains columns
+with numeric data
+
+365
+00:17:54,240 --> 00:17:56,642
+such as bags, year, and volume
+
+366
+00:17:56,642 --> 00:18:01,714
+and columns with categorical
+data such as type and region.
+
+367
+00:18:01,714 --> 00:18:03,449
+Some regressors
+benefit from having
+
+368
+00:18:03,449 --> 00:18:06,619
+a better representation
+of these values.
+
+369
+00:18:06,619 --> 00:18:08,087
+For instance,
+
+370
+00:18:08,087 --> 00:18:11,657
+this is the distribution of
+volume values in the dataset.
+
+371
+00:18:11,657 --> 00:18:14,093
+It is close to
+a normal distribution,
+
+372
+00:18:14,093 --> 00:18:17,697
+but with large values
+centered around 15,000.
+
+373
+00:18:17,697 --> 00:18:20,232
+I think this is
+a great example of a dataset
+
+374
+00:18:20,232 --> 00:18:23,035
+that could benefit
+from normalization.
+
+375
+00:18:23,035 --> 00:18:27,273
+So the first thing I want to do
+is normalize these values.
+
+376
+00:18:27,273 --> 00:18:30,977
+To do this, I can pass the
+column names I want to normalize
+
+377
+00:18:30,977 --> 00:18:35,081
+to the ColumnSelector
+and then use a standard scaler.
+
+378
+00:18:35,081 --> 00:18:37,083
+Here is the code.
+
+379
+00:18:37,083 --> 00:18:39,518
+First I create
+a column selector.
+
+380
+00:18:39,518 --> 00:18:42,788
+Then I pass the column names
+I want to scale.
+
+381
+00:18:42,788 --> 00:18:45,491
+All columns must contain
+the same type of element;
+
+382
+00:18:45,491 --> 00:18:47,760
+in this case, Double.
+
+383
+00:18:47,760 --> 00:18:50,129
+Then I unwrap optionals.
+
+384
+00:18:50,129 --> 00:18:53,132
+I can do this because I know
+there are no missing values.
+
+385
+00:18:53,132 --> 00:18:56,902
+But I could also use an imputer
+which replaces missing values.
+
+386
+00:18:56,902 --> 00:18:58,804
+And then I append
+the StandardScaler
+
+387
+00:18:58,804 --> 00:19:01,307
+to the unwrapper.
+
+388
+00:19:01,307 --> 00:19:02,675
+So I started with this table
+
+389
+00:19:02,675 --> 00:19:05,611
+where bags numbers
+were in the tens of thousands
+
+390
+00:19:05,611 --> 00:19:08,414
+and volumes were in
+the hundreds of thousands.
+
+391
+00:19:08,414 --> 00:19:10,082
+And after scaling those columns,
+
+392
+00:19:10,082 --> 00:19:13,185
+I end up with values that now
+have a magnitude close to one,
+
+393
+00:19:13,185 --> 00:19:16,722
+which could improve
+the performance of my model.
+
+394
+00:19:16,722 --> 00:19:20,426
+To be more specific, my values
+now have a mean of zero
+
+395
+00:19:20,426 --> 00:19:24,063
+and a standard deviation of one.
+
+396
+00:19:24,063 --> 00:19:27,066
+Here is a similar example,
+but in this example,
+
+397
+00:19:27,066 --> 00:19:29,602
+I'm selecting the type
+and region columns,
+
+398
+00:19:29,602 --> 00:19:34,073
+which are of type string and
+performing a one-hot encoding.
+
+399
+00:19:34,073 --> 00:19:37,376
+One-hot encoding refers
+to encoding categorical data
+
+400
+00:19:37,376 --> 00:19:42,148
+using an array to indicate
+the presence of each category.
+
+401
+00:19:42,148 --> 00:19:44,450
+In this example,
+I have three categories:
+
+402
+00:19:44,450 --> 00:19:47,586
+Bronze, Silver, and Gold.
+
+403
+00:19:47,586 --> 00:19:50,156
+Each gets a unique position
+within the array,
+
+404
+00:19:50,156 --> 00:19:54,193
+indicated by a one
+in that position.
+
+405
+00:19:54,193 --> 00:19:57,329
+An alternative is to use
+an ordinal encoder,
+
+406
+00:19:57,329 --> 00:20:01,033
+which gives a consecutive
+number to each category.
+
+407
+00:20:01,033 --> 00:20:04,203
+Use a one-hot encoder when
+there are only a few categories
+
+408
+00:20:04,203 --> 00:20:07,940
+and an ordinal encoder
+otherwise.
+
+409
+00:20:07,940 --> 00:20:13,446
+Now let me put all this together
+and build a tabular regressor.
+
+410
+00:20:17,216 --> 00:20:19,452
+As before,
+I'll start creating a struct
+
+411
+00:20:19,452 --> 00:20:23,956
+and defining the data URL
+and the parameters URL.
+
+412
+00:20:25,791 --> 00:20:27,760
+I also want to define
+a column ID
+
+413
+00:20:27,760 --> 00:20:30,362
+for the column
+I want to predict: price.
+
+414
+00:20:32,965 --> 00:20:35,701
+I'll define my task separately
+so that I can use it
+
+415
+00:20:35,701 --> 00:20:38,537
+both from the train method
+and the predict method.
+
+416
+00:20:41,207 --> 00:20:44,009
+As I mentioned, I'm going
+to normalize the volume.
+
+417
+00:20:46,779 --> 00:20:49,048
+Then I'm going to use
+a boosted tree regressor
+
+418
+00:20:49,048 --> 00:20:53,152
+to predict the price.
+
+419
+00:20:53,152 --> 00:20:55,187
+It takes the name
+of the annotation column --
+
+420
+00:20:55,187 --> 00:20:58,023
+which is also the column
+of the resulting predictions --
+
+421
+00:20:58,023 --> 00:21:01,760
+and it takes the names
+of all three feature columns.
+
+422
+00:21:01,760 --> 00:21:03,929
+I'll start with
+these three columns.
+
+423
+00:21:03,929 --> 00:21:07,366
+Then I'll combine the pieces
+using the appending method
+
+424
+00:21:07,366 --> 00:21:08,834
+and return the task.
+
+425
+00:21:13,539 --> 00:21:15,474
+Now that I have
+my task definition,
+
+426
+00:21:15,474 --> 00:21:17,643
+I'll add a train method
+as before.
+
+427
+00:21:20,546 --> 00:21:23,082
+And as before, I want to make
+sure that the return type
+
+428
+00:21:23,082 --> 00:21:26,452
+doesn't depend
+the specifics of my model.
+
+429
+00:21:26,452 --> 00:21:32,391
+The first step is to load
+the CSV file into a data frame.
+
+430
+00:21:32,391 --> 00:21:35,027
+I'm using the TabularData
+framework to do this.
+
+431
+00:21:35,027 --> 00:21:37,363
+And as before, I want to split
+off some of the data
+
+432
+00:21:37,363 --> 00:21:39,398
+for validation.
+
+433
+00:21:43,702 --> 00:21:46,038
+I'll pass the training
+and validation datasets
+
+434
+00:21:46,038 --> 00:21:47,606
+to the fitted method.
+
+435
+00:21:50,509 --> 00:21:53,512
+I'll also report validation
+error as before,
+
+436
+00:21:53,512 --> 00:21:55,881
+and I'll save the trained
+parameters for use later.
+
+437
+00:21:59,552 --> 00:22:01,754
+Finally, I'll return
+the transformer.
+
+438
+00:22:04,890 --> 00:22:06,625
+Once I have
+a trained transformer,
+
+439
+00:22:06,625 --> 00:22:09,762
+I can use it to make price
+predictions on data frames.
+
+440
+00:22:09,762 --> 00:22:13,966
+I'm going to write
+a predict method to do this.
+
+441
+00:22:17,403 --> 00:22:19,738
+I'll start by loading the model
+from the task definition
+
+442
+00:22:19,738 --> 00:22:22,107
+and the parameters URL.
+
+443
+00:22:24,977 --> 00:22:27,580
+I need to make sure the data
+frame I use for predictions
+
+444
+00:22:27,580 --> 00:22:30,883
+has the columns
+I used as features:
+
+445
+00:22:30,883 --> 00:22:35,154
+type, region, and volume.
+
+446
+00:22:35,154 --> 00:22:38,324
+The predicted value
+will be in the price column.
+
+447
+00:22:38,324 --> 00:22:40,659
+I'll use the column ID
+I defined at the top.
+
+448
+00:22:44,563 --> 00:22:46,699
+And that concludes
+my tabular regressor.
+
+449
+00:22:46,699 --> 00:22:48,934
+I have a train method,
+that I only need to call once
+
+450
+00:22:48,934 --> 00:22:50,369
+to produce my trained
+parameters,
+
+451
+00:22:50,369 --> 00:22:52,605
+and a predict method
+that returns the avocado price,
+
+452
+00:22:52,605 --> 00:22:54,573
+predictions based on the type,
+
+453
+00:22:54,573 --> 00:22:56,976
+region, and the
+volume of avocados.
+
+454
+00:22:56,976 --> 00:22:59,345
+That's all I need
+to use this in my app.
+
+455
+00:22:59,345 --> 00:23:01,013
+Here are some things
+to keep in mind
+
+456
+00:23:01,013 --> 00:23:03,349
+when working on tabular tasks.
+
+457
+00:23:03,349 --> 00:23:04,984
+You can use
+ColumnSelector operations
+
+458
+00:23:04,984 --> 00:23:07,286
+to process specific columns.
+
+459
+00:23:07,286 --> 00:23:10,256
+It's worth noting that
+tree classifiers and regressors
+
+460
+00:23:10,256 --> 00:23:13,959
+are all tabular, but you can
+also use a nontabular estimator,
+
+461
+00:23:13,959 --> 00:23:15,527
+such as a linear regressor,
+
+462
+00:23:15,527 --> 00:23:19,365
+in a tabular task using
+AnnotatedFeatureProvider.
+
+463
+00:23:19,365 --> 00:23:22,167
+Please refer
+to the documentation.
+
+464
+00:23:22,167 --> 00:23:23,469
+When doing predictions,
+
+465
+00:23:23,469 --> 00:23:26,038
+build a data frame
+with the required columns,
+
+466
+00:23:26,038 --> 00:23:29,141
+making sure to use
+the correct types.
+
+467
+00:23:29,141 --> 00:23:31,744
+Now that you know
+how to build a custom task,
+
+468
+00:23:31,744 --> 00:23:34,780
+let's talk about deployment.
+
+469
+00:23:34,780 --> 00:23:38,784
+So far, I've used the same API
+for training and inference.
+
+470
+00:23:38,784 --> 00:23:41,654
+I want to point out that when
+using Create ML Components,
+
+471
+00:23:41,654 --> 00:23:43,656
+your model is your code.
+
+472
+00:23:43,656 --> 00:23:45,057
+You need the task definition,
+
+473
+00:23:45,057 --> 00:23:48,961
+even when loading the trained
+parameters from a file.
+
+474
+00:23:48,961 --> 00:23:50,996
+This is useful
+in some situations,
+
+475
+00:23:50,996 --> 00:23:55,167
+but sometimes you may want
+to use Core ML for deployment.
+
+476
+00:23:55,167 --> 00:23:58,103
+When using Core ML,
+you leave the code behind.
+
+477
+00:23:58,103 --> 00:24:01,507
+The model is fully represented
+by a model file.
+
+478
+00:24:01,507 --> 00:24:03,208
+If you are
+all ready using Core ML,
+
+479
+00:24:03,208 --> 00:24:05,044
+this may be a good workflow.
+
+480
+00:24:05,044 --> 00:24:08,747
+And it has the advantage
+of optimized tensor operations.
+
+481
+00:24:08,747 --> 00:24:10,049
+But there are
+some considerations
+
+482
+00:24:10,049 --> 00:24:12,251
+you should keep in mind.
+
+483
+00:24:12,251 --> 00:24:15,054
+Not all operations
+are supported in Core ML.
+
+484
+00:24:15,054 --> 00:24:17,556
+Specifically, custom
+transformers and estimators
+
+485
+00:24:17,556 --> 00:24:19,291
+are not supported.
+
+486
+00:24:19,291 --> 00:24:21,260
+And Core ML only supports
+a few types
+
+487
+00:24:21,260 --> 00:24:24,129
+like images and shaped arrays.
+
+488
+00:24:24,129 --> 00:24:25,864
+If you are using custom types,
+
+489
+00:24:25,864 --> 00:24:27,833
+you may need to convert
+those in your app
+
+490
+00:24:27,833 --> 00:24:30,102
+when using the Core ML model.
+
+491
+00:24:30,102 --> 00:24:33,639
+This is how you can export your
+transformer as a Core ML model.
+
+492
+00:24:33,639 --> 00:24:36,375
+If your transformer contains
+unsupported operations,
+
+493
+00:24:36,375 --> 00:24:39,078
+this will throw an error.
+
+494
+00:24:39,078 --> 00:24:41,747
+If you'd rather stick with
+deploying your task definition
+
+495
+00:24:41,747 --> 00:24:43,582
+along with
+the trained parameters,
+
+496
+00:24:43,582 --> 00:24:46,885
+you should consider bundling
+them in a Swift package.
+
+497
+00:24:46,885 --> 00:24:49,555
+This way, you can provide simple
+methods to load the parameters
+
+498
+00:24:49,555 --> 00:24:51,457
+and perform a prediction.
+
+499
+00:24:51,457 --> 00:24:53,926
+For more information
+on Swift package resources,
+
+500
+00:24:53,926 --> 00:24:58,197
+check out the Swift packages
+talk from WWDC 2020.
+
+501
+00:24:58,197 --> 00:24:59,832
+That's all I have.
+
+502
+00:24:59,832 --> 00:25:01,233
+The main thing to remember
+
+503
+00:25:01,233 --> 00:25:04,636
+is that you can now create
+custom tasks with composition.
+
+504
+00:25:04,636 --> 00:25:06,672
+The possibilities are endless.
+
+505
+00:25:06,672 --> 00:25:08,774
+I look forward to seeing
+what you build.
+
+506
+00:25:08,774 --> 00:25:09,942
+For more advanced techniques,
+
+507
+00:25:09,942 --> 00:25:12,578
+including audio and video tasks,
+check out
+
+508
+00:25:12,578 --> 00:25:15,514
+"Compose advanced models
+with Create ML Components"
+
+509
+00:25:15,514 --> 00:25:17,249
+where my colleague David
+will present
+
+510
+00:25:17,249 --> 00:25:20,285
+more advanced custom tasks.
+
+511
+00:25:20,285 --> 00:25:24,289
+Thank you and enjoy the rest
+of WWDC 2022!
+
+512
+00:25:24,289 --> 00:25:29,061
+♪
+

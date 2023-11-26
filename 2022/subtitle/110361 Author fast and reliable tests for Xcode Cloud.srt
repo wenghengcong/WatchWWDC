@@ -1,0 +1,1556 @@
+1
+00:00:00,334 --> 00:00:06,340
+[upbeat music]
+
+2
+00:00:10,110 --> 00:00:15,249
+Suzy: Hello and welcome to "Author fast
+and reliable tests for Xcode Cloud."
+
+3
+00:00:15,282 --> 00:00:18,018
+I'm Suzy, and I work on XCTest.
+
+4
+00:00:18,051 --> 00:00:21,288
+In this session, I'm going to share
+the most effective ways
+
+5
+00:00:21,321 --> 00:00:24,625
+to start testing for Xcode Cloud.
+
+6
+00:00:24,658 --> 00:00:30,030
+Our teams designed Xcode Cloud
+to be a powerful tool for all developers.
+
+7
+00:00:30,063 --> 00:00:34,168
+In fact, we use it to test Xcode itself,
+and I love it.
+
+8
+00:00:34,201 --> 00:00:36,637
+One of my favorite features of Xcode Cloud
+
+9
+00:00:36,670 --> 00:00:40,374
+is its ability to substantially broaden
+a given test suite.
+
+10
+00:00:41,575 --> 00:00:44,411
+By configuring most tests
+to run in the cloud,
+
+11
+00:00:44,444 --> 00:00:48,649
+you now have a practical way
+to run tests on multiple destinations,
+
+12
+00:00:48,682 --> 00:00:52,686
+including those running differing
+operating system versions
+
+13
+00:00:52,719 --> 00:00:56,924
+to leverage diverse platforms
+such as an iPhone, iPad,
+
+14
+00:00:56,957 --> 00:01:00,627
+Apple Watch, Apple TV, and Mac,
+
+15
+00:01:00,661 --> 00:01:03,430
+and to run various test plan
+configurations,
+
+16
+00:01:03,463 --> 00:01:05,966
+allowing for runtime analysis tools
+
+17
+00:01:05,999 --> 00:01:10,470
+such as address and thread sanitizers.
+
+18
+00:01:10,504 --> 00:01:13,740
+Once we have passed
+such a thorough test suite,
+
+19
+00:01:13,774 --> 00:01:16,910
+we can be confident
+the code is ready to ship.
+
+20
+00:01:16,944 --> 00:01:21,181
+Offloading tests to Xcode Cloud
+allows for running a broader set of tests
+
+21
+00:01:21,215 --> 00:01:27,754
+without impacting the developers’
+desktop cycle of code, compile, and test.
+
+22
+00:01:27,788 --> 00:01:30,157
+With this now expanded test suite,
+
+23
+00:01:30,190 --> 00:01:34,228
+there is a potential for an increased
+number of unreliable tests.
+
+24
+00:01:34,261 --> 00:01:37,898
+This situation can become unmanageable.
+
+25
+00:01:37,931 --> 00:01:42,736
+As such,
+ensuring reliability is essential.
+
+26
+00:01:42,769 --> 00:01:46,206
+In addition to reliability,
+such a large number of tests
+
+27
+00:01:46,240 --> 00:01:48,141
+also needs to run efficiently
+
+28
+00:01:48,175 --> 00:01:53,046
+so as to limit their impact
+on the continuous integration process.
+
+29
+00:01:53,080 --> 00:01:55,749
+Let’s address reliability first.
+
+30
+00:01:55,782 --> 00:01:59,219
+I will demonstrate how to author
+more reliable tests for Xcode Cloud
+
+31
+00:01:59,253 --> 00:02:00,888
+using Food Truck.
+
+32
+00:02:00,921 --> 00:02:06,393
+Food Truck is an app that converts
+taps and swipes into delicious donuts.
+
+33
+00:02:06,426 --> 00:02:08,929
+By running the test suite in Xcode Cloud,
+
+34
+00:02:08,962 --> 00:02:11,999
+we are able to validate
+that all Apple platforms
+
+35
+00:02:12,032 --> 00:02:15,936
+support ordering my favorite donut,
+chocolate with sprinkles.
+
+36
+00:02:15,969 --> 00:02:18,405
+Each improvement
+to the Xcode Cloud Workflow
+
+37
+00:02:18,438 --> 00:02:21,742
+will be identified and demonstrated.
+
+38
+00:02:21,775 --> 00:02:25,712
+For more information about getting
+started with Xcode Cloud Workflows,
+
+39
+00:02:25,746 --> 00:02:27,814
+watch "Meet Xcode Cloud.”
+
+40
+00:02:29,116 --> 00:02:31,718
+The first step
+to author more reliable tests
+
+41
+00:02:31,752 --> 00:02:36,323
+is to ensure each test’s setup
+and tear down is thorough.
+
+42
+00:02:36,356 --> 00:02:39,593
+Tests run in Xcode Cloud make use
+of a fresh simulator
+
+43
+00:02:39,626 --> 00:02:43,864
+which may not meet
+developers’ original assumptions.
+
+44
+00:02:43,897 --> 00:02:47,668
+Let’s identify a number of
+device configuration assumptions
+
+45
+00:02:47,701 --> 00:02:49,369
+sometimes seen in test code.
+
+46
+00:02:50,270 --> 00:02:54,508
+Certain tests may rely on
+specific dates and times.
+
+47
+00:02:54,541 --> 00:02:58,745
+For example, a server may be running
+in a different time zone.
+
+48
+00:02:58,779 --> 00:03:02,549
+Tests should avoid
+being time zone specific.
+
+49
+00:03:02,583 --> 00:03:05,619
+Locale-based values,
+such as number formatting
+
+50
+00:03:05,652 --> 00:03:09,823
+and language directionality,
+can lead to unexpected results.
+
+51
+00:03:09,857 --> 00:03:14,895
+Avoid this problem by explicitly
+setting your simulator’s locale.
+
+52
+00:03:14,928 --> 00:03:19,266
+Another problematic assumption is
+reliance on certain device permissions
+
+53
+00:03:19,299 --> 00:03:21,268
+such as internet access.
+
+54
+00:03:21,301 --> 00:03:24,071
+It’s best to mock device permissions
+in a unit test
+
+55
+00:03:24,104 --> 00:03:28,275
+and use an alert handler in a UI Test.
+
+56
+00:03:28,308 --> 00:03:32,012
+Finally, some tests depend
+on preloaded data.
+
+57
+00:03:32,045 --> 00:03:37,484
+For example, a test may expect
+to have an empty documents directory.
+
+58
+00:03:37,518 --> 00:03:41,822
+While explicitly configuring the simulator
+is sometimes the easiest choice,
+
+59
+00:03:41,855 --> 00:03:46,660
+enhancing the test’s setup method
+is generally more robust.
+
+60
+00:03:46,693 --> 00:03:50,330
+For example,
+the Food Truck depends on a menu file.
+
+61
+00:03:50,364 --> 00:03:53,934
+As part of instantiating
+the truck object in the setup function,
+
+62
+00:03:53,967 --> 00:03:58,105
+we generate a mock data file
+containing the donut menu items.
+
+63
+00:03:58,138 --> 00:04:03,510
+Note that rather than relying on teardown
+methods to prepare for subsequent tests,
+
+64
+00:04:03,544 --> 00:04:08,949
+we recommend establishing
+all state preparation in the setup method.
+
+65
+00:04:08,982 --> 00:04:13,253
+In many cases, read-only files
+can be checked into the repository
+
+66
+00:04:13,287 --> 00:04:15,355
+and later accessed by tests.
+
+67
+00:04:15,389 --> 00:04:18,692
+However, when these files
+need to be constructed,
+
+68
+00:04:18,725 --> 00:04:21,628
+Xcode Cloud supports
+running a custom build script
+
+69
+00:04:21,662 --> 00:04:26,600
+where you can generate the file once
+for multiple tests to access.
+
+70
+00:04:26,633 --> 00:04:29,503
+For more details
+on how to configure your script,
+
+71
+00:04:29,536 --> 00:04:33,173
+watch "Customize your advanced
+Xcode Cloud workflow."
+
+72
+00:04:34,708 --> 00:04:38,245
+That wraps up proper simulator setup.
+
+73
+00:04:38,278 --> 00:04:43,817
+Now, let’s cover how to handle tests
+that fail to meet preconditions.
+
+74
+00:04:43,851 --> 00:04:47,554
+XCTSkip is an error
+that instructs the XCTest Runner
+
+75
+00:04:47,588 --> 00:04:51,992
+to cease executing the current test
+and mark it as skipped.
+
+76
+00:04:52,025 --> 00:04:58,131
+This may be used to bypass a yet-to-be
+supported OS version or device type.
+
+77
+00:04:58,165 --> 00:05:02,202
+You could also leverage XCTSkip
+by setting an environment variable
+
+78
+00:05:02,236 --> 00:05:06,306
+to skip tests specific to staging
+or production environments.
+
+79
+00:05:06,340 --> 00:05:11,111
+Let’s go over how we can control
+test flow using an environment variable.
+
+80
+00:05:12,179 --> 00:05:15,115
+Environment variables
+can provide parameters
+
+81
+00:05:15,148 --> 00:05:18,418
+to both the XCTest test runner app
+on your device
+
+82
+00:05:18,452 --> 00:05:22,022
+and the test host running xcodebuild.
+
+83
+00:05:22,055 --> 00:05:26,560
+In Xcode Cloud, environment variables
+prefixed with TEST_RUNNER_
+
+84
+00:05:26,593 --> 00:05:29,663
+get passed into the XCTest test runner.
+
+85
+00:05:29,696 --> 00:05:31,465
+This prefix will be stripped prior to
+
+86
+00:05:31,498 --> 00:05:35,869
+the variable being made available
+to your code.
+
+87
+00:05:35,903 --> 00:05:39,606
+So, for example,
+a variable in your test code
+
+88
+00:05:39,640 --> 00:05:43,877
+named BASE_URL would be passed in
+as the environment variable
+
+89
+00:05:43,911 --> 00:05:48,115
+named TEST_RUNNER_BASE_URL.
+
+90
+00:05:48,148 --> 00:05:51,351
+Test plans require the same format
+as test code.
+
+91
+00:05:51,385 --> 00:05:55,989
+Namely, we do not add
+the TEST_RUNNER_ prefix.
+
+92
+00:05:56,023 --> 00:06:00,127
+Environment variables may be
+referenced anywhere in test code.
+
+93
+00:06:00,160 --> 00:06:03,263
+For example,
+they could be used with XCTSkip
+
+94
+00:06:03,297 --> 00:06:05,699
+to skip the test for actually
+ordering donuts
+
+95
+00:06:05,732 --> 00:06:08,202
+when we are in a production environment.
+
+96
+00:06:08,235 --> 00:06:11,171
+Unless you are hungry, of course.
+
+97
+00:06:11,205 --> 00:06:12,773
+It’s important to keep in mind
+
+98
+00:06:12,806 --> 00:06:16,510
+that redefining an environment variable
+in multiple places,
+
+99
+00:06:16,543 --> 00:06:20,080
+such as both a test plan and the Xcode
+Cloud User Interface,
+
+100
+00:06:20,113 --> 00:06:22,649
+can lead to unexpected results.
+
+101
+00:06:22,683 --> 00:06:26,453
+In this particular case,
+Xcode Cloud’s Environment variables
+
+102
+00:06:26,486 --> 00:06:31,592
+will take precedence over what’s
+specified in your project’s test plans.
+
+103
+00:06:31,625 --> 00:06:35,295
+Now that we are referencing our
+environment variable within our test code,
+
+104
+00:06:35,329 --> 00:06:38,999
+we can set its value
+in the Xcode Cloud User Interface.
+
+105
+00:06:41,034 --> 00:06:43,637
+To do this,
+navigate to your Cloud Reports,
+
+106
+00:06:43,670 --> 00:06:46,206
+and control-click on Food Truck.
+
+107
+00:06:48,876 --> 00:06:51,945
+To edit our environment variables
+within our Workflows,
+
+108
+00:06:51,979 --> 00:06:57,050
+we will select
+"Manage Workflows" in the context menu.
+
+109
+00:06:57,084 --> 00:07:00,287
+We are editing
+the integration workflow specifically,
+
+110
+00:07:00,320 --> 00:07:03,390
+so we will double click on it.
+
+111
+00:07:03,423 --> 00:07:08,395
+Now, in the sidebar,
+we can select "Environment,"
+
+112
+00:07:08,428 --> 00:07:11,865
+and in the middle of the sheet,
+under “Environment Variables,"
+
+113
+00:07:11,899 --> 00:07:16,336
+we can add the variable’s name and value.
+
+114
+00:07:19,973 --> 00:07:22,142
+As an alternative to setting
+the environment variable
+
+115
+00:07:22,176 --> 00:07:24,111
+in the Xcode Cloud Workflow,
+
+116
+00:07:24,144 --> 00:07:27,714
+we could instead set it
+within the test plan.
+
+117
+00:07:28,482 --> 00:07:31,585
+In this example,
+we don’t yet have a test plan.
+
+118
+00:07:31,618 --> 00:07:34,788
+To enable test plans,
+open the scheme editor,
+
+119
+00:07:34,821 --> 00:07:36,857
+select "Test" in the sidebar,
+
+120
+00:07:36,890 --> 00:07:40,727
+and then click on
+“Convert to Use Test Plans."
+
+121
+00:07:43,664 --> 00:07:47,568
+Okay, now we have a test plan
+I called "Food Truck."
+
+122
+00:07:47,601 --> 00:07:49,336
+To add the environment variable,
+
+123
+00:07:49,369 --> 00:07:52,773
+we need to click on the test plan
+to open its editor.
+
+124
+00:07:54,775 --> 00:07:58,745
+Near the top, we can select between
+"Tests" and "Configurations."
+
+125
+00:07:58,779 --> 00:08:02,616
+Let’s select "Configurations."
+
+126
+00:08:02,649 --> 00:08:04,918
+Now, within the "Arguments" section,
+
+127
+00:08:04,952 --> 00:08:10,090
+we will add the variable
+by clicking on "Environment Variables."
+
+128
+00:08:10,123 --> 00:08:15,796
+A popup will appear where we can enter
+the variable’s name and value.
+
+129
+00:08:18,498 --> 00:08:21,802
+Now our test will be skipped
+when in the production environment.
+
+130
+00:08:21,835 --> 00:08:24,137
+To learn more about skipping tests,
+
+131
+00:08:24,171 --> 00:08:27,407
+watch "XCTSkip your tests."
+
+132
+00:08:28,542 --> 00:08:33,480
+Now that we covered utilizing environment
+variables to control XCTSkip,
+
+133
+00:08:33,514 --> 00:08:36,950
+let’s talk about expectation timeouts.
+
+134
+00:08:36,984 --> 00:08:41,154
+It is possible for a test to fail
+due to an unexpected timeout.
+
+135
+00:08:41,188 --> 00:08:44,725
+For example, this could be the result
+of a slow server
+
+136
+00:08:44,758 --> 00:08:48,729
+or an overly anxious user interface test.
+
+137
+00:08:48,762 --> 00:08:51,131
+One approach to resolve either issue
+
+138
+00:08:51,164 --> 00:08:54,635
+would be to increase
+the XCTestExpectation timeout
+
+139
+00:08:54,668 --> 00:08:59,306
+so the interaction would
+have enough time to finish.
+
+140
+00:08:59,339 --> 00:09:02,543
+In this example,
+we increase the OrderDonut timeout
+
+141
+00:09:02,576 --> 00:09:07,514
+from 5 to 10 seconds to allow the server
+more time to respond.
+
+142
+00:09:07,548 --> 00:09:10,551
+It is usually preferable to instead
+replace both the app
+
+143
+00:09:10,584 --> 00:09:16,590
+and test code timeout handling
+with async/await.
+
+144
+00:09:16,623 --> 00:09:18,725
+This approach allows the test to pause
+
+145
+00:09:18,759 --> 00:09:22,162
+until the await call finishes
+without any timeout.
+
+146
+00:09:24,031 --> 00:09:26,066
+We have resolved time dependent tests,
+
+147
+00:09:26,099 --> 00:09:29,803
+so let’s handle any test failures
+within the test suite.
+
+148
+00:09:29,837 --> 00:09:33,106
+For example, we have a test
+that relies on a service
+
+149
+00:09:33,140 --> 00:09:37,377
+within the staging environment
+that is down for maintenance.
+
+150
+00:09:37,411 --> 00:09:42,616
+We can use XCTExpectFailure instead
+of disabling or skipping this test.
+
+151
+00:09:42,649 --> 00:09:46,386
+With XCTExpectFailure,
+your test executes normally
+
+152
+00:09:46,420 --> 00:09:49,089
+and the results are transformed as
+follows:
+
+153
+00:09:49,122 --> 00:09:52,759
+a failure in a test will now be reported
+as an expected failure,
+
+154
+00:09:52,793 --> 00:09:56,964
+while that failed test within its suite
+will be reported as a pass.
+
+155
+00:09:56,997 --> 00:10:01,301
+This approach eliminates the noise
+generated by expected failures.
+
+156
+00:10:02,469 --> 00:10:06,473
+For example, testOrderDonut is failing.
+
+157
+00:10:06,507 --> 00:10:09,076
+I know that the service
+that provides ordering donuts
+
+158
+00:10:09,109 --> 00:10:10,844
+is under maintenance right now,
+
+159
+00:10:10,878 --> 00:10:15,649
+so I added a call here
+to XCTExpectFailure.
+
+160
+00:10:15,682 --> 00:10:18,886
+To learn more about XCTExpectFailure
+
+161
+00:10:18,919 --> 00:10:22,656
+watch "Embrace Expected Failures
+in XCTest."
+
+162
+00:10:23,657 --> 00:10:25,826
+Now that we've declared expected failures,
+
+163
+00:10:25,859 --> 00:10:29,096
+let’s leverage test repetitions
+to substantiate code
+
+164
+00:10:29,129 --> 00:10:31,498
+and diagnose unreliable code.
+
+165
+00:10:31,532 --> 00:10:35,736
+Test repetitions is a tool that
+runs the same test multiple times
+
+166
+00:10:35,769 --> 00:10:37,237
+waiting for the following:
+
+167
+00:10:37,271 --> 00:10:42,743
+the first failure, the first success,
+or a statistical result.
+
+168
+00:10:42,776 --> 00:10:44,511
+For example, at our desk,
+
+169
+00:10:44,545 --> 00:10:48,081
+we run our new code
+and test cases multiple times
+
+170
+00:10:48,115 --> 00:10:52,386
+with repetitions to confirm initial app
+and test code reliability
+
+171
+00:10:52,419 --> 00:10:54,988
+before checking in the code.
+
+172
+00:10:55,022 --> 00:11:00,260
+We were able to detect that testOrderDonut
+had only an 80% success rate.
+
+173
+00:11:00,294 --> 00:11:01,695
+Uh-oh!
+
+174
+00:11:02,329 --> 00:11:06,233
+Knowing the failure exists, we now use
+the repeat-until-failure mode
+
+175
+00:11:06,266 --> 00:11:08,502
+to locally diagnose the bug.
+
+176
+00:11:08,535 --> 00:11:13,540
+This is another way
+of utilizing test repetitions.
+
+177
+00:11:13,574 --> 00:11:17,044
+For tests that rely
+on an unreliable external service,
+
+178
+00:11:17,077 --> 00:11:20,581
+you may want to leverage
+the retry-on-failure repetition policy
+
+179
+00:11:20,614 --> 00:11:23,984
+to confirm a test can succeed.
+
+180
+00:11:24,017 --> 00:11:26,520
+While retrying tests
+is a powerful approach,
+
+181
+00:11:26,553 --> 00:11:30,824
+it’s preferable to instead mock
+external services when possible.
+
+182
+00:11:30,858 --> 00:11:36,396
+Advantages of a mocked service include
+deterministic reliability and speed.
+
+183
+00:11:36,430 --> 00:11:38,432
+To learn how to mock your dependencies,
+
+184
+00:11:38,465 --> 00:11:41,168
+watch “Testing Tips & Tricks.”
+
+185
+00:11:41,201 --> 00:11:45,138
+Let’s explore how test repetitions
+can be enabled.
+
+186
+00:11:46,273 --> 00:11:48,842
+To enable test repetitions
+in your test plan,
+
+187
+00:11:48,876 --> 00:11:53,113
+go back to the test plan editor
+and select "Configurations."
+
+188
+00:11:56,250 --> 00:11:59,086
+Then, under the "Test Execution" section,
+
+189
+00:11:59,119 --> 00:12:02,623
+there is a popup to select
+your test repetition mode.
+
+190
+00:12:04,258 --> 00:12:07,494
+In this case,
+we will select "Retry on Failure,"
+
+191
+00:12:07,528 --> 00:12:13,166
+which is used primarily to work around
+unreliable external services.
+
+192
+00:12:13,200 --> 00:12:16,069
+Now we have
+our test repetition mode enabled.
+
+193
+00:12:16,103 --> 00:12:19,206
+For more information on
+leveraging test repetitions,
+
+194
+00:12:19,239 --> 00:12:24,511
+watch "Diagnose unreliable code
+with test repetition."
+
+195
+00:12:24,545 --> 00:12:26,980
+So we have gone over a variety of tools
+
+196
+00:12:27,014 --> 00:12:30,784
+that can be used
+to improve test reliability.
+
+197
+00:12:30,817 --> 00:12:33,820
+For more information
+about writing quality tests,
+
+198
+00:12:33,854 --> 00:12:36,557
+watch "Write tests to fail."
+
+199
+00:12:36,590 --> 00:12:40,761
+Now that our tests are reliable,
+let’s make them run fast!
+
+200
+00:12:40,794 --> 00:12:44,898
+A number of configuration options exist
+for achieving faster results.
+
+201
+00:12:44,932 --> 00:12:49,570
+Let’s do what we can to reduce
+the time it takes to run the test suite.
+
+202
+00:12:51,572 --> 00:12:53,807
+One technique we use
+to improve performance
+
+203
+00:12:53,841 --> 00:12:56,877
+is to split our tests
+into multiple test plans.
+
+204
+00:12:56,910 --> 00:13:00,647
+Sometimes, two is enough.
+
+205
+00:13:00,681 --> 00:13:04,251
+You can identify a reduced set of tests
+to verify
+
+206
+00:13:04,284 --> 00:13:07,554
+as part of each open or update
+to a pull request.
+
+207
+00:13:10,557 --> 00:13:13,093
+For example, we could run the unit tests
+
+208
+00:13:13,126 --> 00:13:18,599
+along with just a key subset of user
+interface tests for a single platform.
+
+209
+00:13:23,504 --> 00:13:27,674
+The full set of tests on all supported
+platforms can still be run,
+
+210
+00:13:27,708 --> 00:13:31,778
+but now in the background,
+and not blocking pull requests.
+
+211
+00:13:32,779 --> 00:13:35,849
+This approach allows us
+to add tests and new platforms
+
+212
+00:13:35,883 --> 00:13:39,219
+while keeping our continuous
+integration process timely.
+
+213
+00:13:40,320 --> 00:13:43,457
+Let’s set up a workflow to
+run a select set of tests.
+
+214
+00:13:43,490 --> 00:13:47,094
+In this example, we have already
+created a new test plan
+
+215
+00:13:47,127 --> 00:13:51,665
+called “Pull Requests,"
+and have it open in the test plan editor.
+
+216
+00:13:51,698 --> 00:13:55,702
+Near the top we can selectw
+between "Tests" and "Configurations."
+
+217
+00:13:55,736 --> 00:13:58,071
+Let’s select "Tests."
+
+218
+00:14:01,742 --> 00:14:07,581
+Here we have chosen a subset of tests
+to be verified for a pull request.
+
+219
+00:14:07,614 --> 00:14:11,818
+Now to setup a Workflow
+to run our “Pull Requests” test plan,
+
+220
+00:14:11,852 --> 00:14:14,855
+we will go back to
+Xcode Cloud Manage Workflows
+
+221
+00:14:14,888 --> 00:14:21,261
+just like we did when we added an
+environment variable for skipping tests.
+
+222
+00:14:21,295 --> 00:14:24,231
+To create a new workflow,
+we will click the "Add" button
+
+223
+00:14:24,264 --> 00:14:28,435
+at the bottom left
+of the “Manage Workflow” sheet.
+
+224
+00:14:28,468 --> 00:14:32,406
+For simplicity, let’s also name
+our workflow “Pull Requests”
+
+225
+00:14:32,439 --> 00:14:34,875
+and choose a start condition.
+
+226
+00:14:34,908 --> 00:14:39,413
+We want this workflow to prevent
+any check-ins with failing tests.
+
+227
+00:14:39,446 --> 00:14:42,416
+In the sidebar,
+to the right of "Start Conditions,"
+
+228
+00:14:42,449 --> 00:14:44,284
+we will click the "Add" button.
+
+229
+00:14:48,055 --> 00:14:51,558
+A menu will appear
+showing the start condition options.
+
+230
+00:14:51,592 --> 00:14:55,696
+In our case,
+we will select “Pull Request Changes."
+
+231
+00:14:56,964 --> 00:15:00,434
+Now, we now have
+a pull request start condition.
+
+232
+00:15:00,467 --> 00:15:05,239
+Running tests require that
+the Food Truck app first be built.
+
+233
+00:15:05,272 --> 00:15:08,642
+To do this, we need to add a build action.
+
+234
+00:15:08,675 --> 00:15:12,145
+Again in the sidebar,
+below the “Start Conditions,”
+
+235
+00:15:12,179 --> 00:15:14,348
+let’s add an action.
+
+236
+00:15:14,381 --> 00:15:17,117
+We will click the "Add" button
+next to “Actions,"
+
+237
+00:15:17,150 --> 00:15:20,821
+and then select “Build”
+from the context menu.
+
+238
+00:15:24,258 --> 00:15:26,627
+Now that we have an action
+that builds our app,
+
+239
+00:15:26,660 --> 00:15:29,096
+we will add another to run our tests.
+
+240
+00:15:29,129 --> 00:15:33,700
+Again we will click add action,
+but this time we will select "Test."
+
+241
+00:15:36,837 --> 00:15:39,072
+Great, we have a test action.
+
+242
+00:15:39,106 --> 00:15:42,743
+Let’s select the test plan to run.
+
+243
+00:15:42,776 --> 00:15:46,647
+In the middle of the sheet,
+there is a drop down for test.
+
+244
+00:15:46,680 --> 00:15:50,083
+Here we can select
+our “Pull Requests” test plan.
+
+245
+00:15:53,287 --> 00:15:54,388
+Awesome!
+
+246
+00:15:54,421 --> 00:15:58,525
+Now our Workflow is configured
+to run our test plan on pull request.
+
+247
+00:15:58,559 --> 00:16:03,230
+To create a second workflow that will run
+your complete test suite on a schedule,
+
+248
+00:16:03,263 --> 00:16:05,499
+you can follow a similar set of steps.
+
+249
+00:16:05,532 --> 00:16:08,602
+However, this time,
+select the start condition
+
+250
+00:16:08,635 --> 00:16:11,171
+to be “On a Schedule for a Branch”
+
+251
+00:16:11,205 --> 00:16:15,042
+and then set the workflow
+to run your full suite test plan.
+
+252
+00:16:15,742 --> 00:16:18,345
+We have both Workflows
+configured in Xcode Cloud
+
+253
+00:16:18,378 --> 00:16:22,316
+and running their associated test plans.
+
+254
+00:16:22,349 --> 00:16:26,753
+To learn more about test plans,
+check out "Testing in Xcode."
+
+255
+00:16:28,555 --> 00:16:32,960
+Now we have created pull request
+and scheduled workflow test sets.
+
+256
+00:16:32,993 --> 00:16:37,831
+Another improvement we can make for speed
+is to run tests concurrently.
+
+257
+00:16:37,865 --> 00:16:43,103
+By default, Xcode Cloud
+tests your platforms in parallel.
+
+258
+00:16:43,136 --> 00:16:46,473
+In addition, you can enable Xcode
+to run tests in parallel
+
+259
+00:16:46,507 --> 00:16:49,510
+on a target and test object class level.
+
+260
+00:16:52,513 --> 00:16:55,749
+To enable parallel test execution
+in Xcode,
+
+261
+00:16:55,782 --> 00:16:59,853
+we will again go to our test plan editor
+and select "Tests."
+
+262
+00:17:04,258 --> 00:17:07,561
+Then, to the right of our
+“Food Truck Tests" test bundle,
+
+263
+00:17:07,594 --> 00:17:09,663
+we click the “Options” button.
+
+264
+00:17:11,665 --> 00:17:16,470
+One of the options allows us
+to “Execute in parallel” when possible.
+
+265
+00:17:16,503 --> 00:17:18,906
+If the server has enough cores available,
+
+266
+00:17:18,939 --> 00:17:23,710
+multiple targets and test object classes
+can be executed concurrently.
+
+267
+00:17:23,744 --> 00:17:28,482
+So let’s enable this option to improve
+our test suite turnaround time.
+
+268
+00:17:29,516 --> 00:17:33,253
+Now our tests are configured
+to run in parallel.
+
+269
+00:17:33,287 --> 00:17:36,557
+Note that tests must be designed
+to run independently
+
+270
+00:17:36,590 --> 00:17:39,760
+to take advantage of parallel execution.
+
+271
+00:17:39,793 --> 00:17:44,965
+Proper setup and teardown are essential
+to reliable test case behavior.
+
+272
+00:17:47,100 --> 00:17:48,802
+With our tests running in parallel,
+
+273
+00:17:48,836 --> 00:17:51,972
+it’s time to turn our attention
+to runaway tests.
+
+274
+00:17:52,005 --> 00:17:56,310
+Runaway tests are those tests
+that don’t end in a timely manner.
+
+275
+00:17:56,343 --> 00:17:58,745
+Some examples include an infinite loop
+
+276
+00:17:58,779 --> 00:18:01,715
+or waiting indefinitely
+for a failed server.
+
+277
+00:18:03,050 --> 00:18:07,821
+We can halt these tests by setting an
+execution time allowance in our test plan.
+
+278
+00:18:07,855 --> 00:18:12,359
+The execution time allowance specifies
+the number of seconds for a test to run
+
+279
+00:18:12,392 --> 00:18:15,729
+before it fails with a timeout error.
+
+280
+00:18:15,762 --> 00:18:20,534
+This prevents a test suite from
+getting stuck on an individual test.
+
+281
+00:18:23,370 --> 00:18:26,840
+In this case,
+the fifth test got stuck for some reason.
+
+282
+00:18:26,874 --> 00:18:28,842
+By setting the execution time allowance,
+
+283
+00:18:28,876 --> 00:18:33,247
+this runaway test was eventually halted
+and marked as a failure.
+
+284
+00:18:33,280 --> 00:18:38,318
+The XCTest Test Runner then continued
+running the next test in the suite.
+
+285
+00:18:38,352 --> 00:18:42,022
+Let’s configure an execution
+time allowance for our test plan.
+
+286
+00:18:44,024 --> 00:18:46,560
+To set an execution time allowance,
+
+287
+00:18:46,593 --> 00:18:51,265
+we will go to our test plan editor
+and select “Configurations."
+
+288
+00:18:53,967 --> 00:18:58,071
+Under the “Test Execution” category,
+we can enable “Test Timeouts”
+
+289
+00:18:58,105 --> 00:19:00,774
+and specify the number of seconds to wait.
+
+290
+00:19:00,807 --> 00:19:03,911
+Note that the default is 600 seconds.
+
+291
+00:19:05,245 --> 00:19:08,248
+Having configured the maximum
+execution time allowance,
+
+292
+00:19:08,282 --> 00:19:12,653
+a single runaway test will no longer
+disrupt our testing workflow.
+
+293
+00:19:12,686 --> 00:19:16,523
+For example, an overnight test suite can
+now complete on time
+
+294
+00:19:16,557 --> 00:19:19,860
+and provide a full set of useful results.
+
+295
+00:19:19,893 --> 00:19:23,030
+Yay!
+We finally stopped those runaway tests,
+
+296
+00:19:23,063 --> 00:19:26,166
+so we are able to move on
+to the next improvement.
+
+297
+00:19:26,200 --> 00:19:30,003
+As you may recall, we were able
+to leverage test repetitions
+
+298
+00:19:30,037 --> 00:19:34,875
+to increase reliability
+of tests that rely on external services.
+
+299
+00:19:34,908 --> 00:19:37,678
+We configured our test plan
+to retry on failure
+
+300
+00:19:37,711 --> 00:19:41,081
+and selected
+a sufficient repetition value.
+
+301
+00:19:41,114 --> 00:19:45,919
+However, these repetitions can add to
+the time it takes to run the test suite.
+
+302
+00:19:47,588 --> 00:19:49,756
+Unnecessary repetitions are wasteful
+
+303
+00:19:49,790 --> 00:19:54,628
+and you may want to optimize
+test repetition value to a lower number.
+
+304
+00:19:54,661 --> 00:19:58,832
+Furthermore, you may consider
+removing the problematic test altogether
+
+305
+00:19:58,866 --> 00:20:01,235
+from the pull request workflow.
+
+306
+00:20:01,268 --> 00:20:03,670
+Let’s go over how we might do this.
+
+307
+00:20:05,038 --> 00:20:09,610
+Let’s return to the test repetitions
+configuration in the test plan editor.
+
+308
+00:20:11,812 --> 00:20:16,350
+Earlier we set the test repetition mode
+to “Retry on Failure."
+
+309
+00:20:16,383 --> 00:20:20,320
+Now we can adjust
+the "Maximum Test Repetitions” value.
+
+310
+00:20:20,354 --> 00:20:24,057
+For example, we may have chosen
+to allow up to 10 attempts
+
+311
+00:20:24,091 --> 00:20:26,627
+for a test that relies
+on an external server
+
+312
+00:20:26,660 --> 00:20:29,329
+that fails 5% of the time.
+
+313
+00:20:29,363 --> 00:20:32,599
+Most of the time,
+we will succeed on the first attempt.
+
+314
+00:20:32,633 --> 00:20:36,036
+However, if that same test
+has an unrelated bug,
+
+315
+00:20:36,069 --> 00:20:39,740
+it will fail every time
+and use all 10 attempts.
+
+316
+00:20:39,773 --> 00:20:43,944
+Maybe 3 attempts would be sufficient
+and a better choice.
+
+317
+00:20:45,612 --> 00:20:48,882
+While we want to reduce retries
+to improve performance,
+
+318
+00:20:48,916 --> 00:20:52,119
+note that earlier we recommended
+increasing retries
+
+319
+00:20:52,152 --> 00:20:55,422
+to improve reliability in some cases.
+
+320
+00:20:55,455 --> 00:20:59,726
+As such, this minimally chosen value
+must continue be sufficient
+
+321
+00:20:59,760 --> 00:21:02,095
+to run those tests reliably.
+
+322
+00:21:02,129 --> 00:21:07,201
+That wraps up
+configuring for faster results.
+
+323
+00:21:07,234 --> 00:21:10,504
+To go into more detail
+on getting faster test results,
+
+324
+00:21:10,537 --> 00:21:13,574
+check out "Get your test results faster."
+
+325
+00:21:14,575 --> 00:21:16,877
+To recap,
+we covered the most effective ways
+
+326
+00:21:16,910 --> 00:21:19,313
+to begin testing for Xcode Cloud.
+
+327
+00:21:19,346 --> 00:21:23,417
+We focused on configuring tests to be both
+reliable and fast
+
+328
+00:21:23,450 --> 00:21:28,822
+so that you can avoid irrelevant failures
+and verify your code changes quickly.
+
+329
+00:21:28,856 --> 00:21:32,826
+Thank you, and I hope you enjoy
+the rest of your WWDC!
+
+330
+00:21:32,860 --> 00:21:35,863
+[upbeat music]
+

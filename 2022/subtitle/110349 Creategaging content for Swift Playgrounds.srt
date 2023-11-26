@@ -1,0 +1,1795 @@
+1
+00:00:00,334 --> 00:00:07,341
+♪ ♪
+
+2
+00:00:09,877 --> 00:00:12,012
+Hi.
+I'm Stephanie Angulo.
+
+3
+00:00:12,045 --> 00:00:13,814
+and I'm Marcus Jackson.
+
+4
+00:00:13,847 --> 00:00:16,550
+We're software engineers
+on the Swift Playgrounds Content team.
+
+5
+00:00:16,583 --> 00:00:17,885
+Today, we will give you
+the tools to create
+
+6
+00:00:17,918 --> 00:00:20,187
+engaging content for Swift Playgrounds.
+
+7
+00:00:21,088 --> 00:00:24,291
+Swift Playgrounds 4 introduced
+app development on iPad and Mac.
+
+8
+00:00:24,324 --> 00:00:27,594
+It's the best way to learn
+about building apps for the App Store.
+
+9
+00:00:27,628 --> 00:00:30,631
+Our team has released a number
+of tutorial and sample code products
+
+10
+00:00:30,664 --> 00:00:33,267
+that help you learn the fundamentals
+of app development.
+
+11
+00:00:33,300 --> 00:00:34,935
+We cover topics like
+
+12
+00:00:34,968 --> 00:00:38,705
+building dynamic SwiftUI apps
+using observable data models,
+
+13
+00:00:38,739 --> 00:00:42,442
+customizing views with fun
+SwiftUI animations and shapes,
+
+14
+00:00:42,476 --> 00:00:45,679
+and more advanced topics,
+like asynchronous data fetching.
+
+15
+00:00:45,712 --> 00:00:48,115
+In today's session,
+we'll provide an overview
+
+16
+00:00:48,148 --> 00:00:50,083
+of our new instructional system,
+
+17
+00:00:50,117 --> 00:00:52,819
+write content
+using the project's guide module,
+
+18
+00:00:52,853 --> 00:00:57,791
+and build an immersive learning experience
+with walkthrough and experiment tasks.
+
+19
+00:00:57,824 --> 00:00:59,159
+Let's get started.
+
+20
+00:00:59,193 --> 00:01:02,729
+Imagine a learner completing our tutorial,
+"Keep Going with Apps."
+
+21
+00:01:02,763 --> 00:01:04,831
+They'll end up with an app called,
+"Emoji App."
+
+22
+00:01:04,865 --> 00:01:09,703
+In this app, they can keep track
+of all their favorite animals in a list,
+
+23
+00:01:09,736 --> 00:01:13,574
+change their color and size,
+
+24
+00:01:13,607 --> 00:01:15,742
+and tap on the animals
+to watch them get their groove on
+
+25
+00:01:15,776 --> 00:01:17,411
+in "Creature Dance" view.
+
+26
+00:01:19,479 --> 00:01:21,348
+This dance view is fun,
+but I want the vibe to be
+
+27
+00:01:21,381 --> 00:01:22,850
+more of an actual dance party.
+
+28
+00:01:22,883 --> 00:01:25,719
+So let's go ahead and add some extra
+features we can show our learners.
+
+29
+00:01:27,221 --> 00:01:30,290
+Here, I added a bit more code
+to "Creature Dance" view.
+
+30
+00:01:30,324 --> 00:01:32,593
+Every party needs a dance floor.
+
+31
+00:01:32,626 --> 00:01:35,863
+So I made a 10x10 grid
+that I set as my view's background.
+
+32
+00:01:37,331 --> 00:01:39,566
+And each tile in the grid
+updates its color randomly
+
+33
+00:01:39,600 --> 00:01:41,735
+using a custom view modifier.
+
+34
+00:01:42,636 --> 00:01:44,304
+Looks groovy huh?
+
+35
+00:01:46,640 --> 00:01:48,976
+I also wanted to make sure
+our favorite animals can dance
+
+36
+00:01:49,009 --> 00:01:51,478
+without our help,
+so I made a few more custom modifiers
+
+37
+00:01:51,512 --> 00:01:57,251
+that help animate the animals' scale,
+position offset, and rotation.
+
+38
+00:01:58,352 --> 00:02:02,489
+In all of these custom modifiers,
+these animations are set to repeatForever,
+
+39
+00:02:02,523 --> 00:02:06,193
+which means our animals can dance
+all night on their brand-new dance floor.
+
+40
+00:02:07,394 --> 00:02:09,630
+And finally,
+to really light up the dance floor,
+
+41
+00:02:09,663 --> 00:02:12,432
+I added an animated disco ball
+at the top of our view.
+
+42
+00:02:13,634 --> 00:02:16,036
+Adding this final touch
+really pulls it all together
+
+43
+00:02:16,069 --> 00:02:18,038
+for the ultimate dance party.
+
+44
+00:02:18,071 --> 00:02:19,873
+I've made quite a few changes
+to this project,
+
+45
+00:02:19,907 --> 00:02:22,776
+and I didn't even to dive into the details
+of custom view modifiers.
+
+46
+00:02:22,809 --> 00:02:25,379
+So how should we explain this
+to our learners?
+
+47
+00:02:25,412 --> 00:02:27,748
+You could direct a learner
+to Apple's documentation,
+
+48
+00:02:27,781 --> 00:02:30,284
+but now you also have
+the option to teach these concepts
+
+49
+00:02:30,317 --> 00:02:33,220
+alongside your project's code
+in Swift Playgrounds.
+
+50
+00:02:33,253 --> 00:02:35,189
+Our team has built
+this new instructional system
+
+51
+00:02:35,222 --> 00:02:37,157
+that's designed to help authors like you
+
+52
+00:02:37,191 --> 00:02:40,794
+create engaging in-app experiences
+for your learners.
+
+53
+00:02:40,827 --> 00:02:43,330
+Today, we'll walk you through
+how to build the learning content
+
+54
+00:02:43,363 --> 00:02:45,332
+for this app in Swift Playgrounds 4.
+
+55
+00:02:45,365 --> 00:02:48,368
+Let me give you a sneak peek
+of what you'll be walking away with.
+
+56
+00:02:48,402 --> 00:02:50,904
+When a learner first opens
+your content on Swift Playgrounds,
+
+57
+00:02:50,938 --> 00:02:53,974
+you can introduce them to the project
+with an optional welcome message,
+
+58
+00:02:54,007 --> 00:02:57,010
+as shown here from our friend Byte.
+
+59
+00:02:57,044 --> 00:02:59,680
+The welcome message sits at the top
+of the project's source editor
+
+60
+00:02:59,713 --> 00:03:02,082
+on the left hand side of the screen,
+
+61
+00:03:02,115 --> 00:03:04,818
+while on the right hand side
+of the screen is the learning center.
+
+62
+00:03:06,587 --> 00:03:09,389
+The learning center is a designated area
+where you can add images
+
+63
+00:03:09,423 --> 00:03:12,492
+and instructional text that describes
+your content to your learners.
+
+64
+00:03:13,927 --> 00:03:15,929
+In our welcome message
+and our learning center,
+
+65
+00:03:15,963 --> 00:03:18,799
+we're letting our learners know that this
+project will be pumping up the jams
+
+66
+00:03:18,832 --> 00:03:22,269
+with the help of SwiftUI colors,
+shapes, and animations.
+
+67
+00:03:24,271 --> 00:03:26,907
+The learning center also contains
+a section for tasks.
+
+68
+00:03:26,940 --> 00:03:31,144
+Tasks are coding objectives you the author
+can write to help guide your learners.
+
+69
+00:03:31,178 --> 00:03:33,547
+They're a fundamental
+building block for content.
+
+70
+00:03:34,781 --> 00:03:36,850
+By tapping a task button
+in the learning center,
+
+71
+00:03:36,884 --> 00:03:39,052
+our instructional system will open up
+a Swift file
+
+72
+00:03:39,086 --> 00:03:42,723
+and render a card with learning material
+at the top of that file.
+
+73
+00:03:42,756 --> 00:03:48,829
+This card can contain a series of pages
+with text, images, and code snippets.
+
+74
+00:03:48,862 --> 00:03:51,832
+Later, Marcus will go over
+two tasks types:
+
+75
+00:03:51,865 --> 00:03:54,368
+walkthroughs and experiments.
+
+76
+00:03:55,502 --> 00:03:58,739
+At a high level, that's what
+our instructional system has to offer.
+
+77
+00:03:58,772 --> 00:04:00,941
+With the right prose and the right tasks,
+
+78
+00:04:00,974 --> 00:04:05,012
+you can build a compelling
+educational experience for your learners.
+
+79
+00:04:05,045 --> 00:04:07,214
+Now, in order to start
+creating your own content,
+
+80
+00:04:07,247 --> 00:04:09,483
+we first need to talk
+about the guide module.
+
+81
+00:04:09,516 --> 00:04:12,586
+By default,
+the file structure of a swiftpm project
+
+82
+00:04:12,619 --> 00:04:14,488
+keeps all its source code at its root.
+
+83
+00:04:14,521 --> 00:04:15,989
+In order to upgrade your project
+
+84
+00:04:16,023 --> 00:04:17,891
+to take advantage
+of the instructional system,
+
+85
+00:04:17,925 --> 00:04:20,194
+you'll need to change its file structure.
+
+86
+00:04:20,227 --> 00:04:22,563
+We first need to create an App module.
+
+87
+00:04:22,596 --> 00:04:25,265
+Once it's created, we need to move
+all our project's source code
+
+88
+00:04:25,299 --> 00:04:26,934
+and assets into it.
+
+89
+00:04:26,967 --> 00:04:29,937
+The Package.swift file should be
+left at the root of our project.
+
+90
+00:04:32,072 --> 00:04:34,341
+Then we need to create a guide module.
+
+91
+00:04:34,374 --> 00:04:39,079
+This module should be at the same level
+as the App module and Package.swift file.
+
+92
+00:04:39,112 --> 00:04:41,982
+Inside the guide module,
+you'll need a guide file.
+
+93
+00:04:42,015 --> 00:04:45,285
+This file will include all the prose
+of your learning content.
+
+94
+00:04:45,319 --> 00:04:46,887
+I've already started on my guide file,
+
+95
+00:04:46,920 --> 00:04:49,256
+so let's check out the content
+I've written so far.
+
+96
+00:04:51,592 --> 00:04:54,795
+The guide file contains a combination
+of directives and markdown.
+
+97
+00:04:54,828 --> 00:04:57,698
+Directives are an extension of markdown
+that can take in primitive types
+
+98
+00:04:57,731 --> 00:05:01,401
+as attributes, such as strings,
+as well as more complex types,
+
+99
+00:05:01,435 --> 00:05:03,604
+like markdown elements
+and other directives.
+
+100
+00:05:04,838 --> 00:05:07,007
+Directives can act as containers
+for other directives,
+
+101
+00:05:07,040 --> 00:05:11,111
+but they can also represent UI elements
+in our instructional system.
+
+102
+00:05:11,144 --> 00:05:14,248
+First in the guide file, I've added
+the necessary guidebook directive
+
+103
+00:05:14,281 --> 00:05:16,550
+that's wrapped
+around the entirety of the file.
+
+104
+00:05:16,583 --> 00:05:19,753
+It acts as the main container
+for all our directives.
+
+105
+00:05:19,786 --> 00:05:23,223
+Its parameters include a title,
+icon and background image,
+
+106
+00:05:23,257 --> 00:05:26,727
+and the file you first want opened
+when you open the project.
+
+107
+00:05:26,760 --> 00:05:30,163
+Under the guidebook directive,
+I've added a welcome message directive.
+
+108
+00:05:30,197 --> 00:05:32,666
+Welcome messages are optional
+and as mentioned earlier,
+
+109
+00:05:32,699 --> 00:05:36,603
+they are presented to the learner
+when they first open up the project.
+
+110
+00:05:36,637 --> 00:05:39,873
+Below the welcome message directive,
+I've added a guide directive
+
+111
+00:05:39,907 --> 00:05:41,909
+that's wrapped around a step directive.
+
+112
+00:05:41,942 --> 00:05:44,378
+The guide directive acts as a container
+for your steps
+
+113
+00:05:44,411 --> 00:05:45,812
+and steps map out to your content
+
+114
+00:05:45,846 --> 00:05:48,615
+displayed in the learning center
+and tasks.
+
+115
+00:05:48,649 --> 00:05:51,685
+To start adding images and instructional
+text in your learning center,
+
+116
+00:05:51,718 --> 00:05:54,888
+you'll need to include a ContentAndMedia
+directive inside your step.
+
+117
+00:05:56,456 --> 00:05:58,725
+So I got this party started
+by adding a dance floor,
+
+118
+00:05:58,759 --> 00:06:01,795
+a nice welcome message,
+and the prose for the learning center.
+
+119
+00:06:01,828 --> 00:06:03,797
+Marcus,
+do you wanna keep this party going?
+
+120
+00:06:03,830 --> 00:06:05,532
+Marcus: Definitely.
+
+121
+00:06:05,566 --> 00:06:08,202
+What a dope dance floor
+for our creatures to party on.
+
+122
+00:06:08,235 --> 00:06:11,405
+While this effect is really cool,
+I think it might be too much
+
+123
+00:06:11,438 --> 00:06:13,307
+for someone who is still learning.
+
+124
+00:06:13,340 --> 00:06:17,077
+To help explain this code,
+we can use walkthrough tasks.
+
+125
+00:06:17,110 --> 00:06:19,479
+Let's start with a one-page walkthrough.
+
+126
+00:06:19,513 --> 00:06:22,583
+Later, I'll show you
+how to fill out the rest.
+
+127
+00:06:22,616 --> 00:06:25,519
+Stephanie already showed you
+the beginnings of our guidebook,
+
+128
+00:06:25,552 --> 00:06:27,721
+as well as a helpful welcome message.
+
+129
+00:06:27,754 --> 00:06:30,591
+We already have the first directive
+you need to create tasks,
+
+130
+00:06:30,624 --> 00:06:32,226
+the step directive.
+
+131
+00:06:32,259 --> 00:06:35,562
+The step directive is where
+our walkthrough content will live.
+
+132
+00:06:35,596 --> 00:06:39,166
+To make a step, you need to fill it
+with two other directives.
+
+133
+00:06:39,199 --> 00:06:42,703
+Here, we've already added
+a content and media directive.
+
+134
+00:06:42,736 --> 00:06:45,973
+This directive contains markdown
+that goes into the learning center
+
+135
+00:06:46,006 --> 00:06:47,574
+on the right hand side.
+
+136
+00:06:47,608 --> 00:06:51,578
+The body of this directive can contain
+any form of markdown text.
+
+137
+00:06:51,612 --> 00:06:54,481
+This is the place to put longer prose
+and larger images
+
+138
+00:06:54,515 --> 00:06:56,617
+that might help cover your topic.
+
+139
+00:06:56,650 --> 00:07:00,654
+Here is the content and media directive
+being displayed in Playgrounds.
+
+140
+00:07:00,687 --> 00:07:02,856
+While the area seems small
+in this example,
+
+141
+00:07:02,890 --> 00:07:07,060
+this view can extend further down
+and is contained in a scroll view.
+
+142
+00:07:07,094 --> 00:07:09,963
+This makes it a great place
+to write longer bits of prose
+
+143
+00:07:09,997 --> 00:07:13,400
+and show complex content such as diagrams.
+
+144
+00:07:13,433 --> 00:07:15,836
+Once you have
+your content and media written,
+
+145
+00:07:15,869 --> 00:07:19,273
+we can add in the second
+required directive, tasks.
+
+146
+00:07:19,306 --> 00:07:23,277
+We add our tasks into another directive
+called a task group.
+
+147
+00:07:23,310 --> 00:07:27,047
+Task groups are an optional directive
+you can put inside of steps,
+
+148
+00:07:27,080 --> 00:07:29,850
+if you want to collect
+a group of tasks together.
+
+149
+00:07:29,883 --> 00:07:33,086
+You might consider this if you have
+content which covers the same topic
+
+150
+00:07:33,120 --> 00:07:36,957
+across multiple files
+or different types of tasks.
+
+151
+00:07:36,990 --> 00:07:40,194
+Within the task group,
+we can add a short bit of text.
+
+152
+00:07:40,227 --> 00:07:43,263
+This will be displayed
+in the learning center as a subtitle.
+
+153
+00:07:44,731 --> 00:07:47,234
+Here is how a task group
+displays in Playgrounds.
+
+154
+00:07:48,302 --> 00:07:51,338
+Now that I have
+my task group and my subtitle,
+
+155
+00:07:51,371 --> 00:07:54,575
+I can start adding task directives.
+
+156
+00:07:54,608 --> 00:07:56,810
+Tasks have a few parameters
+
+157
+00:07:56,844 --> 00:07:58,579
+The first parameter is type.
+
+158
+00:07:58,612 --> 00:08:00,214
+This lets the instructional system know
+
+159
+00:08:00,247 --> 00:08:03,684
+what UI to generate
+when displaying this task.
+
+160
+00:08:03,717 --> 00:08:06,453
+Next, every task needs an ID.
+
+161
+00:08:06,486 --> 00:08:08,956
+IDs are strings
+that can be anything you want.
+
+162
+00:08:08,989 --> 00:08:12,593
+However, every ID in the guide
+must be unique.
+
+163
+00:08:12,626 --> 00:08:15,329
+The title parameter is also a string.
+
+164
+00:08:15,362 --> 00:08:18,866
+This can also be whatever you want
+and does not have to be unique.
+
+165
+00:08:18,899 --> 00:08:21,935
+This title will be rendered
+by the task card UI.
+
+166
+00:08:21,969 --> 00:08:24,671
+Finally, the file parameter tells
+the learning center
+
+167
+00:08:24,705 --> 00:08:29,142
+which file in the project to open
+when the learner starts this task.
+
+168
+00:08:29,176 --> 00:08:32,145
+Here is how
+a task displays on Playgrounds.
+
+169
+00:08:32,179 --> 00:08:34,314
+The title sits inside of a button,
+
+170
+00:08:34,348 --> 00:08:36,950
+and the file of the walkthrough
+is listed above it.
+
+171
+00:08:36,984 --> 00:08:39,520
+Now we have our walkthrough task written.
+
+172
+00:08:39,553 --> 00:08:41,655
+Let's add our first page.
+
+173
+00:08:41,688 --> 00:08:44,124
+Page directives go
+inside the body of a task
+
+174
+00:08:44,157 --> 00:08:46,994
+and have the following
+mandatory parameters:
+
+175
+00:08:47,027 --> 00:08:50,330
+The ID parameter behaves
+just like the ID for a task,
+
+176
+00:08:50,364 --> 00:08:53,667
+so they must be unique
+for the entire guide file.
+
+177
+00:08:53,700 --> 00:08:56,637
+The title parameter behaves
+a lot like the one for tasks.
+
+178
+00:08:56,670 --> 00:09:00,107
+However, when you leave
+the title string empty on a page,
+
+179
+00:09:00,140 --> 00:09:02,075
+this lets the instructional system know
+
+180
+00:09:02,109 --> 00:09:05,479
+to use the task's title
+when displaying this page.
+
+181
+00:09:05,512 --> 00:09:08,649
+Inside of a page,
+you can add any markdown text,
+
+182
+00:09:08,682 --> 00:09:11,118
+similar to the content
+and media directive.
+
+183
+00:09:11,151 --> 00:09:14,855
+However, the task view is
+much smaller than the learning center.
+
+184
+00:09:14,888 --> 00:09:18,492
+Keep your text short and avoid
+using complex images like diagrams
+
+185
+00:09:18,525 --> 00:09:21,328
+because they may be hard
+for the learner to read.
+
+186
+00:09:21,361 --> 00:09:25,065
+This is the first page of our walkthrough
+as rendered by Swift Playgrounds.
+
+187
+00:09:25,098 --> 00:09:27,434
+We're almost done
+with our first walkthrough,
+
+188
+00:09:27,467 --> 00:09:29,970
+but first I need to show you
+how to highlight the code
+
+189
+00:09:30,003 --> 00:09:33,040
+as shown in the last screenshot.
+
+190
+00:09:33,073 --> 00:09:36,743
+For that, we need to add some markers
+to CreatureDance.swift.
+
+191
+00:09:36,777 --> 00:09:38,545
+When my walkthrough is shown,
+
+192
+00:09:38,579 --> 00:09:40,848
+I'd like to highlight
+the first custom modifier,
+
+193
+00:09:40,881 --> 00:09:43,317
+the animatedScalingEffect.
+
+194
+00:09:43,350 --> 00:09:46,954
+To add highlights to a line,
+I'll add a pair of comments on the lines
+
+195
+00:09:46,987 --> 00:09:49,389
+before and after the code.
+
+196
+00:09:49,423 --> 00:09:53,427
+We start with the multiline
+comment syntax, /*
+
+197
+00:09:53,460 --> 00:09:57,231
+Inside the comment,
+we write #-code
+
+198
+00:09:57,264 --> 00:10:01,635
+-walkthrough,
+followed by a pair of parentheses.
+
+199
+00:10:01,668 --> 00:10:03,704
+Inside the parentheses, we write the ID
+
+200
+00:10:03,737 --> 00:10:05,906
+of the page directive
+we want to highlight.
+
+201
+00:10:05,939 --> 00:10:08,575
+In this case, 1.modifier.
+
+202
+00:10:10,210 --> 00:10:12,679
+Now, let's test this out in Playgrounds.
+
+203
+00:10:12,713 --> 00:10:15,215
+Let's open the Emoji App project.
+
+204
+00:10:18,752 --> 00:10:21,221
+When you open the project,
+you're greeted with the source editor
+
+205
+00:10:21,255 --> 00:10:23,957
+on the left and the preview on the right.
+
+206
+00:10:23,991 --> 00:10:26,560
+Above the source editor
+is our welcome message,
+
+207
+00:10:26,593 --> 00:10:30,831
+where our buddy Byte gives you an overview
+of what learning content there is to do.
+
+208
+00:10:30,864 --> 00:10:33,066
+I'll tap on the Learn More button.
+
+209
+00:10:36,370 --> 00:10:39,940
+The preview on the right
+is swapped out for the learning center.
+
+210
+00:10:39,973 --> 00:10:43,744
+At the top is the prose we wrote
+in the ContentAndMedia directive.
+
+211
+00:10:43,777 --> 00:10:45,946
+Below that is the task group,
+
+212
+00:10:45,979 --> 00:10:49,183
+as well as the button
+with the title of our walkthrough.
+
+213
+00:10:49,216 --> 00:10:51,818
+Walkthroughs are denoted
+in the learning center as buttons
+
+214
+00:10:51,852 --> 00:10:55,589
+with pictures of another one
+of Byte's friends, Expert.
+
+215
+00:10:58,058 --> 00:11:00,460
+Tapping on this button does a few things:
+
+216
+00:11:00,494 --> 00:11:04,298
+First, the learning center is once again
+swapped out for the preview.
+
+217
+00:11:04,331 --> 00:11:07,734
+Second, if it isn't already open,
+the file specified
+
+218
+00:11:07,768 --> 00:11:11,104
+in the task's file parameter
+is opened in the source editor.
+
+219
+00:11:11,138 --> 00:11:14,975
+Third, the task view drops down
+above the source editor.
+
+220
+00:11:15,008 --> 00:11:17,878
+Finally, the source editor highlights
+the code marked
+
+221
+00:11:17,911 --> 00:11:19,880
+in the code walkthrough comments.
+
+222
+00:11:19,913 --> 00:11:23,584
+If the content is not on screen,
+the source editor will scroll
+
+223
+00:11:23,617 --> 00:11:27,020
+until the lines of code that need
+to be highlighted appear.
+
+224
+00:11:27,054 --> 00:11:30,257
+And that is how you write
+a walkthrough in Swift Playgrounds,
+
+225
+00:11:30,290 --> 00:11:32,359
+but I think it's fair to say
+you're probably curious
+
+226
+00:11:32,392 --> 00:11:35,162
+what a walkthrough
+with multiple pages looks like.
+
+227
+00:11:35,195 --> 00:11:39,833
+To do that, I'll open the project in Xcode
+to fill out the rest of my walkthrough.
+
+228
+00:11:41,034 --> 00:11:44,638
+Now with the guide file open in Xcode,
+I'd like to add a couple more pages
+
+229
+00:11:44,671 --> 00:11:46,139
+to my walkthrough.
+
+230
+00:11:46,173 --> 00:11:49,276
+I've explained a little bit
+about what a view modifier is,
+
+231
+00:11:49,309 --> 00:11:53,146
+but I'd like to explain more
+about how to build a custom view modifier.
+
+232
+00:11:53,180 --> 00:11:55,182
+I'll go ahead and add those pages.
+
+233
+00:11:59,686 --> 00:12:00,888
+Great.
+
+234
+00:12:00,921 --> 00:12:04,091
+Now we have our walkthrough
+for custom view modifiers.
+
+235
+00:12:05,292 --> 00:12:08,762
+I think now is also a good time
+to explain the ViewModifier protocol.
+
+236
+00:12:08,795 --> 00:12:13,433
+This way, learners can try to make
+their own ViewModifiers if they want to.
+
+237
+00:12:13,467 --> 00:12:16,436
+To do this, I'll add another walkthrough
+to our task group.
+
+238
+00:12:20,240 --> 00:12:23,210
+We now have
+a fully fleshed out pair of walkthroughs.
+
+239
+00:12:23,243 --> 00:12:26,213
+I'll switch back over to my iPad
+to see how it looks.
+
+240
+00:12:28,081 --> 00:12:29,583
+When we open our project,
+
+241
+00:12:29,616 --> 00:12:32,019
+there are now two walkthroughs
+in the learning center.
+
+242
+00:12:32,052 --> 00:12:34,788
+I'll start by tapping
+on the first walkthrough.
+
+243
+00:12:37,324 --> 00:12:40,694
+Just like before,
+the line with the view modifier highlights
+
+244
+00:12:40,727 --> 00:12:44,498
+and our task view drops down
+to explain what this code is.
+
+245
+00:12:44,531 --> 00:12:46,700
+Now I can tap the next button.
+
+246
+00:12:49,703 --> 00:12:52,506
+The source editor now scrolls down
+to the modifier struct
+
+247
+00:12:52,539 --> 00:12:55,209
+and explains what this struct is for.
+
+248
+00:12:57,945 --> 00:13:02,416
+Tapping on the next button again moves
+to the final page of this walkthrough,
+
+249
+00:13:02,449 --> 00:13:06,687
+which explains more about the body method
+inside the modifier struct.
+
+250
+00:13:06,720 --> 00:13:11,158
+In the bottom corner of the task view,
+there is a button marked Next Walkthrough.
+
+251
+00:13:13,994 --> 00:13:17,898
+Tapping on this automatically begins
+the next walkthrough task.
+
+252
+00:13:17,931 --> 00:13:21,602
+This functionality is given to you
+for free by the instructional system
+
+253
+00:13:21,635 --> 00:13:24,438
+as long as there is another task
+to progress to.
+
+254
+00:13:24,471 --> 00:13:27,908
+Now that I am here, I will tap
+through the rest of this walkthrough.
+
+255
+00:13:33,814 --> 00:13:36,884
+And that is how you build walkthroughs
+in Swift Playgrounds.
+
+256
+00:13:36,917 --> 00:13:40,354
+Next, I'd like to show you how to create
+a different kind of task
+
+257
+00:13:40,387 --> 00:13:44,424
+that will allow learners to try adding
+code themselves and seeing what happens.
+
+258
+00:13:44,458 --> 00:13:47,561
+So at this point,
+we have a good party going.
+
+259
+00:13:47,594 --> 00:13:51,098
+Our creatures are dancing, and they have
+some lights in the background.
+
+260
+00:13:51,131 --> 00:13:53,200
+While it basically looks
+like a nightclub in there,
+
+261
+00:13:53,233 --> 00:13:55,636
+I think we can do a little bit better.
+
+262
+00:13:55,669 --> 00:13:58,372
+I think it would be great
+to add some colors to our creatures
+
+263
+00:13:58,405 --> 00:14:01,909
+so it looks like they're dancing under
+the strobe lights of their little club.
+
+264
+00:14:01,942 --> 00:14:04,878
+But that's just me. What would you do?
+
+265
+00:14:04,912 --> 00:14:08,115
+This is where experiment tasks come in.
+
+266
+00:14:08,148 --> 00:14:12,152
+Experiments are optional bits of code
+learners can add
+
+267
+00:14:12,186 --> 00:14:14,021
+if they are feeling extra curious
+
+268
+00:14:14,054 --> 00:14:17,558
+or if they want a way
+of making the app unique to them.
+
+269
+00:14:17,591 --> 00:14:20,961
+Back in the guide file,
+we can add our experiment task
+
+270
+00:14:20,994 --> 00:14:23,630
+to the same step
+we were already working on.
+
+271
+00:14:23,664 --> 00:14:26,600
+I've created a new task group
+to hold our experiments
+
+272
+00:14:26,633 --> 00:14:28,969
+which I've named "Experiments."
+
+273
+00:14:29,002 --> 00:14:31,839
+I've populated it with a subtitle
+as well as the beginnings
+
+274
+00:14:31,872 --> 00:14:33,674
+of our first experiment task.
+
+275
+00:14:35,142 --> 00:14:38,545
+The first difference between
+an experiment task and a walkthrough
+
+276
+00:14:38,579 --> 00:14:40,914
+is what goes into the type parameter.
+
+277
+00:14:40,948 --> 00:14:45,252
+The other parameters follow
+a similar convention to walkthrough tasks.
+
+278
+00:14:45,285 --> 00:14:48,522
+Page directives work the same way
+they do in walkthroughs.
+
+279
+00:14:48,555 --> 00:14:53,861
+However, for experiments, we add
+one optional parameter, isAddable.
+
+280
+00:14:53,894 --> 00:14:57,297
+The isAddable parameter allows
+experiment tasks to add code
+
+281
+00:14:57,331 --> 00:14:59,633
+directly into the source editor.
+
+282
+00:14:59,666 --> 00:15:02,536
+When isAddable is set to true,
+an add button appears
+
+283
+00:15:02,569 --> 00:15:05,506
+in the learning task card
+next to the code snippet.
+
+284
+00:15:05,539 --> 00:15:08,442
+The code in a page directive
+must be wrapped in a code block
+
+285
+00:15:08,475 --> 00:15:11,111
+using the triple back tick
+markdown syntax.
+
+286
+00:15:11,144 --> 00:15:15,148
+It's best practice to keep
+your code blocks to ten lines or less.
+
+287
+00:15:15,182 --> 00:15:18,452
+While the task view can show
+longer code snippets if need be,
+
+288
+00:15:18,485 --> 00:15:21,221
+it's better
+if learners don't have to scroll.
+
+289
+00:15:21,255 --> 00:15:24,191
+Here is how the code view
+displays in Playgrounds.
+
+290
+00:15:24,224 --> 00:15:26,560
+To the right of the code snippet,
+is an add button,
+
+291
+00:15:26,593 --> 00:15:30,030
+since the isAddable parameter
+was set to true.
+
+292
+00:15:30,063 --> 00:15:33,600
+That is almost everything we need
+to write an experiment task.
+
+293
+00:15:33,634 --> 00:15:35,769
+But remember that isAddable parameter?
+
+294
+00:15:35,802 --> 00:15:39,806
+This allows the experiment task
+to add code to the source editor,
+
+295
+00:15:39,840 --> 00:15:43,310
+but we need to tell Playgrounds
+where in the code to add the snippet.
+
+296
+00:15:43,343 --> 00:15:47,114
+Here we are again in CreatureDance.swift.
+
+297
+00:15:47,147 --> 00:15:51,785
+I want learners to add the color modifier
+right below the opacity modifier.
+
+298
+00:15:51,818 --> 00:15:55,455
+So that's where I'll add
+my experiment task comment.
+
+299
+00:15:55,489 --> 00:16:00,561
+Experiment task comments are single line,
+meaning they start with a double slash.
+
+300
+00:16:00,594 --> 00:16:06,033
+Then, we write #-
+learning-task.
+
+301
+00:16:06,066 --> 00:16:08,468
+After, comes a pair of parentheses,
+
+302
+00:16:08,502 --> 00:16:12,239
+and inside we write the ID
+of the experiment task.
+
+303
+00:16:12,272 --> 00:16:16,510
+Now we have everything we need
+to test out our experiment task.
+
+304
+00:16:16,543 --> 00:16:20,547
+Once again, I have all this
+already written in the swiftpm project
+
+305
+00:16:20,581 --> 00:16:22,382
+Stephanie and I are working on.
+
+306
+00:16:22,416 --> 00:16:24,084
+Let's check it out.
+
+307
+00:16:24,117 --> 00:16:26,787
+We're back once again
+to the learning center.
+
+308
+00:16:26,820 --> 00:16:29,957
+This time I want to focus
+on the bottom task group,
+
+309
+00:16:29,990 --> 00:16:31,992
+where our first experiment is.
+
+310
+00:16:32,025 --> 00:16:34,761
+Experiments are noted
+in the instructional system
+
+311
+00:16:34,795 --> 00:16:37,397
+by another one of Byte's friends, Blu.
+
+312
+00:16:37,431 --> 00:16:39,433
+Let's tap on the experiment task.
+
+313
+00:16:41,401 --> 00:16:43,971
+What happens next should seem familiar.
+
+314
+00:16:44,004 --> 00:16:45,739
+The task view drops down.
+
+315
+00:16:45,772 --> 00:16:49,276
+However, this time,
+the task view contains a code view.
+
+316
+00:16:49,309 --> 00:16:52,012
+On the right of the code view
+is an add button.
+
+317
+00:16:52,045 --> 00:16:55,215
+Tapping on this adds the code
+right to the source editor.
+
+318
+00:16:57,117 --> 00:16:59,253
+With the code now added,
+I'd like to check out
+
+319
+00:16:59,286 --> 00:17:01,722
+what changes that made
+to the CreatureDanceView.
+
+320
+00:17:01,755 --> 00:17:03,590
+Let's start this party!
+
+321
+00:17:06,126 --> 00:17:07,227
+Sweet.
+
+322
+00:17:07,261 --> 00:17:09,563
+Now we can see the lights
+hitting our creatures.
+
+323
+00:17:09,596 --> 00:17:13,000
+This is pretty groovy, but I think
+we can take it up one more notch
+
+324
+00:17:13,033 --> 00:17:17,271
+by using a timer to give the creatures
+a random color every few seconds.
+
+325
+00:17:17,304 --> 00:17:20,174
+To do that, we'll need to add
+another experiment,
+
+326
+00:17:20,207 --> 00:17:23,610
+so let's take this project back to Xcode
+and add our new task.
+
+327
+00:17:23,644 --> 00:17:25,746
+Before we add in our second experiment,
+
+328
+00:17:25,779 --> 00:17:30,250
+I think it's a good idea to add a page
+to the experiment that's already there.
+
+329
+00:17:30,284 --> 00:17:33,320
+For a learner,
+it can be confusing to add a block of code
+
+330
+00:17:33,353 --> 00:17:35,956
+and not know why or what it does.
+
+331
+00:17:35,989 --> 00:17:40,594
+To help with that, I'll add a page
+with some text before our code page.
+
+332
+00:17:45,766 --> 00:17:49,870
+Now, we are ready to add our second task.
+
+333
+00:17:49,903 --> 00:17:53,807
+Again, I want the learner
+to add some code to their project,
+
+334
+00:17:53,841 --> 00:17:58,512
+so I'll add a page explaining the code
+followed by an addable code snippet.
+
+335
+00:17:59,813 --> 00:18:03,450
+And with that, we have made
+a new piece of content to teach learners
+
+336
+00:18:03,483 --> 00:18:07,487
+about some of the things you can do
+with custom view modifiers.
+
+337
+00:18:07,521 --> 00:18:10,157
+Hey, Stephanie, you ready to show them
+what we've built?
+
+338
+00:18:10,190 --> 00:18:11,525
+Stephanie: Yeah, let's do it.
+
+339
+00:18:13,026 --> 00:18:15,362
+I'll open the final version of our content
+on my iPad
+
+340
+00:18:15,395 --> 00:18:18,198
+and check out how my changes
+and Marcus' changes flow together.
+
+341
+00:18:18,232 --> 00:18:20,100
+When I first open the project,
+
+342
+00:18:20,133 --> 00:18:23,937
+the welcome message animates in,
+introducing us to Creature Party.
+
+343
+00:18:23,971 --> 00:18:27,441
+When I tap on the Learn More button
+in the welcome message,
+
+344
+00:18:27,474 --> 00:18:29,643
+it opens the learning center for me.
+
+345
+00:18:29,676 --> 00:18:30,511
+Awesome.
+
+346
+00:18:30,544 --> 00:18:32,546
+Our learning center does have
+my description at the top
+
+347
+00:18:32,579 --> 00:18:34,481
+and the four tasks Marcus added.
+
+348
+00:18:34,515 --> 00:18:36,416
+Let's tap on the first walkthrough.
+
+349
+00:18:37,885 --> 00:18:40,320
+Here, Marcus used
+my AnimatedScalingModifier
+
+350
+00:18:40,354 --> 00:18:43,590
+as an example to explain
+how to use custom view modifiers.
+
+351
+00:18:45,926 --> 00:18:49,763
+When I tap on the Next Walkthrough Button,
+the second walkthrough animates in.
+
+352
+00:18:51,198 --> 00:18:56,003
+Marcus used the View Modifier protocol as
+an example to describe how protocols work.
+
+353
+00:18:56,036 --> 00:18:58,639
+After finishing the second walkthrough,
+when I tap Done,
+
+354
+00:18:58,672 --> 00:19:00,908
+the first experiment task segues in.
+
+355
+00:19:03,076 --> 00:19:04,945
+The Dancing in the Strobe Light task
+tells me
+
+356
+00:19:04,978 --> 00:19:07,648
+I can add some color to our creatures
+by adding this code snippet
+
+357
+00:19:07,681 --> 00:19:10,050
+containing a colorMultiply modifier.
+
+358
+00:19:10,083 --> 00:19:12,486
+Let's remind ourselves
+what this dance party looks like
+
+359
+00:19:12,519 --> 00:19:14,121
+before adding the code snippet.
+
+360
+00:19:16,356 --> 00:19:17,791
+All right, cool.
+
+361
+00:19:17,824 --> 00:19:20,027
+I'll add the code snippet by tapping Add
+
+362
+00:19:20,060 --> 00:19:22,529
+and tap Start the Party again
+to check out the changes.
+
+363
+00:19:24,631 --> 00:19:26,934
+Nice, the creatures changed color.
+
+364
+00:19:26,967 --> 00:19:30,337
+I'll complete this experiment task now
+and transition to the last one.
+
+365
+00:19:32,139 --> 00:19:34,942
+The Switch It Up experiment task
+tells me I can customize the color
+
+366
+00:19:34,975 --> 00:19:37,377
+of the animals
+with a tap gesture and a timer.
+
+367
+00:19:37,411 --> 00:19:40,414
+I'll add the code snippet
+and start the party once more.
+
+368
+00:19:41,648 --> 00:19:45,118
+And now when I tap on the animals,
+they change color.
+
+369
+00:19:45,152 --> 00:19:46,753
+Nice.
+
+370
+00:19:46,787 --> 00:19:49,957
+I'll complete this last task
+and head back to the learning center.
+
+371
+00:19:52,593 --> 00:19:54,962
+Now, all tasks are marked as completed
+in the learning center,
+
+372
+00:19:54,995 --> 00:19:56,763
+which means we've completed this sample.
+
+373
+00:19:58,832 --> 00:20:00,801
+And that's how you take advantage
+of our new content features
+
+374
+00:20:00,834 --> 00:20:02,336
+in Swift Playgrounds 4.
+
+375
+00:20:02,369 --> 00:20:04,571
+We hope you enjoyed today's session
+and we're so excited
+
+376
+00:20:04,605 --> 00:20:06,540
+to see what sorts
+of learning experiences you'll build.
+
+377
+00:20:06,573 --> 00:20:09,009
+Don't forget to check out
+the other Swift Playgrounds session,
+
+378
+00:20:09,042 --> 00:20:11,211
+Build your First App in Swift Playgrounds.
+
+379
+00:20:11,245 --> 00:20:12,713
+Enjoy the rest of WWDC.
+
+380
+00:20:12,746 --> 00:20:16,083
+Marcus: And now, if you'll excuse us,
+we have a party to attend.
+

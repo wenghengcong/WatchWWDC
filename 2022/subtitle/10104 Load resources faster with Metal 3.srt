@@ -1,0 +1,2132 @@
+1
+00:00:00,267 --> 00:00:03,003
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,003 --> 00:00:10,077
+♪
+
+3
+00:00:10,077 --> 00:00:11,912
+Hi, my name is Jaideep Joshi,
+
+4
+00:00:11,912 --> 00:00:14,781
+and I'm a GPU software engineer
+at Apple.
+
+5
+00:00:14,781 --> 00:00:16,516
+In this session,
+I will introduce
+
+6
+00:00:16,516 --> 00:00:19,253
+a new feature in Metal 3
+that will simplify
+
+7
+00:00:19,253 --> 00:00:23,223
+and optimize resource loading
+for your games and apps.
+
+8
+00:00:23,223 --> 00:00:24,458
+I'll start by showing you
+
+9
+00:00:24,458 --> 00:00:26,426
+how the fast resource loading
+feature
+
+10
+00:00:26,426 --> 00:00:30,230
+can fit into your app's
+asset-loading pipeline.
+
+11
+00:00:30,230 --> 00:00:33,700
+It has several key features that
+harness new storage technologies
+
+12
+00:00:33,700 --> 00:00:36,236
+on Apple products.
+
+13
+00:00:36,236 --> 00:00:39,039
+Fast resource loading
+has some advanced features
+
+14
+00:00:39,039 --> 00:00:43,343
+that solve interesting scenarios
+your applications may run into.
+
+15
+00:00:43,343 --> 00:00:45,646
+There are a few best practice
+recommendations
+
+16
+00:00:45,646 --> 00:00:47,414
+you should know about
+that will help you
+
+17
+00:00:47,414 --> 00:00:52,319
+effectively use
+these features in your apps.
+
+18
+00:00:52,319 --> 00:00:55,022
+As you add fast resource loading
+to your apps,
+
+19
+00:00:55,022 --> 00:00:58,392
+tools like Metal System Trace
+and the GPU debugger
+
+20
+00:00:58,392 --> 00:01:02,896
+can help profile and fix
+issues you may run into.
+
+21
+00:01:02,896 --> 00:01:05,232
+At the end, I'll walk through
+an example
+
+22
+00:01:05,232 --> 00:01:09,636
+that shows fast resource loading
+in action.
+
+23
+00:01:09,636 --> 00:01:13,173
+So here's what you can do with
+Metal 3's fast resource loading.
+
+24
+00:01:15,175 --> 00:01:17,277
+With Metal 3's
+fast resource loading,
+
+25
+00:01:17,277 --> 00:01:20,547
+your games and apps
+can load assets with low latency
+
+26
+00:01:20,547 --> 00:01:23,050
+and high throughput
+by taking advantage
+
+27
+00:01:23,050 --> 00:01:25,652
+of the Apple silicon
+unified memory architecture
+
+28
+00:01:25,652 --> 00:01:30,357
+and fast SSD storage
+included with Apple platforms.
+
+29
+00:01:30,357 --> 00:01:31,658
+You will learn the best ways
+
+30
+00:01:31,658 --> 00:01:34,094
+to stream data
+and reduce load times
+
+31
+00:01:34,094 --> 00:01:38,598
+to ensure that your game's
+assets are ready on time.
+
+32
+00:01:38,598 --> 00:01:41,001
+A key aspect
+of reducing load times
+
+33
+00:01:41,001 --> 00:01:42,903
+is to load only what you need
+
+34
+00:01:42,903 --> 00:01:45,973
+at the smallest
+possible granularity.
+
+35
+00:01:45,973 --> 00:01:49,142
+The high throughput
+and low latency in Metal 3
+
+36
+00:01:49,142 --> 00:01:52,012
+lets your apps stream
+higher-quality assets,
+
+37
+00:01:52,012 --> 00:01:56,283
+including textures, audio,
+and geometry data.
+
+38
+00:01:56,283 --> 00:01:59,219
+Now I'll walk you through
+an example of asset loading
+
+39
+00:01:59,219 --> 00:02:01,621
+in a game.
+
+40
+00:02:01,621 --> 00:02:03,623
+Games typically show
+a loading screen
+
+41
+00:02:03,623 --> 00:02:07,361
+when they first start up, or
+at the beginning of a new level,
+
+42
+00:02:07,361 --> 00:02:10,931
+so they can load
+the game's assets into memory.
+
+43
+00:02:10,931 --> 00:02:12,866
+As the player moves
+through the level,
+
+44
+00:02:12,866 --> 00:02:16,436
+the game loads
+more assets for the scene.
+
+45
+00:02:16,436 --> 00:02:19,940
+The downside is the player
+has to wait a long time
+
+46
+00:02:19,940 --> 00:02:21,842
+while the game makes
+multiple requests
+
+47
+00:02:21,842 --> 00:02:25,846
+to the storage system
+to load assets up front.
+
+48
+00:02:25,846 --> 00:02:29,850
+Plus, those assets can have
+a large memory footprint.
+
+49
+00:02:29,850 --> 00:02:34,221
+There are a few ways
+to improve this experience.
+
+50
+00:02:34,221 --> 00:02:35,822
+Games can improve
+this experience
+
+51
+00:02:35,822 --> 00:02:37,691
+by dynamically streaming objects
+
+52
+00:02:37,691 --> 00:02:40,427
+as the player
+gets closer to them.
+
+53
+00:02:40,427 --> 00:02:44,131
+This way, the game only loads
+what it needs at first
+
+54
+00:02:44,131 --> 00:02:46,366
+and gradually streams
+other resources
+
+55
+00:02:46,366 --> 00:02:49,369
+as the player moves
+through the level.
+
+56
+00:02:49,369 --> 00:02:53,340
+For example, the game
+initially loads this chalkboard
+
+57
+00:02:53,340 --> 00:02:56,710
+at a lower resolution, but as
+the player walks towards it,
+
+58
+00:02:56,710 --> 00:03:00,313
+the game loads
+a higher-resolution version.
+
+59
+00:03:00,313 --> 00:03:03,050
+This approach reduces
+the time the player waits
+
+60
+00:03:03,050 --> 00:03:05,218
+at the loading screen.
+
+61
+00:03:05,218 --> 00:03:08,922
+However, the player might
+still see lower-resolution items
+
+62
+00:03:08,922 --> 00:03:11,758
+in the scene even
+when they are up close,
+
+63
+00:03:11,758 --> 00:03:13,760
+because it takes too long
+to load
+
+64
+00:03:13,760 --> 00:03:16,797
+the higher-resolution versions.
+
+65
+00:03:16,797 --> 00:03:19,900
+One way to deal with this
+is to stream smaller portions
+
+66
+00:03:19,900 --> 00:03:23,270
+of each asset.
+
+67
+00:03:23,270 --> 00:03:26,206
+For example, your game could
+load only the visible regions
+
+68
+00:03:26,206 --> 00:03:29,876
+of the scene with sparse
+textures that stream tiles
+
+69
+00:03:29,876 --> 00:03:32,279
+instead of whole mip levels.
+
+70
+00:03:32,279 --> 00:03:34,781
+This vastly reduces
+the amount of data
+
+71
+00:03:34,781 --> 00:03:37,317
+your app needs to stream.
+
+72
+00:03:37,317 --> 00:03:40,053
+With that approach,
+the load requests get smaller,
+
+73
+00:03:40,053 --> 00:03:41,955
+and there are more of them.
+
+74
+00:03:41,955 --> 00:03:44,891
+But that's OK,
+because modern storage hardware
+
+75
+00:03:44,891 --> 00:03:48,528
+can run multiple
+load requests at once.
+
+76
+00:03:48,528 --> 00:03:50,730
+This means that you can
+increase the resolution
+
+77
+00:03:50,730 --> 00:03:55,202
+and scale of your scene without
+compromising the gameplay.
+
+78
+00:03:55,202 --> 00:03:58,405
+Along with issuing a large
+number of small-load requests,
+
+79
+00:03:58,405 --> 00:04:02,075
+you also have the ability to
+prioritize your load requests,
+
+80
+00:04:02,075 --> 00:04:06,379
+to ensure that high-priority
+requests finish in time.
+
+81
+00:04:06,379 --> 00:04:07,948
+Now that I have covered the ways
+
+82
+00:04:07,948 --> 00:04:11,952
+to boost visual fidelity of
+games while reducing load times,
+
+83
+00:04:11,952 --> 00:04:15,021
+I'll show you how Metal 3's
+fast resource loading
+
+84
+00:04:15,021 --> 00:04:16,523
+helps you do this.
+
+85
+00:04:16,523 --> 00:04:19,659
+Fast resource loading
+is an asynchronous API
+
+86
+00:04:19,659 --> 00:04:22,295
+that loads resources
+from storage.
+
+87
+00:04:22,295 --> 00:04:26,166
+Unlike existing load APIs, the
+thread which issues the loads
+
+88
+00:04:26,166 --> 00:04:29,503
+does not need to wait
+for the loads to finish.
+
+89
+00:04:29,503 --> 00:04:32,239
+The load operations
+execute concurrently
+
+90
+00:04:32,239 --> 00:04:36,309
+to better utilize the throughput
+of faster storage.
+
+91
+00:04:36,309 --> 00:04:38,278
+You can batch load operations
+
+92
+00:04:38,278 --> 00:04:42,048
+to further minimize the overhead
+of resource loading.
+
+93
+00:04:42,048 --> 00:04:43,984
+And finally, with Metal 3,
+
+94
+00:04:43,984 --> 00:04:48,622
+you can prioritize load
+operations for lower latency.
+
+95
+00:04:48,622 --> 00:04:50,524
+Now I'll show you
+the key features
+
+96
+00:04:50,524 --> 00:04:53,160
+that will help you build
+your asset-loading pipeline,
+
+97
+00:04:53,160 --> 00:04:56,429
+starting with the steps
+to load resources.
+
+98
+00:04:56,429 --> 00:04:59,099
+There are three steps
+to load resources:
+
+99
+00:04:59,099 --> 00:05:00,500
+open a file,
+
+100
+00:05:00,500 --> 00:05:02,936
+issue the necessary
+load commands,
+
+101
+00:05:02,936 --> 00:05:07,040
+and then synchronize these load
+commands with rendering work.
+
+102
+00:05:07,040 --> 00:05:10,911
+Here's how you do that,
+starting with opening a file.
+
+103
+00:05:10,911 --> 00:05:14,414
+You open an existing file
+by creating a file handle
+
+104
+00:05:14,414 --> 00:05:16,816
+with a Metal device instance.
+
+105
+00:05:16,816 --> 00:05:20,420
+For example, this code uses
+the Metal device instance
+
+106
+00:05:20,420 --> 00:05:21,821
+to create a file handle
+
+107
+00:05:21,821 --> 00:05:28,562
+by calling its new makeIOHandle
+method with a file path URL.
+
+108
+00:05:28,562 --> 00:05:30,297
+Once you have a file handle,
+
+109
+00:05:30,297 --> 00:05:33,934
+you can use it
+to issue load commands.
+
+110
+00:05:33,934 --> 00:05:36,469
+Here's a typical scenario
+in an application,
+
+111
+00:05:36,469 --> 00:05:40,273
+where it performs load
+operations and encodes GPU work.
+
+112
+00:05:40,273 --> 00:05:43,577
+With existing load APIs, the app
+has to wait for the loading work
+
+113
+00:05:43,577 --> 00:05:46,680
+to finish before it can encode
+the rendering work.
+
+114
+00:05:46,680 --> 00:05:48,381
+Metal 3 lets your app
+
+115
+00:05:48,381 --> 00:05:51,851
+asynchronously
+execute load commands.
+
+116
+00:05:51,851 --> 00:05:55,255
+Start by creating
+a Metal IO command queue.
+
+117
+00:05:55,255 --> 00:05:58,792
+Then use that queue
+to create IO command buffers
+
+118
+00:05:58,792 --> 00:06:02,529
+and encode load commands
+to those buffers.
+
+119
+00:06:02,529 --> 00:06:05,799
+However, as command buffers
+execute asynchronously
+
+120
+00:06:05,799 --> 00:06:09,002
+on the command queue,
+your app does not need to wait
+
+121
+00:06:09,002 --> 00:06:12,205
+for the load operations
+to finish.
+
+122
+00:06:12,205 --> 00:06:14,174
+In fact, not only do
+all commands
+
+123
+00:06:14,174 --> 00:06:17,010
+within an IO command buffer
+execute concurrently,
+
+124
+00:06:17,010 --> 00:06:20,180
+IO command buffers themselves
+execute concurrently
+
+125
+00:06:20,180 --> 00:06:22,616
+and complete out of order.
+
+126
+00:06:22,616 --> 00:06:26,086
+This concurrent execution model
+better utilizes
+
+127
+00:06:26,086 --> 00:06:30,323
+faster-storage hardware
+by maximizing throughput.
+
+128
+00:06:30,323 --> 00:06:35,195
+You can encode three types of
+IO commands to a command buffer:
+
+129
+00:06:35,195 --> 00:06:37,831
+loadTexture, which loads
+to a Metal texture
+
+130
+00:06:37,831 --> 00:06:39,432
+for texture streaming;
+
+131
+00:06:39,432 --> 00:06:41,835
+loadBuffer, which loads
+to a Metal buffer
+
+132
+00:06:41,835 --> 00:06:44,371
+for streaming scene
+or geometry data;
+
+133
+00:06:44,371 --> 00:06:49,476
+and loadBytes, which loads
+to CPU-accessible memory.
+
+134
+00:06:49,476 --> 00:06:53,513
+You create IO command buffers
+from an IO command queue.
+
+135
+00:06:53,513 --> 00:06:56,516
+To create a queue,
+first make and configure
+
+136
+00:06:56,516 --> 00:06:59,419
+an IO command
+queue descriptor.
+
+137
+00:06:59,419 --> 00:07:02,389
+By default, the queues
+are concurrent,
+
+138
+00:07:02,389 --> 00:07:04,791
+but you can also set them
+to run command buffers
+
+139
+00:07:04,791 --> 00:07:08,161
+sequentially and completely
+in order.
+
+140
+00:07:08,161 --> 00:07:10,163
+Then pass the queue descriptor
+
+141
+00:07:10,163 --> 00:07:16,369
+to the Metal device instance's
+makeIOCommandQueue method.
+
+142
+00:07:16,369 --> 00:07:18,171
+Create an IO command buffer
+
+143
+00:07:18,171 --> 00:07:22,842
+by calling the command queue's
+makeCommandBuffer method.
+
+144
+00:07:22,842 --> 00:07:26,446
+Then use that command buffer
+to encode load commands
+
+145
+00:07:26,446 --> 00:07:29,115
+that load textures and buffers.
+
+146
+00:07:29,115 --> 00:07:32,085
+Metal's validation layer
+will catch encoding errors
+
+147
+00:07:32,085 --> 00:07:33,553
+at runtime.
+
+148
+00:07:33,553 --> 00:07:36,823
+The load commands are what use
+the fileHandle instance
+
+149
+00:07:36,823 --> 00:07:39,392
+created earlier.
+
+150
+00:07:39,392 --> 00:07:42,362
+When you are done adding load
+commands to a command buffer,
+
+151
+00:07:42,362 --> 00:07:44,664
+submit it to the queue
+for execution
+
+152
+00:07:44,664 --> 00:07:49,202
+by calling the command buffer's
+commit method.
+
+153
+00:07:49,202 --> 00:07:52,138
+Now that I've covered how
+to create IO command queues,
+
+154
+00:07:52,138 --> 00:07:54,341
+command buffers,
+issue load commands,
+
+155
+00:07:54,341 --> 00:07:57,143
+and submit them to the queue,
+I want to show you
+
+156
+00:07:57,143 --> 00:08:01,915
+how you can synchronize loading
+work with the other GPU work.
+
+157
+00:08:01,915 --> 00:08:04,517
+An app typically kicks off
+its rendering work
+
+158
+00:08:04,517 --> 00:08:08,488
+after it finishes loading
+resources for that rendering.
+
+159
+00:08:08,488 --> 00:08:11,358
+But an app that uses
+fast resource loading
+
+160
+00:08:11,358 --> 00:08:14,294
+needs a way to synchronize
+the IO command queue
+
+161
+00:08:14,294 --> 00:08:17,197
+with the render command queue.
+
+162
+00:08:17,197 --> 00:08:21,301
+You can synchronize these queues
+with a Metal shared event.
+
+163
+00:08:21,301 --> 00:08:24,571
+Metal hared events let you
+synchronize the command buffers
+
+164
+00:08:24,571 --> 00:08:27,140
+from your IO queue
+with the command buffers
+
+165
+00:08:27,140 --> 00:08:30,110
+from your rendering queue.
+
+166
+00:08:30,110 --> 00:08:33,046
+You can tell a command buffer
+to wait for a shared event
+
+167
+00:08:33,046 --> 00:08:35,782
+by encoding a waitEvent command.
+
+168
+00:08:35,782 --> 00:08:38,284
+Similarly, you can tell
+that command buffer
+
+169
+00:08:38,284 --> 00:08:42,455
+to signal a shared event by
+encoding a signalEvent command.
+
+170
+00:08:42,455 --> 00:08:44,791
+Metal ensures
+that all IO commands
+
+171
+00:08:44,791 --> 00:08:46,926
+within the command buffer
+are complete
+
+172
+00:08:46,926 --> 00:08:50,130
+before it signals
+the shared event.
+
+173
+00:08:50,130 --> 00:08:52,098
+To synchronize
+between command buffers,
+
+174
+00:08:52,098 --> 00:08:55,001
+you first need
+a Metal shared event.
+
+175
+00:08:55,001 --> 00:08:57,837
+You can tell a command buffer
+to wait for a shared event
+
+176
+00:08:57,837 --> 00:09:01,174
+by calling
+its waitForEvent method.
+
+177
+00:09:01,174 --> 00:09:03,309
+Similarly, you can tell
+a command buffer
+
+178
+00:09:03,309 --> 00:09:04,611
+to signal a shared event
+
+179
+00:09:04,611 --> 00:09:07,680
+by calling
+its signalEvent method.
+
+180
+00:09:07,680 --> 00:09:08,948
+You can add similar logic
+
+181
+00:09:08,948 --> 00:09:11,017
+to a corresponding
+GPU command buffer
+
+182
+00:09:11,017 --> 00:09:13,219
+so that it waits for
+the IO command buffer
+
+183
+00:09:13,219 --> 00:09:15,488
+to signal the same shared event.
+
+184
+00:09:15,488 --> 00:09:18,291
+To recap, here are
+the key features and APIs
+
+185
+00:09:18,291 --> 00:09:21,761
+that load resources
+in your Metal apps.
+
+186
+00:09:21,761 --> 00:09:25,365
+Open a file by creating
+a Metal file handle.
+
+187
+00:09:25,365 --> 00:09:28,668
+Issue load commands by creating
+an IO command queue
+
+188
+00:09:28,668 --> 00:09:30,870
+and an IO command buffer.
+
+189
+00:09:30,870 --> 00:09:33,606
+Then, encode load commands
+to the command buffer
+
+190
+00:09:33,606 --> 00:09:36,109
+for execution on the queue.
+
+191
+00:09:36,109 --> 00:09:38,912
+And finally, use wait
+and signalEvent commands
+
+192
+00:09:38,912 --> 00:09:41,648
+with Metal shared events
+to synchronize loading
+
+193
+00:09:41,648 --> 00:09:43,983
+and rendering.
+
+194
+00:09:43,983 --> 00:09:46,219
+Now, I'll go over
+a few advanced features
+
+195
+00:09:46,219 --> 00:09:48,688
+that you might find helpful.
+
+196
+00:09:48,688 --> 00:09:50,089
+Here's a typical scenario
+
+197
+00:09:50,089 --> 00:09:53,393
+where a game can't fit
+its entire map in memory,
+
+198
+00:09:53,393 --> 00:09:56,296
+which is why it subdivides
+the map into regions.
+
+199
+00:09:56,296 --> 00:09:58,431
+As the player progresses
+through the map,
+
+200
+00:09:58,431 --> 00:10:02,535
+the game starts preloading
+regions of the map.
+
+201
+00:10:02,535 --> 00:10:05,171
+Based on the player's direction,
+the game determines
+
+202
+00:10:05,171 --> 00:10:07,974
+that the best regions to preload
+are the northwest,
+
+203
+00:10:07,974 --> 00:10:10,276
+west, and southwest regions.
+
+204
+00:10:10,276 --> 00:10:13,112
+However, once the player
+moves to the western region
+
+205
+00:10:13,112 --> 00:10:14,814
+and starts heading south,
+
+206
+00:10:14,814 --> 00:10:18,751
+preloading the northwestern
+region is no longer beneficial.
+
+207
+00:10:18,751 --> 00:10:21,120
+To reduce the latency
+of future loads,
+
+208
+00:10:21,120 --> 00:10:25,859
+Metal 3 allows you to attempt
+to cancel load operation.
+
+209
+00:10:25,859 --> 00:10:29,696
+Let's look at how to do that
+in practice.
+
+210
+00:10:29,696 --> 00:10:31,764
+When the player is
+in the center region,
+
+211
+00:10:31,764 --> 00:10:36,035
+encode and commit IO command
+buffers for three regions.
+
+212
+00:10:36,035 --> 00:10:38,104
+Then when the player
+is in the western region
+
+213
+00:10:38,104 --> 00:10:41,207
+and heading south,
+use the tryCancel method
+
+214
+00:10:41,207 --> 00:10:44,811
+to cancel the loads
+for the northwestern region.
+
+215
+00:10:44,811 --> 00:10:48,214
+Cancelling is at
+the command buffer granularity,
+
+216
+00:10:48,214 --> 00:10:51,851
+so you can cancel the
+command buffer mid-execution.
+
+217
+00:10:51,851 --> 00:10:53,987
+If at some later point,
+you want to know
+
+218
+00:10:53,987 --> 00:10:56,389
+whether the region
+was completely loaded,
+
+219
+00:10:56,389 --> 00:11:00,927
+you can check the status
+of the command buffer.
+
+220
+00:11:00,927 --> 00:11:05,665
+Metal 3 also lets you
+prioritize your IO work.
+
+221
+00:11:05,665 --> 00:11:08,501
+Consider a game scenario
+where the player teleports
+
+222
+00:11:08,501 --> 00:11:12,138
+to a new part of the scene and
+your game starts streaming in
+
+223
+00:11:12,138 --> 00:11:14,641
+large amounts
+of graphics assets.
+
+224
+00:11:14,641 --> 00:11:16,009
+At the same time,
+
+225
+00:11:16,009 --> 00:11:19,546
+the game needs to play
+the teleportation sound effect.
+
+226
+00:11:19,546 --> 00:11:23,182
+Fast resource loading allows you
+to load all your app's assets,
+
+227
+00:11:23,182 --> 00:11:25,518
+including audio data.
+
+228
+00:11:25,518 --> 00:11:28,221
+To load audio, you can use
+the loadBytes command
+
+229
+00:11:28,221 --> 00:11:32,492
+discussed earlier to load to
+application-allocated memory.
+
+230
+00:11:32,492 --> 00:11:36,129
+In this example, texture
+and audio IO command buffers
+
+231
+00:11:36,129 --> 00:11:40,667
+are concurrently executing
+on a single IO command queue.
+
+232
+00:11:40,667 --> 00:11:43,102
+This simplified diagram
+shows the requests
+
+233
+00:11:43,102 --> 00:11:45,004
+at the storage layer.
+
+234
+00:11:45,004 --> 00:11:46,973
+The storage system
+is able to execute
+
+235
+00:11:46,973 --> 00:11:50,577
+both audio and texture
+load requests in parallel.
+
+236
+00:11:50,577 --> 00:11:53,079
+To avoid delayed audio,
+it is critical
+
+237
+00:11:53,079 --> 00:11:55,515
+that the streaming system
+be able to prioritize
+
+238
+00:11:55,515 --> 00:11:58,685
+audio requests
+over texture requests.
+
+239
+00:11:58,685 --> 00:12:01,421
+To prioritize audio requests,
+you can create
+
+240
+00:12:01,421 --> 00:12:06,326
+a separate IO command queue,
+and set its priority to high.
+
+241
+00:12:06,326 --> 00:12:10,430
+The storage system will ensure
+that high-priority IO requests
+
+242
+00:12:10,430 --> 00:12:15,268
+have a lower latency and are
+prioritized over other requests.
+
+243
+00:12:15,268 --> 00:12:17,870
+After creating a separate
+high-priority queue
+
+244
+00:12:17,870 --> 00:12:20,373
+for audio assets,
+the execution time
+
+245
+00:12:20,373 --> 00:12:22,976
+of the audio load requests
+has gotten smaller,
+
+246
+00:12:22,976 --> 00:12:25,211
+while that of the parallel
+texture load requests
+
+247
+00:12:25,211 --> 00:12:28,147
+has gotten larger.
+
+248
+00:12:28,147 --> 00:12:31,084
+Here's how you create
+a high-priority queue.
+
+249
+00:12:31,084 --> 00:12:34,554
+Simply set the command queue
+descriptor's priority property
+
+250
+00:12:34,554 --> 00:12:36,089
+to high.
+
+251
+00:12:36,089 --> 00:12:39,392
+You can also set the priority
+to normal or low,
+
+252
+00:12:39,392 --> 00:12:41,427
+then create a new
+IO command queue
+
+253
+00:12:41,427 --> 00:12:44,330
+from the descriptor as usual.
+
+254
+00:12:44,330 --> 00:12:47,266
+Just remember that you cannot
+change a queue's priority level
+
+255
+00:12:47,266 --> 00:12:49,669
+after you create it.
+
+256
+00:12:49,669 --> 00:12:52,572
+As you add fast resource loading
+to your apps,
+
+257
+00:12:52,572 --> 00:12:56,442
+here's some best practices
+to keep in mind.
+
+258
+00:12:56,442 --> 00:12:59,212
+First, consider
+compressing your assets.
+
+259
+00:12:59,212 --> 00:13:01,881
+You can reduce
+your app's disk footprint
+
+260
+00:13:01,881 --> 00:13:05,018
+by using built-in
+or custom compression.
+
+261
+00:13:05,018 --> 00:13:07,587
+Compression lets you trade
+runtime performance
+
+262
+00:13:07,587 --> 00:13:10,456
+for a smaller disk footprint.
+
+263
+00:13:10,456 --> 00:13:12,959
+Additionally, you can improve
+storage throughput
+
+264
+00:13:12,959 --> 00:13:17,397
+by tuning the sparse page size
+when using sparse textures.
+
+265
+00:13:17,397 --> 00:13:20,099
+I'll go through each of these
+in more detail,
+
+266
+00:13:20,099 --> 00:13:22,301
+starting with compression.
+
+267
+00:13:22,301 --> 00:13:24,804
+You can use Metals 3's APIs
+
+268
+00:13:24,804 --> 00:13:28,474
+to compress
+your asset files offline.
+
+269
+00:13:28,474 --> 00:13:31,644
+First, create a compression
+context and configure it
+
+270
+00:13:31,644 --> 00:13:35,214
+with a chunk size
+and compression method.
+
+271
+00:13:35,214 --> 00:13:38,284
+Then pass parts of
+your asset files to the context
+
+272
+00:13:38,284 --> 00:13:42,555
+to produce a single compressed
+version of all your files.
+
+273
+00:13:42,555 --> 00:13:46,059
+The compression context works
+by chunking all the data
+
+274
+00:13:46,059 --> 00:13:48,795
+and compresses it with the codec
+of your choosing
+
+275
+00:13:48,795 --> 00:13:51,731
+and stores it to a pack file.
+
+276
+00:13:51,731 --> 00:13:53,466
+In this example,
+
+277
+00:13:53,466 --> 00:13:57,336
+the context compresses
+the data in 64K chunks,
+
+278
+00:13:57,336 --> 00:13:59,672
+but you can choose
+a suitable chunk size
+
+279
+00:13:59,672 --> 00:14:03,843
+based on the size and type
+of data you want to compress.
+
+280
+00:14:03,843 --> 00:14:08,114
+Here's how you use
+the compression APIs in Metal 3.
+
+281
+00:14:08,114 --> 00:14:10,383
+First, create
+a compression context
+
+282
+00:14:10,383 --> 00:14:13,519
+by providing a path for creating
+the compressed file,
+
+283
+00:14:13,519 --> 00:14:16,856
+a compression method,
+and a chunk size.
+
+284
+00:14:16,856 --> 00:14:20,860
+Next, get file data
+and append it to the context.
+
+285
+00:14:20,860 --> 00:14:24,764
+Here, the file data is
+in an NSData object.
+
+286
+00:14:24,764 --> 00:14:27,133
+You can append data
+from different files
+
+287
+00:14:27,133 --> 00:14:31,137
+by making multiple calls
+to append data.
+
+288
+00:14:31,137 --> 00:14:32,839
+When you're done adding data,
+
+289
+00:14:32,839 --> 00:14:34,907
+finalize and save
+the compressed file
+
+290
+00:14:34,907 --> 00:14:40,480
+by calling the flush and destroy
+compression context function.
+
+291
+00:14:40,480 --> 00:14:43,349
+You can open and access
+a compressed file
+
+292
+00:14:43,349 --> 00:14:45,685
+by creating a file handle.
+
+293
+00:14:45,685 --> 00:14:49,655
+This file handle is used
+when issuing load commands.
+
+294
+00:14:49,655 --> 00:14:53,593
+For compressed files, Metal 3
+performs inline decompression,
+
+295
+00:14:53,593 --> 00:14:56,095
+by translating the offsets
+to a list of chunks
+
+296
+00:14:56,095 --> 00:15:00,633
+it needs to decompress, and
+loads them to your resources.
+
+297
+00:15:00,633 --> 00:15:05,638
+You create a file handle
+with a Metal device instance.
+
+298
+00:15:05,638 --> 00:15:08,741
+For example, this code uses
+the Metal device instance
+
+299
+00:15:08,741 --> 00:15:10,243
+to create a file handle
+
+300
+00:15:10,243 --> 00:15:12,578
+by providing
+the compressed file path
+
+301
+00:15:12,578 --> 00:15:16,349
+to the makeIOHandle method
+I covered earlier.
+
+302
+00:15:16,349 --> 00:15:18,885
+For compressed files,
+an additional parameter
+
+303
+00:15:18,885 --> 00:15:21,220
+is the compression method.
+
+304
+00:15:21,220 --> 00:15:22,855
+This is the same
+compression method
+
+305
+00:15:22,855 --> 00:15:26,959
+you used at the time of creating
+the compressed file.
+
+306
+00:15:26,959 --> 00:15:28,027
+Now, I'll go through
+
+307
+00:15:28,027 --> 00:15:30,463
+the different compression
+methods supported
+
+308
+00:15:30,463 --> 00:15:32,665
+and the characteristics
+of each of them,
+
+309
+00:15:32,665 --> 00:15:36,135
+so you can better understand
+how to choose between them.
+
+310
+00:15:36,135 --> 00:15:39,438
+Use LZ4 when decompression
+speed is critical
+
+311
+00:15:39,438 --> 00:15:42,775
+and your app can afford
+a large disk footprint.
+
+312
+00:15:42,775 --> 00:15:45,645
+If a balance between codec
+speed and compression ratio
+
+313
+00:15:45,645 --> 00:15:51,250
+is important to you,
+use ZLib, LZBitmap, or LZFSE.
+
+314
+00:15:51,250 --> 00:15:53,085
+Amongst the balanced codecs,
+
+315
+00:15:53,085 --> 00:15:56,756
+ZLib works better
+with non-Apple devices.
+
+316
+00:15:56,756 --> 00:16:00,760
+LZBitmap is fast
+at encoding and decoding,
+
+317
+00:16:00,760 --> 00:16:04,263
+and LZFSE has
+a high compression ratio.
+
+318
+00:16:04,263 --> 00:16:06,666
+If you need the best
+compression ratio,
+
+319
+00:16:06,666 --> 00:16:09,101
+consider using the LZMA codec,
+
+320
+00:16:09,101 --> 00:16:14,407
+if your app can afford the extra
+time it takes to decode assets.
+
+321
+00:16:14,407 --> 00:16:18,411
+It is also possible to use
+your own compression scheme.
+
+322
+00:16:18,411 --> 00:16:20,947
+You may have cases
+where your data benefits
+
+323
+00:16:20,947 --> 00:16:23,282
+from a custom compression codec.
+
+324
+00:16:23,282 --> 00:16:26,252
+In that case, you can replace
+the compression context
+
+325
+00:16:26,252 --> 00:16:29,055
+with your own compressor
+and translate offsets
+
+326
+00:16:29,055 --> 00:16:33,392
+and perform decompression
+at runtime yourself.
+
+327
+00:16:33,392 --> 00:16:35,461
+Now that you have seen
+how to use compression
+
+328
+00:16:35,461 --> 00:16:37,296
+to reduce disk footprint,
+
+329
+00:16:37,296 --> 00:16:40,633
+let's look at tuning
+sparse page size.
+
+330
+00:16:40,633 --> 00:16:43,336
+Earlier versions
+of Metal support loading tiles
+
+331
+00:16:43,336 --> 00:16:47,373
+to sparse textures
+at a 16K granularity.
+
+332
+00:16:47,373 --> 00:16:51,777
+With Metal 3, you can specify
+two new sparse tile sizes:
+
+333
+00:16:51,777 --> 00:16:54,747
+64 and 256K.
+
+334
+00:16:54,747 --> 00:16:57,450
+These new sizes let you
+to stream textures
+
+335
+00:16:57,450 --> 00:17:00,219
+at a larger granularity
+to better utilize
+
+336
+00:17:00,219 --> 00:17:02,989
+and saturate
+the storage hardware.
+
+337
+00:17:02,989 --> 00:17:04,690
+Note that there is a tradeoff
+
+338
+00:17:04,690 --> 00:17:06,959
+between streaming
+larger tiles sizes
+
+339
+00:17:06,959 --> 00:17:09,328
+and the amount of data
+you stream,
+
+340
+00:17:09,328 --> 00:17:12,665
+so you'll have to experiment
+to see which sizes work best
+
+341
+00:17:12,665 --> 00:17:16,102
+with your app
+and its sparse textures.
+
+342
+00:17:16,102 --> 00:17:18,271
+Next, let's look at
+how you can use
+
+343
+00:17:18,271 --> 00:17:21,574
+the set of Metal Developer Tools
+to profile and debug
+
+344
+00:17:21,574 --> 00:17:24,110
+fast resource loading
+in your app.
+
+345
+00:17:24,110 --> 00:17:28,948
+Xcode 14 includes full support
+for fast resource loading.
+
+346
+00:17:28,948 --> 00:17:32,018
+From runtime profiling
+with Metal System Trace
+
+347
+00:17:32,018 --> 00:17:35,321
+to API inspection and
+advanced dependency analysis
+
+348
+00:17:35,321 --> 00:17:37,256
+with Metal debugger.
+
+349
+00:17:39,392 --> 00:17:42,128
+Let's start with
+runtime profiling.
+
+350
+00:17:42,128 --> 00:17:45,932
+In Xcode 14, Instruments can
+profile fast resource loading
+
+351
+00:17:45,932 --> 00:17:48,434
+with the Metal System Trace
+template.
+
+352
+00:17:48,434 --> 00:17:51,537
+Instruments is a powerful
+analysis and profiling tool
+
+353
+00:17:51,537 --> 00:17:53,506
+that will help you achieve
+the best performance
+
+354
+00:17:53,506 --> 00:17:56,042
+in your Metal app.
+
+355
+00:17:56,042 --> 00:17:58,678
+The Metal System Trace template
+allows you to check
+
+356
+00:17:58,678 --> 00:18:02,181
+when load operations
+are encoded and executed.
+
+357
+00:18:02,181 --> 00:18:04,483
+You will be able to understand
+how they correlate
+
+358
+00:18:04,483 --> 00:18:06,786
+with the activity that
+your app is performing
+
+359
+00:18:06,786 --> 00:18:10,256
+on both the CPU and the GPU.
+
+360
+00:18:10,256 --> 00:18:13,659
+To learn how to profile your
+Metal app with Instruments,
+
+361
+00:18:13,659 --> 00:18:16,095
+please check out
+these previous sessions,
+
+362
+00:18:16,095 --> 00:18:19,365
+"Optimize Metal apps and games
+with GPU counters"
+
+363
+00:18:19,365 --> 00:18:23,235
+and "Optimize high-end games
+for Apple GPUs."
+
+364
+00:18:23,235 --> 00:18:26,372
+Now, let's switch gears
+to debugging.
+
+365
+00:18:26,372 --> 00:18:28,908
+With the Metal debugger
+in Xcode 14,
+
+366
+00:18:28,908 --> 00:18:30,776
+you can now analyze
+your game's use
+
+367
+00:18:30,776 --> 00:18:33,980
+of the new
+fast resource loading API.
+
+368
+00:18:33,980 --> 00:18:36,716
+Once you take a frame capture,
+you will be able to inspect
+
+369
+00:18:36,716 --> 00:18:40,553
+all fast resource loading
+API calls.
+
+370
+00:18:40,553 --> 00:18:43,122
+From the IO command buffers
+created
+
+371
+00:18:43,122 --> 00:18:46,559
+to the load operations
+that were issued.
+
+372
+00:18:46,559 --> 00:18:48,227
+You can now visually inspect
+
+373
+00:18:48,227 --> 00:18:50,296
+fast resource loading
+dependencies
+
+374
+00:18:50,296 --> 00:18:53,366
+with the new
+Dependency viewer.
+
+375
+00:18:53,366 --> 00:18:56,202
+The Dependency viewer
+gives a detailed overview
+
+376
+00:18:56,202 --> 00:18:59,305
+of resource dependencies
+between IO command buffers
+
+377
+00:18:59,305 --> 00:19:01,540
+and Metal passes.
+
+378
+00:19:01,540 --> 00:19:04,143
+From here, you can use
+all the features
+
+379
+00:19:04,143 --> 00:19:05,911
+in the new
+Dependency viewer,
+
+380
+00:19:05,911 --> 00:19:09,482
+such as the new synchronization
+edges and graph filtering,
+
+381
+00:19:09,482 --> 00:19:13,586
+to deep dive and optimize your
+resource loading dependencies.
+
+382
+00:19:13,586 --> 00:19:17,356
+To learn more about the new
+Dependency viewer in Xcode 14,
+
+383
+00:19:17,356 --> 00:19:18,758
+please check out this year's
+
+384
+00:19:18,758 --> 00:19:22,361
+"Go bindless with Metal 3"
+session.
+
+385
+00:19:22,361 --> 00:19:26,332
+Now, let's look at
+fast resource loading in action.
+
+386
+00:19:26,332 --> 00:19:27,967
+This is a test scene that uses
+
+387
+00:19:27,967 --> 00:19:31,337
+the new fast resource loading
+APIs to stream texture data
+
+388
+00:19:31,337 --> 00:19:35,307
+by using sparse textures
+with a tile size of 16 kilobytes.
+
+389
+00:19:35,307 --> 00:19:38,778
+This video is from a MacBook Pro
+with an M1 Pro chip.
+
+390
+00:19:38,778 --> 00:19:40,246
+The streaming system queries
+
+391
+00:19:40,246 --> 00:19:44,517
+the GPU's sparse texture access
+counters to identify two things:
+
+392
+00:19:44,517 --> 00:19:46,685
+the tiles it has sampled
+but not loaded
+
+393
+00:19:46,685 --> 00:19:49,422
+and the loaded tiles
+the app isn't using.
+
+394
+00:19:49,422 --> 00:19:52,658
+The app uses this information
+to encode a list of loads
+
+395
+00:19:52,658 --> 00:19:54,126
+for the tiles it needs
+
+396
+00:19:54,126 --> 00:19:57,396
+and a list of evictions
+for tiles it doesn't need.
+
+397
+00:19:57,396 --> 00:20:00,232
+That way, the working set
+contains only the tiles
+
+398
+00:20:00,232 --> 00:20:03,202
+the app is mostly likely to use.
+
+399
+00:20:03,202 --> 00:20:06,338
+If the player decides to travel
+to another part of the scene,
+
+400
+00:20:06,338 --> 00:20:08,908
+the app needs to stream in
+a completely new set
+
+401
+00:20:08,908 --> 00:20:11,010
+of high-resolution textures.
+
+402
+00:20:11,010 --> 00:20:13,345
+If the streaming system
+is fast enough,
+
+403
+00:20:13,345 --> 00:20:17,116
+the player will not notice
+this streaming occurring.
+
+404
+00:20:17,116 --> 00:20:18,384
+If I pause the scene,
+
+405
+00:20:18,384 --> 00:20:21,320
+you can observe the image
+differences more clearly.
+
+406
+00:20:21,320 --> 00:20:23,622
+The left side
+is loading sparse tiles
+
+407
+00:20:23,622 --> 00:20:26,525
+on a single thread
+using the pread API.
+
+408
+00:20:26,525 --> 00:20:28,627
+The right side
+is loading sparse tiles
+
+409
+00:20:28,627 --> 00:20:31,730
+using the fast resource loading
+APIs.
+
+410
+00:20:31,730 --> 00:20:33,666
+As the player enters the scene,
+
+411
+00:20:33,666 --> 00:20:36,735
+most of the textures
+haven't fully loaded.
+
+412
+00:20:36,735 --> 00:20:39,905
+Once the loads complete, the
+final high-resolution version
+
+413
+00:20:39,905 --> 00:20:42,908
+of the textures is visible.
+
+414
+00:20:42,908 --> 00:20:46,112
+If I go back to the beginning
+of this scene and slow it down,
+
+415
+00:20:46,112 --> 00:20:48,481
+it is easier to notice
+the improvements
+
+416
+00:20:48,481 --> 00:20:51,417
+that fast resource loading
+provides.
+
+417
+00:20:51,417 --> 00:20:54,053
+To highlight the differences,
+this rendering
+
+418
+00:20:54,053 --> 00:20:59,425
+marks tiles the app has not
+yet loaded with a red tint.
+
+419
+00:20:59,425 --> 00:21:01,527
+At first, the scene shows
+
+420
+00:21:01,527 --> 00:21:05,631
+that the app hasn't loaded
+most of the tiles.
+
+421
+00:21:05,631 --> 00:21:08,601
+However, as the player
+enters the scene,
+
+422
+00:21:08,601 --> 00:21:11,036
+fast resource loading
+improves the loading
+
+423
+00:21:11,036 --> 00:21:14,006
+of high-resolution tiles
+and minimizes the delay
+
+424
+00:21:14,006 --> 00:21:18,711
+compared to the single-threaded
+pread version.
+
+425
+00:21:18,711 --> 00:21:21,780
+Metal 3's fast resource loading
+helps you build a powerful
+
+426
+00:21:21,780 --> 00:21:24,683
+and efficient asset-streaming
+system that lets your app
+
+427
+00:21:24,683 --> 00:21:28,387
+take advantage of the latest
+storage technologies.
+
+428
+00:21:28,387 --> 00:21:32,791
+Use it to reduce load times by
+streaming assets just in time,
+
+429
+00:21:32,791 --> 00:21:35,761
+including higher-quality images.
+
+430
+00:21:35,761 --> 00:21:40,232
+Use Metal's shared events
+to asynchronously load assets
+
+431
+00:21:40,232 --> 00:21:43,102
+while the GPU renders a scene.
+
+432
+00:21:43,102 --> 00:21:46,005
+For assets that your app
+needs in a hurry,
+
+433
+00:21:46,005 --> 00:21:48,807
+minimize latency
+by creating a command queue
+
+434
+00:21:48,807 --> 00:21:51,010
+with a higher priority.
+
+435
+00:21:51,010 --> 00:21:54,013
+And remember,
+keep the storage system busy
+
+436
+00:21:54,013 --> 00:21:56,282
+by sending load commands early.
+
+437
+00:21:56,282 --> 00:22:00,953
+You can always cancel
+the ones you don't need.
+
+438
+00:22:00,953 --> 00:22:04,256
+Fast resource loading in Metal 3
+introduces new ways
+
+439
+00:22:04,256 --> 00:22:06,859
+to harness the power
+of modern storage hardware
+
+440
+00:22:06,859 --> 00:22:09,828
+for high-throughput
+asset loading.
+
+441
+00:22:09,828 --> 00:22:12,264
+I can't wait to see
+how you use these features
+
+442
+00:22:12,264 --> 00:22:15,968
+to improve your app's visual
+quality and responsiveness.
+
+443
+00:22:15,968 --> 00:22:17,136
+Thanks for watching.
+
+444
+00:22:17,136 --> 00:22:20,873
+♪
+

@@ -1,0 +1,1061 @@
+1
+00:00:01,134 --> 00:00:07,140
+[spacey music]
+
+2
+00:00:10,077 --> 00:00:13,614
+David Duncan: Hi, I’m David Duncan,
+and in this video,
+
+3
+00:00:13,647 --> 00:00:17,384
+I’ll be introducing you
+to desktop class iPad.
+
+4
+00:00:18,151 --> 00:00:24,992
+iOS 16 brings advances to the tools
+used to design and build great apps,
+
+5
+00:00:25,025 --> 00:00:28,829
+apps that bring more and better tools
+to the forefront
+
+6
+00:00:28,862 --> 00:00:34,368
+and take advantage of all the hardware,
+both built in and attached.
+
+7
+00:00:34,401 --> 00:00:39,506
+UIKit adds many tools to help you
+meet these goals for your apps.
+
+8
+00:00:39,540 --> 00:00:43,677
+Updates to UINavigationBar allow you
+to take better advantage
+
+9
+00:00:43,710 --> 00:00:48,348
+of screen real estate and build
+a great experience on all Apple platforms.
+
+10
+00:00:49,583 --> 00:00:54,288
+The new Find and Replace UI
+is a snap to enable on built-in views
+
+11
+00:00:54,321 --> 00:00:57,291
+and easy to add to custom ones.
+
+12
+00:00:57,324 --> 00:01:01,828
+The Edit menu has been overhauled,
+with a new interaction-based API
+
+13
+00:01:01,862 --> 00:01:03,897
+that integrates with the menu system.
+
+14
+00:01:04,665 --> 00:01:08,268
+And collection view improvements
+make it easier than ever
+
+15
+00:01:08,302 --> 00:01:13,574
+to build interfaces that let your users
+select and act on their content.
+
+16
+00:01:15,475 --> 00:01:19,546
+For more information
+on Find and Replace and Edit Menu,
+
+17
+00:01:19,580 --> 00:01:24,451
+watch "Adopt desktop
+class editing interactions."
+
+18
+00:01:24,484 --> 00:01:27,888
+And to see how all these features
+work together,
+
+19
+00:01:27,921 --> 00:01:30,991
+watch "Build a desktop class iPad app."
+
+20
+00:01:32,059 --> 00:01:35,395
+In this video, I'll discuss changes
+to navigation
+
+21
+00:01:35,429 --> 00:01:38,899
+that impact how you design
+your app for iOS 16.
+
+22
+00:01:40,901 --> 00:01:47,508
+First are new features that make it easy
+to build more discoverable interfaces.
+
+23
+00:01:47,541 --> 00:01:53,914
+Then features that are especially powerful
+for document based apps.
+
+24
+00:01:53,947 --> 00:01:59,219
+And, finally, updates to Search to help
+accelerate and polish the experience.
+
+25
+00:02:00,821 --> 00:02:05,759
+UINavigationBar is used
+for many different purposes on iOS,
+
+26
+00:02:05,792 --> 00:02:08,362
+and iOS 16 acknowledges that
+
+27
+00:02:08,395 --> 00:02:13,033
+by providing
+new optimized UI for many of these cases.
+
+28
+00:02:13,066 --> 00:02:16,803
+UINavigationItem adds a style property,
+
+29
+00:02:16,837 --> 00:02:22,843
+used to select from these styles:
+navigator, browser, and editor.
+
+30
+00:02:22,876 --> 00:02:25,712
+I'll dive into each of these styles now.
+
+31
+00:02:26,580 --> 00:02:30,017
+The default style, navigator,
+
+32
+00:02:30,050 --> 00:02:34,021
+behaves exactly
+as a traditional UINavigationBar.
+
+33
+00:02:35,389 --> 00:02:40,494
+The title is centered, there are
+leading and trailing bar button items,
+
+34
+00:02:40,527 --> 00:02:45,532
+and a back button appears when
+there is more than 1 item on the stack.
+
+35
+00:02:45,566 --> 00:02:50,938
+The browser style rearranges contents
+to be better optimized for interfaces
+
+36
+00:02:50,971 --> 00:02:56,076
+where history matters as much as location,
+like in Files or Safari.
+
+37
+00:02:57,144 --> 00:02:59,913
+The title is moved to the leading position
+in this styling.
+
+38
+00:03:00,948 --> 00:03:04,651
+The editor style is optimized for
+when the primary function
+
+39
+00:03:04,685 --> 00:03:06,486
+is document editing.
+
+40
+00:03:06,520 --> 00:03:10,724
+Just like the browser style,
+the title is leading aligned.
+
+41
+00:03:10,757 --> 00:03:15,462
+Editor UIs are often a destination,
+such as after selecting a document
+
+42
+00:03:15,495 --> 00:03:17,164
+with a document picker,
+
+43
+00:03:17,197 --> 00:03:21,201
+and so present
+a back button for easy access to that UI.
+
+44
+00:03:23,103 --> 00:03:27,908
+The browser and editor styles both free up
+a lot of space in the center of the bar.
+
+45
+00:03:29,543 --> 00:03:33,547
+iOS 16 takes advantage
+of this liberated space
+
+46
+00:03:33,580 --> 00:03:37,050
+by allowing you to place
+additional controls in this region.
+
+47
+00:03:38,852 --> 00:03:41,655
+Center items are part
+of a suite of changes
+
+48
+00:03:41,688 --> 00:03:44,925
+to take better advantage
+of screen real estate,
+
+49
+00:03:44,958 --> 00:03:48,428
+and include support for
+UIBarButtonItemGroup,
+
+50
+00:03:48,462 --> 00:03:51,265
+customization support, and overflow.
+
+51
+00:03:52,666 --> 00:03:55,936
+Overflow support is available
+in all modes,
+
+52
+00:03:55,969 --> 00:03:58,605
+and allows the navigator style
+
+53
+00:03:58,639 --> 00:04:01,175
+to indirectly support
+center items as well.
+
+54
+00:04:02,676 --> 00:04:07,981
+Individual controls continue
+to be specified as UIBarButtonItems,
+
+55
+00:04:08,015 --> 00:04:11,785
+but now are organized
+as UIBarButtonItemGroups.
+
+56
+00:04:12,519 --> 00:04:17,257
+This allows for denser presentation
+when space is at a premium.
+
+57
+00:04:17,291 --> 00:04:23,997
+In this example, there are 5 items
+in the bar, consisting of 4 groups.
+
+58
+00:04:26,633 --> 00:04:30,904
+The first group contains
+a single bar button item,
+
+59
+00:04:30,938 --> 00:04:34,041
+so this example uses a convenience method
+
+60
+00:04:34,074 --> 00:04:39,046
+of UIBarButtonItem,
+creatingFixedGroup(), to create it.
+
+61
+00:04:40,447 --> 00:04:43,350
+If you need
+a fixed group with more than 1 item,
+
+62
+00:04:43,383 --> 00:04:46,653
+you can use
+the UIBarButtonItemGroup method instead.
+
+63
+00:04:47,788 --> 00:04:50,958
+Fixed groups
+always appear first in the bar,
+
+64
+00:04:50,991 --> 00:04:54,795
+and cannot be removed
+or moved by customization.
+
+65
+00:04:54,828 --> 00:04:58,866
+The draw group contains a single item,
+
+66
+00:04:58,899 --> 00:05:02,169
+so it also uses a convenience API,
+
+67
+00:05:02,202 --> 00:05:06,840
+creatingMovableGroup
+(customizationIdentifier).
+
+68
+00:05:06,874 --> 00:05:11,912
+Like fixed groups, movable groups
+cannot be removed, but can be moved.
+
+69
+00:05:13,113 --> 00:05:16,583
+Because of this,
+they require a customizationIdentifier
+
+70
+00:05:16,617 --> 00:05:20,220
+so their position
+can be tracked and saved.
+
+71
+00:05:20,254 --> 00:05:22,756
+If you need a group
+with more than one item,
+
+72
+00:05:22,789 --> 00:05:25,726
+you can use the UIBarButtonItemGroup
+method instead.
+
+73
+00:05:28,395 --> 00:05:32,499
+The shapes group contains multiple items,
+and so uses
+
+74
+00:05:32,533 --> 00:05:35,836
+the UIBarButtonItemGroup API
+to create the group.
+
+75
+00:05:37,437 --> 00:05:39,706
+This group
+should be movable within the bar,
+
+76
+00:05:39,740 --> 00:05:43,810
+as well as removable,
+and so is created as an optional group.
+
+77
+00:05:45,012 --> 00:05:48,582
+This group also specifies
+a representativeItem,
+
+78
+00:05:48,615 --> 00:05:52,486
+allowing UIKit to collapse the group
+to save space when necessary.
+
+79
+00:05:53,820 --> 00:05:58,592
+The representativeItem does not specify
+an action, further allowing UIKit
+
+80
+00:05:58,625 --> 00:06:02,496
+to synthesize a menu allowing selection
+of the items in the group.
+
+81
+00:06:05,499 --> 00:06:10,370
+When the customization UI is invoked,
+UIKit automatically applies
+
+82
+00:06:10,404 --> 00:06:15,342
+the rules you've specified based
+on how you've created your groups.
+
+83
+00:06:15,375 --> 00:06:18,912
+While fixed and movable groups
+must stay in the bar,
+
+84
+00:06:18,946 --> 00:06:22,282
+optional groups can be added
+or removed in any number.
+
+85
+00:06:23,450 --> 00:06:25,719
+UIKit will try collapsing groups
+
+86
+00:06:25,752 --> 00:06:29,189
+to keep as much functionality as possible
+in the bar,
+
+87
+00:06:29,223 --> 00:06:33,427
+but if space isn't available,
+extra items will be moved to overflow.
+
+88
+00:06:34,328 --> 00:06:40,067
+The overflow menu contains any items
+that are part of the customization
+
+89
+00:06:40,100 --> 00:06:42,302
+but could not be fit into the bar,
+
+90
+00:06:42,336 --> 00:06:44,671
+as well as the option
+to customize the bar.
+
+91
+00:06:45,839 --> 00:06:50,978
+While UIKit will synthesize default
+menu elements for each bar button item,
+
+92
+00:06:51,011 --> 00:06:55,916
+you have the option to customize
+the menuRepresentation if you wish.
+
+93
+00:06:55,949 --> 00:06:59,887
+Finally, this example
+enables customization
+
+94
+00:06:59,920 --> 00:07:01,688
+and adds the centerItemGroups.
+
+95
+00:07:02,823 --> 00:07:08,295
+You enable customization by setting
+UINavigationItem.customizationIdentifier.
+
+96
+00:07:09,363 --> 00:07:14,101
+The customizationIdentifier
+defines a unique customization of the bar,
+
+97
+00:07:14,134 --> 00:07:18,272
+so pick a string that won't conflict
+with other customizations within your app.
+
+98
+00:07:19,840 --> 00:07:24,745
+UIKit automatically saves and restores
+customizations based on this identifier.
+
+99
+00:07:25,779 --> 00:07:30,450
+Next, provide
+the centerItemGroups themselves.
+
+100
+00:07:30,484 --> 00:07:33,253
+The first four groups
+I've already covered.
+
+101
+00:07:34,621 --> 00:07:40,494
+The format group is an optional group
+that isn't in the default customization,
+
+102
+00:07:40,527 --> 00:07:44,198
+and so this code
+overrides the default value
+
+103
+00:07:44,231 --> 00:07:48,569
+of the isInDefaultCustomization
+parameter to exclude it.
+
+104
+00:07:49,169 --> 00:07:52,573
+You can still use centerItemGroups
+without setting
+
+105
+00:07:52,606 --> 00:07:59,546
+UINavigationItem.customizationIdentifier,
+but customization will not be available.
+
+106
+00:07:59,580 --> 00:08:02,583
+In Mac Catalyst, the UINavigationBar
+
+107
+00:08:02,616 --> 00:08:06,019
+automatically translates its content
+to NSToolbar.
+
+108
+00:08:06,954 --> 00:08:10,123
+The leading, center,
+and trailing item groups
+
+109
+00:08:10,157 --> 00:08:14,561
+are added in order,
+and the customization properties
+
+110
+00:08:14,595 --> 00:08:19,800
+of the center item groups are respected
+when using NSToolbar customization.
+
+111
+00:08:21,101 --> 00:08:25,272
+All of the expected NSToolbar behaviors
+are available,
+
+112
+00:08:25,305 --> 00:08:29,443
+as well as other properties
+such as the title & window proxy.
+
+113
+00:08:30,544 --> 00:08:35,249
+All of this occurs by default
+when you optimize for the Mac.
+
+114
+00:08:35,282 --> 00:08:40,120
+Next, let’s focus in
+on interactions that are powerful,
+
+115
+00:08:40,153 --> 00:08:43,056
+specifically when dealing with documents.
+
+116
+00:08:43,090 --> 00:08:47,828
+UINavigationBar now supports
+adding a menu to the title view,
+
+117
+00:08:47,861 --> 00:08:54,134
+giving a central location to add actions
+that operate on the content as a whole.
+
+118
+00:08:54,168 --> 00:08:57,538
+Additionally, you can add support
+for the share sheet
+
+119
+00:08:57,571 --> 00:08:59,606
+and drag & drop from this menu.
+
+120
+00:09:00,374 --> 00:09:04,011
+First, I’ll focus
+on the menu items themselves.
+
+121
+00:09:04,044 --> 00:09:08,282
+Once enabled,
+the default title menu offers 5 commands:
+
+122
+00:09:08,315 --> 00:09:13,854
+duplicate, move, rename, export,
+and print.
+
+123
+00:09:13,887 --> 00:09:15,656
+These items are filtered
+
+124
+00:09:15,689 --> 00:09:20,027
+based on specific methods
+in your responder chain.
+
+125
+00:09:20,060 --> 00:09:23,864
+UINavigationBar
+has specific support for renaming,
+
+126
+00:09:23,897 --> 00:09:27,868
+and so it will also be included
+if you’ve implemented a renameDelegate.
+
+127
+00:09:30,103 --> 00:09:34,708
+To enable the title menu,
+set the titleMenuProvider,
+
+128
+00:09:34,741 --> 00:09:38,078
+a closure that returns
+the final menu to be displayed.
+
+129
+00:09:39,446 --> 00:09:43,383
+The closure is passed
+an array of suggested elements.
+
+130
+00:09:43,417 --> 00:09:48,422
+You can use these as is,
+filter them, or add your own.
+
+131
+00:09:48,455 --> 00:09:53,927
+In our example, we're adding
+a single additional action to the menu.
+
+132
+00:09:53,961 --> 00:09:56,763
+Finally, you return the composed UIMenu.
+
+133
+00:09:58,398 --> 00:10:02,936
+The title menu also allows
+sharing via the activity view controller
+
+134
+00:10:02,970 --> 00:10:04,671
+and support for drag & drop.
+
+135
+00:10:06,106 --> 00:10:10,711
+To enable these features, you provide
+a UIDocumentProperties instance
+
+136
+00:10:10,744 --> 00:10:12,546
+that describes your document.
+
+137
+00:10:14,248 --> 00:10:18,585
+UIDocumentProperties represents
+metadata about your document,
+
+138
+00:10:18,619 --> 00:10:21,121
+including a preview.
+
+139
+00:10:21,154 --> 00:10:23,924
+This example creates one with a URL,
+
+140
+00:10:23,957 --> 00:10:27,995
+allowing UIKit to fetch
+the necessary metadata automatically.
+
+141
+00:10:29,329 --> 00:10:32,266
+To enable additional features,
+this example creates
+
+142
+00:10:32,299 --> 00:10:34,968
+an NSItemProvider
+to represent the document.
+
+143
+00:10:36,570 --> 00:10:40,607
+Set a dragItemsProvider
+to enable drag & drop.
+
+144
+00:10:40,641 --> 00:10:47,181
+This closure is past a UIDragSession,
+and returns an array of UIDragItems.
+
+145
+00:10:47,214 --> 00:10:50,417
+This example returns a single item
+representing the document.
+
+146
+00:10:52,219 --> 00:10:56,123
+Setting a activityViewControllerProvider
+enables sharing.
+
+147
+00:10:56,156 --> 00:11:00,360
+This closure configures and returns
+a UIActivityViewController.
+
+148
+00:11:01,628 --> 00:11:04,164
+Finally, assign the filled-out object
+
+149
+00:11:04,198 --> 00:11:09,102
+to UINavigationItem.documentProperties,
+and when the title is tapped,
+
+150
+00:11:09,136 --> 00:11:13,006
+UIKit presents the header
+alongside other titleMenu items.
+
+151
+00:11:15,843 --> 00:11:18,745
+On Mac Catalyst, the suggested items
+
+152
+00:11:18,779 --> 00:11:22,082
+that would be passed
+to the titleMenuProvider
+
+153
+00:11:22,115 --> 00:11:25,252
+already exist in the File menu.
+
+154
+00:11:25,285 --> 00:11:28,789
+Any items that you would have added
+to the title menu
+
+155
+00:11:28,822 --> 00:11:31,158
+will need to be made available
+by other means.
+
+156
+00:11:32,359 --> 00:11:36,630
+You can use
+the UIMenuBuilder API to add these items,
+
+157
+00:11:36,663 --> 00:11:39,266
+or filter existing items as necessary.
+
+158
+00:11:40,267 --> 00:11:44,304
+If you specify document properties,
+UIKit will automatically use
+
+159
+00:11:44,338 --> 00:11:48,041
+the URL provided
+to manage the macOS proxy icon.
+
+160
+00:11:49,142 --> 00:11:53,180
+If you set the representedURL
+for your windowScene manually,
+
+161
+00:11:53,213 --> 00:11:55,749
+that will supersede UIKit's management.
+
+162
+00:11:57,217 --> 00:12:01,588
+UIKit provides
+two mechanisms to enable Rename.
+
+163
+00:12:01,622 --> 00:12:07,261
+Inline Rename is provided by setting
+UINavigationItem.renameDelegate,
+
+164
+00:12:07,294 --> 00:12:11,732
+and provides a dedicated UI
+for editing the title on all platforms.
+
+165
+00:12:12,966 --> 00:12:16,403
+When completed, the resulting name
+is passed to the delegate.
+
+166
+00:12:17,504 --> 00:12:22,342
+Alternatively you can take full control
+over the rename experience
+
+167
+00:12:22,376 --> 00:12:28,649
+by implementing UIResponder.rename(_:)
+and providing whatever UI you prefer.
+
+168
+00:12:30,150 --> 00:12:34,655
+On iOS, the UINavigationBar
+provides the rename UI
+
+169
+00:12:34,688 --> 00:12:37,257
+directly within the title view.
+
+170
+00:12:37,291 --> 00:12:41,428
+On macOS, the rename UI is provided
+by the window's title
+
+171
+00:12:41,461 --> 00:12:44,464
+when the navigation bar is hosted
+in an NSToolbar.
+
+172
+00:12:45,432 --> 00:12:50,470
+To implement inline rename, conform
+to the UINavigationItemRenameDelegate
+
+173
+00:12:50,504 --> 00:12:56,076
+protocol and set
+the navigation item's renameDelegate.
+
+174
+00:12:56,109 --> 00:13:01,815
+There is only one required method,
+navigationItem(_:didEndRenamingWith:),
+
+175
+00:13:01,849 --> 00:13:04,985
+that is used to receive
+the title accepted by the user.
+
+176
+00:13:06,253 --> 00:13:09,556
+For file based apps,
+UIDocumentBrowserViewController
+
+177
+00:13:09,590 --> 00:13:11,258
+now offers a renamed API.
+
+178
+00:13:12,459 --> 00:13:16,864
+Search is how many users
+find their most important data,
+
+179
+00:13:16,897 --> 00:13:23,170
+and advances in iOS 16 make it easier
+to provide an excellent search experience.
+
+180
+00:13:23,203 --> 00:13:27,307
+The first thing to note is that search
+now takes up less space
+
+181
+00:13:27,341 --> 00:13:31,111
+by being in line in the navigation bar
+on iPadOS
+
+182
+00:13:31,144 --> 00:13:33,881
+and the toolbar on macOS.
+
+183
+00:13:33,914 --> 00:13:36,984
+On iPadOS,
+you can restore the old behavior
+
+184
+00:13:37,017 --> 00:13:40,954
+with UINavigationItem
+.preferredSearchBarPlacement.
+
+185
+00:13:40,988 --> 00:13:44,358
+Additionally,
+the search bar can collapse to a button
+
+186
+00:13:44,391 --> 00:13:46,994
+to grant more space for other controls.
+
+187
+00:13:47,728 --> 00:13:51,298
+When search is activated,
+search suggestions appear,
+
+188
+00:13:51,331 --> 00:13:55,736
+and they can be updated
+alongside the updating search query,
+
+189
+00:13:55,769 --> 00:14:00,007
+allowing you the opportunity
+to assist your users in their search.
+
+190
+00:14:00,807 --> 00:14:04,211
+Next, I'll describe the code
+needed to setup search suggestions.
+
+191
+00:14:06,013 --> 00:14:11,685
+To manage search suggestions,
+conform to UISearchResultsUpdating
+
+192
+00:14:11,718 --> 00:14:16,056
+and set your searchController's
+searchResultsUpdater.
+
+193
+00:14:16,089 --> 00:14:19,927
+This allows you to update
+suggestions as the query changes
+
+194
+00:14:19,960 --> 00:14:22,663
+and to act
+on a selected search suggestion.
+
+195
+00:14:24,097 --> 00:14:29,303
+When the query changes,
+updateSearchResults(for:) is called,
+
+196
+00:14:29,336 --> 00:14:31,805
+allowing you to update search suggestions.
+
+197
+00:14:33,040 --> 00:14:36,643
+What suggestions to provide is up to you.
+
+198
+00:14:36,677 --> 00:14:39,780
+Setting an empty array
+will clear the suggestions UI.
+
+199
+00:14:41,114 --> 00:14:46,486
+UIKit provides UISearchSuggestionItem
+to specify suggestion content.
+
+200
+00:14:48,021 --> 00:14:51,491
+To respond
+to the selection of a suggestion,
+
+201
+00:14:51,525 --> 00:14:55,996
+implement
+updateSearchResults(for:selecting:).
+
+202
+00:14:56,029 --> 00:14:59,333
+This method passes
+the selected search suggestion,
+
+203
+00:14:59,366 --> 00:15:02,369
+so you may react to it appropriately.
+
+204
+00:15:02,402 --> 00:15:07,007
+In this example I update the search
+by replacing the current query
+
+205
+00:15:07,040 --> 00:15:10,444
+with the one specified
+by the search suggestion.
+
+206
+00:15:10,477 --> 00:15:13,947
+UISearchTextField also has
+searchSuggestions,
+
+207
+00:15:13,981 --> 00:15:16,850
+so if you prefer to use that class
+on its own,
+
+208
+00:15:16,884 --> 00:15:19,753
+you can still implement
+search suggestions.
+
+209
+00:15:19,786 --> 00:15:24,558
+But if you are using UISearchController,
+you should use its property instead.
+
+210
+00:15:25,759 --> 00:15:29,463
+In iOS 16, UIKit provides new API
+
+211
+00:15:29,496 --> 00:15:33,233
+to help you
+bring more productivity to your users.
+
+212
+00:15:33,267 --> 00:15:36,570
+Bring more discoverability
+to your advanced features
+
+213
+00:15:36,603 --> 00:15:38,772
+with center items and the title menu.
+
+214
+00:15:39,940 --> 00:15:43,177
+Improve your document support
+by providing drag & drop
+
+215
+00:15:43,210 --> 00:15:46,113
+and sharing directly
+from the navigation bar.
+
+216
+00:15:46,980 --> 00:15:52,920
+Make it easier and faster to search
+by providing search suggestions
+
+217
+00:15:52,953 --> 00:15:56,190
+and get a great Mac experience
+right out of the box,
+
+218
+00:15:56,223 --> 00:15:58,192
+with nearly zero effort.
+
+219
+00:15:58,225 --> 00:15:59,927
+Thanks for watching this video.
+
+220
+00:15:59,960 --> 00:16:03,864
+I can't wait to see how you
+enhance your apps to be desktop class!
+
+221
+00:16:03,897 --> 00:16:05,966
+[spacey music]
+

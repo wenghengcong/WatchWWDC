@@ -1,0 +1,3116 @@
+1
+00:00:00,033 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,543
+♪
+
+3
+00:00:09,543 --> 00:00:11,144
+Hi! My name is Jared,
+
+4
+00:00:11,144 --> 00:00:13,347
+and I'm a software engineer
+here at Apple.
+
+5
+00:00:13,347 --> 00:00:15,182
+Today I'd like to talk you
+about a new framework
+
+6
+00:00:15,182 --> 00:00:19,119
+we are introducing this year
+to iOS, iPadOS, and macOS.
+
+7
+00:00:19,119 --> 00:00:21,021
+This new framework is called
+Background Assets,
+
+8
+00:00:21,021 --> 00:00:23,223
+and we believe it will greatly
+enrich the user experience
+
+9
+00:00:23,223 --> 00:00:25,325
+of the apps that we all
+know and love,
+
+10
+00:00:25,325 --> 00:00:27,861
+and more importantly,
+that you develop.
+
+11
+00:00:27,861 --> 00:00:29,596
+To get started,
+I'll be introducing you
+
+12
+00:00:29,596 --> 00:00:32,566
+to the new
+Background Assets framework.
+
+13
+00:00:32,566 --> 00:00:34,701
+Afterwards, I'll show you
+how to adopt the new framework
+
+14
+00:00:34,701 --> 00:00:36,670
+into your app.
+
+15
+00:00:36,670 --> 00:00:38,805
+This will be followed by a quick
+overview of the extension
+
+16
+00:00:38,805 --> 00:00:41,575
+and what new capabilities
+it provides.
+
+17
+00:00:41,575 --> 00:00:43,410
+Then we'll finish
+with some best practices
+
+18
+00:00:43,410 --> 00:00:45,946
+and everything we've learned.
+
+19
+00:00:45,946 --> 00:00:47,381
+Before we begin,
+let's talk about
+
+20
+00:00:47,381 --> 00:00:48,949
+what we're trying to solve here.
+
+21
+00:00:48,949 --> 00:00:50,851
+The truth is,
+waiting is not fun.
+
+22
+00:00:50,851 --> 00:00:53,253
+Anytime we find ourselves asking
+those that use our software
+
+23
+00:00:53,253 --> 00:00:55,756
+to wait, we're increasing
+frustration and taking away
+
+24
+00:00:55,756 --> 00:00:58,292
+from the experience
+we want our apps to provide.
+
+25
+00:00:58,292 --> 00:01:00,260
+For instance, how often
+have you found yourself
+
+26
+00:01:00,260 --> 00:01:02,095
+browsing endlessly
+through the App Store
+
+27
+00:01:02,095 --> 00:01:03,497
+looking for that perfect app?
+
+28
+00:01:03,497 --> 00:01:06,667
+You finally find it,
+and oh does it look so perfect!
+
+29
+00:01:06,667 --> 00:01:08,402
+You then tap that GET button.
+
+30
+00:01:08,402 --> 00:01:12,005
+With every moment, your level
+of excitement increases.
+
+31
+00:01:12,005 --> 00:01:13,573
+Then you shortly realize
+that depending
+
+32
+00:01:13,573 --> 00:01:15,943
+on your network connection
+or the size of the app,
+
+33
+00:01:15,943 --> 00:01:19,112
+you may find yourself having
+to wait as the app downloads.
+
+34
+00:01:19,112 --> 00:01:20,814
+Then after a few seconds
+of waiting,
+
+35
+00:01:20,814 --> 00:01:22,983
+you find yourself
+putting your phone down,
+
+36
+00:01:22,983 --> 00:01:26,920
+grabbing a cup of coffee,
+reading your favorite book
+
+37
+00:01:26,920 --> 00:01:28,655
+about the benefits
+of practicing mindfulness
+
+38
+00:01:28,655 --> 00:01:31,358
+and mastering patience.
+
+39
+00:01:31,358 --> 00:01:35,629
+Then a few hours pass, and you
+finally pick up your phone.
+
+40
+00:01:35,629 --> 00:01:37,664
+Your excitement levels rise
+as you're ready to dive into
+
+41
+00:01:37,664 --> 00:01:41,301
+the perfect app that you've been
+waiting to use all day.
+
+42
+00:01:41,301 --> 00:01:44,171
+Just to launch the app and be
+immediately greeted with this:
+
+43
+00:01:44,171 --> 00:01:45,639
+more downloading.
+
+44
+00:01:45,639 --> 00:01:46,606
+It's confusing.
+
+45
+00:01:46,606 --> 00:01:48,241
+You've been away
+from your phone all day.
+
+46
+00:01:48,241 --> 00:01:51,178
+Why is this app now
+making you wait even longer?
+
+47
+00:01:51,178 --> 00:01:52,679
+Couldn't this app have
+downloaded this content
+
+48
+00:01:52,679 --> 00:01:55,148
+automatically after the app
+was installed?
+
+49
+00:01:55,148 --> 00:01:57,284
+For anyone on a slower
+internet connection,
+
+50
+00:01:57,284 --> 00:02:00,520
+this might frustrate them
+to close and remove the app.
+
+51
+00:02:00,520 --> 00:02:02,255
+The truth is,
+this is not the experience
+
+52
+00:02:02,255 --> 00:02:03,724
+any of us want to have.
+
+53
+00:02:03,724 --> 00:02:04,891
+We know this isn't your fault,
+
+54
+00:02:04,891 --> 00:02:07,728
+and we believe we can make
+this experience so much better!
+
+55
+00:02:07,728 --> 00:02:09,930
+This is why we're proud
+to introduce to you this year,
+
+56
+00:02:09,930 --> 00:02:11,231
+Background Assets.
+
+57
+00:02:11,231 --> 00:02:12,466
+This framework was developed
+
+58
+00:02:12,466 --> 00:02:15,635
+to help you enrich the user
+experience of your apps.
+
+59
+00:02:15,635 --> 00:02:17,170
+So that the moment
+your app is launched,
+
+60
+00:02:17,170 --> 00:02:19,740
+it is providing a phenomenal
+first impression!
+
+61
+00:02:19,740 --> 00:02:21,475
+Background Assets
+is designed to be flexible
+
+62
+00:02:21,475 --> 00:02:23,310
+with your existing workflows.
+
+63
+00:02:23,310 --> 00:02:24,711
+A lot of you
+have already developed
+
+64
+00:02:24,711 --> 00:02:26,747
+complex asset management
+systems,
+
+65
+00:02:26,747 --> 00:02:29,583
+and we wanted this new framework
+to easily fit into the solutions
+
+66
+00:02:29,583 --> 00:02:31,385
+that you have already developed.
+
+67
+00:02:31,385 --> 00:02:34,154
+We also know that you want to
+be able to push updated content
+
+68
+00:02:34,154 --> 00:02:37,024
+to your apps without having to
+require an additional submission
+
+69
+00:02:37,024 --> 00:02:38,191
+to the App Store.
+
+70
+00:02:38,191 --> 00:02:40,193
+It's not uncommon
+for games or other apps
+
+71
+00:02:40,193 --> 00:02:43,463
+to need additional content after
+the app has already shipped.
+
+72
+00:02:43,463 --> 00:02:47,067
+Think updated art textures
+or a bug fix in game-level data.
+
+73
+00:02:47,067 --> 00:02:49,536
+Background Assets provides you
+with the ability to schedule
+
+74
+00:02:49,536 --> 00:02:52,606
+and update your assets
+outside of your app's lifecycle.
+
+75
+00:02:52,606 --> 00:02:54,641
+We believe it's important
+that assets are present
+
+76
+00:02:54,641 --> 00:02:56,009
+before first app launch,
+
+77
+00:02:56,009 --> 00:02:58,311
+or whenever the app
+is updated overnight.
+
+78
+00:02:58,311 --> 00:03:00,714
+So we've worked to create
+a mechanism to help ensure
+
+79
+00:03:00,714 --> 00:03:03,216
+that your content is present by
+the time your app is launched.
+
+80
+00:03:03,216 --> 00:03:06,119
+And finally, the easier
+a framework is to adopt,
+
+81
+00:03:06,119 --> 00:03:08,989
+the more we can encourage you
+to use it in your apps.
+
+82
+00:03:08,989 --> 00:03:11,191
+We want Background Assets
+to be used in any place
+
+83
+00:03:11,191 --> 00:03:13,727
+where large assets
+need to be predownloaded.
+
+84
+00:03:13,727 --> 00:03:16,596
+That way, we can minimize
+the time your app is waiting
+
+85
+00:03:16,596 --> 00:03:20,067
+and showing a progress bar
+before its content is available.
+
+86
+00:03:20,067 --> 00:03:21,501
+So you may be wondering,
+
+87
+00:03:21,501 --> 00:03:23,970
+how is this new framework
+helping you solve this problem?
+
+88
+00:03:23,970 --> 00:03:26,807
+Well, in order to be
+as extensible as possible,
+
+89
+00:03:26,807 --> 00:03:28,408
+we've created
+a new app extension
+
+90
+00:03:28,408 --> 00:03:30,544
+for downloading content
+in the background.
+
+91
+00:03:30,544 --> 00:03:32,646
+This new extension is built
+on top of the powerful
+
+92
+00:03:32,646 --> 00:03:34,681
+app extension technology
+that other extensions
+
+93
+00:03:34,681 --> 00:03:36,450
+on our platforms use.
+
+94
+00:03:36,450 --> 00:03:38,452
+This provides an opportunity
+to run code
+
+95
+00:03:38,452 --> 00:03:40,353
+outside of the app's lifecycle.
+
+96
+00:03:40,353 --> 00:03:42,456
+For instance, the extension
+will run whenever the user
+
+97
+00:03:42,456 --> 00:03:45,225
+first installs your app
+but has yet to launch it.
+
+98
+00:03:45,225 --> 00:03:47,694
+The extension will also run
+whenever the app is updated
+
+99
+00:03:47,694 --> 00:03:49,529
+automatically in the background.
+
+100
+00:03:49,529 --> 00:03:51,998
+This helps to ensure that
+your content can be scheduled
+
+101
+00:03:51,998 --> 00:03:54,768
+and downloaded before the user
+opens the application
+
+102
+00:03:54,768 --> 00:03:56,570
+after it has been updated.
+
+103
+00:03:56,570 --> 00:03:59,473
+Finally, the extension will run
+periodically in the background,
+
+104
+00:03:59,473 --> 00:04:01,341
+allowing you to check
+for updated assets
+
+105
+00:04:01,341 --> 00:04:03,577
+and schedule them
+periodically over time.
+
+106
+00:04:03,577 --> 00:04:04,845
+Though it is important to note,
+
+107
+00:04:04,845 --> 00:04:06,680
+that extension runtime
+is short-lived,
+
+108
+00:04:06,680 --> 00:04:09,149
+so all work will need to be
+scheduled by your extension
+
+109
+00:04:09,149 --> 00:04:10,417
+with haste.
+
+110
+00:04:10,417 --> 00:04:12,319
+If downloads are not
+scheduled quickly,
+
+111
+00:04:12,319 --> 00:04:14,387
+the system may terminate
+the extension.
+
+112
+00:04:14,387 --> 00:04:16,289
+It's also important to be aware
+that the frequency
+
+113
+00:04:16,289 --> 00:04:18,291
+of the extension's
+ability to run periodically
+
+114
+00:04:18,291 --> 00:04:20,260
+will back off
+based on app usage.
+
+115
+00:04:20,260 --> 00:04:22,295
+If your app isn't being used
+very much,
+
+116
+00:04:22,295 --> 00:04:25,132
+then the extension will receive
+less frequent runtime.
+
+117
+00:04:25,132 --> 00:04:27,634
+So that's an overview of the
+new Background Assets framework.
+
+118
+00:04:27,634 --> 00:04:29,703
+It provides you with the tools
+you need to ensure that
+
+119
+00:04:29,703 --> 00:04:32,672
+your assets are available by
+the time your app is launched.
+
+120
+00:04:32,672 --> 00:04:34,241
+This is done
+with an extension that runs
+
+121
+00:04:34,241 --> 00:04:36,309
+whenever your app
+is installed or updated,
+
+122
+00:04:36,309 --> 00:04:38,411
+but before the user
+has launched your app.
+
+123
+00:04:38,411 --> 00:04:39,946
+Now, let's take a look
+at adopting
+
+124
+00:04:39,946 --> 00:04:41,781
+the Background Assets framework
+into your project
+
+125
+00:04:41,781 --> 00:04:43,049
+and getting started!
+
+126
+00:04:43,049 --> 00:04:44,618
+The download manager
+within the framework
+
+127
+00:04:44,618 --> 00:04:46,286
+is the primary vehicle
+used to communicate
+
+128
+00:04:46,286 --> 00:04:49,356
+with the Background Assets
+system service.
+
+129
+00:04:49,356 --> 00:04:50,724
+The manager
+is a singleton object
+
+130
+00:04:50,724 --> 00:04:52,492
+that can be used
+throughout your app.
+
+131
+00:04:52,492 --> 00:04:54,327
+Using the manager, you can
+schedule the download
+
+132
+00:04:54,327 --> 00:04:57,197
+of your assets in either
+the foreground or background.
+
+133
+00:04:57,197 --> 00:04:59,733
+You can also retrieve downloads
+that are currently in flight,
+
+134
+00:04:59,733 --> 00:05:01,735
+which might have started
+before your application
+
+135
+00:05:01,735 --> 00:05:03,103
+was ever launched.
+
+136
+00:05:03,103 --> 00:05:04,905
+Downloads can also be canceled.
+
+137
+00:05:04,905 --> 00:05:06,506
+This is useful if they were
+already scheduled
+
+138
+00:05:06,506 --> 00:05:08,642
+or are in the middle of being
+downloaded and you no longer
+
+139
+00:05:08,642 --> 00:05:10,977
+need that asset that you
+originally requested.
+
+140
+00:05:10,977 --> 00:05:13,180
+We've also introduced
+a synchronization mechanism
+
+141
+00:05:13,180 --> 00:05:14,781
+for managing exclusive access
+
+142
+00:05:14,781 --> 00:05:17,484
+between your app
+and the extension
+
+143
+00:05:17,484 --> 00:05:19,986
+so that both the extension
+and application do not end up
+
+144
+00:05:19,986 --> 00:05:24,090
+scheduling or modifying existing
+downloads at the same time.
+
+145
+00:05:24,090 --> 00:05:27,027
+I have an example to show you,
+but for now, more on this later!
+
+146
+00:05:27,027 --> 00:05:29,429
+Let's take a look at just
+how easy it is to start using
+
+147
+00:05:29,429 --> 00:05:31,097
+Background Assets.
+
+148
+00:05:31,097 --> 00:05:32,732
+I'm going to begin
+by walking you through
+
+149
+00:05:32,732 --> 00:05:34,701
+some of the basics of the API.
+
+150
+00:05:34,701 --> 00:05:36,937
+I'll then follow that up later
+by showing you how to tie
+
+151
+00:05:36,937 --> 00:05:39,406
+all of this together
+into an app extension.
+
+152
+00:05:39,406 --> 00:05:41,775
+To get started, you'll import
+the Background Assets
+
+153
+00:05:41,775 --> 00:05:43,076
+framework module.
+
+154
+00:05:43,076 --> 00:05:45,679
+Then, it's as easy
+as defining a URL that points
+
+155
+00:05:45,679 --> 00:05:48,515
+to the location of where
+your remote asset is located.
+
+156
+00:05:48,515 --> 00:05:50,717
+We then follow that up by
+defining an app group container
+
+157
+00:05:50,717 --> 00:05:53,253
+that your extension
+and app are both members of.
+
+158
+00:05:53,253 --> 00:05:55,322
+Having your app and extension
+in the same group
+
+159
+00:05:55,322 --> 00:05:57,824
+allows them to manage
+your assets during the download
+
+160
+00:05:57,824 --> 00:05:59,459
+and after completion.
+
+161
+00:05:59,459 --> 00:06:01,261
+If you're not already
+familiar with app groups,
+
+162
+00:06:01,261 --> 00:06:03,930
+you can easily add one from
+the Signing & Capability section
+
+163
+00:06:03,930 --> 00:06:05,565
+of Xcode 14.
+
+164
+00:06:05,565 --> 00:06:08,468
+They're a powerful feature that
+allows two or more applications
+
+165
+00:06:08,468 --> 00:06:10,870
+to access the same resources,
+or in this case,
+
+166
+00:06:10,870 --> 00:06:12,639
+your app and its extension.
+
+167
+00:06:12,639 --> 00:06:15,342
+The next thing to do is create
+your download object.
+
+168
+00:06:15,342 --> 00:06:17,410
+The Background Assets framework
+is designed to support
+
+169
+00:06:17,410 --> 00:06:19,512
+multiple different types
+of download objects.
+
+170
+00:06:19,512 --> 00:06:21,414
+However, in this example,
+
+171
+00:06:21,414 --> 00:06:25,652
+we'll be focusing on the most
+common one: BAURLDownload.
+
+172
+00:06:25,652 --> 00:06:28,688
+Immediately, you'll notice that
+the initializer takes in the URL
+
+173
+00:06:28,688 --> 00:06:30,924
+and the app group identifier.
+
+174
+00:06:30,924 --> 00:06:32,425
+This information
+tells the system
+
+175
+00:06:32,425 --> 00:06:33,827
+both what we're downloading
+
+176
+00:06:33,827 --> 00:06:35,629
+and where the resulting file
+will end up.
+
+177
+00:06:35,629 --> 00:06:37,564
+It also takes an identifier.
+
+178
+00:06:37,564 --> 00:06:39,666
+You'll use this identifier
+to track your download
+
+179
+00:06:39,666 --> 00:06:43,870
+across multiple launches of your
+app, and within the extension.
+
+180
+00:06:43,870 --> 00:06:46,106
+The engine will not allow
+more than one download
+
+181
+00:06:46,106 --> 00:06:48,842
+to be scheduled
+with the same identifier.
+
+182
+00:06:48,842 --> 00:06:51,711
+Therefore, you should make
+these identifiers unique.
+
+183
+00:06:51,711 --> 00:06:54,547
+Next, we'll grab a reference
+to the BADownloaderManager
+
+184
+00:06:54,547 --> 00:06:56,049
+shared object.
+
+185
+00:06:56,049 --> 00:06:57,884
+The download manager
+is your single interface
+
+186
+00:06:57,884 --> 00:06:59,386
+into Background Assets.
+
+187
+00:06:59,386 --> 00:07:03,189
+It's what allows you to observe,
+cancel, and schedule downloads.
+
+188
+00:07:03,189 --> 00:07:05,125
+We'll then pass it a weak
+reference to a delegate
+
+189
+00:07:05,125 --> 00:07:07,427
+that conforms to the
+BADownloadManagerDelegate
+
+190
+00:07:07,427 --> 00:07:08,628
+protocol.
+
+191
+00:07:08,628 --> 00:07:10,230
+I'll go more into
+this protocol shortly,
+
+192
+00:07:10,230 --> 00:07:12,699
+but the most important part
+to know now is that it receives
+
+193
+00:07:12,699 --> 00:07:15,101
+messages about downloads
+that have been scheduled.
+
+194
+00:07:15,101 --> 00:07:17,504
+The only thing left to do
+is to ask the download manager
+
+195
+00:07:17,504 --> 00:07:19,039
+to schedule the download.
+
+196
+00:07:19,039 --> 00:07:21,107
+If for any reason the download
+cannot be scheduled,
+
+197
+00:07:21,107 --> 00:07:22,609
+then an error is thrown.
+
+198
+00:07:22,609 --> 00:07:24,778
+In addition to scheduling
+downloads in the background,
+
+199
+00:07:24,778 --> 00:07:27,547
+we also provide API for doing
+foreground downloads.
+
+200
+00:07:27,547 --> 00:07:28,882
+Running in the foreground
+
+201
+00:07:28,882 --> 00:07:30,750
+not only gives you
+increased priority,
+
+202
+00:07:30,750 --> 00:07:34,120
+but it also enables your
+download to begin immediately.
+
+203
+00:07:34,120 --> 00:07:36,656
+This is similar to using the
+default session configuration
+
+204
+00:07:36,656 --> 00:07:38,224
+within URLSession.
+
+205
+00:07:38,224 --> 00:07:40,260
+We provide this API
+so that your app can promote
+
+206
+00:07:40,260 --> 00:07:42,395
+any downloads scheduled by your
+extension in the background
+
+207
+00:07:42,395 --> 00:07:43,596
+to the foreground.
+
+208
+00:07:43,596 --> 00:07:45,165
+One thing to keep in mind:
+
+209
+00:07:45,165 --> 00:07:47,200
+performing a foreground
+download is not available
+
+210
+00:07:47,200 --> 00:07:48,568
+from within the extension;
+
+211
+00:07:48,568 --> 00:07:51,104
+it can only be initiated
+from the app.
+
+212
+00:07:51,104 --> 00:07:53,206
+Since extensions
+never present UI,
+
+213
+00:07:53,206 --> 00:07:55,275
+and the user doesn't notice
+that they are running,
+
+214
+00:07:55,275 --> 00:07:58,178
+extensions may only schedule
+downloads in the background.
+
+215
+00:07:58,178 --> 00:07:59,612
+If your app
+would like to promote
+
+216
+00:07:59,612 --> 00:08:01,681
+existing background downloads
+to the foreground,
+
+217
+00:08:01,681 --> 00:08:03,717
+this can easily be accomplished
+by fetching the list
+
+218
+00:08:03,717 --> 00:08:06,319
+of currently active downloads
+from the manager.
+
+219
+00:08:06,319 --> 00:08:08,254
+The list that is returned
+contains all downloads
+
+220
+00:08:08,254 --> 00:08:10,657
+the are currently scheduled,
+which may include downloads
+
+221
+00:08:10,657 --> 00:08:12,726
+in flight or queued up
+in the scheduler.
+
+222
+00:08:12,726 --> 00:08:14,994
+Next, your app can begin
+the promotion process
+
+223
+00:08:14,994 --> 00:08:17,564
+by calling
+startForegroundDownload.
+
+224
+00:08:17,564 --> 00:08:19,399
+If a download is already
+in the foreground,
+
+225
+00:08:19,399 --> 00:08:22,035
+calling this method
+will effectively do nothing.
+
+226
+00:08:22,035 --> 00:08:24,270
+However, if the download
+was backgrounded,
+
+227
+00:08:24,270 --> 00:08:27,173
+it will first be paused,
+then resumed in the foreground
+
+228
+00:08:27,173 --> 00:08:29,676
+without requiring any content
+that was already downloaded
+
+229
+00:08:29,676 --> 00:08:31,945
+up until this point
+to be redownloaded.
+
+230
+00:08:31,945 --> 00:08:33,646
+Together,
+this provides an effective
+
+231
+00:08:33,646 --> 00:08:35,648
+and simple illustration
+for how easy it is
+
+232
+00:08:35,648 --> 00:08:37,617
+to use Background Assets to
+promote downloads
+
+233
+00:08:37,617 --> 00:08:39,886
+scheduled in the background
+to the foreground.
+
+234
+00:08:39,886 --> 00:08:41,688
+It really is as simple as that!
+
+235
+00:08:41,688 --> 00:08:43,857
+The download manager is your
+primary interface that is used
+
+236
+00:08:43,857 --> 00:08:46,626
+to schedule and monitor
+background downloads.
+
+237
+00:08:46,626 --> 00:08:48,795
+As these download objects
+are processed by the system,
+
+238
+00:08:48,795 --> 00:08:51,231
+you'll receive messages
+in your delegate object.
+
+239
+00:08:51,231 --> 00:08:52,632
+Let's walk through
+the delegate now.
+
+240
+00:08:52,632 --> 00:08:54,634
+The delegate receives messages
+for all downloads
+
+241
+00:08:54,634 --> 00:08:56,536
+that have been scheduled
+by either the extension
+
+242
+00:08:56,536 --> 00:08:58,071
+or your app.
+
+243
+00:08:58,071 --> 00:09:00,140
+If there are numerous downloads
+that were scheduled,
+
+244
+00:09:00,140 --> 00:09:02,709
+callbacks will be received
+for all of them.
+
+245
+00:09:02,709 --> 00:09:04,711
+This is where you use
+the download object's
+
+246
+00:09:04,711 --> 00:09:07,247
+unique identifier
+to distinguish between them.
+
+247
+00:09:07,247 --> 00:09:08,882
+Your app will begin
+to receive callbacks
+
+248
+00:09:08,882 --> 00:09:10,583
+the moment the delegate
+is established
+
+249
+00:09:10,583 --> 00:09:12,152
+on BADownloadManager.
+
+250
+00:09:12,152 --> 00:09:14,387
+Callbacks are not enqueued
+by the system.
+
+251
+00:09:14,387 --> 00:09:16,623
+If your app does not handle
+one of the delegate methods
+
+252
+00:09:16,623 --> 00:09:18,558
+or your delegate
+is not established,
+
+253
+00:09:18,558 --> 00:09:21,361
+then your extension will wake
+to process the message.
+
+254
+00:09:21,361 --> 00:09:23,363
+This means that you should
+fully expect your extension
+
+255
+00:09:23,363 --> 00:09:26,232
+to be sent messages if you have
+not established a delegate
+
+256
+00:09:26,232 --> 00:09:29,002
+onto BADownloadManager
+within your app.
+
+257
+00:09:29,002 --> 00:09:30,570
+If your app is currently
+in the foreground
+
+258
+00:09:30,570 --> 00:09:32,038
+being presented to the user
+
+259
+00:09:32,038 --> 00:09:33,807
+and its delegate
+has been established,
+
+260
+00:09:33,807 --> 00:09:35,642
+then callbacks will be sent
+to your app
+
+261
+00:09:35,642 --> 00:09:37,243
+and the extension
+will not be woken.
+
+262
+00:09:37,243 --> 00:09:38,645
+The extension will only wake
+
+263
+00:09:38,645 --> 00:09:41,414
+if your app does not handle
+its delegate callback.
+
+264
+00:09:41,414 --> 00:09:43,516
+If a download finishes,
+or fails,
+
+265
+00:09:43,516 --> 00:09:45,418
+and the app does not
+process this message,
+
+266
+00:09:45,418 --> 00:09:46,920
+then the extension will wake.
+
+267
+00:09:46,920 --> 00:09:49,289
+Keep in mind,
+the extension is not woken
+
+268
+00:09:49,289 --> 00:09:50,957
+for all types of callbacks.
+
+269
+00:09:50,957 --> 00:09:52,892
+Only callbacks that share
+common interfaces
+
+270
+00:09:52,892 --> 00:09:54,894
+between
+BADownloadManagerDelegate
+
+271
+00:09:54,894 --> 00:09:57,363
+and the BADownloaderExtension
+protocol.
+
+272
+00:09:57,363 --> 00:09:59,999
+A download succeeding or failing
+is an example
+
+273
+00:09:59,999 --> 00:10:02,969
+of a common interface between
+the delegate and the protocol.
+
+274
+00:10:02,969 --> 00:10:04,971
+Although your app extension
+has its own entry points
+
+275
+00:10:04,971 --> 00:10:06,473
+that cause it to wake,
+
+276
+00:10:06,473 --> 00:10:08,107
+if the extension
+is currently running,
+
+277
+00:10:08,107 --> 00:10:11,244
+it can use BADownloadManager
+and establish a delegate.
+
+278
+00:10:11,244 --> 00:10:13,346
+This will allow both
+the app and extension
+
+279
+00:10:13,346 --> 00:10:16,115
+to receive duplicate messages
+to their delegates.
+
+280
+00:10:16,115 --> 00:10:17,884
+Keep in mind
+that extensions do not wake
+
+281
+00:10:17,884 --> 00:10:19,586
+to process delegate messages.
+
+282
+00:10:19,586 --> 00:10:22,288
+They only wake at extension
+entry points defined in the
+
+283
+00:10:22,288 --> 00:10:24,290
+BADownloaderExtension protocol.
+
+284
+00:10:24,290 --> 00:10:25,725
+Let's take a look
+at the protocol
+
+285
+00:10:25,725 --> 00:10:27,260
+for the download manager's
+delegate.
+
+286
+00:10:27,260 --> 00:10:29,295
+The first function
+is for receiving messages
+
+287
+00:10:29,295 --> 00:10:31,164
+whenever a download starts.
+
+288
+00:10:31,164 --> 00:10:33,399
+This is useful for tracking when
+the device has finally chosen
+
+289
+00:10:33,399 --> 00:10:35,201
+to schedule a specific download.
+
+290
+00:10:35,201 --> 00:10:38,004
+You may also be notified
+if a download pauses.
+
+291
+00:10:38,004 --> 00:10:40,173
+An example of
+a pause occurring would be
+
+292
+00:10:40,173 --> 00:10:42,542
+if the extension starts
+a download in the background
+
+293
+00:10:42,542 --> 00:10:45,378
+and then your app asks us
+to promote it to the foreground.
+
+294
+00:10:45,378 --> 00:10:47,514
+During this promotion
+there will be a small window
+
+295
+00:10:47,514 --> 00:10:50,149
+where the download pauses
+before it is resumed.
+
+296
+00:10:50,149 --> 00:10:52,218
+The download manager
+also allows you to monitor
+
+297
+00:10:52,218 --> 00:10:55,221
+active progress of your download
+as it is being downloaded
+
+298
+00:10:55,221 --> 00:10:56,589
+in the foreground.
+
+299
+00:10:56,589 --> 00:10:59,225
+We also provide a mechanism
+to answer a challenge request,
+
+300
+00:10:59,225 --> 00:11:02,028
+which is useful for validating
+the authenticity of a connection
+
+301
+00:11:02,028 --> 00:11:04,664
+or for providing credentials
+to authorize a connection.
+
+302
+00:11:04,664 --> 00:11:06,866
+The most important functions
+are for dealing with a failed
+
+303
+00:11:06,866 --> 00:11:08,268
+or finished download.
+
+304
+00:11:08,268 --> 00:11:10,436
+If a download fails,
+you may need to reschedule it
+
+305
+00:11:10,436 --> 00:11:12,338
+or determine the cause.
+
+306
+00:11:12,338 --> 00:11:13,673
+For a successful download,
+
+307
+00:11:13,673 --> 00:11:15,575
+the system has placed
+the file in a location
+
+308
+00:11:15,575 --> 00:11:17,443
+that is managed
+by the operating system.
+
+309
+00:11:17,443 --> 00:11:19,546
+If the device ends up
+low on space,
+
+310
+00:11:19,546 --> 00:11:21,981
+then the system
+will delete the file for you.
+
+311
+00:11:21,981 --> 00:11:24,584
+We strongly recommend that you
+leave the file at the location
+
+312
+00:11:24,584 --> 00:11:26,519
+that the system has provided.
+
+313
+00:11:26,519 --> 00:11:28,688
+Only move the file
+if you absolutely must
+
+314
+00:11:28,688 --> 00:11:30,256
+and please do not duplicate it
+
+315
+00:11:30,256 --> 00:11:33,192
+unless you delete
+the originating file afterwards.
+
+316
+00:11:33,192 --> 00:11:36,129
+As a reminder, the protocol for
+the download manager's delegate
+
+317
+00:11:36,129 --> 00:11:38,331
+is for receiving messages
+related to downloads
+
+318
+00:11:38,331 --> 00:11:40,733
+that your app or extension
+has scheduled.
+
+319
+00:11:40,733 --> 00:11:42,969
+It is not the entry point
+for your extension,
+
+320
+00:11:42,969 --> 00:11:44,704
+which brings us
+to our next topic.
+
+321
+00:11:44,704 --> 00:11:47,140
+Now we'll be taking a look
+at the most exciting part
+
+322
+00:11:47,140 --> 00:11:49,208
+of Background Assets,
+the extension!
+
+323
+00:11:49,208 --> 00:11:51,277
+The extension enables you
+to schedule the downloads
+
+324
+00:11:51,277 --> 00:11:54,080
+of your assets before the user
+has launched your app.
+
+325
+00:11:54,080 --> 00:11:56,416
+This enables you to ensure
+that your assets are in place
+
+326
+00:11:56,416 --> 00:11:58,251
+and ready to go
+in order to provide
+
+327
+00:11:58,251 --> 00:12:01,721
+the best possible experience in
+your app with minimal wait time.
+
+328
+00:12:01,721 --> 00:12:05,258
+As discussed earlier, we're
+introducing a new app extension.
+
+329
+00:12:05,258 --> 00:12:07,527
+This extension can be created
+from within Xcode
+
+330
+00:12:07,527 --> 00:12:09,462
+inside of your existing project.
+
+331
+00:12:09,462 --> 00:12:11,431
+As a quick reminder,
+the extension runs
+
+332
+00:12:11,431 --> 00:12:13,833
+whenever your app
+is installed or updated.
+
+333
+00:12:13,833 --> 00:12:16,536
+Giving you the flexibility
+to make sure changes to your app
+
+334
+00:12:16,536 --> 00:12:18,738
+always has its latest assets.
+
+335
+00:12:18,738 --> 00:12:20,340
+The extension
+also runs periodically
+
+336
+00:12:20,340 --> 00:12:22,575
+based on how often
+a user uses your app.
+
+337
+00:12:22,575 --> 00:12:24,377
+If someone uses your app
+everyday,
+
+338
+00:12:24,377 --> 00:12:25,912
+then the system
+learns this behavior
+
+339
+00:12:25,912 --> 00:12:28,281
+and your extension
+will run more frequently.
+
+340
+00:12:28,281 --> 00:12:30,617
+However, if the app
+is never launched,
+
+341
+00:12:30,617 --> 00:12:33,653
+then the frequency of this
+periodic check will subside.
+
+342
+00:12:33,653 --> 00:12:35,788
+The new extension
+also has a short lifecycle
+
+343
+00:12:35,788 --> 00:12:38,324
+and a tight sandbox to ensure
+that its usage is limited
+
+344
+00:12:38,324 --> 00:12:40,360
+to just downloading assets.
+
+345
+00:12:40,360 --> 00:12:42,929
+You are encouraged to make
+quick decisions in the extension
+
+346
+00:12:42,929 --> 00:12:45,598
+and to limit the extension to
+the Background Assets framework.
+
+347
+00:12:45,598 --> 00:12:47,367
+Before we start navigating
+through the extension,
+
+348
+00:12:47,367 --> 00:12:48,935
+there are a couple of
+configurations
+
+349
+00:12:48,935 --> 00:12:51,104
+that you need to make
+before the extension can launch.
+
+350
+00:12:51,104 --> 00:12:53,106
+These changes are
+also a requirement
+
+351
+00:12:53,106 --> 00:12:56,376
+for your app to be approved for
+distribution on the App Store.
+
+352
+00:12:56,376 --> 00:12:58,578
+In your app's
+information property list,
+
+353
+00:12:58,578 --> 00:13:01,047
+you'll need to define
+a couple of additional keys.
+
+354
+00:13:01,047 --> 00:13:03,816
+These keys should not be placed
+in the extension's Info.plist,
+
+355
+00:13:03,816 --> 00:13:05,251
+only the app's.
+
+356
+00:13:05,251 --> 00:13:08,187
+The first key is
+BAInitialDownloadRestrictions.
+
+357
+00:13:08,187 --> 00:13:10,723
+This is a dictionary where you
+will be specifying restrictions
+
+358
+00:13:10,723 --> 00:13:12,859
+that will be placed
+upon your extension.
+
+359
+00:13:12,859 --> 00:13:14,894
+These restrictions are reviewed
+by App Review,
+
+360
+00:13:14,894 --> 00:13:17,130
+so try to be as accurate
+as possible.
+
+361
+00:13:17,130 --> 00:13:19,499
+Now, let's dig into
+each individual key
+
+362
+00:13:19,499 --> 00:13:21,234
+inside the dictionary.
+
+363
+00:13:21,234 --> 00:13:23,670
+The first restriction
+is the download allowance.
+
+364
+00:13:23,670 --> 00:13:26,439
+This is represented in bytes
+and is the maximum download size
+
+365
+00:13:26,439 --> 00:13:28,541
+you're requesting to make
+within the extension
+
+366
+00:13:28,541 --> 00:13:30,643
+during an initial app install.
+
+367
+00:13:30,643 --> 00:13:33,112
+This size pertains to the sum
+of all files combined
+
+368
+00:13:33,112 --> 00:13:34,814
+that you are requesting
+to download,
+
+369
+00:13:34,814 --> 00:13:37,050
+not the size
+of each individual file.
+
+370
+00:13:37,050 --> 00:13:38,818
+The next item is
+the domain AllowList,
+
+371
+00:13:38,818 --> 00:13:41,721
+which takes an array of domains
+represented as strings.
+
+372
+00:13:41,721 --> 00:13:44,724
+The domain AllowList supports
+prefix wildcards and takes in
+
+373
+00:13:44,724 --> 00:13:46,426
+a list of host names
+that your extension
+
+374
+00:13:46,426 --> 00:13:48,027
+is permitted to download from.
+
+375
+00:13:48,027 --> 00:13:49,162
+It's important to note
+
+376
+00:13:49,162 --> 00:13:51,931
+that the keys in the
+BAInitialDownloadRestrictions,
+
+377
+00:13:51,931 --> 00:13:55,334
+such as the DownloadAllowance
+and AllowList are only enforced
+
+378
+00:13:55,334 --> 00:13:57,370
+after first app install.
+
+379
+00:13:57,370 --> 00:13:58,771
+Whenever your app is launched,
+
+380
+00:13:58,771 --> 00:14:01,307
+these restrictions
+are no longer enforced.
+
+381
+00:14:01,307 --> 00:14:02,575
+The last required key,
+
+382
+00:14:02,575 --> 00:14:04,343
+which sits at the root
+of your Info.plist
+
+383
+00:14:04,343 --> 00:14:06,479
+is the maximum size
+that your app will require
+
+384
+00:14:06,479 --> 00:14:09,182
+in additional storage
+for these assets.
+
+385
+00:14:09,182 --> 00:14:11,651
+We expect that you might want
+to download compressed assets,
+
+386
+00:14:11,651 --> 00:14:13,686
+so this value should be
+the final extracted
+
+387
+00:14:13,686 --> 00:14:15,588
+uncompressed size.
+
+388
+00:14:15,588 --> 00:14:17,023
+The number that is placed here
+
+389
+00:14:17,023 --> 00:14:18,424
+will be presented
+on the App Store
+
+390
+00:14:18,424 --> 00:14:19,992
+before the app is downloaded.
+
+391
+00:14:19,992 --> 00:14:21,761
+Now that we've gone over
+some housekeeping,
+
+392
+00:14:21,761 --> 00:14:23,930
+let's talk about the entry
+points into your extension
+
+393
+00:14:23,930 --> 00:14:25,998
+in more detail.
+
+394
+00:14:25,998 --> 00:14:27,734
+The functions that you define
+from the protocol
+
+395
+00:14:27,734 --> 00:14:30,737
+will be called by the system
+and not by your app.
+
+396
+00:14:30,737 --> 00:14:32,371
+Unlike other app extensions,
+
+397
+00:14:32,371 --> 00:14:33,940
+where the application
+is responsible
+
+398
+00:14:33,940 --> 00:14:35,575
+for talking to the extension,
+
+399
+00:14:35,575 --> 00:14:36,843
+the background
+download extension
+
+400
+00:14:36,843 --> 00:14:39,011
+is brokered by the system.
+
+401
+00:14:39,011 --> 00:14:41,414
+Since the system is maintaining
+the lifecycle of the extension,
+
+402
+00:14:41,414 --> 00:14:43,850
+it should be viewed
+as an ephemeral service.
+
+403
+00:14:43,850 --> 00:14:44,951
+Whenever any of the functions
+
+404
+00:14:44,951 --> 00:14:46,686
+inside of the protocol
+are invoked,
+
+405
+00:14:46,686 --> 00:14:48,988
+it's important to keep
+the work that is done there
+
+406
+00:14:48,988 --> 00:14:50,223
+to a minimum.
+
+407
+00:14:50,223 --> 00:14:52,058
+The extension will be terminated
+rather quickly
+
+408
+00:14:52,058 --> 00:14:53,326
+after it is launched.
+
+409
+00:14:53,326 --> 00:14:55,361
+This is not the place
+to kick off decompression
+
+410
+00:14:55,361 --> 00:14:58,898
+or other complex operations
+that may take a while.
+
+411
+00:14:58,898 --> 00:15:01,300
+One of the great parts
+of working in the extension
+
+412
+00:15:01,300 --> 00:15:03,469
+is that all of the
+BackgroundAssets APIs
+
+413
+00:15:03,469 --> 00:15:07,206
+available to your app are also
+available within the extension.
+
+414
+00:15:07,206 --> 00:15:10,376
+With the only exception being
+the ForegroundDownload API.
+
+415
+00:15:10,376 --> 00:15:12,378
+This means that you'll use
+BADownloadManager
+
+416
+00:15:12,378 --> 00:15:14,580
+just like you would in your app.
+
+417
+00:15:14,580 --> 00:15:16,482
+As a matter of fact,
+it's entirely likely
+
+418
+00:15:16,482 --> 00:15:18,417
+that you'll discover
+the ability to create something
+
+419
+00:15:18,417 --> 00:15:21,487
+that uses the same code to
+schedule and manage your assets
+
+420
+00:15:21,487 --> 00:15:25,658
+in both your app
+and its extension.
+
+421
+00:15:25,658 --> 00:15:27,860
+Also, when creating
+your extension,
+
+422
+00:15:27,860 --> 00:15:30,630
+it's important to ensure that
+both are in a common app group.
+
+423
+00:15:30,630 --> 00:15:32,465
+You'll want to use
+the same group identifier
+
+424
+00:15:32,465 --> 00:15:34,767
+so that content can be read
+and written by your app
+
+425
+00:15:34,767 --> 00:15:36,169
+and its extension.
+
+426
+00:15:36,169 --> 00:15:38,471
+Now let's take a look at the
+downloader extension protocol
+
+427
+00:15:38,471 --> 00:15:41,174
+that you will be conforming
+your extension to.
+
+428
+00:15:41,174 --> 00:15:43,142
+The first thing you'll notice
+is how similar it looks
+
+429
+00:15:43,142 --> 00:15:45,778
+to the download manager
+delegate protocol.
+
+430
+00:15:45,778 --> 00:15:49,115
+As I stated earlier,
+you can use BADownloadManager
+
+431
+00:15:49,115 --> 00:15:51,951
+and construct a delegate
+from within the extension.
+
+432
+00:15:51,951 --> 00:15:55,421
+However, only these entry points
+can actually wake the extension.
+
+433
+00:15:55,421 --> 00:15:56,756
+The first function is invoked
+
+434
+00:15:56,756 --> 00:15:59,292
+whenever your application
+is first installed.
+
+435
+00:15:59,292 --> 00:16:02,028
+The app hasn't launched yet,
+but your extension has.
+
+436
+00:16:02,028 --> 00:16:04,897
+This is the perfect opportunity
+to start scheduling downloads
+
+437
+00:16:04,897 --> 00:16:07,333
+that your app needs
+to provide the best experience
+
+438
+00:16:07,333 --> 00:16:09,402
+once your app has been launched.
+
+439
+00:16:09,402 --> 00:16:12,104
+It's also important to recall
+that during initial app install,
+
+440
+00:16:12,104 --> 00:16:14,207
+download restrictions
+are in effect.
+
+441
+00:16:14,207 --> 00:16:16,676
+You'll want to consult
+the BADownloadRestrictions key
+
+442
+00:16:16,676 --> 00:16:18,945
+that you defined
+in your Info.plist
+
+443
+00:16:18,945 --> 00:16:21,047
+to know what your maximum
+permitted download size
+
+444
+00:16:21,047 --> 00:16:22,381
+and allowed domains are.
+
+445
+00:16:22,381 --> 00:16:23,783
+This next function is invoked
+
+446
+00:16:23,783 --> 00:16:25,718
+whenever the App Store
+updates your app.
+
+447
+00:16:25,718 --> 00:16:28,554
+As long as the user hasn't quit
+your app in the app switcher,
+
+448
+00:16:28,554 --> 00:16:30,489
+your newly updated
+extension will wake
+
+449
+00:16:30,489 --> 00:16:31,991
+and you can begin
+scheduling work.
+
+450
+00:16:31,991 --> 00:16:33,926
+The checkForUpdates function
+provides support
+
+451
+00:16:33,926 --> 00:16:35,695
+for your extension being
+periodically awoken
+
+452
+00:16:35,695 --> 00:16:38,698
+by the system, so that you
+can check for any updates
+
+453
+00:16:38,698 --> 00:16:40,800
+that need to be background
+downloaded.
+
+454
+00:16:40,800 --> 00:16:42,869
+This function is invoked
+by the system based on
+
+455
+00:16:42,869 --> 00:16:44,637
+how often a user uses your app.
+
+456
+00:16:44,637 --> 00:16:46,205
+We also have support
+for responding
+
+457
+00:16:46,205 --> 00:16:48,441
+to an authentication
+challenge request.
+
+458
+00:16:48,441 --> 00:16:49,976
+So that you can better
+restrict and ensure
+
+459
+00:16:49,976 --> 00:16:51,410
+that the files
+you are downloading
+
+460
+00:16:51,410 --> 00:16:53,346
+have come from a trusted source.
+
+461
+00:16:53,346 --> 00:16:54,881
+Finally, just like the delegate,
+
+462
+00:16:54,881 --> 00:16:57,950
+you'll be informed if the
+download failed or succeeded.
+
+463
+00:16:57,950 --> 00:16:59,986
+You'll notice that in the
+backgroundDownloadDidFail
+
+464
+00:16:59,986 --> 00:17:02,121
+function,
+there is no error returned.
+
+465
+00:17:02,121 --> 00:17:04,390
+The error can be retrieved
+along with its state
+
+466
+00:17:04,390 --> 00:17:07,426
+in a variable inside of
+the returned BADownload object.
+
+467
+00:17:07,426 --> 00:17:09,662
+It's also important to note
+that the last three functions
+
+468
+00:17:09,662 --> 00:17:11,397
+can be invoked
+even if your extension
+
+469
+00:17:11,397 --> 00:17:13,232
+isn't what scheduled
+the download.
+
+470
+00:17:13,232 --> 00:17:14,867
+If your app scheduled
+a download,
+
+471
+00:17:14,867 --> 00:17:17,236
+but hasn’t become backgrounded,
+then the extension
+
+472
+00:17:17,236 --> 00:17:19,405
+will be expected
+to service the download.
+
+473
+00:17:19,405 --> 00:17:21,607
+Now that we understand
+how to use BADownloaderManager
+
+474
+00:17:21,607 --> 00:17:24,243
+from our app and its extension,
+we have to start thinking about
+
+475
+00:17:24,243 --> 00:17:26,479
+what it means if both the app
+and its extension
+
+476
+00:17:26,479 --> 00:17:28,114
+are running simultaneously.
+
+477
+00:17:28,114 --> 00:17:30,249
+For instance, let's say
+the system has decided
+
+478
+00:17:30,249 --> 00:17:31,851
+that it's time
+to wake the extension
+
+479
+00:17:31,851 --> 00:17:35,154
+to have it periodically
+check for updates.
+
+480
+00:17:35,154 --> 00:17:37,490
+And of course, since the
+extension needs to access
+
+481
+00:17:37,490 --> 00:17:39,458
+the network to do this check,
+it's going to use
+
+482
+00:17:39,458 --> 00:17:42,795
+BADownloaderManager to schedule
+the download of a catalog
+
+483
+00:17:42,795 --> 00:17:45,398
+or some other type of metadata
+that provides a list
+
+484
+00:17:45,398 --> 00:17:48,100
+of updated assets
+that are available.
+
+485
+00:17:48,100 --> 00:17:51,570
+For instance, let's say the file
+is a small 100KB catalog
+
+486
+00:17:51,570 --> 00:17:54,140
+that contains a list
+of large multi-gigabyte assets
+
+487
+00:17:54,140 --> 00:17:55,508
+that we need to download.
+
+488
+00:17:55,508 --> 00:17:56,776
+Since the extension
+needs to know
+
+489
+00:17:56,776 --> 00:18:00,012
+when the download it has
+scheduled finished, or failed,
+
+490
+00:18:00,012 --> 00:18:03,149
+it's going to attach a delegate
+onto the download manager.
+
+491
+00:18:03,149 --> 00:18:04,717
+The download manager's
+delegate is used
+
+492
+00:18:04,717 --> 00:18:06,652
+over its extension entry points
+
+493
+00:18:06,652 --> 00:18:08,487
+since its downloading
+a small file to determine
+
+494
+00:18:08,487 --> 00:18:10,957
+what larger assets it
+will be scheduling,
+
+495
+00:18:10,957 --> 00:18:12,858
+and extension entry points
+are not guaranteed
+
+496
+00:18:12,858 --> 00:18:14,327
+to be invoked immediately.
+
+497
+00:18:14,327 --> 00:18:15,628
+After the download
+has finished,
+
+498
+00:18:15,628 --> 00:18:18,431
+the extension receives this
+message through its delegate.
+
+499
+00:18:18,431 --> 00:18:20,433
+Your extension now has access
+to the catalog file
+
+500
+00:18:20,433 --> 00:18:21,801
+and has to make a choice
+
+501
+00:18:21,801 --> 00:18:23,536
+with what it plans to do
+with the downloaded file.
+
+502
+00:18:23,536 --> 00:18:25,271
+You could imagine that the
+extension will read the file
+
+503
+00:18:25,271 --> 00:18:27,106
+to determine which of the assets
+in the catalog
+
+504
+00:18:27,106 --> 00:18:28,841
+need to be downloaded
+to the device.
+
+505
+00:18:28,841 --> 00:18:31,310
+Then the extension could
+schedule background downloads
+
+506
+00:18:31,310 --> 00:18:32,778
+of those larger assets.
+
+507
+00:18:32,778 --> 00:18:35,081
+Now that the downloaded file
+is no longer necessary,
+
+508
+00:18:35,081 --> 00:18:37,116
+the extension should delete
+the file.
+
+509
+00:18:37,116 --> 00:18:38,417
+While this seems appropriate,
+
+510
+00:18:38,417 --> 00:18:40,453
+what happens if your app
+launches while your extension
+
+511
+00:18:40,453 --> 00:18:42,688
+is running and creates its own
+BADownloadManager?
+
+512
+00:18:42,688 --> 00:18:44,423
+Well, let's take a look!
+
+513
+00:18:44,423 --> 00:18:46,359
+The app launches
+and immediately wants to know
+
+514
+00:18:46,359 --> 00:18:48,794
+if it has updated content.
+
+515
+00:18:48,794 --> 00:18:50,830
+Perhaps a version number
+is stored in the app group
+
+516
+00:18:50,830 --> 00:18:54,200
+that both consult to determine
+if their assets are up to date.
+
+517
+00:18:54,200 --> 00:18:56,235
+Since the app was launched
+before the newer catalog
+
+518
+00:18:56,235 --> 00:18:58,070
+finished downloading,
+it's going to fetch
+
+519
+00:18:58,070 --> 00:18:59,872
+the current downloads
+from the manager
+
+520
+00:18:59,872 --> 00:19:01,640
+and realize that a download
+of the catalog
+
+521
+00:19:01,640 --> 00:19:04,143
+is currently in flight
+and wait for it to be finished
+
+522
+00:19:04,143 --> 00:19:05,311
+in its delegate.
+
+523
+00:19:05,311 --> 00:19:06,712
+But we have a problem.
+
+524
+00:19:06,712 --> 00:19:08,781
+Both the extension
+and the app will receive
+
+525
+00:19:08,781 --> 00:19:11,417
+a download finished message
+in their respective delegates
+
+526
+00:19:11,417 --> 00:19:13,619
+that were hooked into
+the download manager.
+
+527
+00:19:13,619 --> 00:19:16,856
+This means we have a data race
+on the file being downloaded.
+
+528
+00:19:16,856 --> 00:19:20,059
+Both the app and extension will
+try to read and delete the file
+
+529
+00:19:20,059 --> 00:19:21,894
+at the same time;
+this is not good.
+
+530
+00:19:21,894 --> 00:19:23,796
+This means that either
+your app or extension
+
+531
+00:19:23,796 --> 00:19:26,766
+could try to read the file
+and it might be missing.
+
+532
+00:19:26,766 --> 00:19:28,768
+This means that you will need
+think about your app
+
+533
+00:19:28,768 --> 00:19:31,170
+and extension in a similar way
+that you would think about
+
+534
+00:19:31,170 --> 00:19:33,539
+two threads within your app.
+
+535
+00:19:33,539 --> 00:19:36,042
+Luckily, Background Assets
+provides a way to synchronize
+
+536
+00:19:36,042 --> 00:19:38,110
+between your app
+and its extension.
+
+537
+00:19:38,110 --> 00:19:39,345
+Let's talk about that now!
+
+538
+00:19:39,345 --> 00:19:41,414
+Synchronizing between
+your app and its extension
+
+539
+00:19:41,414 --> 00:19:44,283
+is extremely simple
+with Background Assets.
+
+540
+00:19:44,283 --> 00:19:46,552
+What we're currently looking at
+is the download manager's
+
+541
+00:19:46,552 --> 00:19:49,755
+delegate function for when
+a download has completed.
+
+542
+00:19:49,755 --> 00:19:52,491
+A URL is provided that contains
+a local path to the file
+
+543
+00:19:52,491 --> 00:19:55,828
+that your app or extension
+has access to.
+
+544
+00:19:55,828 --> 00:19:58,197
+In this example, we'll be
+ensuring mutual exclusion
+
+545
+00:19:58,197 --> 00:19:59,432
+of this file.
+
+546
+00:19:59,432 --> 00:20:01,600
+Next, we grab a reference
+to the download manager
+
+547
+00:20:01,600 --> 00:20:03,736
+and use the
+withExclusiveControl function,
+
+548
+00:20:03,736 --> 00:20:05,805
+which takes
+a completion handler.
+
+549
+00:20:05,805 --> 00:20:08,340
+All code that is executed within
+the completion handler scope
+
+550
+00:20:08,340 --> 00:20:11,010
+is guaranteed to be mutually
+exclusive with other calls
+
+551
+00:20:11,010 --> 00:20:13,179
+that require exclusive control.
+
+552
+00:20:13,179 --> 00:20:16,348
+Meaning if your extension calls
+withExclusiveControl
+
+553
+00:20:16,348 --> 00:20:19,185
+while you app has not returned
+from its completion handler,
+
+554
+00:20:19,185 --> 00:20:21,220
+then the extension will wait.
+
+555
+00:20:21,220 --> 00:20:23,155
+This applies in the other
+direction as well.
+
+556
+00:20:23,155 --> 00:20:25,925
+If the extension acquires
+exclusive control first,
+
+557
+00:20:25,925 --> 00:20:28,294
+then the app will wait until
+the extension is terminated
+
+558
+00:20:28,294 --> 00:20:30,863
+or releases control
+by exiting scope.
+
+559
+00:20:30,863 --> 00:20:32,298
+An important thing
+to keep in mind
+
+560
+00:20:32,298 --> 00:20:35,067
+is that acquiring exclusive
+control can fail.
+
+561
+00:20:35,067 --> 00:20:37,336
+It is extremely unlikely
+that this will occur,
+
+562
+00:20:37,336 --> 00:20:40,072
+but in the event it does,
+your code should handle it.
+
+563
+00:20:40,072 --> 00:20:42,475
+You can detect if exclusive
+control could not be acquired
+
+564
+00:20:42,475 --> 00:20:44,376
+by checking if the error
+provided by the function
+
+565
+00:20:44,376 --> 00:20:45,611
+is not nil.
+
+566
+00:20:45,611 --> 00:20:47,947
+From this point on,
+you are guaranteed that your app
+
+567
+00:20:47,947 --> 00:20:51,383
+or extension has exclusive
+access within its context.
+
+568
+00:20:51,383 --> 00:20:53,052
+So based on our
+earlier example,
+
+569
+00:20:53,052 --> 00:20:55,588
+it is now perfectly valid to
+read the contents of the file
+
+570
+00:20:55,588 --> 00:20:58,524
+and then clean it up,
+if you so choose.
+
+571
+00:20:58,524 --> 00:21:01,861
+Just make sure to be aware that
+when your other app or extension
+
+572
+00:21:01,861 --> 00:21:04,396
+gets its opportunity
+to enter exclusive control
+
+573
+00:21:04,396 --> 00:21:07,166
+that it knows that you have
+already processed the file.
+
+574
+00:21:07,166 --> 00:21:09,835
+One way this can be accomplished
+is by first checking
+
+575
+00:21:09,835 --> 00:21:12,738
+if the file exists or writing
+to a database or plist.
+
+576
+00:21:12,738 --> 00:21:15,374
+As a reminder, the background
+downloader extension
+
+577
+00:21:15,374 --> 00:21:18,177
+is for collecting and scheduling
+the downloads of large assets
+
+578
+00:21:18,177 --> 00:21:19,578
+for your app.
+
+579
+00:21:19,578 --> 00:21:21,080
+Its runtime is short lived,
+
+580
+00:21:21,080 --> 00:21:22,715
+so please keep
+the work that is done
+
+581
+00:21:22,715 --> 00:21:24,550
+within the extension
+to a minimum.
+
+582
+00:21:24,550 --> 00:21:26,318
+You should also place
+your extension and app
+
+583
+00:21:26,318 --> 00:21:28,787
+within a shared app group
+so that both can access files
+
+584
+00:21:28,787 --> 00:21:30,923
+that are downloaded
+by one another.
+
+585
+00:21:30,923 --> 00:21:33,592
+And finally, the extension
+is brokered by the system
+
+586
+00:21:33,592 --> 00:21:34,693
+and not your app.
+
+587
+00:21:34,693 --> 00:21:36,095
+Now that you know
+how to develop
+
+588
+00:21:36,095 --> 00:21:38,130
+a basic background
+download extension,
+
+589
+00:21:38,130 --> 00:21:39,932
+you have everything you need
+to start implementing
+
+590
+00:21:39,932 --> 00:21:41,700
+Background Assets into your app.
+
+591
+00:21:41,700 --> 00:21:43,469
+Now, let's go over
+what we've learned.
+
+592
+00:21:43,469 --> 00:21:45,604
+The download manager is used
+to coordinate and schedule
+
+593
+00:21:45,604 --> 00:21:48,707
+downloads between your app
+and its extension,
+
+594
+00:21:48,707 --> 00:21:50,809
+therefore you should be using
+the download manager
+
+595
+00:21:50,809 --> 00:21:52,244
+in both places.
+
+596
+00:21:52,244 --> 00:21:55,347
+Your extension runs even if your
+app is not in the foreground.
+
+597
+00:21:55,347 --> 00:21:58,083
+This can occur during
+app installation, update,
+
+598
+00:21:58,083 --> 00:22:01,053
+or periodically at an interval
+determined by the system.
+
+599
+00:22:01,053 --> 00:22:02,388
+If your app is launched
+
+600
+00:22:02,388 --> 00:22:04,290
+and content that was being
+downloaded in the background
+
+601
+00:22:04,290 --> 00:22:05,925
+is now be waited on,
+
+602
+00:22:05,925 --> 00:22:08,961
+please immediately promote those
+downloads to the foreground.
+
+603
+00:22:08,961 --> 00:22:11,897
+The extension can only schedule
+downloads in the background.
+
+604
+00:22:11,897 --> 00:22:14,233
+By having your app promote them
+to the foreground,
+
+605
+00:22:14,233 --> 00:22:17,203
+ensures that your content will
+arrive as quickly as possible.
+
+606
+00:22:17,203 --> 00:22:19,271
+If you ever find yourself
+needing exclusive access
+
+607
+00:22:19,271 --> 00:22:23,075
+to the download manager, please
+use the exclusive control APIs.
+
+608
+00:22:23,075 --> 00:22:25,678
+This will ensure that only
+your app or extension
+
+609
+00:22:25,678 --> 00:22:27,913
+will have runtime
+within that window.
+
+610
+00:22:27,913 --> 00:22:30,683
+This is extremely useful so that
+you don't have to think about
+
+611
+00:22:30,683 --> 00:22:33,485
+your extension racing your app
+when accessing its container
+
+612
+00:22:33,485 --> 00:22:34,820
+or managing downloads.
+
+613
+00:22:34,820 --> 00:22:37,456
+If there is anything you should
+take from this presentation,
+
+614
+00:22:37,456 --> 00:22:39,925
+it's that waiting results
+in a poor app experience.
+
+615
+00:22:39,925 --> 00:22:42,161
+Minimize waiting
+by making your app usable
+
+616
+00:22:42,161 --> 00:22:45,164
+while the task
+you are waiting on is underway.
+
+617
+00:22:45,164 --> 00:22:47,333
+One of the ways you can
+minimize waiting in your app
+
+618
+00:22:47,333 --> 00:22:49,235
+is to adopt the new
+Background Assets framework
+
+619
+00:22:49,235 --> 00:22:51,804
+along with the underlying
+background download extension.
+
+620
+00:22:51,804 --> 00:22:53,772
+This helps to ensure
+that your app will have
+
+621
+00:22:53,772 --> 00:22:57,176
+all of its content ready
+before the app is launched.
+
+622
+00:22:57,176 --> 00:22:59,044
+Make sure to also check out
+the documentation,
+
+623
+00:22:59,044 --> 00:23:01,547
+which includes extra information
+that may not have been
+
+624
+00:23:01,547 --> 00:23:03,649
+incorporated into
+this presentation;
+
+625
+00:23:03,649 --> 00:23:05,718
+including how to test
+your extension
+
+626
+00:23:05,718 --> 00:23:08,387
+and to simulate
+its entry points.
+
+627
+00:23:08,387 --> 00:23:10,122
+We're really excited
+to get to share
+
+628
+00:23:10,122 --> 00:23:12,691
+Background Assets with you,
+and we value your feedback.
+
+629
+00:23:12,691 --> 00:23:14,827
+Please use Feedback Assistant
+to let us know
+
+630
+00:23:14,827 --> 00:23:17,896
+what is working for you
+and what you'd like us improve.
+
+631
+00:23:17,896 --> 00:23:20,332
+This is a new framework
+and we have the opportunity
+
+632
+00:23:20,332 --> 00:23:23,369
+to make adjustments
+during seeding.
+
+633
+00:23:23,369 --> 00:23:24,837
+We have
+some additional sessions
+
+634
+00:23:24,837 --> 00:23:26,438
+that we think you might
+find interesting
+
+635
+00:23:26,438 --> 00:23:28,340
+and we encourage you
+to check them out.
+
+636
+00:23:28,340 --> 00:23:31,810
+"Accelerating networking with
+HTTP3" is a fantastic session
+
+637
+00:23:31,810 --> 00:23:33,912
+that pairs well with
+Background Assets.
+
+638
+00:23:33,912 --> 00:23:37,082
+Also, I encourage you
+to check out another session:
+
+639
+00:23:37,082 --> 00:23:39,952
+the "Introducing on demand
+resources" presentation
+
+640
+00:23:39,952 --> 00:23:41,920
+covers an alternative
+to Background Assets
+
+641
+00:23:41,920 --> 00:23:44,023
+where your content
+is hosted by Apple
+
+642
+00:23:44,023 --> 00:23:46,659
+and files are downloaded
+at your request.
+
+643
+00:23:46,659 --> 00:23:48,260
+Both of these sessions
+are really engaging
+
+644
+00:23:48,260 --> 00:23:49,895
+and have a lot to offer.
+
+645
+00:23:49,895 --> 00:23:51,597
+Thank you for spending
+your time with me,
+
+646
+00:23:51,597 --> 00:23:53,032
+and on behalf of everyone
+at Apple,
+
+647
+00:23:53,032 --> 00:23:55,000
+we hope you have
+a fantastic WWDC!
+
+648
+00:23:55,000 --> 00:23:59,004
+♪
+

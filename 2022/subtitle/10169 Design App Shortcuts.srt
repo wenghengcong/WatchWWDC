@@ -1,0 +1,2205 @@
+1
+00:00:00,100 --> 00:00:03,003
+♪ instrumental hip hop music ♪
+
+2
+00:00:03,003 --> 00:00:10,444
+♪
+
+3
+00:00:10,444 --> 00:00:11,879
+Hi, I'm Lynn,
+
+4
+00:00:11,879 --> 00:00:14,081
+a design producer
+for Siri and Shortcuts.
+
+5
+00:00:14,081 --> 00:00:15,983
+And today, I'm going
+to tell you a bit more
+
+6
+00:00:15,983 --> 00:00:17,317
+about the new App Intents
+framework
+
+7
+00:00:17,317 --> 00:00:21,154
+and how you can use it
+to design great App Shortcuts.
+
+8
+00:00:21,154 --> 00:00:23,757
+Here at Apple, we know
+that people love using Siri
+
+9
+00:00:23,757 --> 00:00:27,160
+and Spotlight to accelerate
+common tasks across devices,
+
+10
+00:00:27,160 --> 00:00:28,595
+like this.
+
+11
+00:00:30,264 --> 00:00:31,832
+Remind me to buy garlic.
+
+12
+00:00:34,735 --> 00:00:36,737
+Set a timer for 20 minutes.
+
+13
+00:00:44,111 --> 00:00:46,613
+These habitual tasks
+can be easily completed
+
+14
+00:00:46,613 --> 00:00:49,616
+outside their respective apps,
+and making them available
+
+15
+00:00:49,616 --> 00:00:52,452
+via Siri and Spotlight
+gives people flexibility
+
+16
+00:00:52,452 --> 00:00:54,221
+in how they interact
+with their device
+
+17
+00:00:54,221 --> 00:00:56,857
+and how they get things done.
+
+18
+00:00:56,857 --> 00:01:00,260
+Shortcuts are how you can offer
+people that same flexibility
+
+19
+00:01:00,260 --> 00:01:04,231
+to accomplish key tasks
+from your app throughout the OS.
+
+20
+00:01:04,231 --> 00:01:07,134
+And all shortcuts begin
+with a fundamental component
+
+21
+00:01:07,134 --> 00:01:10,103
+called actions, which
+represent an individual task
+
+22
+00:01:10,103 --> 00:01:12,039
+that people can complete
+with your app,
+
+23
+00:01:12,039 --> 00:01:16,109
+such as creating a reminder
+or sending a message.
+
+24
+00:01:16,109 --> 00:01:19,546
+This foundation can be used
+in a couple different ways.
+
+25
+00:01:19,546 --> 00:01:22,783
+First, for custom shortcuts,
+which people can create
+
+26
+00:01:22,783 --> 00:01:24,818
+using one or more actions
+from apps;
+
+27
+00:01:24,818 --> 00:01:27,387
+that is, your app and others.
+
+28
+00:01:27,387 --> 00:01:30,757
+Or an action can be used
+to create an App Shortcut,
+
+29
+00:01:30,757 --> 00:01:32,559
+created by
+app developers like you,
+
+30
+00:01:32,559 --> 00:01:35,128
+containing one action
+from your app.
+
+31
+00:01:35,128 --> 00:01:38,098
+And while in the past,
+people needed to find and tap
+
+32
+00:01:38,098 --> 00:01:40,434
+the Add to Siri button
+to enable each new app shortcut
+
+33
+00:01:40,434 --> 00:01:44,304
+you created,
+now, with iOS 16,
+
+34
+00:01:44,304 --> 00:01:46,139
+the App Shortcuts
+you create for your app
+
+35
+00:01:46,139 --> 00:01:49,776
+will be automatically available
+as soon as your app is installed.
+
+36
+00:01:49,776 --> 00:01:52,813
+That means they'll be
+available in Siri,
+
+37
+00:01:52,813 --> 00:01:54,548
+visible in Spotlight,
+
+38
+00:01:54,548 --> 00:01:56,216
+and featured
+in the Shortcuts app,
+
+39
+00:01:56,216 --> 00:01:58,185
+making it easier than ever
+for people to access
+
+40
+00:01:58,185 --> 00:02:02,389
+their favorite features
+from your app throughout the OS.
+
+41
+00:02:02,389 --> 00:02:04,591
+Today I'm going to walk through
+a few different areas
+
+42
+00:02:04,591 --> 00:02:07,394
+to help you create
+unforgettable App Shortcuts.
+
+43
+00:02:07,394 --> 00:02:08,929
+I'll start with how to select
+the right features
+
+44
+00:02:08,929 --> 00:02:11,031
+from your app
+to turn into shortcuts,
+
+45
+00:02:11,031 --> 00:02:12,699
+and how to name them.
+
+46
+00:02:12,699 --> 00:02:14,801
+Then, I'll walk through
+some best practices
+
+47
+00:02:14,801 --> 00:02:16,303
+for presenting your visuals
+
+48
+00:02:16,303 --> 00:02:18,638
+and for collecting
+required information.
+
+49
+00:02:18,638 --> 00:02:21,108
+And finally, I'll let you know
+how you can tell people
+
+50
+00:02:21,108 --> 00:02:22,943
+about your new shortcuts.
+
+51
+00:02:22,943 --> 00:02:25,545
+So let's jump in.
+
+52
+00:02:25,545 --> 00:02:27,848
+Now your app
+has a wide range of features.
+
+53
+00:02:27,848 --> 00:02:29,449
+But we know that some things
+lend themselves
+
+54
+00:02:29,449 --> 00:02:31,985
+better than others
+to becoming great shortcuts.
+
+55
+00:02:31,985 --> 00:02:33,887
+So what should you look for?
+
+56
+00:02:33,887 --> 00:02:36,189
+Think about the features
+people love in your app,
+
+57
+00:02:36,189 --> 00:02:39,159
+and then focus on tasks
+that are self-contained,
+
+58
+00:02:39,159 --> 00:02:41,895
+meaning they can be completed
+outside your app;
+
+59
+00:02:41,895 --> 00:02:43,130
+and straightforward,
+
+60
+00:02:43,130 --> 00:02:45,432
+in that they're efficient
+to get through.
+
+61
+00:02:45,432 --> 00:02:47,401
+To give these principles
+a bit more context,
+
+62
+00:02:47,401 --> 00:02:49,603
+let's take a look at
+a sample meditation app.
+
+63
+00:02:49,603 --> 00:02:52,773
+We'll just call it "Meditation."
+
+64
+00:02:52,773 --> 00:02:54,641
+Now a great
+App Shortcut is one
+
+65
+00:02:54,641 --> 00:02:57,611
+that actually doesn't require
+your app in focus at all.
+
+66
+00:02:57,611 --> 00:03:00,013
+You're looking for a lightweight
+task that can be completed
+
+67
+00:03:00,013 --> 00:03:04,217
+via Siri or via search
+in its entirety.
+
+68
+00:03:04,217 --> 00:03:07,120
+For our new Meditation app,
+that'd be something like this.
+
+69
+00:03:08,989 --> 00:03:12,025
+Start sleep meditation.
+
+70
+00:03:12,025 --> 00:03:14,995
+Voiceover: Take a deep breath,
+close your eyes,
+
+71
+00:03:14,995 --> 00:03:16,563
+and leave the day behind.
+
+72
+00:03:19,733 --> 00:03:22,035
+It's easy to kick this off
+without opening the app,
+
+73
+00:03:22,035 --> 00:03:24,271
+and it just starts playing.
+
+74
+00:03:24,271 --> 00:03:26,406
+You also want to make sure
+the shortcuts you author
+
+75
+00:03:26,406 --> 00:03:27,774
+are straightforward.
+
+76
+00:03:27,774 --> 00:03:29,810
+They should feel effortless
+to get through.
+
+77
+00:03:29,810 --> 00:03:32,579
+Tasks that require a lot
+of input may be too tedious
+
+78
+00:03:32,579 --> 00:03:34,815
+and time-consuming
+for a shortcut.
+
+79
+00:03:34,815 --> 00:03:40,153
+For example, a lengthy,
+multistep survey like this one
+
+80
+00:03:40,153 --> 00:03:43,490
+wouldn't be appropriate
+for an App Shortcut.
+
+81
+00:03:43,490 --> 00:03:46,326
+Instead, focus on
+uncomplicated tasks
+
+82
+00:03:46,326 --> 00:03:48,061
+that people can succeed
+at quickly,
+
+83
+00:03:48,061 --> 00:03:50,864
+and that they can remember even
+when they're not using your app,
+
+84
+00:03:50,864 --> 00:03:52,799
+like this.
+
+85
+00:04:02,109 --> 00:04:04,778
+So the best features from
+your app to turn into shortcuts
+
+86
+00:04:04,778 --> 00:04:07,481
+are self-contained
+and straightforward.
+
+87
+00:04:07,481 --> 00:04:09,716
+They can be completed
+without the app in focus
+
+88
+00:04:09,716 --> 00:04:12,018
+and are uncomplicated
+to get through.
+
+89
+00:04:12,018 --> 00:04:15,055
+And all in all, there may not
+be so many of these.
+
+90
+00:04:15,055 --> 00:04:18,291
+The maximum you can create
+is 10, but in most cases,
+
+91
+00:04:18,291 --> 00:04:20,093
+the key features of your app
+can be captured
+
+92
+00:04:20,093 --> 00:04:22,963
+in two to five
+high-quality app shortcuts,
+
+93
+00:04:22,963 --> 00:04:24,631
+and we strongly recommend
+keeping your set
+
+94
+00:04:24,631 --> 00:04:27,400
+as focused as possible.
+
+95
+00:04:27,400 --> 00:04:29,936
+Now, as important
+as selecting the right features
+
+96
+00:04:29,936 --> 00:04:32,439
+to become app shortcuts,
+is authoring a great phrase
+
+97
+00:04:32,439 --> 00:04:34,608
+to name them.
+
+98
+00:04:34,608 --> 00:04:37,744
+This name is really the hero
+phrase for your shortcut.
+
+99
+00:04:37,744 --> 00:04:40,947
+It appears in the Shortcuts app
+under your app's header,
+
+100
+00:04:40,947 --> 00:04:43,683
+it's how your shortcut will be
+referenced in Spotlight
+
+101
+00:04:43,683 --> 00:04:47,087
+and it's what people will say
+to Siri to invoke your shortcut.
+
+102
+00:04:47,087 --> 00:04:49,055
+So where to start?
+
+103
+00:04:49,055 --> 00:04:50,857
+The first important thing
+to remember
+
+104
+00:04:50,857 --> 00:04:54,895
+when you're crafting that hero
+phrase is to keep it brief.
+
+105
+00:04:54,895 --> 00:04:56,029
+You want your
+app shortcut phrase
+
+106
+00:04:56,029 --> 00:04:57,430
+to be easy to remember
+
+107
+00:04:57,430 --> 00:05:00,667
+and to clearly communicate
+its function.
+
+108
+00:05:00,667 --> 00:05:03,537
+As a requirement, you'll need
+to include your app name.
+
+109
+00:05:03,537 --> 00:05:05,505
+But you can be
+creative about it!
+
+110
+00:05:05,505 --> 00:05:07,274
+See if you can incorporate
+your app name
+
+111
+00:05:07,274 --> 00:05:09,342
+directly into
+the invocation phrase,
+
+112
+00:05:09,342 --> 00:05:12,112
+like here with Voice Memo
+
+113
+00:05:12,112 --> 00:05:14,614
+or here with Panera.
+
+114
+00:05:14,614 --> 00:05:17,717
+And the app name in this phrase
+can be your official app name
+
+115
+00:05:17,717 --> 00:05:21,221
+or any of the alternative names
+you submitted to the App Store.
+
+116
+00:05:21,221 --> 00:05:23,990
+In this case, Panera Bread
+is the official app name,
+
+117
+00:05:23,990 --> 00:05:27,460
+but the Panera synonym feels
+more natural in the phrase.
+
+118
+00:05:27,460 --> 00:05:31,665
+And here's how that could look
+with our app, Meditation.
+
+119
+00:05:31,665 --> 00:05:35,135
+Let's dig a little deeper
+with the Voice Memo example.
+
+120
+00:05:35,135 --> 00:05:38,905
+I'll turn on my transcriptions
+so we can see my speech.
+
+121
+00:05:38,905 --> 00:05:41,241
+Remember that the name
+you choose for your App Shortcut
+
+122
+00:05:41,241 --> 00:05:44,244
+is also what people will say to
+Siri to invoke it, and you need
+
+123
+00:05:44,244 --> 00:05:46,546
+to provide thoughtful
+natural language variations
+
+124
+00:05:46,546 --> 00:05:48,715
+to ensure it works
+for whatever similar phrases
+
+125
+00:05:48,715 --> 00:05:50,250
+people might say.
+
+126
+00:05:50,250 --> 00:05:54,454
+For example, for this shortcut,
+named Record Voice Memo,
+
+127
+00:05:54,454 --> 00:05:56,756
+I would need
+to explicitly specify
+
+128
+00:05:56,756 --> 00:06:00,227
+"Start Voice Memo"
+and "New Voice Memo"
+
+129
+00:06:00,227 --> 00:06:03,930
+as synonyms,
+otherwise they won't work.
+
+130
+00:06:03,930 --> 00:06:05,732
+Be sufficiently thorough here.
+
+131
+00:06:05,732 --> 00:06:08,134
+You want to try to capture
+all the alternative phrases
+
+132
+00:06:08,134 --> 00:06:09,869
+people might say.
+
+133
+00:06:09,869 --> 00:06:12,539
+But -- and this is
+a bit of a judgment call --
+
+134
+00:06:12,539 --> 00:06:14,841
+make sure you're not straying
+too far from the core purpose
+
+135
+00:06:14,841 --> 00:06:16,876
+of your shortcut
+and entering into a new meaning
+
+136
+00:06:16,876 --> 00:06:18,178
+with these phrases.
+
+137
+00:06:18,178 --> 00:06:21,948
+In this case, the intent is
+truly to create not to save.
+
+138
+00:06:21,948 --> 00:06:25,151
+And remember, you will have
+to go through this exercise
+
+139
+00:06:25,151 --> 00:06:27,621
+of providing thorough synonyms
+for every language
+
+140
+00:06:27,621 --> 00:06:30,156
+that your app is published
+to ensure a robust experience
+
+141
+00:06:30,156 --> 00:06:31,891
+around the world.
+
+142
+00:06:34,494 --> 00:06:35,929
+So I've talked about
+the importance
+
+143
+00:06:35,929 --> 00:06:38,765
+of keeping your app shortcut
+name brief and memorable,
+
+144
+00:06:38,765 --> 00:06:41,534
+creative strategies
+for incorporating your app name,
+
+145
+00:06:41,534 --> 00:06:43,436
+and the value of generating
+thorough synonyms
+
+146
+00:06:43,436 --> 00:06:46,640
+and translating those synonyms
+to other languages.
+
+147
+00:06:46,640 --> 00:06:47,941
+The last thing
+I want to talk about
+
+148
+00:06:47,941 --> 00:06:49,643
+when it comes
+to naming your shortcut
+
+149
+00:06:49,643 --> 00:06:52,879
+is how and when to use
+a dynamic parameter.
+
+150
+00:06:52,879 --> 00:06:54,781
+You can now use
+a dynamic parameter
+
+151
+00:06:54,781 --> 00:06:56,549
+directly in the name
+of your shortcut
+
+152
+00:06:56,549 --> 00:06:58,551
+to create multiple variations
+on the phrase
+
+153
+00:06:58,551 --> 00:07:01,688
+that people can say to Siri
+or see in Spotlight.
+
+154
+00:07:01,688 --> 00:07:03,790
+Let's take a look at an example.
+
+155
+00:07:03,790 --> 00:07:06,293
+So for our Meditation app,
+the dynamic parameter
+
+156
+00:07:06,293 --> 00:07:08,728
+could be different types
+of meditation.
+
+157
+00:07:08,728 --> 00:07:10,930
+And you can see how
+this provides the flexibility
+
+158
+00:07:10,930 --> 00:07:14,234
+to directly ask
+for those different types.
+
+159
+00:07:14,234 --> 00:07:16,970
+But there are a couple things
+to note about this parameter.
+
+160
+00:07:16,970 --> 00:07:19,839
+First, you can only have
+one dynamic parameter
+
+161
+00:07:19,839 --> 00:07:22,275
+in your phrase,
+and it can only be used
+
+162
+00:07:22,275 --> 00:07:24,978
+to select from a finite list.
+
+163
+00:07:24,978 --> 00:07:26,946
+You want to make sure
+that other values in the list
+
+164
+00:07:26,946 --> 00:07:29,482
+are predictable since people
+won't have this list of options
+
+165
+00:07:29,482 --> 00:07:31,618
+in front of them for reference.
+
+166
+00:07:31,618 --> 00:07:34,254
+This is a good example because
+people are likely familiar
+
+167
+00:07:34,254 --> 00:07:36,956
+with the different meditation
+types from using the app,
+
+168
+00:07:36,956 --> 00:07:38,992
+and it's also a small list.
+
+169
+00:07:38,992 --> 00:07:41,261
+Other good examples
+might be recent restaurants
+
+170
+00:07:41,261 --> 00:07:45,332
+that are front of mind or
+different rooms in the home.
+
+171
+00:07:45,332 --> 00:07:48,068
+A bad example would be
+something with infinite options,
+
+172
+00:07:48,068 --> 00:07:49,703
+like a time value.
+
+173
+00:07:49,703 --> 00:07:51,805
+You don't want to use
+a dynamic parameter here,
+
+174
+00:07:51,805 --> 00:07:53,807
+but instead, prompt
+for additional information
+
+175
+00:07:53,807 --> 00:07:55,041
+as needed.
+
+176
+00:07:55,041 --> 00:07:57,677
+I'll talk more
+about that in a bit.
+
+177
+00:07:57,677 --> 00:07:59,546
+Last thing to note
+is that this list
+
+178
+00:07:59,546 --> 00:08:02,515
+of possible parameter values
+can be updated any time
+
+179
+00:08:02,515 --> 00:08:04,651
+your app is open,
+so you can ensure
+
+180
+00:08:04,651 --> 00:08:08,988
+it consistently contains
+up-to-date and relevant values.
+
+181
+00:08:08,988 --> 00:08:11,257
+Now, each parameter value,
+
+182
+00:08:11,257 --> 00:08:13,360
+in combination
+with the App Intent,
+
+183
+00:08:13,360 --> 00:08:16,596
+creates a unique variant
+of your app shortcut.
+
+184
+00:08:16,596 --> 00:08:18,298
+So for starting a meditation,
+
+185
+00:08:18,298 --> 00:08:20,867
+you'd have this
+unparameterized version
+
+186
+00:08:20,867 --> 00:08:25,138
+and each parameterized version,
+like Start Sleep Meditation,
+
+187
+00:08:25,138 --> 00:08:28,908
+Start Gratitude Meditation,
+and all the others.
+
+188
+00:08:28,908 --> 00:08:30,477
+These are automatically
+generated
+
+189
+00:08:30,477 --> 00:08:34,114
+and displayed in the Shortcuts
+app, as you see here,
+
+190
+00:08:34,114 --> 00:08:37,684
+and shown as individual rows
+in Spotlight.
+
+191
+00:08:37,684 --> 00:08:40,153
+These parameters are also
+visible in the Shortcuts editor
+
+192
+00:08:40,153 --> 00:08:43,490
+when you provide a parameter
+summary for your action.
+
+193
+00:08:43,490 --> 00:08:45,058
+When someone taps
+on the parameter,
+
+194
+00:08:45,058 --> 00:08:48,228
+your options will appear
+in a menu like this.
+
+195
+00:08:48,228 --> 00:08:50,230
+To learn more about actions
+and how they appear
+
+196
+00:08:50,230 --> 00:08:51,364
+in the Shortcuts editor,
+
+197
+00:08:51,364 --> 00:08:54,000
+check out this talk from last
+year on designing great actions
+
+198
+00:08:54,000 --> 00:08:57,437
+for Shortcuts, Siri,
+and Suggestions.
+
+199
+00:08:57,437 --> 00:08:59,339
+The last important consideration
+when it comes
+
+200
+00:08:59,339 --> 00:09:02,342
+to including a dynamic parameter
+is making sure it's clear
+
+201
+00:09:02,342 --> 00:09:05,044
+which part of the phrase
+is a parameter.
+
+202
+00:09:05,044 --> 00:09:07,914
+As I mentioned, you can only
+have one dynamic parameter
+
+203
+00:09:07,914 --> 00:09:11,484
+per app shortcut, but if you had
+this as your app shortcut,
+
+204
+00:09:11,484 --> 00:09:14,788
+the second part of
+the phrase -- "nature sounds" --
+
+205
+00:09:14,788 --> 00:09:17,590
+seems like a second parameter
+that can be changed.
+
+206
+00:09:17,590 --> 00:09:19,726
+This could make people
+think they can say
+
+207
+00:09:19,726 --> 00:09:22,429
+"gratitude meditation
+with ocean sounds,"
+
+208
+00:09:22,429 --> 00:09:24,063
+when in fact, only
+the first part of the phrase
+
+209
+00:09:24,063 --> 00:09:25,632
+can be changed.
+
+210
+00:09:25,632 --> 00:09:28,501
+The solution here
+is to keep it simple.
+
+211
+00:09:28,501 --> 00:09:31,037
+If it feels too complicated
+when you say it aloud,
+
+212
+00:09:31,037 --> 00:09:32,772
+it probably is.
+
+213
+00:09:32,772 --> 00:09:34,007
+And if that additional
+information
+
+214
+00:09:34,007 --> 00:09:35,375
+is absolutely required,
+
+215
+00:09:35,375 --> 00:09:37,310
+you can ask for it
+in a subsequent step,
+
+216
+00:09:37,310 --> 00:09:41,047
+and I'll provide some tips
+on how to do that later.
+
+217
+00:09:41,047 --> 00:09:42,582
+Looking back at everything
+I mentioned
+
+218
+00:09:42,582 --> 00:09:45,385
+about selecting features,
+naming your shortcut,
+
+219
+00:09:45,385 --> 00:09:48,555
+and using dynamic parameters,
+one theme stands out,
+
+220
+00:09:48,555 --> 00:09:50,623
+and that's to make it memorable.
+
+221
+00:09:50,623 --> 00:09:52,959
+Within your app,
+people can explore,
+
+222
+00:09:52,959 --> 00:09:55,929
+get drawn into features,
+and learn new flows.
+
+223
+00:09:55,929 --> 00:09:57,864
+But with shortcuts,
+your main goal is to create
+
+224
+00:09:57,864 --> 00:10:01,334
+a few focused experiences
+that people can quickly learn,
+
+225
+00:10:01,334 --> 00:10:04,404
+remember,
+and grow to depend on.
+
+226
+00:10:04,404 --> 00:10:06,206
+Now let's take a look at
+some visual considerations
+
+227
+00:10:06,206 --> 00:10:08,908
+for your app shortcuts.
+
+228
+00:10:08,908 --> 00:10:10,944
+Custom Snippets
+and Live Activities
+
+229
+00:10:10,944 --> 00:10:13,646
+provide you with an opportunity
+to present information,
+
+230
+00:10:13,646 --> 00:10:16,749
+request clarifications,
+and surface your app identity,
+
+231
+00:10:16,749 --> 00:10:18,985
+and I want to share some tips
+for making them as beautiful
+
+232
+00:10:18,985 --> 00:10:21,521
+and effective as possible.
+
+233
+00:10:21,521 --> 00:10:24,991
+Unlike most of your apps that
+likely use opaque backgrounds,
+
+234
+00:10:24,991 --> 00:10:27,827
+snippets use
+a semitranslucent material.
+
+235
+00:10:27,827 --> 00:10:30,463
+Place elements from your app
+on top of this material
+
+236
+00:10:30,463 --> 00:10:33,399
+instead of filling the visual
+with an opaque background.
+
+237
+00:10:33,399 --> 00:10:35,168
+You can see an example here,
+with elements
+
+238
+00:10:35,168 --> 00:10:37,036
+from the Weather app
+integrating seamlessly
+
+239
+00:10:37,036 --> 00:10:39,706
+into the Siri snippet.
+
+240
+00:10:39,706 --> 00:10:42,242
+And when you draw your text,
+use vibrant label colors
+
+241
+00:10:42,242 --> 00:10:45,678
+to guarantee great contrast
+over the translucent background.
+
+242
+00:10:45,678 --> 00:10:47,146
+Doing this ensures
+that your text
+
+243
+00:10:47,146 --> 00:10:50,950
+will automatically look great
+in Dark Mode too.
+
+244
+00:10:50,950 --> 00:10:53,987
+Now there are two ways
+to show results in iOS 16:
+
+245
+00:10:53,987 --> 00:10:56,956
+Live Activities
+and Custom Snippets.
+
+246
+00:10:56,956 --> 00:10:58,691
+If you're not sure
+which one to use,
+
+247
+00:10:58,691 --> 00:11:00,093
+think about whether
+people would benefit
+
+248
+00:11:00,093 --> 00:11:02,562
+from continuous access
+to this information,
+
+249
+00:11:02,562 --> 00:11:04,664
+such as transit progress
+for a food order
+
+250
+00:11:04,664 --> 00:11:06,533
+or a timer counting down.
+
+251
+00:11:06,533 --> 00:11:09,202
+If so, use a Live Activity.
+
+252
+00:11:09,202 --> 00:11:11,437
+This will make the content
+continuously glanceable,
+
+253
+00:11:11,437 --> 00:11:14,507
+even on the Lock Screen,
+until the event has ended.
+
+254
+00:11:14,507 --> 00:11:17,343
+If not, and the shortcut
+is a self-contained action
+
+255
+00:11:17,343 --> 00:11:21,447
+or piece of information,
+use a Custom Snippet.
+
+256
+00:11:21,447 --> 00:11:23,449
+Let's take a closer look
+at the iOS snippet
+
+257
+00:11:23,449 --> 00:11:25,785
+and a couple
+of the key elements it contains.
+
+258
+00:11:25,785 --> 00:11:28,488
+Here, you see
+the supporting dialog.
+
+259
+00:11:28,488 --> 00:11:29,856
+This is what Siri speaks
+
+260
+00:11:29,856 --> 00:11:33,793
+and is intended to accompany
+your custom visual.
+
+261
+00:11:33,793 --> 00:11:36,963
+Together, they communicate
+all the necessary information
+
+262
+00:11:36,963 --> 00:11:39,165
+for this step of the shortcut.
+
+263
+00:11:39,165 --> 00:11:42,101
+Now by default, your custom
+visual will consistently appear
+
+264
+00:11:42,101 --> 00:11:43,903
+with supporting dialog.
+
+265
+00:11:43,903 --> 00:11:46,706
+But in this example, you can
+see that the supporting dialog
+
+266
+00:11:46,706 --> 00:11:49,676
+is fully redundant
+with your visual response.
+
+267
+00:11:49,676 --> 00:11:51,945
+When that's the case,
+you should suppress this dialog
+
+268
+00:11:51,945 --> 00:11:56,149
+in your source code
+so that it won't be shown.
+
+269
+00:11:56,149 --> 00:11:59,552
+But the presentation of your
+information goes beyond iOS,
+
+270
+00:11:59,552 --> 00:12:01,854
+and you'll need to think about
+other devices in the ecosystem
+
+271
+00:12:01,854 --> 00:12:03,456
+as well.
+
+272
+00:12:03,456 --> 00:12:06,125
+For voice-only products,
+like AirPods,
+
+273
+00:12:06,125 --> 00:12:09,362
+Siri will read out
+the full dialog you provide.
+
+274
+00:12:09,362 --> 00:12:10,697
+For these platforms,
+it's important
+
+275
+00:12:10,697 --> 00:12:14,200
+that your full dialog contain
+all the critical information
+
+276
+00:12:14,200 --> 00:12:17,870
+from both your custom visual
+and any supporting dialog.
+
+277
+00:12:17,870 --> 00:12:19,772
+Be sure to provide
+both types of dialog,
+
+278
+00:12:19,772 --> 00:12:22,308
+so that people have access
+to all the information they need
+
+279
+00:12:22,308 --> 00:12:23,943
+regardless of which device
+they choose
+
+280
+00:12:23,943 --> 00:12:26,846
+to interact with your shortcut.
+
+281
+00:12:26,846 --> 00:12:28,081
+And for the first time,
+
+282
+00:12:28,081 --> 00:12:31,084
+Apple Watch now supports
+Custom Snippets as well.
+
+283
+00:12:31,084 --> 00:12:32,952
+This means you should take
+a look at your shortcuts
+
+284
+00:12:32,952 --> 00:12:35,288
+in watchOS 9
+and make sure they look great
+
+285
+00:12:35,288 --> 00:12:37,390
+on that platform as well.
+
+286
+00:12:37,390 --> 00:12:39,325
+And know that this may
+require you to make changes
+
+287
+00:12:39,325 --> 00:12:40,493
+to your layout.
+
+288
+00:12:40,493 --> 00:12:42,128
+Here you can see
+how the Coffee app
+
+289
+00:12:42,128 --> 00:12:44,497
+repositioned the address line
+on watchOS
+
+290
+00:12:44,497 --> 00:12:48,768
+to fall beneath the header
+to help with readability.
+
+291
+00:12:48,768 --> 00:12:51,571
+Just to recap
+these first few visual tips.
+
+292
+00:12:51,571 --> 00:12:53,072
+I walked through how
+to integrate elements
+
+293
+00:12:53,072 --> 00:12:55,942
+from your app into
+the translucent background,
+
+294
+00:12:55,942 --> 00:12:58,478
+the importance of using
+vibrant label colors,
+
+295
+00:12:58,478 --> 00:13:01,447
+the appropriate time to use
+snippets versus live activities,
+
+296
+00:13:01,447 --> 00:13:03,316
+and how to adapt
+your dialog and visuals
+
+297
+00:13:03,316 --> 00:13:06,319
+for different platforms
+and contexts.
+
+298
+00:13:06,319 --> 00:13:08,421
+Now, let's talk about Spotlight.
+
+299
+00:13:08,421 --> 00:13:12,992
+In iOS 16, your app's shortcuts
+will also appear in Spotlight.
+
+300
+00:13:12,992 --> 00:13:16,462
+If someone searches for your
+app name, one app shortcut --
+
+301
+00:13:16,462 --> 00:13:18,831
+the first one in
+your App Shortcuts array --
+
+302
+00:13:18,831 --> 00:13:23,436
+will appear as a Siri Suggestion
+below your app as a top hit.
+
+303
+00:13:23,436 --> 00:13:25,872
+They can also search directly
+for the name of the shortcut,
+
+304
+00:13:25,872 --> 00:13:28,074
+and any app shortcut
+that matches the search term
+
+305
+00:13:28,074 --> 00:13:30,109
+will appear.
+
+306
+00:13:30,109 --> 00:13:32,478
+Finally, if your app
+is a Siri Suggestion
+
+307
+00:13:32,478 --> 00:13:34,347
+when someone
+first launches Spotlight,
+
+308
+00:13:34,347 --> 00:13:36,582
+your top shortcut
+will also appear here,
+
+309
+00:13:36,582 --> 00:13:39,986
+even before anything has been
+typed into the search field.
+
+310
+00:13:39,986 --> 00:13:41,821
+This is all really exciting,
+because it provides
+
+311
+00:13:41,821 --> 00:13:44,457
+an opportunity for people
+to learn about your shortcuts
+
+312
+00:13:44,457 --> 00:13:47,760
+just by looking for your app
+or by using their phone.
+
+313
+00:13:47,760 --> 00:13:50,229
+You'll also notice
+that each unique app shortcut
+
+314
+00:13:50,229 --> 00:13:53,332
+is decorated with a symbol
+on the right side.
+
+315
+00:13:53,332 --> 00:13:55,468
+Be sure to review
+the SF Symbols library
+
+316
+00:13:55,468 --> 00:13:57,704
+and select one for each
+of your app shortcuts
+
+317
+00:13:57,704 --> 00:14:01,174
+that accurately reflects
+its intent.
+
+318
+00:14:01,174 --> 00:14:05,078
+Also, know that the order of
+your actions and your parameters
+
+319
+00:14:05,078 --> 00:14:07,146
+will influence the order
+your app shortcuts appear
+
+320
+00:14:07,146 --> 00:14:08,948
+in Spotlight.
+
+321
+00:14:08,948 --> 00:14:11,517
+Actions can only be reordered
+with app updates,
+
+322
+00:14:11,517 --> 00:14:13,986
+but as I mentioned earlier,
+the order of your parameters
+
+323
+00:14:13,986 --> 00:14:16,055
+is truly dynamic
+and can be updated
+
+324
+00:14:16,055 --> 00:14:18,291
+any time your app is open.
+
+325
+00:14:18,291 --> 00:14:21,627
+This in turn impacts
+how your shortcuts are shown.
+
+326
+00:14:21,627 --> 00:14:24,697
+Here, you see that
+Reorder Coffee App Cappuccino
+
+327
+00:14:24,697 --> 00:14:27,900
+is first in the Shortcuts app
+and takes the single slot
+
+328
+00:14:27,900 --> 00:14:29,869
+in Spotlight.
+
+329
+00:14:29,869 --> 00:14:32,739
+But maybe this customer ordered
+a chai latte more recently,
+
+330
+00:14:32,739 --> 00:14:35,341
+and you want that to be
+your suggestion in Spotlight.
+
+331
+00:14:35,341 --> 00:14:38,277
+You can make it the first item
+returned by your entity query
+
+332
+00:14:38,277 --> 00:14:41,047
+or dynamic options provider,
+and it will become first
+
+333
+00:14:41,047 --> 00:14:44,717
+in the Shortcuts app
+and in Spotlight.
+
+334
+00:14:44,717 --> 00:14:47,019
+And as the number
+of parameters increases,
+
+335
+00:14:47,019 --> 00:14:50,323
+this prioritization may become
+even more important.
+
+336
+00:14:50,323 --> 00:14:52,158
+But be sure to pick
+a meaningful heuristic --
+
+337
+00:14:52,158 --> 00:14:55,294
+such as recency or frequency --
+to drive the order,
+
+338
+00:14:55,294 --> 00:14:58,998
+so that it doesn't feel
+random or unpredictable.
+
+339
+00:14:58,998 --> 00:15:01,868
+And one last thing --
+pick a color for your shortcuts
+
+340
+00:15:01,868 --> 00:15:03,603
+in the Shortcuts app.
+
+341
+00:15:03,603 --> 00:15:05,838
+We have a bunch of great colors
+for you to choose from,
+
+342
+00:15:05,838 --> 00:15:08,474
+and all your shortcuts will use
+this color in the app.
+
+343
+00:15:08,474 --> 00:15:10,877
+So pick one that complements
+your app icon nicely
+
+344
+00:15:10,877 --> 00:15:13,780
+and don't just stick
+with the default.
+
+345
+00:15:13,780 --> 00:15:17,683
+Now, as quick and contained
+as your shortcuts aspire to be,
+
+346
+00:15:17,683 --> 00:15:18,918
+there may still be times
+when you need
+
+347
+00:15:18,918 --> 00:15:22,288
+to collect some information
+in order to see a task though.
+
+348
+00:15:22,288 --> 00:15:24,490
+I'm going to walk through
+a few different ways to do that
+
+349
+00:15:24,490 --> 00:15:26,959
+and when to use each one.
+
+350
+00:15:26,959 --> 00:15:30,396
+Take a phrase like this one that
+doesn't contain a parameter.
+
+351
+00:15:30,396 --> 00:15:32,465
+Sometimes, you can make
+an informed decision
+
+352
+00:15:32,465 --> 00:15:35,802
+and assume a value and
+then proceed with the action.
+
+353
+00:15:35,802 --> 00:15:36,702
+One example here
+
+354
+00:15:36,702 --> 00:15:39,906
+might be starting a meditation
+that was already in progress.
+
+355
+00:15:39,906 --> 00:15:42,675
+But other times, in the face
+of an ambiguous request,
+
+356
+00:15:42,675 --> 00:15:45,611
+you'll need to ask
+for more information.
+
+357
+00:15:45,611 --> 00:15:48,447
+When possible, try to make
+a meaningful assumption
+
+358
+00:15:48,447 --> 00:15:51,651
+and present it as an option
+for people to confirm.
+
+359
+00:15:51,651 --> 00:15:54,487
+This is called
+a Parameter Confirmation.
+
+360
+00:15:54,487 --> 00:15:57,857
+These assumptions could be based
+on remembering a prior selection
+
+361
+00:15:57,857 --> 00:16:00,660
+or based on something
+like the most popular option.
+
+362
+00:16:00,660 --> 00:16:03,262
+Parameter Confirmations
+are a nice, efficient way
+
+363
+00:16:03,262 --> 00:16:07,400
+to be sure you have the detail
+you need and continue on.
+
+364
+00:16:07,400 --> 00:16:09,435
+But let's say the person has
+never gone through this shortcut
+
+365
+00:16:09,435 --> 00:16:13,105
+before and you don't have
+a single parameter to offer.
+
+366
+00:16:13,105 --> 00:16:16,042
+Another option is
+to provide a short list.
+
+367
+00:16:16,042 --> 00:16:18,711
+This is called a disambiguation
+and helps people
+
+368
+00:16:18,711 --> 00:16:20,446
+that are unfamiliar
+with the shortcut
+
+369
+00:16:20,446 --> 00:16:22,448
+learn the possible values.
+
+370
+00:16:22,448 --> 00:16:24,550
+Just keep in mind
+that this is best for lists
+
+371
+00:16:24,550 --> 00:16:26,552
+of five values or less,
+
+372
+00:16:26,552 --> 00:16:29,722
+because in voice-only
+modalities, such as AirPods,
+
+373
+00:16:29,722 --> 00:16:32,892
+Siri will read
+this entire list aloud.
+
+374
+00:16:32,892 --> 00:16:34,360
+What kind of meditation?
+
+375
+00:16:34,360 --> 00:16:40,199
+Focus, Gratitude, Walking,
+Compassion, or Sleep?
+
+376
+00:16:40,199 --> 00:16:42,735
+Sometimes, you need
+to collect an open-ended value
+
+377
+00:16:42,735 --> 00:16:44,871
+that isn't compatible
+with a short list,
+
+378
+00:16:44,871 --> 00:16:48,074
+like a number, a location,
+or a string.
+
+379
+00:16:48,074 --> 00:16:51,844
+In these situations, you can
+use an open-ended request.
+
+380
+00:16:51,844 --> 00:16:53,512
+This has the fewest
+guardrails though,
+
+381
+00:16:53,512 --> 00:16:55,248
+since there are
+no suggested values
+
+382
+00:16:55,248 --> 00:16:57,550
+and people can say
+anything in response,
+
+383
+00:16:57,550 --> 00:16:59,452
+so make sure it's clear
+what type of information
+
+384
+00:16:59,452 --> 00:17:01,020
+your app is expecting.
+
+385
+00:17:01,020 --> 00:17:02,021
+In this case,
+
+386
+00:17:02,021 --> 00:17:05,558
+it's apparent that the response
+should be a time value.
+
+387
+00:17:05,558 --> 00:17:08,261
+The App Intent framework does
+provide a set of common options
+
+388
+00:17:08,261 --> 00:17:12,198
+for these open-ended requests,
+such as numerical values,
+
+389
+00:17:12,198 --> 00:17:15,234
+dates, or time values.
+
+390
+00:17:15,234 --> 00:17:17,670
+If your required parameter
+aligns with one of these,
+
+391
+00:17:17,670 --> 00:17:19,472
+definitely select it.
+
+392
+00:17:19,472 --> 00:17:22,008
+This will allow you to benefit
+from certain built-in dialog
+
+393
+00:17:22,008 --> 00:17:23,342
+and visual patterns,
+
+394
+00:17:23,342 --> 00:17:25,211
+as well as Siri's natural
+language understanding
+
+395
+00:17:25,211 --> 00:17:27,980
+as it pertains to these types
+of information.
+
+396
+00:17:27,980 --> 00:17:31,083
+If not, you can use
+a custom entity.
+
+397
+00:17:31,083 --> 00:17:33,819
+For more information on how
+to implement app entities,
+
+398
+00:17:33,819 --> 00:17:37,690
+check out this year's talk
+called "Dive into App Intents."
+
+399
+00:17:37,690 --> 00:17:41,027
+Lastly, even if you have all
+the information you require,
+
+400
+00:17:41,027 --> 00:17:43,496
+you may still want to do
+one final confirmation --
+
+401
+00:17:43,496 --> 00:17:45,564
+what we call
+an "intent confirmation" --
+
+402
+00:17:45,564 --> 00:17:48,100
+before proceeding
+with your shortcut.
+
+403
+00:17:48,100 --> 00:17:50,169
+The guidance here is
+to only use this step
+
+404
+00:17:50,169 --> 00:17:53,906
+for consequential actions,
+be it a financial transaction,
+
+405
+00:17:53,906 --> 00:17:56,275
+a destructive action
+like deleting content,
+
+406
+00:17:56,275 --> 00:17:58,277
+or an action that may
+just feel high risk,
+
+407
+00:17:58,277 --> 00:18:01,180
+like sending a calendar invite
+to a big group.
+
+408
+00:18:01,180 --> 00:18:03,783
+Use these appropriately
+but sparingly,
+
+409
+00:18:03,783 --> 00:18:06,152
+as the goal of getting through a
+shortcut as quickly as possible
+
+410
+00:18:06,152 --> 00:18:08,654
+always applies.
+
+411
+00:18:08,654 --> 00:18:10,756
+One last detail
+on intent confirmations
+
+412
+00:18:10,756 --> 00:18:13,592
+is that they will always have a
+pair of buttons in the snippet,
+
+413
+00:18:13,592 --> 00:18:16,128
+offering to either
+proceed with -- or cancel --
+
+414
+00:18:16,128 --> 00:18:17,930
+the proposed action.
+
+415
+00:18:17,930 --> 00:18:20,333
+When confirming an intent,
+buttons should contain a verb
+
+416
+00:18:20,333 --> 00:18:22,868
+reiterating the action
+that is about to be taken
+
+417
+00:18:22,868 --> 00:18:26,672
+and not ambiguous words
+like "confirm."
+
+418
+00:18:26,672 --> 00:18:29,175
+The App Intents framework
+provides a really helpful set
+
+419
+00:18:29,175 --> 00:18:32,078
+of default verbs
+with corresponding synonyms.
+
+420
+00:18:32,078 --> 00:18:34,447
+You can see
+a few examples here.
+
+421
+00:18:34,447 --> 00:18:37,950
+If your intent maps to one
+of these, go ahead and use it.
+
+422
+00:18:37,950 --> 00:18:41,020
+If you have a specific intent
+that falls outside this group,
+
+423
+00:18:41,020 --> 00:18:43,189
+you can provide
+a custom string instead
+
+424
+00:18:43,189 --> 00:18:44,890
+but be sure to provide
+synonyms as well
+
+425
+00:18:44,890 --> 00:18:48,194
+so that Siri understands
+all the similar phrases.
+
+426
+00:18:48,194 --> 00:18:50,229
+Last but not least,
+once you've created
+
+427
+00:18:50,229 --> 00:18:52,698
+an awesome set of app shortcuts,
+there are a few places
+
+428
+00:18:52,698 --> 00:18:56,035
+to surface them
+for people to discover.
+
+429
+00:18:56,035 --> 00:18:58,537
+First, in place of the old
+Add to Siri button
+
+430
+00:18:58,537 --> 00:19:01,173
+is a new tip for you
+to feature in your app.
+
+431
+00:19:01,173 --> 00:19:03,142
+It's important that
+you carefully select moments
+
+432
+00:19:03,142 --> 00:19:05,511
+within your app to surface
+these tips, at a time
+
+433
+00:19:05,511 --> 00:19:08,080
+when people are likely
+to benefit from the education,
+
+434
+00:19:08,080 --> 00:19:11,217
+such as immediately before
+or after completing an action
+
+435
+00:19:11,217 --> 00:19:13,619
+that they may want to repeat
+in the future.
+
+436
+00:19:13,619 --> 00:19:16,989
+And where appropriate,
+make your tip dismissible.
+
+437
+00:19:16,989 --> 00:19:19,325
+Respect people's desire to
+remove this helpful information
+
+438
+00:19:19,325 --> 00:19:22,061
+from their workflow.
+
+439
+00:19:22,061 --> 00:19:24,897
+We've also provided a button
+that you can place in your app
+
+440
+00:19:24,897 --> 00:19:27,800
+to link to the Shortcuts app
+directly to the landing page
+
+441
+00:19:27,800 --> 00:19:30,770
+that lists all
+your app shortcuts.
+
+442
+00:19:30,770 --> 00:19:32,438
+It's an exciting year
+for shortcuts,
+
+443
+00:19:32,438 --> 00:19:34,573
+with the introduction
+of App Shortcuts,
+
+444
+00:19:34,573 --> 00:19:37,176
+created by you,
+and seamlessly available
+
+445
+00:19:37,176 --> 00:19:41,647
+in Siri, Shortcuts,
+and Spotlight.
+
+446
+00:19:41,647 --> 00:19:44,083
+With dynamic parameters
+in the invocation phrase,
+
+447
+00:19:44,083 --> 00:19:47,553
+Custom Snippets on watchOS,
+new tips, and more,
+
+448
+00:19:47,553 --> 00:19:49,889
+there's a lot to explore.
+
+449
+00:19:49,889 --> 00:19:51,624
+And with all the info
+I walked through today
+
+450
+00:19:51,624 --> 00:19:53,959
+on selecting and naming
+great app shortcuts,
+
+451
+00:19:53,959 --> 00:19:55,961
+refining your presentation
+and flow,
+
+452
+00:19:55,961 --> 00:19:57,863
+and including tips
+for discoverability,
+
+453
+00:19:57,863 --> 00:19:58,864
+you're well on your way
+
+454
+00:19:58,864 --> 00:20:01,100
+to an amazing
+App Shortcuts experience.
+
+455
+00:20:01,100 --> 00:20:02,601
+We can't wait to see
+what you create,
+
+456
+00:20:02,601 --> 00:20:04,703
+and have a great
+rest of WWDC.
+
+457
+00:20:04,703 --> 00:20:09,275
+♪
+

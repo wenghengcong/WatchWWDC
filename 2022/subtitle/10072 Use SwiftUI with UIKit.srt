@@ -1,0 +1,2367 @@
+1
+00:00:00,000 --> 00:00:03,070
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,070 --> 00:00:09,943
+♪
+
+3
+00:00:09,943 --> 00:00:14,047
+Hello, I'm Sara Frederixon,
+an engineer on the Health app,
+
+4
+00:00:14,047 --> 00:00:18,051
+and I'm here to talk to you
+about using SwiftUI with UIKit.
+
+5
+00:00:18,051 --> 00:00:22,189
+Like many of you,
+I work on an existing UIKit app.
+
+6
+00:00:22,189 --> 00:00:25,158
+For me, this is the Health app.
+
+7
+00:00:25,158 --> 00:00:27,494
+The Health app
+has many visualizations
+
+8
+00:00:27,494 --> 00:00:30,430
+to help people understand
+their health data,
+
+9
+00:00:30,430 --> 00:00:33,867
+but building these views
+can be quite complex.
+
+10
+00:00:33,867 --> 00:00:36,803
+I've been interested
+in taking advantage of SwiftUI,
+
+11
+00:00:36,803 --> 00:00:39,740
+so I worked with the UIKit
+and SwiftUI teams
+
+12
+00:00:39,740 --> 00:00:43,477
+to learn how to integrate
+both into the same app.
+
+13
+00:00:43,477 --> 00:00:46,613
+In this video,
+I will teach you how easy it is
+
+14
+00:00:46,613 --> 00:00:50,784
+to start using SwiftUI
+in your own UIKit apps.
+
+15
+00:00:50,784 --> 00:00:54,354
+First I'll cover the existing
+UIHostingController,
+
+16
+00:00:54,354 --> 00:00:58,959
+which has some new updates
+that add even more flexibility.
+
+17
+00:00:58,959 --> 00:01:01,962
+Next I'll dive into populating
+SwiftUI views
+
+18
+00:01:01,962 --> 00:01:05,165
+with data that already exist
+in your app,
+
+19
+00:01:05,165 --> 00:01:07,935
+and how to ensure
+the SwiftUI views update
+
+20
+00:01:07,935 --> 00:01:11,071
+when that data changes.
+
+21
+00:01:11,071 --> 00:01:14,107
+Then, I'll talk about
+some exciting new functionality
+
+22
+00:01:14,107 --> 00:01:16,276
+that lets you build
+UICollectionView
+
+23
+00:01:16,276 --> 00:01:20,514
+and UITableView cells
+using SwiftUI.
+
+24
+00:01:20,514 --> 00:01:24,251
+Finally, I'll walk through
+the unique aspects of data flow
+
+25
+00:01:24,251 --> 00:01:25,919
+with collection and table views
+
+26
+00:01:25,919 --> 00:01:29,890
+when you're using SwiftUI
+inside cells.
+
+27
+00:01:29,890 --> 00:01:33,727
+Let's get started by talking
+about UIHostingController.
+
+28
+00:01:33,727 --> 00:01:36,763
+UIHostingController
+is a UIViewController
+
+29
+00:01:36,763 --> 00:01:39,967
+that contains a SwiftUI
+view hierarchy.
+
+30
+00:01:39,967 --> 00:01:41,735
+You can use a hosting controller
+
+31
+00:01:41,735 --> 00:01:45,372
+anywhere you can use
+a view controller in UIKit.
+
+32
+00:01:45,372 --> 00:01:46,974
+This makes UIHostingController
+
+33
+00:01:46,974 --> 00:01:50,444
+an easy way
+to start using SwiftUI.
+
+34
+00:01:50,444 --> 00:01:53,814
+Let's examine how
+a hosting controller works.
+
+35
+00:01:53,814 --> 00:01:56,817
+A hosting controller
+is a view controller,
+
+36
+00:01:56,817 --> 00:02:01,355
+which means it has a UIView
+stored in its view property.
+
+37
+00:02:01,355 --> 00:02:02,589
+And inside that view
+
+38
+00:02:02,589 --> 00:02:05,559
+is where your SwiftUI content
+is rendered.
+
+39
+00:02:05,559 --> 00:02:09,696
+Let's go through an example of
+how to use a hosting controller.
+
+40
+00:02:09,696 --> 00:02:14,434
+Here, we create a HeartRateView,
+a SwiftUI view.
+
+41
+00:02:14,434 --> 00:02:17,571
+We then create a hosting
+controller with HeartRateView
+
+42
+00:02:17,571 --> 00:02:21,041
+as its root view,
+and present it.
+
+43
+00:02:21,041 --> 00:02:22,709
+UIHostingController works with
+
+44
+00:02:22,709 --> 00:02:26,880
+all of the UIKit
+view controller APIs.
+
+45
+00:02:26,880 --> 00:02:30,484
+Let's go through
+another example.
+
+46
+00:02:30,484 --> 00:02:32,119
+We have the same HeartRateView
+
+47
+00:02:32,119 --> 00:02:34,921
+and hosting controller
+as before.
+
+48
+00:02:34,921 --> 00:02:36,957
+Here we add
+the hosting controller
+
+49
+00:02:36,957 --> 00:02:39,192
+as a child view controller.
+
+50
+00:02:39,192 --> 00:02:43,830
+Then we can position and size
+the hosting controller's view.
+
+51
+00:02:43,830 --> 00:02:47,968
+When your SwiftUI content inside
+UIHostingController changes,
+
+52
+00:02:47,968 --> 00:02:51,471
+it may cause the view
+to need to be resized.
+
+53
+00:02:51,471 --> 00:02:54,908
+New in iOS 16,
+UIHostingController
+
+54
+00:02:54,908 --> 00:02:57,511
+allows you to enable
+automatic updates
+
+55
+00:02:57,511 --> 00:03:00,380
+of the view controller's
+preferred content size
+
+56
+00:03:00,380 --> 00:03:03,850
+and the view's intrinsic
+content size.
+
+57
+00:03:03,850 --> 00:03:07,220
+You can enable this using
+the new sizingOptions property
+
+58
+00:03:07,220 --> 00:03:09,189
+on UIHostingController.
+
+59
+00:03:09,189 --> 00:03:12,292
+Let's go through an example.
+
+60
+00:03:12,292 --> 00:03:14,795
+To start, we make
+our HeartRateView,
+
+61
+00:03:14,795 --> 00:03:18,031
+and create
+the hostingController.
+
+62
+00:03:18,031 --> 00:03:22,335
+We use the new sizingOptions API
+to tell the hostingController
+
+63
+00:03:22,335 --> 00:03:27,641
+to automatically update
+its preferredContentSize.
+
+64
+00:03:27,641 --> 00:03:30,077
+Then, we set
+the modalPresentationStyle
+
+65
+00:03:30,077 --> 00:03:31,711
+to popover.
+
+66
+00:03:31,711 --> 00:03:35,682
+Using the new sizingOptions API
+ensures that the popover
+
+67
+00:03:35,682 --> 00:03:41,221
+is always sized appropriately
+to fit the SwiftUI content.
+
+68
+00:03:41,221 --> 00:03:43,690
+Now that you're familiar
+with UIHostingController,
+
+69
+00:03:43,690 --> 00:03:46,827
+let's talk about
+how to get data into SwiftUI
+
+70
+00:03:46,827 --> 00:03:49,729
+from other parts
+of your UIKit app,
+
+71
+00:03:49,729 --> 00:03:52,399
+and ensure that
+your SwiftUI views update
+
+72
+00:03:52,399 --> 00:03:55,502
+when that data changes.
+
+73
+00:03:55,502 --> 00:03:58,438
+Here's a diagram
+of your UIKit app,
+
+74
+00:03:58,438 --> 00:04:00,440
+It contains
+an existing model layer
+
+75
+00:04:00,440 --> 00:04:04,411
+that owns and manages
+your app's data model objects.
+
+76
+00:04:04,411 --> 00:04:07,848
+Your app also contains
+a number of view controllers.
+
+77
+00:04:07,848 --> 00:04:11,585
+If you want start using SwiftUI,
+you'll need a hosting controller
+
+78
+00:04:11,585 --> 00:04:15,589
+with a SwiftUI view inside
+one of the view controllers.
+
+79
+00:04:15,589 --> 00:04:18,892
+You will want to populate
+this SwiftUI view with data
+
+80
+00:04:18,892 --> 00:04:22,496
+that is still owned
+by your existing model layer.
+
+81
+00:04:22,496 --> 00:04:25,999
+In this section, we're going
+to focus on how to bridge data
+
+82
+00:04:25,999 --> 00:04:30,370
+across the boundary
+between UIKit and SwiftUI.
+
+83
+00:04:30,370 --> 00:04:33,573
+SwiftUI offers a variety
+of data flow primitives
+
+84
+00:04:33,573 --> 00:04:36,443
+to help you manage the data
+in your app.
+
+85
+00:04:36,443 --> 00:04:39,412
+Let's go through
+the different options.
+
+86
+00:04:39,412 --> 00:04:44,417
+To store data that is created
+and owned by a SwiftUI view,
+
+87
+00:04:44,417 --> 00:04:49,556
+SwiftUI provides the @State and
+@StateObject property wrappers.
+
+88
+00:04:49,556 --> 00:04:52,993
+Since we're focused on data
+owned outside of SwiftUI,
+
+89
+00:04:52,993 --> 00:04:56,296
+these property wrappers
+aren't the right choice.
+
+90
+00:04:56,296 --> 00:04:58,765
+So, I'm not going
+to cover these in this video.
+
+91
+00:04:58,765 --> 00:05:01,434
+Watch
+"Data Essentials in SwiftUI"
+
+92
+00:05:01,434 --> 00:05:06,039
+to learn more about data
+owned by a SwiftUI view.
+
+93
+00:05:06,039 --> 00:05:08,808
+One way to handle data
+external to SwiftUI
+
+94
+00:05:08,808 --> 00:05:12,846
+is to pass values directly
+when you initialize your views.
+
+95
+00:05:12,846 --> 00:05:15,248
+Because you are
+just passing raw data
+
+96
+00:05:15,248 --> 00:05:18,818
+that is not owned
+or managed by SwiftUI,
+
+97
+00:05:18,818 --> 00:05:22,622
+you are responsible for manually
+updating the UIHostingController
+
+98
+00:05:22,622 --> 00:05:25,225
+when the data changes.
+
+99
+00:05:25,225 --> 00:05:27,527
+Let's go through an example.
+
+100
+00:05:27,527 --> 00:05:31,665
+Here is a SwiftUI view
+named HeartRateView.
+
+101
+00:05:31,665 --> 00:05:33,600
+This view has
+a single property --
+
+102
+00:05:33,600 --> 00:05:37,003
+the heart rate beatsPerMinute
+stored as an integer --
+
+103
+00:05:37,003 --> 00:05:39,940
+and it displays
+the value as text.
+
+104
+00:05:39,940 --> 00:05:41,608
+We're displaying
+this HeartRateView
+
+105
+00:05:41,608 --> 00:05:43,777
+by embedding
+a UIHostingController
+
+106
+00:05:43,777 --> 00:05:45,812
+inside an existing
+view controller
+
+107
+00:05:45,812 --> 00:05:48,515
+named HeartRateViewController.
+
+108
+00:05:48,515 --> 00:05:50,684
+We save a reference
+to the hosting controller
+
+109
+00:05:50,684 --> 00:05:53,253
+so we can update
+its root view later.
+
+110
+00:05:53,253 --> 00:05:57,357
+Remember, the SwiftUI
+HeartRateView is a value type,
+
+111
+00:05:57,357 --> 00:06:00,827
+so storing it by itself
+would create a separate copy,
+
+112
+00:06:00,827 --> 00:06:04,431
+and wouldn't allow us
+to update the UI.
+
+113
+00:06:04,431 --> 00:06:06,900
+The HeartRateViewController
+owns the data
+
+114
+00:06:06,900 --> 00:06:09,769
+used to populate
+the HeartRateView.
+
+115
+00:06:09,769 --> 00:06:13,240
+This data is stored
+in the beatsPerMinute property,
+
+116
+00:06:13,240 --> 00:06:15,542
+and when the beatsPerMinute
+value changes,
+
+117
+00:06:15,542 --> 00:06:19,412
+we call a method
+to update the view.
+
+118
+00:06:19,412 --> 00:06:23,383
+Inside of the update method,
+we create a new HeartRateView
+
+119
+00:06:23,383 --> 00:06:26,119
+using the latest
+beatsPerMinute value,
+
+120
+00:06:26,119 --> 00:06:28,154
+and then assign that view
+as the rootView
+
+121
+00:06:28,154 --> 00:06:31,224
+of our hosting controller.
+
+122
+00:06:31,224 --> 00:06:37,063
+This is a simple way to get data
+from UIKit into SwiftUI,
+
+123
+00:06:37,063 --> 00:06:39,766
+but it requires manually
+updating the rootView
+
+124
+00:06:39,766 --> 00:06:43,870
+of the hosting controller
+any time the data changes.
+
+125
+00:06:43,870 --> 00:06:46,539
+Let's go through some other
+SwiftUI data primitives
+
+126
+00:06:46,539 --> 00:06:49,743
+to make these updates
+happen automatically.
+
+127
+00:06:49,743 --> 00:06:52,245
+The @ObservedObject
+and @EnvironmentObject
+
+128
+00:06:52,245 --> 00:06:54,547
+property wrappers
+allow you to reference
+
+129
+00:06:54,547 --> 00:06:56,283
+an external model object
+
+130
+00:06:56,283 --> 00:06:59,853
+that conforms to
+the ObservableObject protocol.
+
+131
+00:06:59,853 --> 00:07:01,688
+When you use
+these property wrappers,
+
+132
+00:07:01,688 --> 00:07:07,294
+SwiftUI automatically updates
+your view when the data changes.
+
+133
+00:07:07,294 --> 00:07:10,363
+We're going to focus on the
+@ObservedObject property wrapper
+
+134
+00:07:10,363 --> 00:07:12,032
+in this video,
+
+135
+00:07:12,032 --> 00:07:14,901
+but you can learn more about
+EnvironmentObject in the
+
+136
+00:07:14,901 --> 00:07:18,805
+"Data Essentials in SwiftUI"
+video mentioned earlier.
+
+137
+00:07:18,805 --> 00:07:22,575
+Let's go through how to create
+an @ObservedObject.
+
+138
+00:07:22,575 --> 00:07:25,078
+The first step
+is to take a model object
+
+139
+00:07:25,078 --> 00:07:27,614
+that is owned by an existing
+part of your app
+
+140
+00:07:27,614 --> 00:07:31,985
+and make it conform to
+the ObservableObject protocol.
+
+141
+00:07:31,985 --> 00:07:35,522
+Next, we store the model
+as an @ObservedObject property
+
+142
+00:07:35,522 --> 00:07:38,758
+in our SwiftUI view.
+
+143
+00:07:38,758 --> 00:07:42,128
+Connecting the ObservableObject
+to SwiftUI allows it
+
+144
+00:07:42,128 --> 00:07:46,566
+to update the view when
+one of its properties change.
+
+145
+00:07:46,566 --> 00:07:48,768
+Let's go back to our
+HeartRateView example
+
+146
+00:07:48,768 --> 00:07:51,037
+and wire this up.
+
+147
+00:07:51,037 --> 00:07:53,340
+Our app has a class named
+HeartData
+
+148
+00:07:53,340 --> 00:07:56,776
+that contains the property
+beatsPerMinute.
+
+149
+00:07:56,776 --> 00:08:01,548
+We make it an ObservableObject
+by conforming to the protocol.
+
+150
+00:08:01,548 --> 00:08:04,217
+Then we add
+the @Published property wrapper
+
+151
+00:08:04,217 --> 00:08:06,720
+to the beatsPerMinute property.
+
+152
+00:08:06,720 --> 00:08:09,456
+This property wrapper
+is what triggers SwiftUI
+
+153
+00:08:09,456 --> 00:08:12,926
+to update our views on changes.
+
+154
+00:08:12,926 --> 00:08:15,462
+In the HeartRateView,
+we store the HeartData
+
+155
+00:08:15,462 --> 00:08:17,397
+in a property annotated with
+
+156
+00:08:17,397 --> 00:08:20,567
+the @ObservedObject
+property wrapper.
+
+157
+00:08:20,567 --> 00:08:23,636
+In the body of the view,
+we display the beatsPerMinute
+
+158
+00:08:23,636 --> 00:08:26,239
+directly from the HeartData.
+
+159
+00:08:26,239 --> 00:08:30,043
+Now, let's use these together
+in our view controller.
+
+160
+00:08:30,043 --> 00:08:33,346
+Here is our
+HeartRateViewController.
+
+161
+00:08:33,346 --> 00:08:37,751
+It stores the HeartData
+ObservableObject in a property.
+
+162
+00:08:37,751 --> 00:08:40,820
+Because this property
+is not inside a SwiftUI view,
+
+163
+00:08:40,820 --> 00:08:44,157
+we don't need to use
+a property wrapper here.
+
+164
+00:08:44,157 --> 00:08:46,192
+The HeartRateViewController
+is initialized
+
+165
+00:08:46,192 --> 00:08:47,894
+with a HeartData instance,
+
+166
+00:08:47,894 --> 00:08:50,130
+which is used to create
+a HeartRateView
+
+167
+00:08:50,130 --> 00:08:54,467
+that becomes the rootView
+of the hosting controller.
+
+168
+00:08:54,467 --> 00:08:57,670
+The diagram illustrates
+how this comes together.
+
+169
+00:08:57,670 --> 00:09:00,306
+We fetch the current
+HeartData instance,
+
+170
+00:09:00,306 --> 00:09:04,277
+which contains a heart rate
+of 78 beat per minute.
+
+171
+00:09:04,277 --> 00:09:07,747
+Then we create a new
+HeartRateViewController
+
+172
+00:09:07,747 --> 00:09:09,949
+with that HeartData instance,
+
+173
+00:09:09,949 --> 00:09:14,554
+which wires it up
+to the SwiftUI HeartRateView.
+
+174
+00:09:14,554 --> 00:09:15,922
+After a few seconds,
+
+175
+00:09:15,922 --> 00:09:18,691
+when the next heart rate
+data sample arrives,
+
+176
+00:09:18,691 --> 00:09:24,230
+the heart data's beatsPerMinute
+property is updated to 94.
+
+177
+00:09:24,230 --> 00:09:26,433
+Because this changes
+a published property
+
+178
+00:09:26,433 --> 00:09:29,035
+on an ObservableObject,
+the HeartRateView
+
+179
+00:09:29,035 --> 00:09:33,306
+is automatically updated
+to display the new value.
+
+180
+00:09:33,306 --> 00:09:36,443
+We no longer need to manually
+update the hosting controller
+
+181
+00:09:36,443 --> 00:09:38,178
+when the data changes.
+
+182
+00:09:38,178 --> 00:09:41,781
+This is why ObservableObject
+is a great way to bridge data
+
+183
+00:09:41,781 --> 00:09:44,784
+from UIKit to SwiftUI.
+
+184
+00:09:44,784 --> 00:09:48,888
+Next, let's talk about
+using SwiftUI in collection view
+
+185
+00:09:48,888 --> 00:09:52,292
+and table view cells.
+
+186
+00:09:52,292 --> 00:09:56,296
+New in iOS 16
+is UIHostingConfiguration,
+
+187
+00:09:56,296 --> 00:09:58,998
+which lets you harness
+the power of SwiftUI
+
+188
+00:09:58,998 --> 00:10:03,470
+inside your existing UIKit,
+collection, and table views.
+
+189
+00:10:03,470 --> 00:10:06,272
+UIHostingConfiguration
+makes it easy to implement
+
+190
+00:10:06,272 --> 00:10:09,642
+custom cells using SwiftUI,
+without needing to worry
+
+191
+00:10:09,642 --> 00:10:13,513
+about embedding an extra view
+or view controller.
+
+192
+00:10:13,513 --> 00:10:16,382
+Before we dive deeper
+on UIHostingConfiguration,
+
+193
+00:10:16,382 --> 00:10:20,420
+let's review
+cell configurations in UIKit.
+
+194
+00:10:20,420 --> 00:10:23,189
+Cell configurations
+are a modern way
+
+195
+00:10:23,189 --> 00:10:28,228
+to define the content, styling,
+and behavior of cells in UIKit.
+
+196
+00:10:28,228 --> 00:10:31,197
+Unlike a UIView
+or UIViewController,
+
+197
+00:10:31,197 --> 00:10:34,100
+a configuration is just
+a lightweight struct.
+
+198
+00:10:34,100 --> 00:10:36,769
+It's inexpensive to create.
+
+199
+00:10:36,769 --> 00:10:38,972
+A configuration
+is only a description
+
+200
+00:10:38,972 --> 00:10:41,741
+of a cell's appearance,
+so it needs to be applied
+
+201
+00:10:41,741 --> 00:10:45,078
+to a cell to have an effect.
+
+202
+00:10:45,078 --> 00:10:46,880
+Configurations are composable,
+
+203
+00:10:46,880 --> 00:10:48,882
+and work with both
+UICollectionView
+
+204
+00:10:48,882 --> 00:10:51,384
+and UITableView cells.
+
+205
+00:10:51,384 --> 00:10:56,122
+For more details, you can watch
+"Modern cell configuration."
+
+206
+00:10:56,122 --> 00:10:58,324
+With that in mind, let's dive in
+
+207
+00:10:58,324 --> 00:11:02,428
+and start using
+UIHostingConfiguration!
+
+208
+00:11:02,428 --> 00:11:05,331
+UIHostingConfiguration
+is a content configuration
+
+209
+00:11:05,331 --> 00:11:08,902
+that is initialized
+with a SwiftUI ViewBuilder.
+
+210
+00:11:08,902 --> 00:11:11,304
+That means we can start
+writing SwiftUI code
+
+211
+00:11:11,304 --> 00:11:15,141
+to create views
+directly inside it.
+
+212
+00:11:15,141 --> 00:11:17,744
+In order to render
+the hosting configuration,
+
+213
+00:11:17,744 --> 00:11:20,346
+we set it to the
+contentConfiguration property
+
+214
+00:11:20,346 --> 00:11:23,950
+of the UICollectionView
+or UITableView cell.
+
+215
+00:11:23,950 --> 00:11:25,985
+Let's start writing
+some SwiftUI code
+
+216
+00:11:25,985 --> 00:11:30,623
+in this hosting configuration to
+build a custom heart rate cell.
+
+217
+00:11:30,623 --> 00:11:34,394
+We'll start by creating a label
+with the text "Heart Rate"
+
+218
+00:11:34,394 --> 00:11:36,462
+and the image of a heart.
+
+219
+00:11:36,462 --> 00:11:38,998
+SwiftUI views
+receive default styling
+
+220
+00:11:38,998 --> 00:11:41,834
+based on the context
+they are used in.
+
+221
+00:11:41,834 --> 00:11:43,770
+But we can start
+customizing the styling
+
+222
+00:11:43,770 --> 00:11:47,840
+using standard
+SwiftUI view modifiers.
+
+223
+00:11:47,840 --> 00:11:51,344
+Let's make the image
+and text pink with a bold font,
+
+224
+00:11:51,344 --> 00:11:55,648
+by adding the foregroundStyle
+and font modifiers to our label.
+
+225
+00:11:55,648 --> 00:11:58,484
+Since we're just writing
+regular SwiftUI code,
+
+226
+00:11:58,484 --> 00:12:01,020
+we can factor out our code
+into a standalone view
+
+227
+00:12:01,020 --> 00:12:03,856
+anytime we want.
+
+228
+00:12:03,856 --> 00:12:06,826
+Here, we create
+a new SwiftUI view
+
+229
+00:12:06,826 --> 00:12:09,696
+named HeartRateTitleView,
+
+230
+00:12:09,696 --> 00:12:12,298
+moved the code we had
+into its body,
+
+231
+00:12:12,298 --> 00:12:14,634
+and then used
+that HeartRateTitleView
+
+232
+00:12:14,634 --> 00:12:16,636
+in the hosting configuration.
+
+233
+00:12:16,636 --> 00:12:17,837
+As shown in the cell,
+
+234
+00:12:17,837 --> 00:12:22,275
+it produces
+the exact same result.
+
+235
+00:12:22,275 --> 00:12:24,811
+Now we can start
+adding more views
+
+236
+00:12:24,811 --> 00:12:27,513
+inside the HeartRateTitleView.
+
+237
+00:12:27,513 --> 00:12:32,151
+I've put the label inside
+of an HStack with a spacer,
+
+238
+00:12:32,151 --> 00:12:36,155
+then added the current time
+in a Text view next to it.
+
+239
+00:12:36,155 --> 00:12:38,391
+That's looking
+pretty good so far.
+
+240
+00:12:38,391 --> 00:12:41,427
+Let's add some more content
+to this custom cell
+
+241
+00:12:41,427 --> 00:12:44,864
+below the HeartRateTitleView.
+
+242
+00:12:44,864 --> 00:12:47,433
+To do this,
+we'll insert a VStack
+
+243
+00:12:47,433 --> 00:12:49,202
+inside the hosting
+configuration
+
+244
+00:12:49,202 --> 00:12:53,773
+so we can add more content
+below the HeartRateTitleView.
+
+245
+00:12:53,773 --> 00:12:56,609
+Then we'll put
+two Text views together
+
+246
+00:12:56,609 --> 00:13:00,713
+in a HStack to display 90 BPM
+
+247
+00:13:00,713 --> 00:13:05,318
+and then apply a few modifiers
+to style them the way we want.
+
+248
+00:13:05,318 --> 00:13:08,154
+Just like we did before
+with the HeartRateTitleView,
+
+249
+00:13:08,154 --> 00:13:14,293
+we can move this new code
+into its own SwiftUI view.
+
+250
+00:13:14,293 --> 00:13:17,430
+Now the same code
+is extracted into the body
+
+251
+00:13:17,430 --> 00:13:20,033
+of the HeartRateBPMView.
+
+252
+00:13:20,033 --> 00:13:21,768
+Our cell is looking great,
+
+253
+00:13:21,768 --> 00:13:25,304
+but I have an idea
+for another thing we could add.
+
+254
+00:13:25,304 --> 00:13:29,742
+New in iOS 16 is
+the Swift Charts framework,
+
+255
+00:13:29,742 --> 00:13:33,112
+which lets you visualize data
+with beautiful graphs
+
+256
+00:13:33,112 --> 00:13:35,815
+in only a few lines of code.
+
+257
+00:13:35,815 --> 00:13:38,551
+Let's try using it to display
+a small line chart
+
+258
+00:13:38,551 --> 00:13:41,888
+right inside the cell.
+
+259
+00:13:41,888 --> 00:13:45,458
+Using the new Chart view,
+we create a small line chart
+
+260
+00:13:45,458 --> 00:13:47,894
+that visualizes
+recent heart rate samples
+
+261
+00:13:47,894 --> 00:13:52,565
+and display that next
+to the BPM view in the cell.
+
+262
+00:13:52,565 --> 00:13:53,700
+To generate the chart,
+
+263
+00:13:53,700 --> 00:13:56,936
+we pass in a collection
+of heart rate samples,
+
+264
+00:13:56,936 --> 00:14:01,074
+and draw a LineMark that
+connects all of the samples.
+
+265
+00:14:01,074 --> 00:14:02,608
+We can add a circle symbol
+
+266
+00:14:02,608 --> 00:14:04,811
+to indicate each sample
+on the line
+
+267
+00:14:04,811 --> 00:14:07,213
+and apply
+a pink foreground style,
+
+268
+00:14:07,213 --> 00:14:11,284
+to tint the chart to match
+the HeartRateTitleView.
+
+269
+00:14:11,284 --> 00:14:14,153
+We're only scratching
+the surface of what you can do
+
+270
+00:14:14,153 --> 00:14:16,889
+with the new
+Swift Charts framework,
+
+271
+00:14:16,889 --> 00:14:20,259
+so be sure to check out
+the video "Hello Swift Charts"
+
+272
+00:14:20,259 --> 00:14:22,228
+to learn more about it.
+
+273
+00:14:22,228 --> 00:14:25,732
+Not only does our finished
+heart rate cell look awesome,
+
+274
+00:14:25,732 --> 00:14:29,268
+but it was easy to make
+in just a couple of minutes.
+
+275
+00:14:29,268 --> 00:14:32,038
+That's how easy it is
+to start building custom cells
+
+276
+00:14:32,038 --> 00:14:35,508
+with UIHostingConfiguration
+and SwiftUI.
+
+277
+00:14:35,508 --> 00:14:37,376
+Let's talk about
+four special features
+
+278
+00:14:37,376 --> 00:14:40,847
+that UIHostingConfiguration
+supports.
+
+279
+00:14:40,847 --> 00:14:44,417
+By default,
+the root-level SwiftUI content
+
+280
+00:14:44,417 --> 00:14:46,686
+is inset from the edges
+of the cell,
+
+281
+00:14:46,686 --> 00:14:50,690
+based on the cell's layout
+margins in UIKit.
+
+282
+00:14:50,690 --> 00:14:52,625
+This ensures
+that the cell content
+
+283
+00:14:52,625 --> 00:14:55,728
+is properly aligned with
+the content of adjacent cells
+
+284
+00:14:55,728 --> 00:14:59,899
+and other UI elements,
+such as the navigation bar.
+
+285
+00:14:59,899 --> 00:15:02,935
+Sometimes, you may want to use
+different margins,
+
+286
+00:15:02,935 --> 00:15:07,073
+or have the content extend
+to the edges of the cell.
+
+287
+00:15:07,073 --> 00:15:10,176
+For these cases, you can change
+the default margins
+
+288
+00:15:10,176 --> 00:15:15,414
+by using the margins modifier
+on UIHostingConfiguration.
+
+289
+00:15:15,414 --> 00:15:18,050
+If you want to customize
+a cell's background appearance
+
+290
+00:15:18,050 --> 00:15:21,587
+using SwiftUI, you can use
+the background modifier
+
+291
+00:15:21,587 --> 00:15:24,490
+on the UIHostingConfiguration.
+
+292
+00:15:24,490 --> 00:15:26,559
+There are a few
+key differences between
+
+293
+00:15:26,559 --> 00:15:31,631
+a UIHostingConfiguration's
+background and its content.
+
+294
+00:15:31,631 --> 00:15:34,734
+The background is hosted
+at the the back of the cell,
+
+295
+00:15:34,734 --> 00:15:39,172
+underneath your SwiftUI content
+in the cell's content view.
+
+296
+00:15:39,172 --> 00:15:41,507
+Additionally,
+while content is typically
+
+297
+00:15:41,507 --> 00:15:43,943
+inset from the cell's edges,
+
+298
+00:15:43,943 --> 00:15:48,181
+backgrounds extend
+edge to edge in the cell.
+
+299
+00:15:48,181 --> 00:15:51,150
+Finally, when using
+self-sizing cells,
+
+300
+00:15:51,150 --> 00:15:56,689
+only the cell content influences
+the size of the cell.
+
+301
+00:15:56,689 --> 00:15:59,625
+Next, let's examine
+two more special features
+
+302
+00:15:59,625 --> 00:16:02,094
+of UIHostingConfiguration
+that you can use
+
+303
+00:16:02,094 --> 00:16:04,730
+when you have a cell
+inside a collection view list
+
+304
+00:16:04,730 --> 00:16:06,699
+or table view.
+
+305
+00:16:06,699 --> 00:16:08,968
+In a list, the separator
+below the cell
+
+306
+00:16:08,968 --> 00:16:11,904
+is automatically aligned
+to the SwiftUI text
+
+307
+00:16:11,904 --> 00:16:14,874
+in your hosting configuration
+by default.
+
+308
+00:16:14,874 --> 00:16:18,177
+In this example, notice how the
+leading edge of the separator
+
+309
+00:16:18,177 --> 00:16:21,914
+is inset past the image
+so that it aligns with the text
+
+310
+00:16:21,914 --> 00:16:23,382
+in the cell.
+
+311
+00:16:23,382 --> 00:16:24,984
+If you need to align
+the separator
+
+312
+00:16:24,984 --> 00:16:28,421
+to a different SwiftUI view
+in your hosting configuration,
+
+313
+00:16:28,421 --> 00:16:32,225
+use the alignmentGuide
+modifier.
+
+314
+00:16:32,225 --> 00:16:34,994
+When inside a collection view
+list or table view,
+
+315
+00:16:34,994 --> 00:16:40,299
+you can configure swipe actions
+for a row directly with SwiftUI.
+
+316
+00:16:40,299 --> 00:16:43,769
+By creating your buttons inside
+the swipeActions modifier,
+
+317
+00:16:43,769 --> 00:16:45,638
+you'll be able to swipe the cell
+
+318
+00:16:45,638 --> 00:16:49,141
+to reveal and perform
+your custom actions.
+
+319
+00:16:49,141 --> 00:16:50,910
+Download the sample code
+for this video
+
+320
+00:16:50,910 --> 00:16:53,713
+to find a complete example.
+
+321
+00:16:53,713 --> 00:16:55,481
+When defining swipe actions,
+
+322
+00:16:55,481 --> 00:16:57,984
+make sure your buttons
+perform their actions
+
+323
+00:16:57,984 --> 00:17:01,754
+using a stable identifier
+for the item represented.
+
+324
+00:17:01,754 --> 00:17:03,522
+Do not use the index path,
+
+325
+00:17:03,522 --> 00:17:06,058
+as it may change
+while the cell is visible,
+
+326
+00:17:06,058 --> 00:17:10,596
+causing the swipe actions
+to act on the wrong item.
+
+327
+00:17:10,596 --> 00:17:12,899
+When you're using
+UIHostingConfiguration
+
+328
+00:17:12,899 --> 00:17:16,369
+in a cell, keep in mind
+that the cell interactions
+
+329
+00:17:16,369 --> 00:17:18,804
+such as tap handling,
+highlighting,
+
+330
+00:17:18,804 --> 00:17:21,207
+and selection
+will still be handled
+
+331
+00:17:21,207 --> 00:17:24,410
+by the collection view
+or table view.
+
+332
+00:17:24,410 --> 00:17:27,280
+If you need to customize
+your SwiftUI views
+
+333
+00:17:27,280 --> 00:17:29,682
+for any of these
+UIKit cell states,
+
+334
+00:17:29,682 --> 00:17:32,084
+you can create
+your hosting configuration
+
+335
+00:17:32,084 --> 00:17:35,922
+inside of the cell's
+configurationUpdateHandler,
+
+336
+00:17:35,922 --> 00:17:40,393
+and use the state provided
+in your SwiftUI code.
+
+337
+00:17:40,393 --> 00:17:43,029
+The configurationUpdateHandler
+runs again
+
+338
+00:17:43,029 --> 00:17:45,698
+any time
+the cell's state changes,
+
+339
+00:17:45,698 --> 00:17:47,867
+creating a new
+UIHostingConfiguration
+
+340
+00:17:47,867 --> 00:17:51,203
+for the new state
+and applying it to the cell.
+
+341
+00:17:51,203 --> 00:17:54,540
+In this example, we use the
+state to add a checkmark image
+
+342
+00:17:54,540 --> 00:17:57,510
+when the cell is selected.
+
+343
+00:17:57,510 --> 00:18:00,012
+Now that you're familiar
+with UIHostingConfiguration,
+
+344
+00:18:00,012 --> 00:18:04,216
+let's discuss how to manage
+data flow from your model layer
+
+345
+00:18:04,216 --> 00:18:07,019
+to a UICollectionView
+or UITableView
+
+346
+00:18:07,019 --> 00:18:10,556
+filled with cells using SwiftUI.
+
+347
+00:18:10,556 --> 00:18:14,560
+Our goal is to build
+this list of medical conditions.
+
+348
+00:18:14,560 --> 00:18:17,930
+In this example,
+we're using a UICollectionView,
+
+349
+00:18:17,930 --> 00:18:22,768
+but everything we discuss
+applies equally to UITableView.
+
+350
+00:18:22,768 --> 00:18:25,938
+Let's go through
+the components involved.
+
+351
+00:18:25,938 --> 00:18:30,376
+Our app has a collection of
+MedicalCondition model objects,
+
+352
+00:18:30,376 --> 00:18:33,346
+which we are going to display
+in the collection view.
+
+353
+00:18:33,346 --> 00:18:35,614
+For each item
+in this collection,
+
+354
+00:18:35,614 --> 00:18:38,317
+we want to create a cell
+in the collection view
+
+355
+00:18:38,317 --> 00:18:41,587
+to display that
+medical condition.
+
+356
+00:18:41,587 --> 00:18:44,991
+In order to do this, we'll
+create a diffable data source
+
+357
+00:18:44,991 --> 00:18:47,560
+connected
+to the collection view.
+
+358
+00:18:47,560 --> 00:18:51,964
+Then, we need to populate
+a diffable data source snapshot
+
+359
+00:18:51,964 --> 00:18:55,668
+with the identifiers of the
+MedicalCondition model objects
+
+360
+00:18:55,668 --> 00:18:58,738
+in the data collection.
+
+361
+00:18:58,738 --> 00:19:01,774
+It's important that the diffable
+data source snapshot
+
+362
+00:19:01,774 --> 00:19:05,544
+contains the unique identifier
+of each MedicalCondition,
+
+363
+00:19:05,544 --> 00:19:08,881
+and not the MedicalCondition
+objects themselves.
+
+364
+00:19:08,881 --> 00:19:13,052
+This ensures that the diffable
+data source can accurately track
+
+365
+00:19:13,052 --> 00:19:15,187
+the identity of each item,
+
+366
+00:19:15,187 --> 00:19:17,757
+and compute the correct changes
+
+367
+00:19:17,757 --> 00:19:20,626
+when new snapshots
+are applied later.
+
+368
+00:19:20,626 --> 00:19:23,496
+By applying a snapshot
+with these item identifiers
+
+369
+00:19:23,496 --> 00:19:25,364
+to the diffable data source,
+
+370
+00:19:25,364 --> 00:19:28,067
+it will automatically update
+the collection view,
+
+371
+00:19:28,067 --> 00:19:32,238
+which will create a new cell
+for each item.
+
+372
+00:19:32,238 --> 00:19:36,375
+Each cell is configured
+to display one MedicalCondition,
+
+373
+00:19:36,375 --> 00:19:42,281
+using a SwiftUI view
+in a UIHostingConfiguration.
+
+374
+00:19:42,281 --> 00:19:45,017
+Now that we're displaying cells
+built with SwiftUI,
+
+375
+00:19:45,017 --> 00:19:49,321
+we need to handle updating
+the UI when the data changes.
+
+376
+00:19:49,321 --> 00:19:51,057
+There are two different
+types of changes
+
+377
+00:19:51,057 --> 00:19:54,060
+that we need
+to handle separately.
+
+378
+00:19:54,060 --> 00:19:58,464
+The first type is when the
+data collection itself changes.
+
+379
+00:19:58,464 --> 00:20:04,537
+For example, when items are
+inserted, reordered, or deleted.
+
+380
+00:20:04,537 --> 00:20:07,840
+These changes are handled
+by applying a new snapshot
+
+381
+00:20:07,840 --> 00:20:10,843
+to the diffable data source.
+
+382
+00:20:10,843 --> 00:20:14,747
+Diffable data source will diff
+the old and new snapshots,
+
+383
+00:20:14,747 --> 00:20:18,217
+and perform the necessary
+updates to the collection view,
+
+384
+00:20:18,217 --> 00:20:23,255
+causing cells to be inserted,
+moved, or deleted.
+
+385
+00:20:23,255 --> 00:20:25,891
+Because changes to the
+collection of data itself
+
+386
+00:20:25,891 --> 00:20:28,761
+don't affect anything
+inside of cells,
+
+387
+00:20:28,761 --> 00:20:31,363
+you handle these types
+of changes the same,
+
+388
+00:20:31,363 --> 00:20:35,801
+whether you build your cells
+using UIKit or SwiftUI.
+
+389
+00:20:35,801 --> 00:20:37,970
+The second type of change
+we need to handle
+
+390
+00:20:37,970 --> 00:20:43,342
+are when the properties of
+individual model objects change.
+
+391
+00:20:43,342 --> 00:20:46,145
+These changes often require
+updating the views
+
+392
+00:20:46,145 --> 00:20:48,114
+in existing cells.
+
+393
+00:20:48,114 --> 00:20:49,882
+Because the diffable data source
+
+394
+00:20:49,882 --> 00:20:53,119
+only contains item identifiers
+in its snapshot,
+
+395
+00:20:53,119 --> 00:20:55,087
+it doesn't know
+when the properties
+
+396
+00:20:55,087 --> 00:20:57,990
+of existing items change.
+
+397
+00:20:57,990 --> 00:21:01,560
+Traditionally, when using UIKit,
+you would need to manually
+
+398
+00:21:01,560 --> 00:21:04,997
+tell the diffable data source
+about these changes
+
+399
+00:21:04,997 --> 00:21:08,801
+by reconfiguring or reloading
+items in the snapshot.
+
+400
+00:21:08,801 --> 00:21:13,372
+But when using SwiftUI in cells,
+this isn't necessary anymore.
+
+401
+00:21:13,372 --> 00:21:16,408
+By storing
+the ObservableObject model
+
+402
+00:21:16,408 --> 00:21:20,446
+in an ObservedObject property
+in our SwiftUI view,
+
+403
+00:21:20,446 --> 00:21:22,581
+changes to published properties
+
+404
+00:21:22,581 --> 00:21:25,684
+of the model will automatically
+trigger SwiftUI
+
+405
+00:21:25,684 --> 00:21:27,253
+to refresh the view.
+
+406
+00:21:27,253 --> 00:21:30,789
+This establishes a direct
+connection between the model
+
+407
+00:21:30,789 --> 00:21:34,160
+and the SwiftUI view
+inside of the cell.
+
+408
+00:21:34,160 --> 00:21:35,427
+When a change is made,
+
+409
+00:21:35,427 --> 00:21:38,931
+the SwiftUI views in the cell
+are updated directly,
+
+410
+00:21:38,931 --> 00:21:41,333
+without going through
+the diffable data source
+
+411
+00:21:41,333 --> 00:21:44,403
+or the UICollectionView.
+
+412
+00:21:44,403 --> 00:21:45,971
+When a cell's data changes,
+
+413
+00:21:45,971 --> 00:21:48,674
+it may cause the cell
+to need to grow or shrink
+
+414
+00:21:48,674 --> 00:21:51,143
+to fit the new content.
+
+415
+00:21:51,143 --> 00:21:54,980
+But if the SwiftUI cell content
+is being updated directly
+
+416
+00:21:54,980 --> 00:21:56,916
+without going through UIKit,
+
+417
+00:21:56,916 --> 00:22:00,753
+how does the collection view
+know to resize the cell?
+
+418
+00:22:00,753 --> 00:22:04,356
+UIHostingConfiguration takes
+advantage of a brand-new feature
+
+419
+00:22:04,356 --> 00:22:07,326
+in UIKit to make this work.
+
+420
+00:22:07,326 --> 00:22:11,997
+In iOS 16, self-sizing cells
+in UICollectionView
+
+421
+00:22:11,997 --> 00:22:16,535
+and UITableView
+are now also self-resizing!
+
+422
+00:22:16,535 --> 00:22:18,170
+This is enabled by default,
+
+423
+00:22:18,170 --> 00:22:21,040
+so that when you're using
+UIHostingConfiguration
+
+424
+00:22:21,040 --> 00:22:24,410
+and the SwiftUI content changes,
+the containing cell
+
+425
+00:22:24,410 --> 00:22:28,681
+is automatically resized
+if necessary.
+
+426
+00:22:28,681 --> 00:22:31,150
+You can learn more
+about how this new feature works
+
+427
+00:22:31,150 --> 00:22:37,690
+in the "What's New in UIKit"
+video from WWDC 2022.
+
+428
+00:22:37,690 --> 00:22:39,491
+There's one more aspect
+of data flow
+
+429
+00:22:39,491 --> 00:22:43,462
+that you may need to handle,
+and that's sending data out
+
+430
+00:22:43,462 --> 00:22:48,033
+from a SwiftUI view
+back to other parts of your app.
+
+431
+00:22:48,033 --> 00:22:52,605
+Once again, ObservableObject
+has got you covered!
+
+432
+00:22:52,605 --> 00:22:55,641
+You can create a two-way binding
+to a published property
+
+433
+00:22:55,641 --> 00:22:57,910
+of an ObservableObject.
+
+434
+00:22:57,910 --> 00:23:02,681
+Not only will data flow from the
+ObservableObject into SwiftUI,
+
+435
+00:23:02,681 --> 00:23:06,018
+but SwiftUI can write back
+changes to the property
+
+436
+00:23:06,018 --> 00:23:08,754
+on the model object.
+
+437
+00:23:08,754 --> 00:23:10,489
+Let's go through
+a simple example
+
+438
+00:23:10,489 --> 00:23:12,224
+of creating a two-way binding
+
+439
+00:23:12,224 --> 00:23:16,996
+by making the text in our
+MedicalCondition cell editable.
+
+440
+00:23:16,996 --> 00:23:21,400
+Here is our ObservableObject,
+MedicalCondition.
+
+441
+00:23:21,400 --> 00:23:25,671
+It stores a unique identifier
+in an ID property.
+
+442
+00:23:25,671 --> 00:23:27,673
+This is the identifier
+used to populate
+
+443
+00:23:27,673 --> 00:23:30,709
+the diffable
+data source snapshot.
+
+444
+00:23:30,709 --> 00:23:33,045
+And this published property
+stores the text
+
+445
+00:23:33,045 --> 00:23:35,914
+of the medical condition.
+
+446
+00:23:35,914 --> 00:23:37,650
+Here's the MedicalConditionView
+
+447
+00:23:37,650 --> 00:23:42,421
+that displays the medical
+condition text inside each cell.
+
+448
+00:23:42,421 --> 00:23:44,890
+Right now this text
+is read-only,
+
+449
+00:23:44,890 --> 00:23:47,593
+so let's make it editable.
+
+450
+00:23:47,593 --> 00:23:52,398
+All we need to do is to change
+the Text view to a TextField
+
+451
+00:23:52,398 --> 00:23:54,933
+and create a binding
+to the text property
+
+452
+00:23:54,933 --> 00:23:59,438
+of our MedicalCondition
+by adding a dollar sign prefix.
+
+453
+00:23:59,438 --> 00:24:01,140
+When you type
+into the text field,
+
+454
+00:24:01,140 --> 00:24:04,643
+this binding allows SwiftUI
+to write back changes
+
+455
+00:24:04,643 --> 00:24:07,479
+directly to
+the ObservableObject.
+
+456
+00:24:07,479 --> 00:24:09,181
+That's really how simple it is
+
+457
+00:24:09,181 --> 00:24:14,453
+to set up two-way
+data flow with SwiftUI.
+
+458
+00:24:14,453 --> 00:24:16,922
+UIHostingController
+is a powerful way
+
+459
+00:24:16,922 --> 00:24:21,593
+to embed SwiftUI content
+into your UIKit app.
+
+460
+00:24:21,593 --> 00:24:23,395
+Your SwiftUI view is rendered
+
+461
+00:24:23,395 --> 00:24:25,831
+inside the hosting
+controller's view,
+
+462
+00:24:25,831 --> 00:24:27,599
+and you can use
+the hosting controller
+
+463
+00:24:27,599 --> 00:24:33,439
+anywhere that you can use
+a view controller in UIKit.
+
+464
+00:24:33,439 --> 00:24:35,341
+When using UIHostingController,
+
+465
+00:24:35,341 --> 00:24:37,943
+make sure to always
+add the view controller
+
+466
+00:24:37,943 --> 00:24:41,380
+together with the view
+to your app.
+
+467
+00:24:41,380 --> 00:24:45,751
+Many SwiftUI features, such as
+toolbars, keyboard shortcuts,
+
+468
+00:24:45,751 --> 00:24:49,088
+and views that use
+UIViewControllerRepresentable,
+
+469
+00:24:49,088 --> 00:24:51,990
+require a connection
+to the view controller hierarchy
+
+470
+00:24:51,990 --> 00:24:54,993
+in UIKit to integrate properly,
+
+471
+00:24:54,993 --> 00:24:57,663
+so never separate
+a hosting controller's view
+
+472
+00:24:57,663 --> 00:25:01,166
+from the hosting controller
+itself.
+
+473
+00:25:01,166 --> 00:25:03,068
+For comparison, when you apply
+
+474
+00:25:03,068 --> 00:25:05,938
+a UIHostingConfiguration
+to a cell,
+
+475
+00:25:05,938 --> 00:25:08,307
+your SwiftUI view
+is hosted in the cell
+
+476
+00:25:08,307 --> 00:25:11,110
+without a UIViewController.
+
+477
+00:25:11,110 --> 00:25:14,079
+UIHostingConfiguration supports
+the vast majority
+
+478
+00:25:14,079 --> 00:25:16,048
+of SwiftUI features.
+
+479
+00:25:16,048 --> 00:25:18,283
+But keep in mind
+that SwiftUI views
+
+480
+00:25:18,283 --> 00:25:20,986
+that depend on
+UIViewControllerRepresentable
+
+481
+00:25:20,986 --> 00:25:23,589
+can't be used inside of cells.
+
+482
+00:25:23,589 --> 00:25:26,859
+With UIHostingController
+and UIHostingConfiguration,
+
+483
+00:25:26,859 --> 00:25:29,895
+you have two great ways
+to incorporate SwiftUI
+
+484
+00:25:29,895 --> 00:25:32,965
+into your UIKit app.
+
+485
+00:25:32,965 --> 00:25:37,636
+SwiftUI integrates seamlessly
+into existing UIKit apps
+
+486
+00:25:37,636 --> 00:25:42,941
+Use UIHostingController to add
+SwiftUI throughout your app.
+
+487
+00:25:42,941 --> 00:25:46,044
+Create custom cells in
+your collection and table view
+
+488
+00:25:46,044 --> 00:25:49,448
+using UIHostingConfiguration.
+
+489
+00:25:49,448 --> 00:25:51,950
+And take advantage
+of ObservableObject,
+
+490
+00:25:51,950 --> 00:25:55,421
+so your data and UI
+is always in sync.
+
+491
+00:25:55,421 --> 00:25:59,258
+Add SwiftUI to your app today!
+
+492
+00:25:59,258 --> 00:26:00,726
+Thank you for watching!
+
+493
+00:26:00,726 --> 00:26:05,564
+♪
+

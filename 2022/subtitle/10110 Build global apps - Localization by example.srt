@@ -1,0 +1,1966 @@
+1
+00:00:09,776 --> 00:00:12,112
+Andreas: Hello, and welcome to WWDC.
+
+2
+00:00:12,145 --> 00:00:14,481
+I'm Andreas from the localization team
+at Apple
+
+3
+00:00:14,515 --> 00:00:16,917
+and today I would like to share with
+you some examples
+
+4
+00:00:16,950 --> 00:00:19,820
+about how to build high-quality,
+localized apps.
+
+5
+00:00:20,988 --> 00:00:23,524
+Internationalization means
+preparing your app
+
+6
+00:00:23,557 --> 00:00:26,126
+to run on devices all across the world.
+
+7
+00:00:26,159 --> 00:00:29,696
+When localization is done well,
+everybody gets to enjoy the same
+
+8
+00:00:29,730 --> 00:00:33,867
+great experience and utility–
+regardless of the language they speak.
+
+9
+00:00:33,901 --> 00:00:36,303
+Using the APIs that Apple offers,
+
+10
+00:00:36,336 --> 00:00:39,239
+most parts of your app
+are internationalization friendly
+
+11
+00:00:39,273 --> 00:00:41,341
+right out of the box.
+
+12
+00:00:41,375 --> 00:00:43,744
+In this talk, you will learn
+from our experience
+
+13
+00:00:43,777 --> 00:00:46,480
+making Apple's apps appealing
+to a diverse audience,
+
+14
+00:00:46,513 --> 00:00:49,249
+including some challenges
+and how we solved them.
+
+15
+00:00:49,283 --> 00:00:53,153
+I will start with declaring
+and loading localized text.
+
+16
+00:00:53,187 --> 00:00:57,558
+It's easy to include formatted dates,
+times, and more in our strings.
+
+17
+00:00:57,591 --> 00:01:02,563
+I will highlight some options, and we will
+take a look at a sophisticated example.
+
+18
+00:01:02,596 --> 00:01:05,766
+Your Swift Package
+might include localized text, too,
+
+19
+00:01:05,799 --> 00:01:09,970
+and you will learn about improvements
+to the localization workflow.
+
+20
+00:01:10,003 --> 00:01:14,408
+Finally, I will talk about layout
+and great new additions to SwiftUI.
+
+21
+00:01:14,441 --> 00:01:18,345
+At Apple, we make sure that our apps
+are providing a great experience
+
+22
+00:01:18,378 --> 00:01:20,113
+to our international audience.
+
+23
+00:01:20,147 --> 00:01:22,783
+And the Weather app
+is one example of this.
+
+24
+00:01:22,816 --> 00:01:26,486
+Millions of users open it up every day
+to check the forecast–
+
+25
+00:01:26,520 --> 00:01:30,457
+and this is what the app looks like to
+them, wherever they are in the world.
+
+26
+00:01:30,490 --> 00:01:34,094
+Notice how everything in the UI
+is adjusted to their preferences.
+
+27
+00:01:34,127 --> 00:01:37,064
+We localize descriptions
+of the current weather conditions
+
+28
+00:01:37,097 --> 00:01:39,199
+and we format numbers.
+
+29
+00:01:39,233 --> 00:01:41,568
+The UI is also adapted appropriately
+
+30
+00:01:41,602 --> 00:01:45,305
+depending on whether the language
+is left-to-right or right-to-left.
+
+31
+00:01:45,339 --> 00:01:48,909
+Let's take a closer look
+at one of the things we customize
+
+32
+00:01:48,942 --> 00:01:50,611
+by starting with translation.
+
+33
+00:01:50,644 --> 00:01:54,348
+This view here says "Wind is making
+it feel cooler" in English.
+
+34
+00:01:54,381 --> 00:01:57,317
+And this is what it looks like
+in other languages.
+
+35
+00:01:57,351 --> 00:02:00,120
+To support them properly,
+all we have to do is declare
+
+36
+00:02:00,153 --> 00:02:02,489
+the string using String(localized).
+
+37
+00:02:02,523 --> 00:02:05,125
+Xcode discovers it
+when exporting for localization,
+
+38
+00:02:05,158 --> 00:02:09,296
+and we can send the result
+over our translators.
+
+39
+00:02:09,329 --> 00:02:11,598
+I will use the Mail app
+on my Mac to do so.
+
+40
+00:02:11,632 --> 00:02:13,867
+And while we're there,
+I want to show you something.
+
+41
+00:02:13,901 --> 00:02:16,136
+If I open the context menu of an email,
+
+42
+00:02:16,170 --> 00:02:19,273
+I can move it
+to a special folder called "Archive.”
+
+43
+00:02:19,306 --> 00:02:22,509
+It is located in my sidebar.
+
+44
+00:02:22,543 --> 00:02:25,812
+Notice how both words
+are "Archive" in English.
+
+45
+00:02:25,846 --> 00:02:28,682
+Other languages like Spanish, however,
+have different words
+
+46
+00:02:28,715 --> 00:02:31,018
+for the action and the folder name.
+
+47
+00:02:31,051 --> 00:02:33,020
+Even though the English words
+are the same,
+
+48
+00:02:33,053 --> 00:02:35,088
+when they appear in different contexts,
+
+49
+00:02:35,122 --> 00:02:37,824
+other languages might use different words.
+
+50
+00:02:37,858 --> 00:02:40,561
+You should use two strings in code
+in this case.
+
+51
+00:02:40,594 --> 00:02:45,832
+And to do that, we added new API
+to the string initializer this year.
+
+52
+00:02:45,866 --> 00:02:50,037
+It now takes a default value,
+which we can use for our English string.
+
+53
+00:02:50,070 --> 00:02:52,539
+Then, we modify the localized string's key
+
+54
+00:02:52,573 --> 00:02:55,542
+to make the distinction clear
+to translators.
+
+55
+00:02:55,576 --> 00:02:58,812
+This way, the same word is shown
+when running the app in English,
+
+56
+00:02:58,846 --> 00:03:02,349
+and Spanish translators are able
+to provide different words.
+
+57
+00:03:02,382 --> 00:03:04,918
+Last year's talk
+"Streamline your localized strings"
+
+58
+00:03:04,952 --> 00:03:07,721
+helps you understanding the basics
+of managing strings,
+
+59
+00:03:07,754 --> 00:03:11,458
+and it goes further
+into the localization process.
+
+60
+00:03:11,491 --> 00:03:15,929
+I want you to take away from this example
+that sometimes the same English word,
+
+61
+00:03:15,963 --> 00:03:20,267
+or even an entire sentence,
+is shown in different contexts in the UI.
+
+62
+00:03:20,300 --> 00:03:25,339
+In these instances, make sure to use
+two different strings in your code.
+
+63
+00:03:25,372 --> 00:03:27,708
+Weather is not just about the app.
+
+64
+00:03:27,741 --> 00:03:30,477
+It is also well integrated
+into the system.
+
+65
+00:03:30,511 --> 00:03:33,313
+Here, we see a user activity,
+suggesting to open the app
+
+66
+00:03:33,347 --> 00:03:36,316
+to check the weather
+at the current location.
+
+67
+00:03:36,350 --> 00:03:39,520
+Let's take a look
+at how that might be implemented.
+
+68
+00:03:39,553 --> 00:03:41,889
+The string could be declared
+and loaded like this,
+
+69
+00:03:41,922 --> 00:03:45,659
+using String Interpolation
+to insert any location name.
+
+70
+00:03:45,692 --> 00:03:50,163
+And this name could be a city
+or a term for the current location.
+
+71
+00:03:50,197 --> 00:03:51,932
+The result works well in English:
+
+72
+00:03:51,965 --> 00:03:53,433
+"Show weather in Cupertino"
+
+73
+00:03:53,467 --> 00:03:56,970
+and "Show weather in my location,”
+respectively.
+
+74
+00:03:57,004 --> 00:04:00,741
+In other languages however,
+we might run into grammatical issues.
+
+75
+00:04:00,774 --> 00:04:04,244
+In German, for example,
+the preposition works for a city name,
+
+76
+00:04:04,278 --> 00:04:07,814
+but is wrong when inserting a term
+for the current location.
+
+77
+00:04:07,848 --> 00:04:10,651
+We need to have
+a different translation instead.
+
+78
+00:04:10,684 --> 00:04:13,153
+The solution here is simple:
+
+79
+00:04:13,187 --> 00:04:15,556
+just use two different strings.
+
+80
+00:04:15,589 --> 00:04:17,925
+Inserting a city name
+is fine in the first one,
+
+81
+00:04:17,958 --> 00:04:21,061
+and for the current location
+we use another string.
+
+82
+00:04:21,094 --> 00:04:24,231
+This ensures that translators
+are able to use the correct grammar
+
+83
+00:04:24,264 --> 00:04:25,666
+for their language.
+
+84
+00:04:25,699 --> 00:04:28,435
+And it works well in English, and German.
+
+85
+00:04:28,468 --> 00:04:32,439
+I made this example to show you
+that inserting a variable had an impact
+
+86
+00:04:32,472 --> 00:04:34,374
+on the entire sentence.
+
+87
+00:04:34,408 --> 00:04:38,478
+Joining strings might have surprising
+consequences in other languages:
+
+88
+00:04:38,512 --> 00:04:43,050
+they might need to inflect the grammar or
+could have troubles with capitalization,
+
+89
+00:04:43,083 --> 00:04:46,353
+but knowing that beforehand
+when writing the code is difficult.
+
+90
+00:04:46,386 --> 00:04:48,789
+Having people who speak the language
+testing the app
+
+91
+00:04:48,822 --> 00:04:51,491
+is a substantial part of the workflow.
+
+92
+00:04:51,525 --> 00:04:55,295
+Keep that in mind when you're tempted
+to construct a string programmatically.
+
+93
+00:04:57,297 --> 00:05:00,634
+Now that we share a good understanding
+of how strings are declared in code,
+
+94
+00:05:00,667 --> 00:05:03,270
+let's talk about their comments.
+
+95
+00:05:03,303 --> 00:05:07,774
+Here's the string from our previous
+example again, with a proper comment.
+
+96
+00:05:07,808 --> 00:05:10,277
+A comment is really, really important
+for translators.
+
+97
+00:05:10,310 --> 00:05:13,647
+You should make sure to give them
+the context they need to translate it,
+
+98
+00:05:13,680 --> 00:05:17,851
+keeping the same intention as you had
+when declaring the string.
+
+99
+00:05:17,885 --> 00:05:21,421
+A great comment explains which interface
+element the string is shown in,
+
+100
+00:05:21,455 --> 00:05:23,824
+like a label or a button.
+
+101
+00:05:23,857 --> 00:05:28,629
+It also explains the context of the UI
+element and where it is shown on screen.
+
+102
+00:05:28,662 --> 00:05:33,567
+That could be a section header,
+a context menu, or a user activity.
+
+103
+00:05:33,600 --> 00:05:35,002
+If the string contains variables,
+
+104
+00:05:35,035 --> 00:05:37,604
+make sure to explain their value
+at runtime.
+
+105
+00:05:37,638 --> 00:05:40,407
+This is very important
+for matching the grammar of the sentence,
+
+106
+00:05:40,440 --> 00:05:42,543
+as we have seen in the example.
+
+107
+00:05:42,576 --> 00:05:45,779
+Remember that translators
+might not see the app at runtime
+
+108
+00:05:45,812 --> 00:05:47,514
+when translating your content.
+
+109
+00:05:47,548 --> 00:05:50,417
+But with these tips you should be able
+to create a shared understanding
+
+110
+00:05:50,450 --> 00:05:53,253
+between declaration and translation
+of a string
+
+111
+00:05:53,287 --> 00:05:56,256
+and which role it plays in your app.
+
+112
+00:05:56,290 --> 00:05:57,858
+Now, it might have never
+occurred to you,
+
+113
+00:05:57,891 --> 00:06:00,827
+but the Weather app doesn't
+actually control the weather.
+
+114
+00:06:00,861 --> 00:06:03,664
+Instead,
+the data is downloaded from a server.
+
+115
+00:06:03,697 --> 00:06:05,866
+It can be located anywhere in the world
+
+116
+00:06:05,899 --> 00:06:09,636
+and it might not even know what language
+to send the content in.
+
+117
+00:06:09,670 --> 00:06:11,772
+When content is downloaded
+to a user's device,
+
+118
+00:06:11,805 --> 00:06:15,843
+it should always be presented
+in the language that the user prefers.
+
+119
+00:06:15,876 --> 00:06:19,780
+Having just some parts of an app localized
+can be very confusing.
+
+120
+00:06:20,747 --> 00:06:23,717
+Here, the Weather app shows
+a severe weather alert,
+
+121
+00:06:23,750 --> 00:06:26,286
+which has been loaded from a server.
+
+122
+00:06:26,320 --> 00:06:27,621
+This looks really serious,
+
+123
+00:06:27,654 --> 00:06:31,992
+and if it was not translated into my
+language, I might get into trouble later.
+
+124
+00:06:32,025 --> 00:06:34,595
+Let's take a look at what you can do
+to make sure that your users
+
+125
+00:06:34,628 --> 00:06:37,231
+are always able to read remote content.
+
+126
+00:06:38,999 --> 00:06:42,336
+Your server can send a list
+of supported languages to the app.
+
+127
+00:06:42,369 --> 00:06:44,738
+This should be an array of language IDs,
+
+128
+00:06:44,771 --> 00:06:48,308
+and the device has all the knowledge
+about which languages the user prefers,
+
+129
+00:06:48,342 --> 00:06:51,445
+so you don't have to check
+an compare them yourselves.
+
+130
+00:06:51,478 --> 00:06:55,415
+You can leverage Apple's Frameworks by
+calling 'Bundle.preferredLocalizations'.
+
+131
+00:06:55,449 --> 00:06:57,818
+And this will do the match for you.
+
+132
+00:06:57,851 --> 00:07:00,053
+It returns an array
+of candidate languages,
+
+133
+00:07:00,087 --> 00:07:03,857
+sorted by how closely they match
+the user's language choices.
+
+134
+00:07:03,891 --> 00:07:08,962
+And the first one is usually the best fit,
+so you will use this one.
+
+135
+00:07:08,996 --> 00:07:13,300
+That language then should be used
+for any subsequent requests to the server.
+
+136
+00:07:13,333 --> 00:07:16,403
+It uses it to generate a response
+with content in the language
+
+137
+00:07:16,436 --> 00:07:19,273
+that your user
+will be able to understand.
+
+138
+00:07:19,306 --> 00:07:21,041
+With this technique you can be confident
+
+139
+00:07:21,074 --> 00:07:24,711
+that strings coming from the server
+are ready for updating the UI
+
+140
+00:07:24,745 --> 00:07:27,948
+and for showing alerts to the user.
+
+141
+00:07:27,981 --> 00:07:30,951
+So to save your users
+from a storm of frustration
+
+142
+00:07:30,984 --> 00:07:34,388
+when displaying remote content,
+download the available languages,
+
+143
+00:07:34,421 --> 00:07:36,490
+match that against the user's preferences,
+
+144
+00:07:36,523 --> 00:07:40,594
+and use the result for any requests
+that load user-facing content.
+
+145
+00:07:40,627 --> 00:07:42,729
+But let's come back to nicer weather now.
+
+146
+00:07:42,763 --> 00:07:45,465
+Rain or shine,
+the Weather app is very rich in data
+
+147
+00:07:45,499 --> 00:07:48,802
+and many aspects of it
+contain numbers and counts.
+
+148
+00:07:48,836 --> 00:07:51,238
+Let's focus on one of them.
+
+149
+00:07:51,271 --> 00:07:56,443
+Under "Precipitation"
+it says "0 mm in last 6 hours.”
+
+150
+00:07:56,476 --> 00:07:58,979
+Let's assume that you want to build
+something similar,
+
+151
+00:07:59,012 --> 00:08:01,648
+but spelling out "one hour" here.
+
+152
+00:08:01,682 --> 00:08:04,017
+This is how you can declare
+the string in code.
+
+153
+00:08:04,051 --> 00:08:06,286
+In English,
+you will need to use the plural form
+
+154
+00:08:06,320 --> 00:08:08,655
+if the number of hours is larger than one:
+
+155
+00:08:08,689 --> 00:08:11,692
+one hour, but two hours.
+
+156
+00:08:11,725 --> 00:08:13,794
+The rules when another variant
+should be used
+
+157
+00:08:13,827 --> 00:08:16,330
+are even more complicated in Ukrainian.
+
+158
+00:08:16,363 --> 00:08:19,099
+You do not want to implement
+that logic in your code,
+
+159
+00:08:19,132 --> 00:08:22,703
+and this is why you leverage
+Apple's frameworks.
+
+160
+00:08:22,736 --> 00:08:25,138
+All you have to do is to declare
+the string in code
+
+161
+00:08:25,172 --> 00:08:29,543
+and provide a stringsdict file,
+which encodes the plural rule.
+
+162
+00:08:29,576 --> 00:08:33,413
+Another option is to make use
+of Automatic Grammar Agreement.
+
+163
+00:08:33,447 --> 00:08:35,549
+You can learn more
+about these two techniques
+
+164
+00:08:35,582 --> 00:08:39,219
+in last year's talk
+"Streamline your localized strings.”
+
+165
+00:08:39,253 --> 00:08:42,356
+Even though it is easy,
+you should not always apply
+
+166
+00:08:42,389 --> 00:08:44,992
+a plural rule to all of your strings.
+
+167
+00:08:45,025 --> 00:08:47,561
+For example,
+if your sentence doesn't count anything,
+
+168
+00:08:47,594 --> 00:08:51,999
+and does not include a number,
+you should not use a plural rule for it.
+
+169
+00:08:52,032 --> 00:08:54,201
+Here, "Remove this city
+from your favorites"
+
+170
+00:08:54,234 --> 00:08:56,537
+doesn't need one
+because there is no number,
+
+171
+00:08:56,570 --> 00:09:00,007
+and the same applies to multiple cities.
+
+172
+00:09:00,040 --> 00:09:02,009
+But if the string does include a number,
+
+173
+00:09:02,042 --> 00:09:05,179
+you should consider
+having variations for plural.
+
+174
+00:09:05,212 --> 00:09:09,316
+The string of the previous example counted
+how much rain will fall in the next hours,
+
+175
+00:09:09,349 --> 00:09:14,154
+and we just learned how easy it is to
+make it adapt for numbers larger than one.
+
+176
+00:09:14,188 --> 00:09:17,491
+However, if there is a unit
+in the sentence, like a duration,
+
+177
+00:09:17,524 --> 00:09:21,595
+a time, or percentage,
+you should consider using a formatter.
+
+178
+00:09:21,628 --> 00:09:24,364
+So let's talk about formatters now.
+
+179
+00:09:24,398 --> 00:09:28,368
+Weather displays the current humidity
+in percent in this view.
+
+180
+00:09:28,402 --> 00:09:32,239
+To do this in SwiftUI, it's just a matter
+of a single line of code.
+
+181
+00:09:32,272 --> 00:09:35,609
+You just wrap your value in Text()
+and specify how you would like
+
+182
+00:09:35,642 --> 00:09:37,444
+your number to be formatted.
+
+183
+00:09:37,477 --> 00:09:39,479
+And the equivalent Swift code
+is simple too.
+
+184
+00:09:39,513 --> 00:09:42,115
+You just call .formatted on your value.
+
+185
+00:09:43,417 --> 00:09:45,085
+That really is all you need to do,
+
+186
+00:09:45,118 --> 00:09:48,222
+and the Formatter takes care
+of everything else.
+
+187
+00:09:48,255 --> 00:09:50,624
+It does not only place
+the percent sign in front of
+
+188
+00:09:50,657 --> 00:09:52,960
+or after the number and add spaces,
+
+189
+00:09:52,993 --> 00:09:56,630
+it also accommodates
+for the user's preferred numbering system,
+
+190
+00:09:56,663 --> 00:10:00,601
+and that is something
+that Arabic and Hindi users expect.
+
+191
+00:10:00,634 --> 00:10:04,972
+But that's really only the beginning
+of what types of data you can format.
+
+192
+00:10:05,005 --> 00:10:07,474
+There are formatters
+for almost everything,
+
+193
+00:10:07,508 --> 00:10:11,912
+and I encourage you to recap the session:
+"Formatters: Make data human-friendly.”
+
+194
+00:10:14,715 --> 00:10:17,417
+As we have seen,
+the weather is not always sunny,
+
+195
+00:10:17,451 --> 00:10:19,686
+and some days will have rain.
+
+196
+00:10:19,720 --> 00:10:23,357
+Of course, this highlight can't be missing
+from Weather app.
+
+197
+00:10:23,390 --> 00:10:28,462
+Under "Rainfall" it says,
+"50 mm expected in next 24 hours,"
+
+198
+00:10:28,495 --> 00:10:32,699
+and I'm really glad that it is not
+that much where I am right now.
+
+199
+00:10:32,733 --> 00:10:34,535
+In English, the case is simple.
+
+200
+00:10:34,568 --> 00:10:38,705
+We say "50 millimeters expected
+in next 24 hours.”
+
+201
+00:10:38,739 --> 00:10:41,241
+In Spanish however,
+the matter is more complicated.
+
+202
+00:10:41,275 --> 00:10:44,444
+We need to vary the translation
+when the amount of precipitation
+
+203
+00:10:44,478 --> 00:10:47,114
+is singular or plural.
+
+204
+00:10:47,147 --> 00:10:51,652
+We can solve this by combining
+both a Formatter and a plural rule.
+
+205
+00:10:51,685 --> 00:10:54,354
+The string "2 mm" is produced
+by a Formatter,
+
+206
+00:10:54,388 --> 00:10:59,560
+and it is embedded in a sentence that
+needs to be varied for plural in Spanish.
+
+207
+00:10:59,593 --> 00:11:03,463
+All right, let's take a look
+at how to do this in code.
+
+208
+00:11:03,497 --> 00:11:06,500
+We start by declaring a function
+that takes a parameter
+
+209
+00:11:06,533 --> 00:11:10,170
+about how much the precipitation
+will be in millimeters.
+
+210
+00:11:10,204 --> 00:11:13,807
+Probably it was downloaded from a server.
+
+211
+00:11:13,841 --> 00:11:16,376
+First, we ask the system
+for a UnitLength,
+
+212
+00:11:16,410 --> 00:11:18,512
+which encodes the user's configuration,
+
+213
+00:11:18,545 --> 00:11:23,217
+and it will pick the right one
+for our the case of showing rainfall.
+
+214
+00:11:23,250 --> 00:11:26,253
+If the user has not configured
+their system to use metrics,
+
+215
+00:11:26,286 --> 00:11:29,890
+the Measurement type can be
+easily converted to the preferred unit.
+
+216
+00:11:31,692 --> 00:11:35,162
+Next, the formatting API allows us
+to produce a formatted string
+
+217
+00:11:35,195 --> 00:11:38,031
+for the value in a single line of code.
+
+218
+00:11:38,065 --> 00:11:40,667
+The preferredUnit already
+has the information that we want
+
+219
+00:11:40,701 --> 00:11:42,102
+to display rainfall.
+
+220
+00:11:42,135 --> 00:11:45,939
+So when formatting,
+we set the usage to asProvided.
+
+221
+00:11:45,973 --> 00:11:49,276
+If more than 1 millimeter or inches
+of rain will fall,
+
+222
+00:11:49,309 --> 00:11:51,512
+we want to use the plural case.
+
+223
+00:11:51,545 --> 00:11:55,082
+We convert the value into an integer
+so that we can check for that.
+
+224
+00:11:55,115 --> 00:11:58,085
+Next, we load a localized String
+with a given key,
+
+225
+00:11:58,118 --> 00:12:00,988
+and we provide a default value, too.
+
+226
+00:12:01,021 --> 00:12:04,258
+There, we use String Interpolation
+to include the integerValue,
+
+227
+00:12:04,291 --> 00:12:07,294
+the formattedValue, and the number 24.
+
+228
+00:12:07,327 --> 00:12:11,365
+The number is defined in code here,
+because it will be always 24 hours.
+
+229
+00:12:11,398 --> 00:12:13,734
+Using String Interpolation
+automatically makes sure
+
+230
+00:12:13,767 --> 00:12:17,671
+that the correct numbering system is used.
+
+231
+00:12:17,704 --> 00:12:19,673
+The key is declared in a stringsdict file.
+
+232
+00:12:19,706 --> 00:12:22,442
+Let's take a look at that.
+
+233
+00:12:22,476 --> 00:12:26,780
+The stringsdict starts with the key
+that we have just used in our code.
+
+234
+00:12:26,813 --> 00:12:29,449
+In English, we don't need to vary
+the string for plural,
+
+235
+00:12:29,483 --> 00:12:33,086
+so we use the category of "Other" for it.
+
+236
+00:12:33,120 --> 00:12:36,690
+The first parameter defines
+which category is chosen at runtime.
+
+237
+00:12:36,723 --> 00:12:39,493
+Remember, it was the integer value.
+
+238
+00:12:39,526 --> 00:12:43,230
+Parameter number two and three
+are present in the formatted string.
+
+239
+00:12:43,263 --> 00:12:47,034
+This defines what the sentence
+will look like at runtime.
+
+240
+00:12:47,067 --> 00:12:49,837
+The Spanish stringsdict
+has the same structure,
+
+241
+00:12:49,870 --> 00:12:54,007
+except that we provide a translation
+in both singular and plural.
+
+242
+00:12:56,143 --> 00:13:00,180
+We have now formatted the data in code
+and placed it in a sentence.
+
+243
+00:13:00,214 --> 00:13:02,449
+A stringsdict file
+contains the plural rule,
+
+244
+00:13:02,482 --> 00:13:05,886
+so that the Spanish translation
+is using the correct grammar.
+
+245
+00:13:05,919 --> 00:13:08,989
+Sometimes it's challenging
+to provide a fully localized UI
+
+246
+00:13:09,022 --> 00:13:11,491
+that is working well for all languages.
+
+247
+00:13:11,525 --> 00:13:15,128
+Again, you learned that joining strings
+can work for English
+
+248
+00:13:15,162 --> 00:13:18,732
+but might have surprising consequences
+in other languages.
+
+249
+00:13:18,765 --> 00:13:21,401
+This might require
+some comprehensive code to do,
+
+250
+00:13:21,435 --> 00:13:24,938
+but now you know how you can make it right
+for all your users.
+
+251
+00:13:24,972 --> 00:13:28,242
+Sometimes
+your strings are in a dependency,
+
+252
+00:13:28,275 --> 00:13:30,978
+or in a module that your app uses.
+
+253
+00:13:31,011 --> 00:13:34,081
+Or maybe you distribute your own code
+to other developers, too,
+
+254
+00:13:34,114 --> 00:13:36,083
+using Swift Packages.
+
+255
+00:13:36,116 --> 00:13:39,019
+Let's take a look
+at what's new for localization.
+
+256
+00:13:39,052 --> 00:13:41,922
+For defining a Swift Package
+you declare the structure
+
+257
+00:13:41,955 --> 00:13:45,025
+and build configuration
+by using Swift itself.
+
+258
+00:13:45,058 --> 00:13:48,061
+If you have user-facing content,
+you can use the parameter
+
+259
+00:13:48,095 --> 00:13:51,331
+defaultLocalization to declare
+that the content is using English
+
+260
+00:13:51,365 --> 00:13:53,267
+as primary language.
+
+261
+00:13:53,300 --> 00:13:58,272
+That is similar to specifying the
+development language of an app project.
+
+262
+00:13:58,305 --> 00:14:01,875
+Xcode now reads that parameter
+and recognizes that you are interested
+
+263
+00:14:01,909 --> 00:14:05,445
+in providing a localized experience.
+
+264
+00:14:05,479 --> 00:14:10,250
+Because of that, it will add the option to
+Export Localizations to the Product menu.
+
+265
+00:14:10,284 --> 00:14:13,120
+You're probably used to using this feature
+for your main app,
+
+266
+00:14:13,153 --> 00:14:16,123
+and now it also works for Swift Packages.
+
+267
+00:14:16,156 --> 00:14:21,161
+If you click "Export,” Xcode reads
+your code and extracts all your strings.
+
+268
+00:14:21,195 --> 00:14:25,532
+They are placed in .xcloc files,
+that you send to translators.
+
+269
+00:14:25,566 --> 00:14:28,702
+And to import your localized content
+back into your package,
+
+270
+00:14:28,735 --> 00:14:30,404
+use Import Localizations,
+
+271
+00:14:30,437 --> 00:14:34,675
+and Xcode will place the files
+at the correct file path in your package.
+
+272
+00:14:34,708 --> 00:14:39,580
+The workflow of localizing a Swift Package
+is now identical to localizing your app.
+
+273
+00:14:41,615 --> 00:14:44,451
+But remember,
+loading a string in a Swift Package
+
+274
+00:14:44,484 --> 00:14:47,387
+requires that you specify
+the 'bundle' argument.
+
+275
+00:14:47,421 --> 00:14:50,357
+You can learn more about that
+in the talk "Swift package:
+
+276
+00:14:50,390 --> 00:14:54,328
+resources and localization.”
+
+277
+00:14:54,361 --> 00:14:58,432
+If you are the author of a library
+which is distributed as a Swift Package,
+
+278
+00:14:58,465 --> 00:15:01,635
+you now have an easy way
+of keeping your project updated
+
+279
+00:15:01,668 --> 00:15:05,572
+and making localization
+a regular part of your workflow.
+
+280
+00:15:05,606 --> 00:15:08,442
+You put a great amount of effort
+and care into your project,
+
+281
+00:15:08,475 --> 00:15:12,513
+and having it localized is
+a huge time-saver for all of your clients.
+
+282
+00:15:12,546 --> 00:15:14,581
+It can really make it stand out.
+
+283
+00:15:14,615 --> 00:15:16,750
+Make people aware
+that you are going the extra mile
+
+284
+00:15:16,783 --> 00:15:19,486
+to provide the best experience
+with your software,
+
+285
+00:15:19,520 --> 00:15:21,221
+so go ahead and tell them!
+
+286
+00:15:21,255 --> 00:15:25,192
+Be open about which languages
+you support out of the box.
+
+287
+00:15:25,225 --> 00:15:27,928
+As an app developer,
+you put special considerations
+
+288
+00:15:27,961 --> 00:15:29,162
+into your dependencies,
+
+289
+00:15:29,196 --> 00:15:32,065
+not only from a code quality perspective.
+
+290
+00:15:32,099 --> 00:15:34,935
+Components that you use
+should support the same languages
+
+291
+00:15:34,968 --> 00:15:39,072
+and high-quality translations
+as the rest of your app.
+
+292
+00:15:39,106 --> 00:15:42,943
+In the case that third-party code is not
+localized to your required languages,
+
+293
+00:15:42,976 --> 00:15:45,546
+you can still create
+a local copy of the package
+
+294
+00:15:45,579 --> 00:15:48,448
+and update the localizations there.
+
+295
+00:15:48,482 --> 00:15:53,120
+Make sure to test all parts of your app
+in the languages that it supports.
+
+296
+00:15:53,153 --> 00:15:56,023
+This way you can make sure
+that there will be no UI elements
+
+297
+00:15:56,056 --> 00:15:58,792
+that are not adapted
+to the user's language.
+
+298
+00:15:58,825 --> 00:16:00,894
+Most of the time a translated string
+
+299
+00:16:00,928 --> 00:16:03,497
+is longer or shorter
+than the English equivalent,
+
+300
+00:16:03,530 --> 00:16:06,400
+and that always affects
+the layout of your app.
+
+301
+00:16:06,433 --> 00:16:08,836
+Let's look at what this means
+for the Weather app.
+
+302
+00:16:08,869 --> 00:16:11,071
+This is the app running in English,
+
+303
+00:16:11,104 --> 00:16:14,408
+and on the right side
+you can see it running in Arabic.
+
+304
+00:16:14,441 --> 00:16:17,778
+It is apparent that not only translations
+are adapted to the language,
+
+305
+00:16:17,811 --> 00:16:22,616
+also the layout follows
+the appropriate directionality.
+
+306
+00:16:22,649 --> 00:16:25,319
+If you want to learn more
+about how to create a layout
+
+307
+00:16:25,352 --> 00:16:28,021
+that works for all languages,
+which types of symbols
+
+308
+00:16:28,055 --> 00:16:30,023
+provide a localized alternative,
+
+309
+00:16:30,057 --> 00:16:32,492
+and what else to consider
+for right-to-left languages,
+
+310
+00:16:32,526 --> 00:16:36,363
+make sure to watch the talk
+"Get it right... to left.”
+
+311
+00:16:37,731 --> 00:16:40,000
+Here, the app is running in Hindi
+on the right side.
+
+312
+00:16:40,033 --> 00:16:42,302
+Let's zoom in.
+
+313
+00:16:42,336 --> 00:16:45,639
+The script of that language
+tends to be taller in general.
+
+314
+00:16:45,672 --> 00:16:48,342
+And if you look closely,
+you see that the height of the labels
+
+315
+00:16:48,375 --> 00:16:50,944
+are adjusted to accommodate for that.
+
+316
+00:16:50,978 --> 00:16:52,946
+The system does this automatically.
+
+317
+00:16:52,980 --> 00:16:54,615
+All you have to do is to make sure
+
+318
+00:16:54,648 --> 00:16:57,784
+that you don't give UI elements
+a fixed height.
+
+319
+00:16:57,818 --> 00:17:00,621
+Don't assume that everything
+will fit within 44 points
+
+320
+00:17:00,654 --> 00:17:03,690
+just because it's tall enough
+to fit the English string.
+
+321
+00:17:03,724 --> 00:17:07,661
+Please always expect your text to
+be taller according to the circumstances.
+
+322
+00:17:09,062 --> 00:17:11,398
+Coming back to the main view
+and scrolling it up,
+
+323
+00:17:11,431 --> 00:17:13,333
+Weather has a 10-day forecast view
+
+324
+00:17:13,367 --> 00:17:15,736
+which is great
+for checking out the next week.
+
+325
+00:17:17,304 --> 00:17:20,374
+What stands out on this screen
+is how it dynamically adjusts
+
+326
+00:17:20,407 --> 00:17:24,044
+the position of elements
+according to the longest label.
+
+327
+00:17:24,077 --> 00:17:28,215
+In English, "Today" is longer
+than all of the abbreviated weekday names.
+
+328
+00:17:28,248 --> 00:17:31,552
+In Spanish, however,
+all of them are three characters wide,
+
+329
+00:17:31,585 --> 00:17:36,123
+and in Greek, the translation for "Today"
+is almost double the size.
+
+330
+00:17:36,156 --> 00:17:40,227
+In all languages, though, the weather icons
+are aligned vertically with each other.
+
+331
+00:17:40,260 --> 00:17:43,697
+Meaning they do not have fixed spacing
+to their neighbor elements,
+
+332
+00:17:43,730 --> 00:17:47,534
+but flow according to
+the longest weekday label.
+
+333
+00:17:47,568 --> 00:17:51,104
+When it comes to creating a layout
+that works well with internationalization,
+
+334
+00:17:51,138 --> 00:17:55,008
+you should always keep in mind
+that labels need to be flexible.
+
+335
+00:17:55,042 --> 00:17:58,745
+You have just seen how important it is
+to make them flexible vertically,
+
+336
+00:17:58,779 --> 00:18:03,283
+but also expect labels to grow
+horizontally with a longer translation.
+
+337
+00:18:03,317 --> 00:18:06,286
+It can be a challenge to accommodate
+for that in certain layouts,
+
+338
+00:18:06,320 --> 00:18:07,921
+such as in this example,
+
+339
+00:18:07,955 --> 00:18:10,591
+but this year,
+SwiftUI adds support for Grid,
+
+340
+00:18:10,624 --> 00:18:15,195
+which is a new view that helps you
+to build this kind of layout more easily.
+
+341
+00:18:15,229 --> 00:18:18,999
+Let's take a closer look
+at how to use Grid.
+
+342
+00:18:19,032 --> 00:18:22,002
+You start by declaring the Grid
+with a leading alignment.
+
+343
+00:18:22,035 --> 00:18:25,405
+That means that UI elements start
+on the left side of the screen
+
+344
+00:18:25,439 --> 00:18:26,940
+in a left-to-right language
+
+345
+00:18:26,974 --> 00:18:31,512
+and on the right side of the screen
+in a right-to-left language.
+
+346
+00:18:31,545 --> 00:18:35,382
+Then, for each horizontal group,
+you add a GridRow.
+
+347
+00:18:35,415 --> 00:18:38,752
+And lastly
+you declare the content of the rows.
+
+348
+00:18:38,785 --> 00:18:41,622
+That's all it takes
+to create this rather advanced layout.
+
+349
+00:18:41,655 --> 00:18:43,557
+When the label needs more space,
+
+350
+00:18:43,590 --> 00:18:48,061
+the Capsule can shrink in size
+because it's the most flexible element.
+
+351
+00:18:48,095 --> 00:18:50,964
+SwiftUI does all the heavy lifting,
+such as measuring,
+
+352
+00:18:50,998 --> 00:18:55,569
+sizing, and positioning the views–
+completely automatic.
+
+353
+00:18:55,602 --> 00:18:58,672
+Another challenge is to make a view
+with a longer translation
+
+354
+00:18:58,705 --> 00:19:02,576
+work with a limited amount of space,
+like on Apple Watch.
+
+355
+00:19:02,609 --> 00:19:05,045
+Here, the German translation
+of "Tip Function"
+
+356
+00:19:05,078 --> 00:19:07,581
+is too long to fit in one row.
+
+357
+00:19:07,614 --> 00:19:11,685
+To fix this, we do not remove the icon
+next to the text to make more room.
+
+358
+00:19:11,718 --> 00:19:15,556
+The solution is rather to use
+two or more lines of text if needed,
+
+359
+00:19:15,589 --> 00:19:17,958
+which is the default behavior.
+
+360
+00:19:17,991 --> 00:19:19,660
+We do not encourage you to change that
+
+361
+00:19:19,693 --> 00:19:22,896
+and hiding interface elements
+if there is not enough space.
+
+362
+00:19:22,930 --> 00:19:25,365
+Usually there is a way
+to adjust the layout,
+
+363
+00:19:25,399 --> 00:19:28,902
+so that it can accommodate
+for the needs of the language.
+
+364
+00:19:28,936 --> 00:19:31,205
+The Mail app does this in a creative way.
+
+365
+00:19:32,206 --> 00:19:37,077
+In the sheet presentation, there are four
+buttons to take action on this email.
+
+366
+00:19:37,110 --> 00:19:40,247
+When a translation
+of one of the button titles is too long,
+
+367
+00:19:40,280 --> 00:19:43,050
+we do not clip the text
+or wrap it onto a new line.
+
+368
+00:19:43,083 --> 00:19:45,819
+This would make the view look imbalanced.
+
+369
+00:19:45,853 --> 00:19:49,089
+Instead, the entire layout is transitioned
+from a horizontal stack,
+
+370
+00:19:49,122 --> 00:19:51,758
+to a vertical stack of two rows.
+
+371
+00:19:53,060 --> 00:19:55,662
+This year, SwiftUI adds another great tool
+
+372
+00:19:55,696 --> 00:19:58,098
+that makes creating
+this dynamic layout easier:
+
+373
+00:19:58,131 --> 00:20:00,033
+ViewThatFits.
+
+374
+00:20:00,067 --> 00:20:02,469
+In essence,
+it lets you provide alternative layouts
+
+375
+00:20:02,503 --> 00:20:05,939
+if the space is constrained
+and the view would not fit.
+
+376
+00:20:07,608 --> 00:20:10,277
+You simply declare your views
+independently of each other,
+
+377
+00:20:10,310 --> 00:20:12,980
+and place them in ViewThatFits.
+
+378
+00:20:13,013 --> 00:20:16,383
+SwiftUI automatically detects
+if a view does not fit without clipping,
+
+379
+00:20:16,416 --> 00:20:19,486
+and transitions to the next one provided.
+
+380
+00:20:19,520 --> 00:20:22,389
+Keep in mind that you should
+only switch out the layouts.
+
+381
+00:20:22,422 --> 00:20:26,627
+Hiding a view just because the translation
+is too long is a bad practice.
+
+382
+00:20:26,660 --> 00:20:30,430
+That makes it harder for the users
+to orient themselves in the UI.
+
+383
+00:20:30,464 --> 00:20:33,400
+Try to make room for
+all the interface elements first
+
+384
+00:20:33,433 --> 00:20:34,868
+by having a flexible layout.
+
+385
+00:20:36,303 --> 00:20:38,672
+This is not only helpful for localization.
+
+386
+00:20:38,705 --> 00:20:41,875
+This layout also works great
+when the user prefers to have smaller
+
+387
+00:20:41,909 --> 00:20:45,412
+or larger text,
+and uses different devices.
+
+388
+00:20:45,445 --> 00:20:48,882
+To learn more about the great new
+layout features of SwiftUI this year,
+
+389
+00:20:48,916 --> 00:20:53,787
+I recommend you to watch the talk
+"Compose custom layouts with SwiftUI.”
+
+390
+00:20:53,820 --> 00:20:56,123
+Having different accessibility preferences
+
+391
+00:20:56,156 --> 00:20:59,560
+and localized text can be a challenge
+for your layout.
+
+392
+00:20:59,593 --> 00:21:02,496
+Interface elements can be
+taller and wider.
+
+393
+00:21:02,529 --> 00:21:05,599
+Adapting the layout to accommodate
+for that can be a challenge,
+
+394
+00:21:05,632 --> 00:21:08,335
+but with SwiftUI
+it gets a lot easier this year.
+
+395
+00:21:09,770 --> 00:21:13,273
+I want you to take away from this talk
+that constructing a string in code
+
+396
+00:21:13,307 --> 00:21:16,143
+can be challenging
+when supporting other languages.
+
+397
+00:21:16,176 --> 00:21:18,612
+Listen to the feedback
+that your international users
+
+398
+00:21:18,645 --> 00:21:23,183
+and testers give you to make sure
+it works great for everybody.
+
+399
+00:21:23,217 --> 00:21:25,252
+Formatting values in Swift is easy
+
+400
+00:21:25,285 --> 00:21:27,921
+and it often just takes
+a single line of code.
+
+401
+00:21:27,955 --> 00:21:30,290
+And doing that,
+your formatted values respect
+
+402
+00:21:30,324 --> 00:21:32,426
+the user's preferences automatically.
+
+403
+00:21:33,727 --> 00:21:35,529
+When you are offering a Swift Package,
+
+404
+00:21:35,562 --> 00:21:38,165
+make use the new
+Xcode localization workflow
+
+405
+00:21:38,198 --> 00:21:42,336
+to provide a fully localized experience
+to your clients.
+
+406
+00:21:42,369 --> 00:21:44,538
+Now, with or without using SwiftUI,
+
+407
+00:21:44,571 --> 00:21:47,407
+your layout should be able
+to accommodate for translated text
+
+408
+00:21:47,441 --> 00:21:49,476
+and accessibility settings.
+
+409
+00:21:49,510 --> 00:21:52,312
+Use your layout tools
+to make the layout flexible,
+
+410
+00:21:52,346 --> 00:21:55,315
+without hiding interface elements.
+
+411
+00:21:55,349 --> 00:21:57,818
+In the end,
+your users will be grateful for that
+
+412
+00:21:57,851 --> 00:22:00,954
+because they expect your app
+to fit into their lives,
+
+413
+00:22:00,988 --> 00:22:03,857
+and that includes
+respecting their languages.
+
+414
+00:22:03,891 --> 00:22:06,093
+Now, I'm looking forward to a very sunny week.
+
+415
+00:22:06,126 --> 00:22:07,728
+Enjoy the rest of WWDC,
+
+416
+00:22:07,761 --> 00:22:09,630
+and thank you for watching.
+

@@ -1,0 +1,1838 @@
+1
+00:00:00,000 --> 00:00:03,003
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,003 --> 00:00:09,877
+♪
+
+3
+00:00:09,877 --> 00:00:11,144
+Franklin Schrans: Hello,
+my name is Franklin,
+
+4
+00:00:11,144 --> 00:00:13,513
+and I'm an engineer
+on the Swift-DocC team.
+
+5
+00:00:13,513 --> 00:00:15,115
+Together with
+my colleague Ethan,
+
+6
+00:00:15,115 --> 00:00:19,219
+I'm excited to give you a tour
+of Swift-DocC in Xcode 14,
+
+7
+00:00:19,219 --> 00:00:20,821
+packed with great new tools
+
+8
+00:00:20,821 --> 00:00:24,024
+to help you create
+even better documentation.
+
+9
+00:00:24,024 --> 00:00:27,494
+We introduced Swift-DocC
+last year in Xcode 13,
+
+10
+00:00:27,494 --> 00:00:31,765
+allowing you to guide developers
+through your Swift frameworks.
+
+11
+00:00:31,765 --> 00:00:35,035
+With Swift-DocC,
+you write comprehensive content,
+
+12
+00:00:35,035 --> 00:00:38,005
+from reference documentation
+for individual APIs
+
+13
+00:00:38,005 --> 00:00:41,308
+to conceptual articles that
+provide a higher-level story
+
+14
+00:00:41,308 --> 00:00:43,343
+for using these APIs together,
+
+15
+00:00:43,343 --> 00:00:45,545
+all the way
+to step-by-step tutorials
+
+16
+00:00:45,545 --> 00:00:48,882
+that walk the user
+through a task.
+
+17
+00:00:48,882 --> 00:00:50,784
+This year, with Xcode 14,
+
+18
+00:00:50,784 --> 00:00:54,288
+Swift-DocC unlocks
+brand-new, exciting workflows.
+
+19
+00:00:54,288 --> 00:00:56,590
+In addition to documenting
+frameworks,
+
+20
+00:00:56,590 --> 00:00:59,826
+we're thrilled to now
+support app projects as well,
+
+21
+00:00:59,826 --> 00:01:02,663
+so that you can easily
+collaborate with your team.
+
+22
+00:01:02,663 --> 00:01:06,233
+You can now also document
+Objective-C and C APIs
+
+23
+00:01:06,233 --> 00:01:08,235
+using Swift-DocC,
+allowing you
+
+24
+00:01:08,235 --> 00:01:11,838
+to describe all your project's
+APIs together.
+
+25
+00:01:11,838 --> 00:01:13,473
+Publishing your content
+to a website
+
+26
+00:01:13,473 --> 00:01:17,044
+is now dramatically easier,
+with out-of-the-box support
+
+27
+00:01:17,044 --> 00:01:20,347
+for static hosting environments
+like GitHub Pages.
+
+28
+00:01:20,347 --> 00:01:23,216
+And thanks to the powerful new
+navigation sidebar,
+
+29
+00:01:23,216 --> 00:01:25,852
+developers will be able
+to discover your content
+
+30
+00:01:25,852 --> 00:01:28,355
+easier than ever before.
+
+31
+00:01:28,355 --> 00:01:31,758
+Also, with Swift-DocC now being
+an open source project,
+
+32
+00:01:31,758 --> 00:01:33,193
+these new features
+were developed
+
+33
+00:01:33,193 --> 00:01:37,130
+in close collaboration
+with the open source community.
+
+34
+00:01:37,130 --> 00:01:39,999
+In this session,
+we'll take a tour of Swift-DocC
+
+35
+00:01:39,999 --> 00:01:44,004
+and the exciting new workflows
+it unlocks in Xcode 14.
+
+36
+00:01:44,004 --> 00:01:47,341
+First, we'll discover how
+to document your project's APIs
+
+37
+00:01:47,341 --> 00:01:49,910
+right inline with
+your source code.
+
+38
+00:01:49,910 --> 00:01:51,678
+Then, we'll take a look
+at seamlessly
+
+39
+00:01:51,678 --> 00:01:54,581
+publishing your content
+to a website.
+
+40
+00:01:54,581 --> 00:01:55,949
+And finally, we'll discover
+
+41
+00:01:55,949 --> 00:01:59,920
+the brand-new navigation sidebar
+on the web.
+
+42
+00:01:59,920 --> 00:02:03,090
+Let's start with
+writing documentation.
+
+43
+00:02:03,090 --> 00:02:06,927
+Good documentation is essential
+to any software project.
+
+44
+00:02:06,927 --> 00:02:08,061
+As your project evolves,
+
+45
+00:02:08,061 --> 00:02:11,131
+it's important to describe
+its functionality and design
+
+46
+00:02:11,131 --> 00:02:13,333
+so that developers
+have a solid reference point
+
+47
+00:02:13,333 --> 00:02:15,035
+when contributing.
+
+48
+00:02:15,035 --> 00:02:17,604
+Swift-DocC in Xcode
+gives you the tools you need
+
+49
+00:02:17,604 --> 00:02:19,840
+to create fantastic
+documentation,
+
+50
+00:02:19,840 --> 00:02:22,976
+using the same tools you use
+to develop code.
+
+51
+00:02:22,976 --> 00:02:24,478
+And this year,
+we're excited
+
+52
+00:02:24,478 --> 00:02:27,748
+to expand Swift-DocC
+to app projects.
+
+53
+00:02:27,748 --> 00:02:29,950
+Let's dive right in.
+
+54
+00:02:29,950 --> 00:02:32,052
+We'll document an app
+I'm working on with my team
+
+55
+00:02:32,052 --> 00:02:33,320
+called Slothy,
+
+56
+00:02:33,320 --> 00:02:37,557
+which contains both Swift
+and Objective-C source files.
+
+57
+00:02:37,557 --> 00:02:39,192
+Even with a brand-new project,
+
+58
+00:02:39,192 --> 00:02:41,561
+where I haven't written
+documentation yet,
+
+59
+00:02:41,561 --> 00:02:46,233
+you can open the Product menu
+and select Build Documentation,
+
+60
+00:02:46,233 --> 00:02:49,136
+and Xcode opens
+the documentation window,
+
+61
+00:02:49,136 --> 00:02:51,405
+where you'll see stubs
+that Swift-DocC
+
+62
+00:02:51,405 --> 00:02:54,141
+automatically generates
+for your APIs.
+
+63
+00:02:54,141 --> 00:02:57,811
+This provides a great starting
+point for filling in these pages
+
+64
+00:02:57,811 --> 00:03:00,847
+to help contributors
+navigate the project.
+
+65
+00:03:00,847 --> 00:03:04,117
+So, let's take it step by step
+to turn this content
+
+66
+00:03:04,117 --> 00:03:09,256
+into a rich and complete guide
+for contributing to our app.
+
+67
+00:03:09,256 --> 00:03:12,259
+A good place to start
+is to teach how each API
+
+68
+00:03:12,259 --> 00:03:14,361
+works individually,
+and from there,
+
+69
+00:03:14,361 --> 00:03:18,698
+to provide higher-level content
+using a documentation catalog.
+
+70
+00:03:18,698 --> 00:03:22,269
+Let's start by describing
+a view called SlothView.
+
+71
+00:03:22,269 --> 00:03:25,539
+For this documentation
+to be visible to Swift-DocC,
+
+72
+00:03:25,539 --> 00:03:28,608
+start your comment
+using three slashes.
+
+73
+00:03:28,608 --> 00:03:31,845
+Then, add a concise summary
+for your view.
+
+74
+00:03:31,845 --> 00:03:35,148
+In the built documentation page,
+this translates to text
+
+75
+00:03:35,148 --> 00:03:38,785
+displayed prominently
+right below the view's name.
+
+76
+00:03:38,785 --> 00:03:42,489
+Then, add more details
+using additional paragraphs.
+
+77
+00:03:42,489 --> 00:03:46,326
+This content appears in the
+Overview section of the page.
+
+78
+00:03:46,326 --> 00:03:50,263
+And use Swift-DocC's link syntax
+to turn references to APIs
+
+79
+00:03:50,263 --> 00:03:52,099
+into active links,
+
+80
+00:03:52,099 --> 00:03:55,802
+allowing you to quickly jump
+to Pages to learn more.
+
+81
+00:03:55,802 --> 00:03:58,572
+DocC even validates these links
+when you build,
+
+82
+00:03:58,572 --> 00:04:01,808
+so you get warnings
+if they go out of date.
+
+83
+00:04:01,808 --> 00:04:04,311
+Finally, if you wish
+to provide an example
+
+84
+00:04:04,311 --> 00:04:05,779
+of how to use this view,
+
+85
+00:04:05,779 --> 00:04:09,583
+add a code listing using the
+Markdown code block syntax.
+
+86
+00:04:09,583 --> 00:04:11,785
+Now, contributors know
+at a glance
+
+87
+00:04:11,785 --> 00:04:14,421
+how to use this view.
+
+88
+00:04:14,421 --> 00:04:17,124
+In just a few steps,
+my view's documentation
+
+89
+00:04:17,124 --> 00:04:21,161
+is now much more helpful
+to contributors of this project.
+
+90
+00:04:21,161 --> 00:04:24,865
+Next up, let's document
+an initializer.
+
+91
+00:04:24,865 --> 00:04:27,734
+Again, start by writing
+a summary.
+
+92
+00:04:27,734 --> 00:04:29,202
+For initializers and methods,
+
+93
+00:04:29,202 --> 00:04:33,273
+it's a good idea to describe
+each parameter individually.
+
+94
+00:04:33,273 --> 00:04:35,742
+You do so by adding
+a parameter list item,
+
+95
+00:04:35,742 --> 00:04:39,112
+with a short description
+of what the parameter is.
+
+96
+00:04:39,112 --> 00:04:40,447
+Notice how the content appears
+
+97
+00:04:40,447 --> 00:04:43,884
+in a separate
+Parameters section.
+
+98
+00:04:43,884 --> 00:04:46,887
+Now let's take a look
+at the Objective-C APIs
+
+99
+00:04:46,887 --> 00:04:49,089
+defined in this project.
+
+100
+00:04:49,089 --> 00:04:51,858
+New in Xcode 14,
+we're excited to bring
+
+101
+00:04:51,858 --> 00:04:53,994
+Swift-DocC's
+comprehensive tooling
+
+102
+00:04:53,994 --> 00:04:56,396
+to document Objective-C code.
+
+103
+00:04:56,396 --> 00:04:59,599
+Using the same familiar Markdown
+syntax you know and love,
+
+104
+00:04:59,599 --> 00:05:02,035
+and updated support
+in Xcode's source editor,
+
+105
+00:05:02,035 --> 00:05:04,171
+you can now
+describe and organize
+
+106
+00:05:04,171 --> 00:05:07,040
+all your project's APIs
+together.
+
+107
+00:05:07,040 --> 00:05:10,243
+And for code that can be called
+from both Swift and Objective-C,
+
+108
+00:05:10,243 --> 00:05:11,611
+there's a nifty language toggle
+
+109
+00:05:11,611 --> 00:05:15,182
+to browse the page in
+the language you're coding in.
+
+110
+00:05:15,182 --> 00:05:17,684
+Check out the developer
+documentation linked below
+
+111
+00:05:17,684 --> 00:05:20,020
+for more details.
+
+112
+00:05:20,020 --> 00:05:23,890
+Now, let's apply this
+to our Slothy project.
+
+113
+00:05:23,890 --> 00:05:27,527
+I'll describe the SLOSound class
+and its initializer.
+
+114
+00:05:27,527 --> 00:05:28,762
+Notice that because this class
+
+115
+00:05:28,762 --> 00:05:31,932
+can be used from both Swift
+and Objective-C code,
+
+116
+00:05:31,932 --> 00:05:34,401
+Xcode displays a language toggle
+allowing you
+
+117
+00:05:34,401 --> 00:05:37,938
+to browse the content
+in the language you're using.
+
+118
+00:05:37,938 --> 00:05:40,173
+Let's describe the class
+and initializer
+
+119
+00:05:40,173 --> 00:05:45,011
+using the same Markdown syntax
+you use for Swift code.
+
+120
+00:05:45,011 --> 00:05:47,113
+Great, this looks much better.
+
+121
+00:05:47,113 --> 00:05:49,449
+I've added a summary,
+an overview,
+
+122
+00:05:49,449 --> 00:05:53,019
+and for the initializer,
+a parameters section.
+
+123
+00:05:53,019 --> 00:05:55,922
+And that wraps up
+describing individual APIs.
+
+124
+00:05:55,922 --> 00:05:58,992
+By writing a few documentation
+comments in source code,
+
+125
+00:05:58,992 --> 00:06:00,894
+developers contributing
+to my project
+
+126
+00:06:00,894 --> 00:06:04,764
+have a better understanding
+of how to use its APIs.
+
+127
+00:06:04,764 --> 00:06:07,667
+Now, let's focus on creating
+a great top-level page
+
+128
+00:06:07,667 --> 00:06:08,935
+for our app.
+
+129
+00:06:08,935 --> 00:06:11,504
+This is the first page
+contributors will see,
+
+130
+00:06:11,504 --> 00:06:13,974
+so I'd like to provide
+a great introduction
+
+131
+00:06:13,974 --> 00:06:17,811
+to what the app does
+and how to contribute to it.
+
+132
+00:06:17,811 --> 00:06:19,646
+To customize the top-level page,
+
+133
+00:06:19,646 --> 00:06:23,283
+start by adding
+a documentation catalog.
+
+134
+00:06:23,283 --> 00:06:26,953
+To do so, right-click
+on your project's source folder
+
+135
+00:06:26,953 --> 00:06:29,422
+and select New File.
+
+136
+00:06:29,422 --> 00:06:32,525
+Then select
+Documentation Catalog.
+
+137
+00:06:32,525 --> 00:06:34,427
+A Documentation Catalog
+
+138
+00:06:34,427 --> 00:06:36,630
+complements your
+source code documentation
+
+139
+00:06:36,630 --> 00:06:40,267
+and contains additional
+Markdown files and media.
+
+140
+00:06:40,267 --> 00:06:42,135
+Xcode automatically adds a file
+
+141
+00:06:42,135 --> 00:06:44,437
+for the top-level page
+of your app.
+
+142
+00:06:44,437 --> 00:06:48,742
+Let's fill it in with an
+overview of what the app does.
+
+143
+00:06:48,742 --> 00:06:51,845
+Using the same syntax you use
+for documentation comments
+
+144
+00:06:51,845 --> 00:06:54,114
+in source code,
+I added a summary,
+
+145
+00:06:54,114 --> 00:06:58,618
+an overview, and even embedded
+rich content like images.
+
+146
+00:06:58,618 --> 00:07:01,288
+Great, this looks
+much more inviting.
+
+147
+00:07:01,288 --> 00:07:06,059
+Now contributors know at a
+glance what my app is about.
+
+148
+00:07:06,059 --> 00:07:06,926
+And that's it!
+
+149
+00:07:06,926 --> 00:07:09,462
+I've dramatically improved
+documentation for my app
+
+150
+00:07:09,462 --> 00:07:11,431
+and provided
+a great reference point
+
+151
+00:07:11,431 --> 00:07:13,433
+to my project's contributors.
+
+152
+00:07:13,433 --> 00:07:15,001
+They can browse
+the top-level page
+
+153
+00:07:15,001 --> 00:07:18,138
+for an overview of the project,
+and jump into each page
+
+154
+00:07:18,138 --> 00:07:23,076
+to get detailed information
+about each of its APIs.
+
+155
+00:07:23,076 --> 00:07:26,112
+Now that we've seen how to write
+and build documentation,
+
+156
+00:07:26,112 --> 00:07:28,381
+it's time to publish it
+to a website
+
+157
+00:07:28,381 --> 00:07:31,484
+so that contributors
+can easily browse it.
+
+158
+00:07:31,484 --> 00:07:33,486
+Over to you, Ethan.
+
+159
+00:07:33,486 --> 00:07:35,155
+Ethan Kusters: Thank you,
+Franklin.
+
+160
+00:07:35,155 --> 00:07:38,325
+We've been developing
+the Slothy app in a modular way
+
+161
+00:07:38,325 --> 00:07:41,528
+alongside a more generally
+useful Swift Package
+
+162
+00:07:41,528 --> 00:07:43,730
+called SlothCreator.
+
+163
+00:07:43,730 --> 00:07:45,832
+I think it would be great
+to publish SlothCreator
+
+164
+00:07:45,832 --> 00:07:48,234
+to a wider audience
+so that other developers
+
+165
+00:07:48,234 --> 00:07:51,204
+making sloth-related apps
+can make use of it.
+
+166
+00:07:51,204 --> 00:07:53,573
+As a part of this effort,
+I want to be sure
+
+167
+00:07:53,573 --> 00:07:57,210
+SlothCreator's documentation
+is easily shareable on the web,
+
+168
+00:07:57,210 --> 00:07:59,846
+so let's walk through
+Swift-DocC's brand-new,
+
+169
+00:07:59,846 --> 00:08:03,283
+simplified publishing workflow.
+
+170
+00:08:03,283 --> 00:08:05,385
+When you build documentation
+in Xcode,
+
+171
+00:08:05,385 --> 00:08:07,721
+Swift-DocC produces
+a static bundle
+
+172
+00:08:07,721 --> 00:08:09,756
+containing your documentation.
+
+173
+00:08:09,756 --> 00:08:12,225
+This bundle is called
+a DocC archive
+
+174
+00:08:12,225 --> 00:08:15,829
+and is a portable container
+for your documentation.
+
+175
+00:08:15,829 --> 00:08:19,032
+You can export it directly from
+Xcode's documentation window
+
+176
+00:08:19,032 --> 00:08:21,000
+and send it to colleagues.
+
+177
+00:08:21,000 --> 00:08:23,269
+They'll be able to open
+and browse the documentation
+
+178
+00:08:23,269 --> 00:08:26,106
+by just double-clicking
+on the archive.
+
+179
+00:08:26,106 --> 00:08:28,842
+But a DocC archive isn't just
+a portable container
+
+180
+00:08:28,842 --> 00:08:31,111
+for opening documentation
+in Xcode.
+
+181
+00:08:31,111 --> 00:08:33,580
+It also contains
+a fully featured website
+
+182
+00:08:33,580 --> 00:08:35,048
+right out of the box.
+
+183
+00:08:35,048 --> 00:08:37,684
+And new in Xcode 14,
+that DocC archive
+
+184
+00:08:37,684 --> 00:08:40,787
+is also directly compatible
+with most web servers.
+
+185
+00:08:40,787 --> 00:08:43,022
+This makes publishing
+your documentation to the web
+
+186
+00:08:43,022 --> 00:08:44,891
+easier than ever.
+
+187
+00:08:44,891 --> 00:08:47,360
+In most cases, you can
+deploy your documentation
+
+188
+00:08:47,360 --> 00:08:50,563
+by just copying the contents
+of your built DocC archive
+
+189
+00:08:50,563 --> 00:08:53,133
+into the root
+of your web server.
+
+190
+00:08:53,133 --> 00:08:55,068
+This also means
+that DocC archives
+
+191
+00:08:55,068 --> 00:08:58,371
+are now compatible with most
+managed hosting services,
+
+192
+00:08:58,371 --> 00:09:00,840
+including GitHub Pages.
+
+193
+00:09:00,840 --> 00:09:02,642
+GitHub Pages is a popular way
+
+194
+00:09:02,642 --> 00:09:04,778
+many developers
+host their documentation
+
+195
+00:09:04,778 --> 00:09:07,714
+that's integrated
+right into GitHub.com.
+
+196
+00:09:07,714 --> 00:09:08,948
+And since we've been
+using GitHub
+
+197
+00:09:08,948 --> 00:09:11,084
+for the source control
+of SlothCreator,
+
+198
+00:09:11,084 --> 00:09:13,486
+it makes sense for us to publish
+our documentation there
+
+199
+00:09:13,486 --> 00:09:14,554
+as well.
+
+200
+00:09:14,554 --> 00:09:16,856
+If you're familiar
+with using GitHub pages,
+
+201
+00:09:16,856 --> 00:09:18,992
+you'll know that,
+unlike a standard server,
+
+202
+00:09:18,992 --> 00:09:22,162
+your website is not published
+at the root path of the URL
+
+203
+00:09:22,162 --> 00:09:24,497
+but at a specific base path.
+
+204
+00:09:24,497 --> 00:09:26,232
+In this kind
+of hosting scenario,
+
+205
+00:09:26,232 --> 00:09:28,902
+you'll need to specify
+your website's base path
+
+206
+00:09:28,902 --> 00:09:30,303
+with an additional build setting
+
+207
+00:09:30,303 --> 00:09:33,406
+to produce a DocC archive
+that's compatible.
+
+208
+00:09:33,406 --> 00:09:34,874
+To fully understand
+how this works
+
+209
+00:09:34,874 --> 00:09:36,443
+and why we only need
+this configuration
+
+210
+00:09:36,443 --> 00:09:40,180
+in certain hosting scenarios --
+like on GitHub Pages --
+
+211
+00:09:40,180 --> 00:09:42,415
+let's take a look at how
+we would expect the URL
+
+212
+00:09:42,415 --> 00:09:46,886
+of a DocC archive hosted
+on your own domain might look.
+
+213
+00:09:46,886 --> 00:09:49,689
+Let's assume we already have
+a website for the Slothy app --
+
+214
+00:09:49,689 --> 00:09:52,192
+slothy.example.com --
+
+215
+00:09:52,192 --> 00:09:55,462
+and we'd like to publish the
+documentation for SlothCreator
+
+216
+00:09:55,462 --> 00:09:58,832
+as a part of that
+existing website.
+
+217
+00:09:58,832 --> 00:10:02,035
+If we just take the content of
+the SlothCreator DocC archive
+
+218
+00:10:02,035 --> 00:10:04,204
+and copy it to the root
+of our web server,
+
+219
+00:10:04,204 --> 00:10:07,140
+the reference documentation
+for SlothCreator will appear
+
+220
+00:10:07,140 --> 00:10:14,514
+at slothy.example.com/
+documentation/slothcreator.
+
+221
+00:10:14,514 --> 00:10:17,016
+Any tutorials for
+the SlothCreator package
+
+222
+00:10:17,016 --> 00:10:20,186
+would be at a neighboring
+"tutorials" path.
+
+223
+00:10:20,186 --> 00:10:22,956
+However, in this case,
+we're not going to be publishing
+
+224
+00:10:22,956 --> 00:10:24,123
+to our own domain.
+
+225
+00:10:24,123 --> 00:10:26,092
+Instead, to keep
+the documentation
+
+226
+00:10:26,092 --> 00:10:28,261
+with our GitHub repository,
+
+227
+00:10:28,261 --> 00:10:31,531
+we'll publish to the domain
+GitHub Pages provides.
+
+228
+00:10:31,531 --> 00:10:34,367
+When you create a GitHub
+Pages site for a repository,
+
+229
+00:10:34,367 --> 00:10:37,537
+the URL of that website
+is not at the root path;
+
+230
+00:10:37,537 --> 00:10:39,706
+instead, it's at
+a specific base path
+
+231
+00:10:39,706 --> 00:10:43,409
+corresponding to the name
+of the repository.
+
+232
+00:10:43,409 --> 00:10:46,913
+Generally that will be something
+like your username.github.io
+
+233
+00:10:46,913 --> 00:10:50,984
+forward-slash
+your repository name.
+
+234
+00:10:50,984 --> 00:10:53,686
+Any reference and tutorial
+documentation paths
+
+235
+00:10:53,686 --> 00:10:56,155
+are appended to that base path.
+
+236
+00:10:56,155 --> 00:10:59,092
+Because this base path
+is unique to your repository,
+
+237
+00:10:59,092 --> 00:11:01,127
+it's important to tell
+Swift-DocC what it is
+
+238
+00:11:01,127 --> 00:11:05,932
+before building a DocC archive
+for publishing to GitHub Pages.
+
+239
+00:11:05,932 --> 00:11:08,368
+There's a new build setting
+exposed in Xcode 14
+
+240
+00:11:08,368 --> 00:11:10,537
+for just this use case.
+
+241
+00:11:10,537 --> 00:11:11,371
+After configuring
+
+242
+00:11:11,371 --> 00:11:14,374
+the DocC Archive Hosting
+Base Path setting
+
+243
+00:11:14,374 --> 00:11:16,543
+to be the name
+of your GitHub repository,
+
+244
+00:11:16,543 --> 00:11:17,544
+you'll be ready to go
+
+245
+00:11:17,544 --> 00:11:20,113
+for all of your future
+documentation builds.
+
+246
+00:11:20,113 --> 00:11:23,116
+Let's take a look at how
+this works in practice.
+
+247
+00:11:23,116 --> 00:11:25,451
+Here, I've opened the
+SlothCreator Swift package
+
+248
+00:11:25,451 --> 00:11:26,753
+Franklin showed you earlier
+
+249
+00:11:26,753 --> 00:11:29,789
+as a dependency
+of the Slothy app.
+
+250
+00:11:29,789 --> 00:11:31,491
+Since we're getting close
+to publishing this package
+
+251
+00:11:31,491 --> 00:11:33,293
+for wider use,
+I'm going to go ahead
+
+252
+00:11:33,293 --> 00:11:37,397
+and publish the documentation
+we've prepared to GitHub Pages.
+
+253
+00:11:37,397 --> 00:11:39,999
+I'll begin by opening the
+framework's project settings
+
+254
+00:11:39,999 --> 00:11:42,869
+by moving my mouse
+to Xcode's Project navigator
+
+255
+00:11:42,869 --> 00:11:46,306
+and selecting
+the SlothCreator item.
+
+256
+00:11:46,306 --> 00:11:49,275
+Next, I'll select
+the SlothCreator target,
+
+257
+00:11:49,275 --> 00:11:52,378
+and then open
+the Build Settings tab.
+
+258
+00:11:52,378 --> 00:11:55,415
+In this case, I'm looking for
+a Swift-DocC-related setting,
+
+259
+00:11:55,415 --> 00:12:00,420
+so let's filter for DocC.
+
+260
+00:12:00,420 --> 00:12:04,591
+Now I'll set the DocC Archive
+Hosting Base Path setting
+
+261
+00:12:04,591 --> 00:12:10,830
+to be the name of our
+repository: sloth-creator.
+
+262
+00:12:10,830 --> 00:12:11,698
+Great!
+
+263
+00:12:11,698 --> 00:12:14,500
+Next, let's build documentation.
+
+264
+00:12:14,500 --> 00:12:17,503
+I'll move my mouse
+up to the Product menu
+
+265
+00:12:17,503 --> 00:12:21,374
+and select Build
+documentation.
+
+266
+00:12:21,374 --> 00:12:23,643
+After Xcode finishes
+compiling my project
+
+267
+00:12:23,643 --> 00:12:25,578
+and generating
+documentation for it,
+
+268
+00:12:25,578 --> 00:12:28,047
+the documentation window
+will open.
+
+269
+00:12:28,047 --> 00:12:31,417
+Here's the top-level page for
+SlothCreator's documentation.
+
+270
+00:12:31,417 --> 00:12:34,053
+Let's go ahead and export it.
+
+271
+00:12:34,053 --> 00:12:36,589
+I'll move my mouse over
+to the documentation navigator
+
+272
+00:12:36,589 --> 00:12:39,359
+and the SlothCreator
+technology item.
+
+273
+00:12:39,359 --> 00:12:44,731
+Next I'll click on the
+context menu and select Export.
+
+274
+00:12:44,731 --> 00:12:47,634
+I'm going to export it
+to a directory named "docs"
+
+275
+00:12:47,634 --> 00:12:49,602
+in the root of my repository
+
+276
+00:12:49,602 --> 00:12:51,838
+because this is how
+I've configured GitHub Pages
+
+277
+00:12:51,838 --> 00:12:54,841
+to publish
+my documentation website.
+
+278
+00:12:58,611 --> 00:13:02,749
+Now I just need to commit and
+push my changes up to GitHub.
+
+279
+00:13:02,749 --> 00:13:05,485
+Back in the main Xcode window,
+
+280
+00:13:05,485 --> 00:13:08,187
+I'll move my mouse
+up to the Source Control menu
+
+281
+00:13:08,187 --> 00:13:10,390
+and select Commit.
+
+282
+00:13:10,390 --> 00:13:12,158
+I'll select the docs directory
+
+283
+00:13:12,158 --> 00:13:14,761
+that has
+my documentation content
+
+284
+00:13:14,761 --> 00:13:16,963
+and write a commit message.
+
+285
+00:13:16,963 --> 00:13:19,799
+Let's go ahead
+and push the changes.
+
+286
+00:13:24,804 --> 00:13:26,072
+And that's it.
+
+287
+00:13:26,072 --> 00:13:27,874
+Let's go check out
+the published site.
+
+288
+00:13:27,874 --> 00:13:30,877
+I'll open up my repository
+on GitHub.com.
+
+289
+00:13:33,680 --> 00:13:35,782
+I'd already placed a link
+to the documentation site
+
+290
+00:13:35,782 --> 00:13:39,819
+in the README,
+so I'll just click on it.
+
+291
+00:13:39,819 --> 00:13:41,988
+And here we are.
+
+292
+00:13:41,988 --> 00:13:43,923
+I'm so excited to have
+the documentation
+
+293
+00:13:43,923 --> 00:13:47,026
+we worked on for SlothCreator
+easily accessible on the web.
+
+294
+00:13:47,026 --> 00:13:49,128
+I think this is going to be
+really helpful for folks
+
+295
+00:13:49,128 --> 00:13:53,299
+interested in using SlothCreator
+in their own projects.
+
+296
+00:13:53,299 --> 00:13:55,134
+Now that we've deployed
+the documentation
+
+297
+00:13:55,134 --> 00:13:56,736
+for SlothCreator once,
+
+298
+00:13:56,736 --> 00:13:58,571
+I'd really like
+to set up automation
+
+299
+00:13:58,571 --> 00:13:59,539
+to perform a deployment
+
+300
+00:13:59,539 --> 00:14:03,843
+any time the documentation
+in the repository changes.
+
+301
+00:14:03,843 --> 00:14:06,813
+Since we're releasing
+SlothCreator as a Swift Package,
+
+302
+00:14:06,813 --> 00:14:09,682
+the new Swift-DocC
+Swift Package Manager plug-in
+
+303
+00:14:09,682 --> 00:14:11,818
+is going to be
+a great help here.
+
+304
+00:14:11,818 --> 00:14:13,619
+You can use
+the Swift-DocC plug-in
+
+305
+00:14:13,619 --> 00:14:16,723
+to really simplify the process
+of building documentation
+
+306
+00:14:16,723 --> 00:14:18,658
+for Swift packages.
+
+307
+00:14:18,658 --> 00:14:20,460
+The plug-in's documentation
+is linked below
+
+308
+00:14:20,460 --> 00:14:21,894
+and I recommend
+checking it out
+
+309
+00:14:21,894 --> 00:14:24,297
+as a great starting place
+for configuring automated
+
+310
+00:14:24,297 --> 00:14:26,733
+documentation deployments
+to GitHub Pages
+
+311
+00:14:26,733 --> 00:14:29,268
+and other hosting services.
+
+312
+00:14:29,268 --> 00:14:31,304
+And of course, Swift-DocC
+continues to have
+
+313
+00:14:31,304 --> 00:14:33,740
+great command-line support
+for Xcode projects
+
+314
+00:14:33,740 --> 00:14:36,676
+with the xcodebuild docbuild
+command-line interface
+
+315
+00:14:36,676 --> 00:14:39,212
+that was introduced
+in Xcode 13.
+
+316
+00:14:39,212 --> 00:14:42,048
+Documentation for how
+to get started using xcodebuild
+
+317
+00:14:42,048 --> 00:14:46,385
+to automate GitHub Pages
+deployments is linked below.
+
+318
+00:14:46,385 --> 00:14:49,822
+We're thrilled to be releasing
+an all-new enhanced browsing
+
+319
+00:14:49,822 --> 00:14:53,593
+and navigation experience for
+Swift-DocC on the web this year.
+
+320
+00:14:53,593 --> 00:14:56,629
+Let's take a look at how
+the new navigation sidebar
+
+321
+00:14:56,629 --> 00:14:58,998
+can help readers of the
+SlothCreator documentation
+
+322
+00:14:58,998 --> 00:15:02,135
+explore what the framework
+has to offer.
+
+323
+00:15:02,135 --> 00:15:04,504
+We're back on the GitHub Pages
+site for SlothCreator,
+
+324
+00:15:04,504 --> 00:15:06,239
+and over on the left side
+of the page
+
+325
+00:15:06,239 --> 00:15:08,741
+is the new navigation sidebar.
+
+326
+00:15:08,741 --> 00:15:11,778
+I'll move my mouse over
+to the CareSchedule item
+
+327
+00:15:11,778 --> 00:15:15,548
+and expand it by clicking
+on the disclosure triangle.
+
+328
+00:15:15,548 --> 00:15:17,283
+Now I can see the pages
+that are organized
+
+329
+00:15:17,283 --> 00:15:19,252
+as children of CareSchedule
+
+330
+00:15:19,252 --> 00:15:21,687
+without even needing
+to fully open the page.
+
+331
+00:15:21,687 --> 00:15:23,156
+In this case,
+I'm interested in
+
+332
+00:15:23,156 --> 00:15:28,027
+jumping straight
+to the type's initializer.
+
+333
+00:15:28,027 --> 00:15:30,429
+I can continue navigating
+through the framework,
+
+334
+00:15:30,429 --> 00:15:35,168
+expanding other items like
+FoodGenerator and SlothFood,
+
+335
+00:15:35,168 --> 00:15:38,971
+eventually opening
+the twig page.
+
+336
+00:15:38,971 --> 00:15:40,873
+As I'm navigating between pages,
+
+337
+00:15:40,873 --> 00:15:43,910
+the state of the navigation
+sidebar stays constant,
+
+338
+00:15:43,910 --> 00:15:47,246
+allowing me to keep track of
+the pages I've already visited.
+
+339
+00:15:47,246 --> 00:15:49,615
+This allows for a natural
+exploration of the framework
+
+340
+00:15:49,615 --> 00:15:52,018
+that I really appreciate.
+
+341
+00:15:52,018 --> 00:15:54,654
+But what if I'm already familiar
+with the SlothCreator framework
+
+342
+00:15:54,654 --> 00:15:57,757
+and am looking for information
+about a specific symbol?
+
+343
+00:15:57,757 --> 00:16:00,626
+The filter field at the bottom
+of the new navigation sidebar
+
+344
+00:16:00,626 --> 00:16:02,195
+is perfect for this.
+
+345
+00:16:02,195 --> 00:16:04,463
+I'm interested in an API
+that will help me
+
+346
+00:16:04,463 --> 00:16:07,300
+increase the energy level
+of my sloths.
+
+347
+00:16:07,300 --> 00:16:10,303
+I'll move my mouse to the bottom
+of the navigator,
+
+348
+00:16:10,303 --> 00:16:15,474
+select the filter bar,
+and insert "energy."
+
+349
+00:16:15,474 --> 00:16:16,475
+Perfect!
+
+350
+00:16:16,475 --> 00:16:19,111
+This documentation
+on the energyLevel property
+
+351
+00:16:19,111 --> 00:16:21,881
+is exactly what
+I was looking for.
+
+352
+00:16:21,881 --> 00:16:23,149
+The new browsing experience
+
+353
+00:16:23,149 --> 00:16:25,785
+offered by Swift-DocC
+in Xcode 14
+
+354
+00:16:25,785 --> 00:16:27,520
+is going to bring
+your documentation site
+
+355
+00:16:27,520 --> 00:16:29,021
+to the next level.
+
+356
+00:16:29,021 --> 00:16:31,958
+We're so excited
+for you to try it out.
+
+357
+00:16:31,958 --> 00:16:34,827
+Swift-DocC's integration
+in Xcode now offers support
+
+358
+00:16:34,827 --> 00:16:37,597
+for documenting
+all of your projects.
+
+359
+00:16:37,597 --> 00:16:40,466
+This includes your
+Objective-C and Swift code
+
+360
+00:16:40,466 --> 00:16:42,602
+in application
+and framework targets,
+
+361
+00:16:42,602 --> 00:16:47,540
+whether packaged as Xcode
+projects or Swift Packages.
+
+362
+00:16:47,540 --> 00:16:49,775
+The DocC archive
+produced by Xcode 14
+
+363
+00:16:49,775 --> 00:16:53,012
+is immediately compatible
+with popular hosting services,
+
+364
+00:16:53,012 --> 00:16:54,947
+including GitHub Pages.
+
+365
+00:16:54,947 --> 00:16:57,750
+This is a game changer for
+distributing your documentation
+
+366
+00:16:57,750 --> 00:17:00,152
+to an even wider audience.
+
+367
+00:17:00,152 --> 00:17:02,221
+And finally, Swift-DocC offers
+
+368
+00:17:02,221 --> 00:17:05,625
+a powerful new navigation
+experience on the web.
+
+369
+00:17:05,625 --> 00:17:08,427
+The navigation sidebar
+is going to unlock new ways
+
+370
+00:17:08,427 --> 00:17:13,466
+of exploring and finding
+the documentation on your site.
+
+371
+00:17:13,466 --> 00:17:16,269
+To learn more about
+the new Swift-DocC sidebar
+
+372
+00:17:16,269 --> 00:17:18,437
+and how to best author
+your documentation
+
+373
+00:17:18,437 --> 00:17:20,806
+to take advantage
+of its new features,
+
+374
+00:17:20,806 --> 00:17:23,109
+check out the
+"Improve the discoverability
+
+375
+00:17:23,109 --> 00:17:26,145
+of your Swift-DocC content"
+session.
+
+376
+00:17:26,145 --> 00:17:28,848
+And to take your documentation
+even further,
+
+377
+00:17:28,848 --> 00:17:32,451
+check out the "Build interactive
+tutorials using DocC" session
+
+378
+00:17:32,451 --> 00:17:35,388
+to learn how to build
+step-by-step walk-throughs
+
+379
+00:17:35,388 --> 00:17:39,191
+to guide developers
+through your app or framework.
+
+380
+00:17:39,191 --> 00:17:41,560
+We are so excited to see
+all of the documentation
+
+381
+00:17:41,560 --> 00:17:44,764
+you write and publish
+with Xcode 14.
+
+382
+00:17:44,764 --> 00:17:46,165
+Thank you for watching.
+
+383
+00:17:46,165 --> 00:17:50,169
+♪
+

@@ -1,0 +1,974 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,378
+Prashant: Hey, everyone.
+I'm Prashant.
+
+3
+00:00:11,411 --> 00:00:16,016
+I'm an AVFoundation Engineer,
+and welcome to WWDC2022.
+
+4
+00:00:16,049 --> 00:00:18,685
+With the introduction of SharePlay,
+you can provide people
+
+5
+00:00:18,719 --> 00:00:20,721
+with a connected viewing experience
+
+6
+00:00:20,754 --> 00:00:24,024
+that lets them navigate through
+and interact with content in real time
+
+7
+00:00:24,057 --> 00:00:27,928
+all while staying completely in sync
+with the SharePlay group.
+
+8
+00:00:27,961 --> 00:00:31,965
+However, some of you might have
+targeted ads or other interstitials
+
+9
+00:00:31,999 --> 00:00:34,201
+scheduled in the content timeline,
+
+10
+00:00:34,234 --> 00:00:36,170
+making it a challenge
+to coordinate playback
+
+11
+00:00:36,203 --> 00:00:39,640
+between participants that receive ads
+of different durations
+
+12
+00:00:39,673 --> 00:00:41,642
+or say between a mixed set of participants
+
+13
+00:00:41,675 --> 00:00:44,411
+where some receive ads and some don't.
+
+14
+00:00:44,444 --> 00:00:47,214
+So if you're interested in scheduling ads
+and other interstitials
+
+15
+00:00:47,247 --> 00:00:51,084
+for coordinated playback in SharePlay,
+you've tuned in to the right session.
+
+16
+00:00:51,118 --> 00:00:55,589
+In this talk we'll start by going over
+how coordinated playback works.
+
+17
+00:00:55,622 --> 00:00:58,091
+Then we'll go over the challenges
+associated with ads
+
+18
+00:00:58,125 --> 00:01:01,028
+and other interstitials
+in coordinated playback.
+
+19
+00:01:01,061 --> 00:01:03,997
+Following that, we'll discuss
+the different viewing experiences
+
+20
+00:01:04,031 --> 00:01:06,834
+that are possible when watching ads.
+
+21
+00:01:06,867 --> 00:01:10,804
+We'll then see how one might achieve these
+for stitched-in ads.
+
+22
+00:01:10,838 --> 00:01:15,375
+And we'll also see how HLS interstitials
+work with coordinated playback.
+
+23
+00:01:15,409 --> 00:01:18,045
+And to conclude,
+we'll go over some best practices
+
+24
+00:01:18,078 --> 00:01:22,349
+that you can use to provide people with
+a really compelling SharePlay experience.
+
+25
+00:01:23,584 --> 00:01:27,788
+Lets see how coordinated playback works
+in SharePlay.
+
+26
+00:01:27,821 --> 00:01:29,923
+So while participants are in
+a FaceTime call,
+
+27
+00:01:29,957 --> 00:01:33,060
+the playback control commands originating
+on one participant's device
+
+28
+00:01:33,093 --> 00:01:36,530
+are shared across group
+so that they all play in sync.
+
+29
+00:01:36,563 --> 00:01:38,565
+While this works well
+if all the participants
+
+30
+00:01:38,599 --> 00:01:40,367
+are watching the same content,
+
+31
+00:01:40,400 --> 00:01:43,170
+what would happen if some of them
+have ads?
+
+32
+00:01:43,203 --> 00:01:44,404
+Now let's take a look at the case
+
+33
+00:01:44,438 --> 00:01:48,275
+where Alice and Bob are trying
+to watch some program content.
+
+34
+00:01:48,308 --> 00:01:52,713
+Now what we see here are the presentation
+timelines at their respective ends.
+
+35
+00:01:52,746 --> 00:01:55,182
+If it is only the program content
+that they're watching,
+
+36
+00:01:55,215 --> 00:01:58,886
+then it should be pretty straightforward
+to achieve coordinated playback.
+
+37
+00:01:58,919 --> 00:02:01,989
+You'd simply associate the groupSession
+with the playbackCoordinator,
+
+38
+00:02:02,022 --> 00:02:04,258
+and you'd be good to go.
+
+39
+00:02:04,291 --> 00:02:08,262
+Now lets say each of them have
+a program recap segment stitched in,
+
+40
+00:02:08,295 --> 00:02:10,964
+which is preceded by the studio
+or network banner.
+
+41
+00:02:10,998 --> 00:02:12,199
+This is fairly typical,
+
+42
+00:02:12,232 --> 00:02:16,170
+and since the recap segments
+and the banners match for Alice and Bob,
+
+43
+00:02:16,203 --> 00:02:19,306
+coordinated playback is still achievable.
+
+44
+00:02:19,339 --> 00:02:22,576
+But now,
+let's say Alice's geography requires
+
+45
+00:02:22,609 --> 00:02:27,281
+that the service show some statutory
+warnings before the start of the program,
+
+46
+00:02:27,314 --> 00:02:31,752
+and there might also be ads scheduled
+at different points within the program.
+
+47
+00:02:31,785 --> 00:02:36,056
+It could be that these ads
+are of different durations.
+
+48
+00:02:36,089 --> 00:02:38,525
+We can now see
+how this might pose a challenge
+
+49
+00:02:38,559 --> 00:02:41,094
+when trying to get them to play in sync.
+
+50
+00:02:41,128 --> 00:02:44,331
+For Bob, the network banner might appear
+at the very beginning,
+
+51
+00:02:44,364 --> 00:02:48,702
+but for Alice, it would appear
+only after the warnings are shown.
+
+52
+00:02:48,735 --> 00:02:52,406
+And if we were to look at some arbitrary
+time in the presentation timeline,
+
+53
+00:02:52,439 --> 00:02:56,176
+they would be watching completely
+different portions of the content.
+
+54
+00:02:56,210 --> 00:02:58,912
+Now let's take a moment to think about
+the user experiences
+
+55
+00:02:58,946 --> 00:03:01,682
+that would be possible
+in scenarios such as these.
+
+56
+00:03:01,715 --> 00:03:03,750
+For this let's consider a simpler timeline
+
+57
+00:03:03,784 --> 00:03:07,254
+where each of them have
+just the single ad stitched in.
+
+58
+00:03:08,188 --> 00:03:10,958
+In the ideal case,
+the experience shouldn't be too different
+
+59
+00:03:10,991 --> 00:03:13,627
+from where they were watching
+the program alone.
+
+60
+00:03:13,660 --> 00:03:17,831
+For that to be possible, we'd expect
+the durations of the ads to match.
+
+61
+00:03:17,865 --> 00:03:20,434
+This would be
+our preferred experience as well.
+
+62
+00:03:20,467 --> 00:03:25,472
+Now, after watching the ad, both
+of them would resume playback in sync.
+
+63
+00:03:25,506 --> 00:03:28,442
+But sometimes they might get ads
+of different durations,
+
+64
+00:03:28,475 --> 00:03:30,711
+or one of them may not have
+any ads at all.
+
+65
+00:03:30,744 --> 00:03:34,348
+So now, if they were to play in sync,
+one of two experiences is possible.
+
+66
+00:03:35,883 --> 00:03:37,651
+Once Alice finishes her ad,
+
+67
+00:03:37,684 --> 00:03:42,356
+she can then wait for Bob's ad to finish
+before resuming together in sync.
+
+68
+00:03:45,926 --> 00:03:47,928
+Or she can continue with the main program
+
+69
+00:03:47,961 --> 00:03:53,000
+and Bob would then jump ahead to catch up
+with Alice so that they stay in sync.
+
+70
+00:03:53,033 --> 00:03:56,136
+In this scenario, Bob would end up
+missing some program content
+
+71
+00:03:56,170 --> 00:03:58,939
+when catching up with Alice.
+
+72
+00:03:58,972 --> 00:04:01,575
+Now how would you
+enable these experiences?
+
+73
+00:04:01,608 --> 00:04:05,646
+You can specify these waiting policies
+at the AVPlaybackCoordinator
+
+74
+00:04:05,679 --> 00:04:09,116
+by how you populate the
+suspensionReasonsThatTriggerWaiting array.
+
+75
+00:04:09,149 --> 00:04:12,219
+The default behavior is for
+the group to not wait
+
+76
+00:04:12,252 --> 00:04:15,255
+while some of the participants
+are watching ads.
+
+77
+00:04:15,289 --> 00:04:17,124
+When these participants finish their ads,
+
+78
+00:04:17,157 --> 00:04:21,061
+they would miss some content
+to catch up with the rest of the group.
+
+79
+00:04:21,094 --> 00:04:25,432
+Alternately, if you wish for the group
+to wait while the participants watch ads,
+
+80
+00:04:25,465 --> 00:04:29,036
+you can simply include the
+"playingInterstitial" suspension reason
+
+81
+00:04:29,069 --> 00:04:32,739
+as part of the
+suspensionReasonsThatTriggerWaiting array.
+
+82
+00:04:32,773 --> 00:04:34,708
+With this policy,
+when a participant is waiting
+
+83
+00:04:34,741 --> 00:04:36,476
+for the others to complete their ads,
+
+84
+00:04:36,510 --> 00:04:41,215
+their player's timeControlStatus would be
+waitingToPlayAtSpecifiedRate
+
+85
+00:04:41,248 --> 00:04:45,752
+and the waitingReason would be
+waitingForCoordinatedPlayback.
+
+86
+00:04:45,786 --> 00:04:48,255
+So going back to the content
+described earlier,
+
+87
+00:04:48,288 --> 00:04:50,757
+how do we define these time ranges
+that are to be left out
+
+88
+00:04:50,791 --> 00:04:53,393
+of the coordinated playback timeline?
+
+89
+00:04:53,427 --> 00:04:55,529
+For instance,
+the statutory warning is something
+
+90
+00:04:55,562 --> 00:04:58,298
+that only Alice has and Bob doesn't.
+
+91
+00:04:58,332 --> 00:05:01,869
+And it's also possible that the ad breaks
+are of different durations.
+
+92
+00:05:01,902 --> 00:05:06,139
+You might be aware that HLS offers
+two ways of scheduling ads.
+
+93
+00:05:06,173 --> 00:05:09,209
+One of which would be to directly
+stitch in the ad segments
+
+94
+00:05:09,243 --> 00:05:11,979
+into the primary content's playlists.
+
+95
+00:05:12,012 --> 00:05:15,082
+So for video on demand content
+that has ads stitched in
+
+96
+00:05:15,115 --> 00:05:17,251
+using discontinuity tags,
+
+97
+00:05:17,284 --> 00:05:21,088
+you can set the ad time ranges
+on the AVPlayerPlaybackCoordinator
+
+98
+00:05:21,121 --> 00:05:23,757
+using an AVFoundation API.
+
+99
+00:05:23,790 --> 00:05:25,692
+So we've added the following
+delegate method to–
+
+100
+00:05:25,726 --> 00:05:29,329
+using which you can specify an array
+of sample accurate time ranges
+
+101
+00:05:29,363 --> 00:05:33,133
+that represent ads
+and interstitials in the content.
+
+102
+00:05:33,166 --> 00:05:36,670
+The AVPlayerPlaybackCoordinator
+would then use this information
+
+103
+00:05:36,703 --> 00:05:39,406
+to coordinate playback across the group.
+
+104
+00:05:39,439 --> 00:05:41,508
+When a participant enters this time range,
+
+105
+00:05:41,542 --> 00:05:42,910
+playback would be coordinated
+
+106
+00:05:42,943 --> 00:05:45,646
+in accordance with
+the waiting policy specified.
+
+107
+00:05:45,679 --> 00:05:48,315
+Also,
+depending on the type of interstitial,
+
+108
+00:05:48,348 --> 00:05:51,852
+you might allow for someone
+to navigate into these time ranges.
+
+109
+00:05:51,885 --> 00:05:54,688
+So if they were to seek into
+these time ranges while in SharePlay,
+
+110
+00:05:54,721 --> 00:05:58,659
+the entire group would then
+snap to the beginning of that time range.
+
+111
+00:06:00,360 --> 00:06:03,397
+This shows a playlist example
+where the ad time ranges
+
+112
+00:06:03,430 --> 00:06:07,467
+are populated by summing up the times
+reported in the EXTINF tags
+
+113
+00:06:07,501 --> 00:06:08,936
+of the playlists.
+
+114
+00:06:08,969 --> 00:06:12,940
+This assumes that the durations reported
+as part of the EXTINF tags
+
+115
+00:06:12,973 --> 00:06:17,044
+accurately reflect the media durations
+of those segments.
+
+116
+00:06:17,077 --> 00:06:19,847
+So, now what should the assets look like
+
+117
+00:06:19,880 --> 00:06:22,082
+for coordinated playback to work?
+
+118
+00:06:22,115 --> 00:06:24,017
+So if you were to look at this example,
+
+119
+00:06:24,051 --> 00:06:27,087
+Alice and Bob have different
+duration ads stitched in,
+
+120
+00:06:27,120 --> 00:06:30,757
+resulting in different asset durations.
+
+121
+00:06:30,791 --> 00:06:33,460
+For these to be considered
+SharePlay compatible,
+
+122
+00:06:33,493 --> 00:06:37,364
+we'd expect the actual content duration
+of the assets to match.
+
+123
+00:06:37,397 --> 00:06:40,534
+Note that this applies only
+to video on demand content,
+
+124
+00:06:40,567 --> 00:06:42,636
+for live content with stitched-in ads,
+
+125
+00:06:42,669 --> 00:06:46,306
+we'd expect the durations of the ad breaks
+to match for all participants.
+
+126
+00:06:46,340 --> 00:06:50,544
+If you think that it might be a challenge
+to obtain the sample accurate time ranges
+
+127
+00:06:50,577 --> 00:06:54,214
+or if you wish to dynamically schedule
+targeted ads in live content,
+
+128
+00:06:54,248 --> 00:06:57,784
+then you can use
+HLS interstitials to schedule ads.
+
+129
+00:06:57,818 --> 00:07:00,787
+In 2021, we introduced HLS interstitials
+
+130
+00:07:00,821 --> 00:07:04,558
+which offers a different,
+more flexible approach to scheduling ads.
+
+131
+00:07:04,591 --> 00:07:07,494
+For more details, check out
+the Explore dynamic pre-rolls
+
+132
+00:07:07,528 --> 00:07:11,965
+and mid-rolls in HLS talk from WWDC2021.
+
+133
+00:07:11,999 --> 00:07:15,836
+In short, ads and interstitials
+are treated as separate objects
+
+134
+00:07:15,869 --> 00:07:18,205
+outside of the content timeline.
+
+135
+00:07:18,238 --> 00:07:22,142
+These objects can be directly referenced
+via their multi variant playlist
+
+136
+00:07:22,176 --> 00:07:24,945
+and one can perform
+Server Side Ad Insertion
+
+137
+00:07:24,978 --> 00:07:27,881
+simply by including
+the multi variant playlist URI
+
+138
+00:07:27,915 --> 00:07:32,252
+as part of a date range tag
+in the primary content's media playlist,
+
+139
+00:07:32,286 --> 00:07:37,057
+or you even schedule ads on
+the client side using AVFoundation APIs.
+
+140
+00:07:37,090 --> 00:07:39,960
+If you use HLS interstitials
+to schedule ads,
+
+141
+00:07:39,993 --> 00:07:44,231
+AVFoundation automatically takes care
+of them during coordinated playback.
+
+142
+00:07:44,264 --> 00:07:47,034
+All you need to do
+is to specify the waiting policy.
+
+143
+00:07:48,535 --> 00:07:51,171
+When using HLS interstitials
+to schedule ads,
+
+144
+00:07:51,205 --> 00:07:54,341
+once again, we'd expect the primary
+content durations to match
+
+145
+00:07:54,374 --> 00:07:56,143
+across all the participants
+
+146
+00:07:56,176 --> 00:07:59,479
+for the assets
+to be considered SharePlay compatible.
+
+147
+00:07:59,513 --> 00:08:02,082
+Now let's go over some best practices
+that you can use
+
+148
+00:08:02,115 --> 00:08:05,419
+to provide people with a really good
+SharePlay experience.
+
+149
+00:08:05,452 --> 00:08:08,722
+SharePlay is meant to provide
+a seamless connected viewing experience
+
+150
+00:08:08,755 --> 00:08:10,290
+where people interact with content
+
+151
+00:08:10,324 --> 00:08:12,860
+as though they were
+watching it by themselves.
+
+152
+00:08:12,893 --> 00:08:16,430
+So with this experience in mind,
+one should strive to minimize waits
+
+153
+00:08:16,463 --> 00:08:19,199
+and content skips as much as possible.
+
+154
+00:08:19,233 --> 00:08:22,870
+So to this end, it is recommended that
+you try to align the ad break durations
+
+155
+00:08:22,903 --> 00:08:26,173
+such that the wait or skip times
+are minimized.
+
+156
+00:08:26,206 --> 00:08:29,409
+When you have mixed participant groups
+where some people have ads
+
+157
+00:08:29,443 --> 00:08:32,513
+and some don't
+and all are watching live content,
+
+158
+00:08:32,546 --> 00:08:35,415
+you can use HLS interstitials
+to schedule the ads
+
+159
+00:08:35,449 --> 00:08:38,652
+while using the default waiting policy.
+
+160
+00:08:38,685 --> 00:08:42,022
+Now, if you don't specify
+the resume offset while scheduling the ad,
+
+161
+00:08:42,055 --> 00:08:46,226
+the content would resume at an offset
+that equals the ad duration.
+
+162
+00:08:46,260 --> 00:08:48,662
+In such a scenario
+the participant without ads
+
+163
+00:08:48,695 --> 00:08:51,164
+would continue to watch
+the primary content
+
+164
+00:08:51,198 --> 00:08:55,135
+and the others would join that participant
+once they've finished watching their ads.
+
+165
+00:08:56,236 --> 00:09:00,207
+Here we have Alice, Bob, and Charlie
+watching some live content.
+
+166
+00:09:00,240 --> 00:09:03,710
+Alice being a premium subscriber
+to that service does not have any ads,
+
+167
+00:09:03,744 --> 00:09:07,047
+while Bob and Charlie have ads
+of different durations
+
+168
+00:09:07,080 --> 00:09:10,083
+all scheduled using HLS interstitials.
+
+169
+00:09:10,117 --> 00:09:12,686
+You can see how Alice continues
+to watch the program
+
+170
+00:09:12,719 --> 00:09:16,323
+while Bob and Charlie sync up with Alice
+when they come out of their ad break.
+
+171
+00:09:17,324 --> 00:09:19,059
+Now if this were a live sports game,
+
+172
+00:09:19,092 --> 00:09:22,629
+you can imagine how Alice might be
+watching the live in-stadium feed
+
+173
+00:09:22,663 --> 00:09:25,132
+while Bob and Charlie are watching ads.
+
+174
+00:09:25,165 --> 00:09:26,533
+And when they come out of their ad break,
+
+175
+00:09:26,567 --> 00:09:30,170
+it would be just in time
+for the start of play.
+
+176
+00:09:30,204 --> 00:09:33,140
+For Video on demand streams,
+where participants can't afford
+
+177
+00:09:33,173 --> 00:09:34,775
+to miss any program content,
+
+178
+00:09:34,808 --> 00:09:37,678
+you can use the wait - waiting policy.
+
+179
+00:09:37,711 --> 00:09:40,981
+Now you can share the ad schedule
+amongst the participants
+
+180
+00:09:41,014 --> 00:09:43,517
+using the GroupSessionMessenger.
+
+181
+00:09:43,550 --> 00:09:46,887
+And when someone is waiting for
+the others to finish watching their ads,
+
+182
+00:09:46,920 --> 00:09:50,457
+you'd now know exactly how long
+they would have to wait for
+
+183
+00:09:50,490 --> 00:09:52,960
+since you've already shared
+the schedules.
+
+184
+00:09:52,993 --> 00:09:55,896
+So now while they're waiting,
+you could perhaps use a different player
+
+185
+00:09:55,929 --> 00:09:57,664
+to show some interesting content,
+
+186
+00:09:57,698 --> 00:10:01,969
+like the upcoming attractions
+in your service to keep them engaged.
+
+187
+00:10:02,002 --> 00:10:04,905
+To wrap up, in order to schedule ads
+and other interstitials
+
+188
+00:10:04,938 --> 00:10:06,640
+during coordinated playback,
+
+189
+00:10:06,673 --> 00:10:09,710
+all you need to do
+is specify the waiting policy,
+
+190
+00:10:09,743 --> 00:10:12,913
+and if you have stitched-in ads,
+you can set the their time ranges
+
+191
+00:10:12,946 --> 00:10:16,617
+on the playback coordinator
+using the AVFoundation API,
+
+192
+00:10:16,650 --> 00:10:22,589
+or you could use HLS interstitials to let
+AVFoundation manage the playback of ads.
+
+193
+00:10:22,623 --> 00:10:27,160
+The ideal scenario would involve all
+participants watching the same content.
+
+194
+00:10:27,194 --> 00:10:31,164
+As much we'd like for this to be possible,
+this may not always be the case.
+
+195
+00:10:31,198 --> 00:10:34,535
+You could have a premium subscriber tier
+that receive no ads
+
+196
+00:10:34,568 --> 00:10:38,639
+and you might also have participants
+receiving ads of different durations.
+
+197
+00:10:38,672 --> 00:10:41,175
+In scenarios such as these,
+your premium subscribers
+
+198
+00:10:41,208 --> 00:10:44,111
+don't have to be
+staring at a waiting screen.
+
+199
+00:10:44,144 --> 00:10:47,347
+You could show them some
+interesting content as we saw earlier
+
+200
+00:10:47,381 --> 00:10:50,984
+or you could even build other experiences
+to keep them entertained.
+
+201
+00:10:51,018 --> 00:10:54,721
+For more ideas on how to build
+custom experiences in SharePlay,
+
+202
+00:10:54,755 --> 00:10:57,758
+check out the
+Make a great SharePlay experience talk.
+
+203
+00:10:57,791 --> 00:10:59,726
+Hope you found this session informative.
+
+204
+00:10:59,760 --> 00:11:01,595
+Enjoy the rest of WWDC.
+
+205
+00:11:01,628 --> 00:11:03,263
+Thank you.
+

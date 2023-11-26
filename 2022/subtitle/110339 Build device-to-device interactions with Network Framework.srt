@@ -1,0 +1,966 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:12,045
+Hello, everyone.
+I'm Elliot Garner.
+
+3
+00:00:12,079 --> 00:00:14,848
+I'm an engineer
+on the Internet Technologies team,
+
+4
+00:00:14,882 --> 00:00:18,852
+and today I'm going to be discussing
+how to build device-to-device experiences
+
+5
+00:00:18,886 --> 00:00:20,420
+using Network framework,
+
+6
+00:00:20,454 --> 00:00:23,924
+and its new companion framework,
+DeviceDiscoveryUI.
+
+7
+00:00:23,957 --> 00:00:26,960
+We'll start off by learning
+about cross-device connectivity,
+
+8
+00:00:26,994 --> 00:00:30,197
+and how it can improve your apps.
+
+9
+00:00:30,230 --> 00:00:33,600
+We'll explore how a new framework,
+DeviceDiscoveryUI,
+
+10
+00:00:33,634 --> 00:00:39,306
+which pairs with Network framework to make
+that connectivity as simple as possible.
+
+11
+00:00:39,339 --> 00:00:42,075
+We'll walk through a code example
+of how to update your apps
+
+12
+00:00:42,109 --> 00:00:44,311
+to use DeviceDiscoveryUI,
+
+13
+00:00:44,344 --> 00:00:47,381
+including an in-depth look
+at how to discover devices
+
+14
+00:00:47,414 --> 00:00:50,117
+using the new system device picker,
+
+15
+00:00:50,150 --> 00:00:55,255
+And how to connect to those devices
+using Network framework.
+
+16
+00:00:55,289 --> 00:00:58,258
+So let's start
+with cross-device connectivity.
+
+17
+00:00:58,292 --> 00:01:00,894
+Connecting to,
+and exchanging data between,
+
+18
+00:01:00,928 --> 00:01:04,064
+nearby devices is often essential
+for building seamless,
+
+19
+00:01:04,097 --> 00:01:07,067
+integrated experiences within your apps.
+
+20
+00:01:07,100 --> 00:01:10,737
+Fitness and meditation apps
+often work best on a large screen
+
+21
+00:01:10,771 --> 00:01:13,307
+where a coach can demonstrate moves.
+
+22
+00:01:13,340 --> 00:01:15,576
+People benefit
+from seeing their heart rate,
+
+23
+00:01:15,609 --> 00:01:20,848
+calorie burn, and movement data
+collected from their Apple Watch.
+
+24
+00:01:20,881 --> 00:01:24,685
+Likewise, gaming experiences
+can be made more immersive
+
+25
+00:01:24,718 --> 00:01:27,855
+with input and actions
+from a connected iPhone,
+
+26
+00:01:27,888 --> 00:01:33,126
+or augmented by extending a second-screen
+experience to a nearby iPad.
+
+27
+00:01:33,160 --> 00:01:38,332
+All of these experiences–
+games, fitness, and wellness apps–
+
+28
+00:01:38,365 --> 00:01:43,270
+all share a need for reliable and
+easy-to-use cross-device connectivity.
+
+29
+00:01:43,303 --> 00:01:46,039
+And that all starts
+with discovering a device.
+
+30
+00:01:46,073 --> 00:01:50,944
+To help kickstart that discovery,
+we're introducing DeviceDiscoveryUI–
+
+31
+00:01:50,978 --> 00:01:53,647
+a new framework that provides secure,
+
+32
+00:01:53,680 --> 00:01:57,885
+privacy-preserving discovery
+of nearby devices.
+
+33
+00:01:57,918 --> 00:02:02,756
+New in iOS 16, DeviceDiscoveryUI
+pairs with Network framework
+
+34
+00:02:02,789 --> 00:02:05,092
+to enable device-to-device connectivity
+
+35
+00:02:05,125 --> 00:02:10,631
+between your Apple TV apps and nearby
+iPhones, iPads, and Apple Watches.
+
+36
+00:02:12,432 --> 00:02:19,139
+DeviceDiscoveryUI provides system UI
+for easy discovery of nearby devices.
+
+37
+00:02:19,173 --> 00:02:21,074
+Once a device has been discovered,
+
+38
+00:02:21,108 --> 00:02:24,545
+your app can easily open a connection
+to that device.
+
+39
+00:02:24,578 --> 00:02:27,848
+Because this connection was established
+using system UI,
+
+40
+00:02:27,881 --> 00:02:32,386
+you don't need to worry about managing
+permissions for local network access.
+
+41
+00:02:32,419 --> 00:02:36,723
+And because the system handles
+securely establishing this connection,
+
+42
+00:02:36,757 --> 00:02:39,459
+you no longer need to implement
+your own key exchange,
+
+43
+00:02:39,493 --> 00:02:42,963
+because the platform encrypts
+transmitted data for you.
+
+44
+00:02:42,996 --> 00:02:45,899
+Here we can see that system UI in action.
+
+45
+00:02:45,933 --> 00:02:48,936
+On the left, your app's icon is displayed,
+
+46
+00:02:48,969 --> 00:02:51,839
+along with a required
+usage description string
+
+47
+00:02:51,872 --> 00:02:55,542
+explaining what your app does
+with cross-device connectivity.
+
+48
+00:02:55,576 --> 00:02:59,379
+On the right
+is the list of discovered devices.
+
+49
+00:02:59,413 --> 00:03:02,950
+Because some apps may only be available
+on specific platforms,
+
+50
+00:03:02,983 --> 00:03:05,986
+you can filter discovered devices
+by platform.
+
+51
+00:03:08,488 --> 00:03:10,924
+Upon selection of "Adam's iPhone",
+
+52
+00:03:10,958 --> 00:03:13,393
+the system prompts for permission
+to create a connection
+
+53
+00:03:13,427 --> 00:03:15,562
+between those devices.
+
+54
+00:03:15,596 --> 00:03:19,566
+With this explicit user consent,
+you no longer need to request access
+
+55
+00:03:19,600 --> 00:03:21,668
+to the entire local network.
+
+56
+00:03:21,702 --> 00:03:23,904
+And once permission has been granted,
+
+57
+00:03:23,937 --> 00:03:26,039
+your app will be launched
+on the selected device
+
+58
+00:03:26,073 --> 00:03:28,375
+to handle incoming connections.
+
+59
+00:03:29,977 --> 00:03:33,213
+This means your app no longer needs
+to be running on both devices
+
+60
+00:03:33,247 --> 00:03:35,382
+before a connection can be established.
+
+61
+00:03:35,415 --> 00:03:38,285
+When permission is granted on
+"Joe's Apple Watch",
+
+62
+00:03:38,318 --> 00:03:42,823
+the system immediately launches your app
+so the two devices can connect.
+
+63
+00:03:44,358 --> 00:03:46,760
+And if your app isn't installed
+on that device,
+
+64
+00:03:46,793 --> 00:03:49,630
+the system offers to take people
+to the App Store.
+
+65
+00:03:49,663 --> 00:03:51,899
+That way they can immediately
+download your app
+
+66
+00:03:51,932 --> 00:03:54,635
+and begin using your new features.
+
+67
+00:03:54,668 --> 00:03:57,204
+Here's how that looks on watchOS.
+
+68
+00:03:57,237 --> 00:04:01,808
+Tapping the button will immediately launch
+your app's page in the App Store,
+
+69
+00:04:01,842 --> 00:04:03,977
+for a quick and easy download.
+
+70
+00:04:04,011 --> 00:04:08,682
+So now that we've discussed what
+DeviceDiscoveryUI can do for your apps,
+
+71
+00:04:08,715 --> 00:04:11,952
+let's look at how to adopt
+this new framework.
+
+72
+00:04:13,187 --> 00:04:16,323
+In previous sessions,
+we built the Tic-Tac-Toe app
+
+73
+00:04:16,356 --> 00:04:18,058
+using Network framework.
+
+74
+00:04:18,091 --> 00:04:21,995
+Today we're gonna be updating it
+to use DeviceDiscoveryUI
+
+75
+00:04:22,029 --> 00:04:26,099
+for discovery of
+and connections to nearby devices.
+
+76
+00:04:26,133 --> 00:04:29,069
+In earlier iterations,
+our app only supported
+
+77
+00:04:29,102 --> 00:04:31,538
+playing games between iOS devices.
+
+78
+00:04:31,572 --> 00:04:35,709
+So to start, we've updated our project
+for Universal Purchase
+
+79
+00:04:35,742 --> 00:04:40,981
+and added a tvOS and watchOS target
+that all share the same bundle ID.
+
+80
+00:04:41,014 --> 00:04:45,285
+And we've changed the app so that instead
+of competing against another player,
+
+81
+00:04:45,319 --> 00:04:49,356
+you're using your device
+to play against an AI on the TV.
+
+82
+00:04:49,389 --> 00:04:52,292
+Next, we need to make additions
+to the Info.plist
+
+83
+00:04:52,326 --> 00:04:56,163
+on both our tvOS application
+as well as the other platforms
+
+84
+00:04:56,196 --> 00:05:00,000
+to declare our new Tic-Tac-Toe
+application service.
+
+85
+00:05:00,033 --> 00:05:04,071
+Finally, we'll present the new device
+picker and use the resulting endpoints
+
+86
+00:05:04,104 --> 00:05:05,706
+to make our connection.
+
+87
+00:05:05,739 --> 00:05:07,841
+Now I'm gonna shift over to Xcode
+
+88
+00:05:07,875 --> 00:05:10,644
+and show you
+what those new Info.plist keys are,
+
+89
+00:05:10,677 --> 00:05:14,014
+and how they need to be added to the app.
+
+90
+00:05:14,047 --> 00:05:19,019
+On tvOS, our app needs to tell the system
+what application services to discover,
+
+91
+00:05:19,052 --> 00:05:22,022
+and what the platforms
+those services support.
+
+92
+00:05:22,055 --> 00:05:26,894
+To do that, we need to add our new
+"Application Services" Info.plist.
+
+93
+00:05:28,595 --> 00:05:32,266
+This dictionary will map to
+one of two different arrays.
+
+94
+00:05:32,299 --> 00:05:36,303
+On tvOS, we need to declare
+the "Browses" array,
+
+95
+00:05:36,336 --> 00:05:40,541
+which contains all of the application
+services that our app discovers.
+
+96
+00:05:40,574 --> 00:05:44,411
+Each entry represents
+a different application service.
+
+97
+00:05:44,444 --> 00:05:48,682
+Our first item represents
+our Tic-Tac-Toe application service.
+
+98
+00:05:48,715 --> 00:05:51,552
+It is a dictionary
+containing our service identifier,
+
+99
+00:05:51,585 --> 00:05:55,789
+usage description,
+and platforms this service supports.
+
+100
+00:05:55,822 --> 00:06:00,227
+The service identifier is the name
+of our service, "TicTacToe".
+
+101
+00:06:00,260 --> 00:06:04,431
+The usage description is a string that
+will be displayed in the device picker
+
+102
+00:06:04,464 --> 00:06:08,869
+to explain why our app needs access
+to other local devices.
+
+103
+00:06:08,902 --> 00:06:11,772
+Finally, we have our platform support.
+
+104
+00:06:11,805 --> 00:06:15,209
+This array contains the platforms
+supported by the service,
+
+105
+00:06:15,242 --> 00:06:18,145
+and the system will filter
+discovered devices accordingly.
+
+106
+00:06:18,178 --> 00:06:24,017
+You can see here that our service supports
+iOS, iPadOS, and watchOS devices.
+
+107
+00:06:24,051 --> 00:06:28,222
+We've already updated the Info.plist
+used for iOS and iPadOS
+
+108
+00:06:28,255 --> 00:06:31,491
+with the corresponding "Application
+Services" dictionary.
+
+109
+00:06:31,525 --> 00:06:35,062
+Now we're gonna update
+the plist for watchOS.
+
+110
+00:06:35,095 --> 00:06:38,532
+This time,
+we declare the "Advertises" array.
+
+111
+00:06:38,565 --> 00:06:42,636
+Because DeviceDiscoveryUI will launch
+our app when it's not running,
+
+112
+00:06:42,669 --> 00:06:47,174
+the system uses this array
+to know which services to advertise.
+
+113
+00:06:47,207 --> 00:06:52,846
+Our entry in the "Advertises" array only
+needs the "TicTacToe" service identifier.
+
+114
+00:06:52,880 --> 00:06:56,250
+Make sure that the service identifier
+is the same for every platform
+
+115
+00:06:56,283 --> 00:06:59,620
+that was declared in the tvOS Info.plist.
+
+116
+00:06:59,653 --> 00:07:02,656
+Now that Tic-Tac-Toe is configured
+to browse for
+
+117
+00:07:02,689 --> 00:07:05,092
+and advertise our application service,
+
+118
+00:07:05,125 --> 00:07:08,262
+let's have it actually display
+the device picker UI.
+
+119
+00:07:08,295 --> 00:07:10,931
+Our usage description appears on the left.
+
+120
+00:07:10,964 --> 00:07:14,601
+We made sure this string is active
+and that it informs people
+
+121
+00:07:14,635 --> 00:07:18,305
+of why they want to connect a device
+and what data they're sharing.
+
+122
+00:07:18,338 --> 00:07:23,477
+For Tic-Tac-Toe, we're using the connected
+device as a controller to play the game.
+
+123
+00:07:23,510 --> 00:07:27,581
+Back in Xcode, because DeviceDiscoveryUI
+replaces the need
+
+124
+00:07:27,614 --> 00:07:32,286
+to manually browse for nearby devices
+and secures the connection for us,
+
+125
+00:07:32,319 --> 00:07:36,223
+we can remove the PeerBrowser file
+and our passcode extension
+
+126
+00:07:36,256 --> 00:07:40,227
+to NWParameters
+since they're no longer necessary.
+
+127
+00:07:40,260 --> 00:07:45,032
+Now, we need parameters to describe how
+we'd like to connect to nearby devices.
+
+128
+00:07:48,802 --> 00:07:51,872
+First, we use the new convenience initializer,
+
+129
+00:07:51,905 --> 00:07:54,975
+applicationService, on NWParameters,
+
+130
+00:07:55,008 --> 00:07:58,679
+which gives us everything we need
+for this kind of local connectivity.
+
+131
+00:08:00,547 --> 00:08:04,952
+Next, we can use our existing framer
+for communicating gameplay actions,
+
+132
+00:08:04,985 --> 00:08:10,390
+without any changes, and simply add it to
+the protocol stack in those parameters.
+
+133
+00:08:10,424 --> 00:08:13,760
+Now, we're ready to create
+and show the device picker.
+
+134
+00:08:13,794 --> 00:08:17,664
+The device picker is how
+our application discovers nearby iPhones,
+
+135
+00:08:17,698 --> 00:08:21,268
+iPads, and Apple Watches.
+
+136
+00:08:21,301 --> 00:08:24,738
+First, we need to check to see
+if the device picker is supported
+
+137
+00:08:24,771 --> 00:08:26,473
+on the current device.
+
+138
+00:08:26,507 --> 00:08:29,209
+To do that, we call the
+isSupported function
+
+139
+00:08:29,243 --> 00:08:33,981
+with the browse descriptor and parameters
+that we'll be using with the picker.
+
+140
+00:08:34,014 --> 00:08:38,085
+Assuming it returns true, we can go ahead
+and create the device picker.
+
+141
+00:08:40,053 --> 00:08:43,991
+We instantiate the device picker
+with the parameters we created earlier,
+
+142
+00:08:44,024 --> 00:08:47,294
+and a browse descriptor
+of type .applicationService,
+
+143
+00:08:47,327 --> 00:08:52,399
+specifying the name of the application
+service that we defined in the Info.plist.
+
+144
+00:08:55,402 --> 00:08:57,771
+Now that the device picker
+has been created,
+
+145
+00:08:57,804 --> 00:09:00,073
+we need to present the view controller.
+
+146
+00:09:00,107 --> 00:09:05,012
+The device picker needs to always be
+presented as a full screen modal view.
+
+147
+00:09:07,581 --> 00:09:12,519
+Next, we need to access
+the picker's async endpoint property.
+
+148
+00:09:12,553 --> 00:09:15,856
+Once the connection has been confirmed
+and our application has been launched
+
+149
+00:09:15,889 --> 00:09:17,357
+on the remote device,
+
+150
+00:09:17,391 --> 00:09:21,094
+we'll receive an NWEndpoint,
+and execution will continue.
+
+151
+00:09:21,128 --> 00:09:24,965
+Now that our application
+has received an NWEndpoint,
+
+152
+00:09:24,998 --> 00:09:27,868
+we can use it to connect
+to the selected device,
+
+153
+00:09:27,901 --> 00:09:31,572
+just like we did
+in prior Tic-Tac-Toe versions.
+
+154
+00:09:31,605 --> 00:09:34,608
+We'll use the same parameters
+when opening the connection
+
+155
+00:09:34,641 --> 00:09:37,244
+as provided to the device picker.
+
+156
+00:09:37,277 --> 00:09:40,781
+Aside from the parameters,
+opening a connection to this device
+
+157
+00:09:40,814 --> 00:09:43,617
+looks exactly the same as it did before.
+
+158
+00:09:44,384 --> 00:09:48,088
+Moving to the selected device,
+once our application has been launched,
+
+159
+00:09:48,121 --> 00:09:52,426
+we need to immediately fulfill the promise
+our application made to the system
+
+160
+00:09:52,459 --> 00:09:54,928
+by creating an NWListener.
+
+161
+00:09:54,962 --> 00:09:58,899
+The NWListener needs to be created
+as soon as the app is launched
+
+162
+00:09:58,932 --> 00:10:03,070
+to accept any incoming connections
+for that application service.
+
+163
+00:10:03,103 --> 00:10:07,975
+The NWListener needs to be created
+with the exact same parameters as before,
+
+164
+00:10:08,008 --> 00:10:10,911
+and we need to set the application service
+on the listener
+
+165
+00:10:10,944 --> 00:10:14,081
+using the identifier from the Info.plist.
+
+166
+00:10:14,114 --> 00:10:16,783
+When the TV opens
+a connection to this device,
+
+167
+00:10:16,817 --> 00:10:20,354
+the listener that we established
+will receive that connection here,
+
+168
+00:10:20,387 --> 00:10:23,357
+in the new connection handler,
+same as before.
+
+169
+00:10:23,390 --> 00:10:26,159
+So now that the connection
+has been properly established,
+
+170
+00:10:26,193 --> 00:10:29,096
+we need to handle
+application state transitions.
+
+171
+00:10:29,129 --> 00:10:32,866
+When our application is backgrounded,
+the connection will transition
+
+172
+00:10:32,900 --> 00:10:37,371
+to the failed state with the associated
+error ECONNABORTED.
+
+173
+00:10:37,404 --> 00:10:40,607
+If we want to continue
+communication between the devices,
+
+174
+00:10:40,641 --> 00:10:45,078
+we establish a new connection
+from the TV to the same endpoint.
+
+175
+00:10:45,112 --> 00:10:48,982
+Once started, this new connection stays
+in the preparing state
+
+176
+00:10:49,016 --> 00:10:54,087
+and moves to the ready state once
+the app is resumed on the selected device.
+
+177
+00:10:54,121 --> 00:10:57,057
+On that device,
+the new connection will be delivered
+
+178
+00:10:57,090 --> 00:11:01,195
+to the same NWListener
+and can be used to resume our activity.
+
+179
+00:11:01,228 --> 00:11:02,796
+And that's it.
+
+180
+00:11:02,829 --> 00:11:07,401
+Everything we need to do to migrate
+to DeviceDiscoveryUI is now complete.
+
+181
+00:11:07,434 --> 00:11:09,503
+Let's see our game in action.
+
+182
+00:11:09,536 --> 00:11:11,271
+The app launches on the TV,
+
+183
+00:11:11,305 --> 00:11:15,142
+and we press Find Opponent
+to present the device picker.
+
+184
+00:11:19,046 --> 00:11:22,082
+When we choose a device,
+it prompts for permission.
+
+185
+00:11:22,115 --> 00:11:26,620
+When granted, the app is launched
+immediately into our game session.
+
+186
+00:11:32,860 --> 00:11:37,731
+Now, we can play against the TV
+by placing emojis on the board.
+
+187
+00:11:43,470 --> 00:11:45,439
+Great.
+
+188
+00:11:45,472 --> 00:11:49,810
+And that's how easy it is
+to connect devices to Apple TV.
+
+189
+00:11:49,843 --> 00:11:52,813
+Tic-Tac-Toe is available
+on the developer website,
+
+190
+00:11:52,846 --> 00:11:57,150
+so you can download it and explore
+all of the code we discussed today.
+
+191
+00:11:57,184 --> 00:12:01,021
+If you have any questions,
+post them on the Developer Forums.
+
+192
+00:12:01,054 --> 00:12:04,057
+Consider adopting DeviceDiscoveryUI
+in your apps
+
+193
+00:12:04,091 --> 00:12:07,227
+to provide seamless device-to-device
+experiences.
+
+194
+00:12:07,261 --> 00:12:10,130
+And please provide us feedback.
+
+195
+00:12:10,163 --> 00:12:13,967
+We know that device-to-device
+communication is an essential experience.
+
+196
+00:12:14,001 --> 00:12:17,804
+DeviceDiscoveryUI was created
+in response to developer feedback.
+
+197
+00:12:17,838 --> 00:12:19,840
+We want to build these features with you,
+
+198
+00:12:19,873 --> 00:12:22,543
+so please file reports
+in Feedback Assistant
+
+199
+00:12:22,576 --> 00:12:25,512
+for anything that you'd like to see
+in DeviceDiscoveryUI.
+
+200
+00:12:25,546 --> 00:12:27,881
+We're excited
+to improve this technology together
+
+201
+00:12:27,915 --> 00:12:30,984
+to help make your apps even better.
+
+202
+00:12:31,018 --> 00:12:32,753
+Thank you so much for joining me,
+
+203
+00:12:32,786 --> 00:12:35,956
+and have a great WWDC 2022.
+

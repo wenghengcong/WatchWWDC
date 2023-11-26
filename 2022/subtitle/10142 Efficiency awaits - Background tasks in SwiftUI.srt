@@ -1,0 +1,1197 @@
+1
+00:00:00,234 --> 00:00:03,470
+♪ Mellow instrumental
+hip-hop music ♪
+
+2
+00:00:03,470 --> 00:00:09,409
+♪
+
+3
+00:00:09,409 --> 00:00:13,280
+Welcome to "Efficiency awaits:
+Background Tasks in SwiftUI."
+
+4
+00:00:13,280 --> 00:00:17,050
+I'm John Gallagher, an engineer
+on the watchOS Frameworks team.
+
+5
+00:00:17,050 --> 00:00:20,420
+In this talk, we'll learn
+about a new SwiftUI API
+
+6
+00:00:20,420 --> 00:00:22,990
+for handling background tasks
+using Swift Concurrency
+
+7
+00:00:22,990 --> 00:00:26,493
+and in a consistent way
+across all of Apple's platforms.
+
+8
+00:00:26,493 --> 00:00:29,930
+We'll begin by describing
+a sample app called Stormy,
+
+9
+00:00:29,930 --> 00:00:32,599
+an app for taking photos
+of the sky on stormy days
+
+10
+00:00:32,599 --> 00:00:36,236
+which makes use
+of background tasks.
+
+11
+00:00:36,236 --> 00:00:39,940
+Then, we'll dive into how
+the app uses background tasks
+
+12
+00:00:39,940 --> 00:00:44,811
+and how background tasks work
+under the hood.
+
+13
+00:00:44,811 --> 00:00:48,081
+Next, we'll learn how to handle
+those background tasks
+
+14
+00:00:48,081 --> 00:00:52,319
+using a new API in SwiftUI.
+
+15
+00:00:52,319 --> 00:00:57,124
+And finally, we'll review how
+the API uses Swift Concurrency
+
+16
+00:00:57,124 --> 00:01:03,096
+to make handling background
+tasks easier than ever.
+
+17
+00:01:03,096 --> 00:01:07,567
+The new API is shared
+across watchOS, iOS, tvOS,
+
+18
+00:01:07,567 --> 00:01:09,503
+Mac Catalyst, and Widgets,
+
+19
+00:01:09,503 --> 00:01:11,972
+including iOS apps
+running on the Mac,
+
+20
+00:01:11,972 --> 00:01:13,874
+which means the concepts
+and patterns you learn
+
+21
+00:01:13,874 --> 00:01:15,976
+handling background tasks
+for one platform
+
+22
+00:01:15,976 --> 00:01:19,046
+can apply to work you do
+on others.
+
+23
+00:01:19,046 --> 00:01:22,683
+Utilizing Swift Concurrency,
+the new API reduces the need
+
+24
+00:01:22,683 --> 00:01:25,319
+for deeply nested completion
+handlers and callbacks
+
+25
+00:01:25,319 --> 00:01:26,987
+as well as much of
+the mutable state
+
+26
+00:01:26,987 --> 00:01:29,923
+which was frequently
+a side effect.
+
+27
+00:01:29,923 --> 00:01:32,492
+Swift Concurrency's
+native task cancellation
+
+28
+00:01:32,492 --> 00:01:35,862
+helps applications gracefully
+complete tasks in a timely way
+
+29
+00:01:35,862 --> 00:01:40,100
+to avoid being quit
+in the background by the system.
+
+30
+00:01:40,100 --> 00:01:42,402
+For people who like to keep
+their head in the clouds,
+
+31
+00:01:42,402 --> 00:01:44,338
+we're going to build
+an app called Stormy
+
+32
+00:01:44,338 --> 00:01:46,506
+that will remind users
+to take photos of the sky
+
+33
+00:01:46,506 --> 00:01:49,076
+when it's stormy outside.
+
+34
+00:01:49,076 --> 00:01:51,945
+The app will show a notification
+at noon on stormy days
+
+35
+00:01:51,945 --> 00:01:56,883
+requesting that the user
+takes a picture of the sky.
+
+36
+00:01:56,883 --> 00:01:58,719
+When the user
+taps the notification,
+
+37
+00:01:58,719 --> 00:02:01,121
+they'll take a photo of the sky
+to upload to their profile
+
+38
+00:02:01,121 --> 00:02:03,090
+for future admiration.
+
+39
+00:02:03,090 --> 00:02:07,561
+We're going to upload
+this photo in the background.
+
+40
+00:02:07,561 --> 00:02:09,196
+The app will send
+another notification
+
+41
+00:02:09,196 --> 00:02:11,965
+when the upload has finished.
+
+42
+00:02:11,965 --> 00:02:15,602
+Let's dive in to how background
+tasks can let us do this.
+
+43
+00:02:15,602 --> 00:02:18,372
+In this diagram,
+we'll examine at a high level
+
+44
+00:02:18,372 --> 00:02:20,273
+how the notification
+will only get sent
+
+45
+00:02:20,273 --> 00:02:23,677
+on stormy days
+utilizing background tasks.
+
+46
+00:02:23,677 --> 00:02:26,279
+We'll represent foreground
+application runtime
+
+47
+00:02:26,279 --> 00:02:28,281
+with the bar on the left,
+
+48
+00:02:28,281 --> 00:02:32,219
+background application runtime
+with the bar in the middle,
+
+49
+00:02:32,219 --> 00:02:36,857
+and the system is represented
+on the right.
+
+50
+00:02:36,857 --> 00:02:40,027
+When our app is first launched
+to the foreground by the user,
+
+51
+00:02:40,027 --> 00:02:41,728
+we can take
+our first opportunity
+
+52
+00:02:41,728 --> 00:02:46,833
+to schedule a background app
+refresh task for noon.
+
+53
+00:02:46,833 --> 00:02:50,971
+Then, when the user leaves our
+app and the app is suspended,
+
+54
+00:02:50,971 --> 00:02:53,540
+the system will know to wake
+our application again
+
+55
+00:02:53,540 --> 00:02:57,544
+in the background
+at the time we scheduled.
+
+56
+00:02:57,544 --> 00:02:59,913
+We scheduled our task for noon,
+
+57
+00:02:59,913 --> 00:03:02,416
+so that's when system will
+wake the app in the background
+
+58
+00:03:02,416 --> 00:03:07,421
+and send a background app
+refresh task.
+
+59
+00:03:07,421 --> 00:03:08,922
+With this background runtime,
+
+60
+00:03:08,922 --> 00:03:11,324
+we need to figure out
+whether it is stormy outside,
+
+61
+00:03:11,324 --> 00:03:16,029
+and if it is,
+send a notification to the user.
+
+62
+00:03:16,029 --> 00:03:19,366
+To start, we'll make a network
+request to a weather service
+
+63
+00:03:19,366 --> 00:03:22,702
+to check the current weather.
+
+64
+00:03:22,702 --> 00:03:25,272
+With the URLSession
+scheduled for background,
+
+65
+00:03:25,272 --> 00:03:26,973
+the application can suspend
+
+66
+00:03:26,973 --> 00:03:30,710
+and wait for the network request
+to complete.
+
+67
+00:03:30,710 --> 00:03:32,179
+When the background
+network request
+
+68
+00:03:32,179 --> 00:03:33,780
+for weather data completes,
+
+69
+00:03:33,780 --> 00:03:36,850
+our application will be given
+background runtime again
+
+70
+00:03:36,850 --> 00:03:41,855
+with a new URLSession
+background task.
+
+71
+00:03:41,855 --> 00:03:44,891
+With the results of the weather
+data request in hand,
+
+72
+00:03:44,891 --> 00:03:47,961
+our application knows
+whether it is stormy outside
+
+73
+00:03:47,961 --> 00:03:50,097
+and can choose
+whether to send a notification
+
+74
+00:03:50,097 --> 00:03:55,602
+prompting the user
+to take a photo of the sky.
+
+75
+00:03:55,602 --> 00:03:58,672
+Now that our work for
+that URLSession task is done,
+
+76
+00:03:58,672 --> 00:04:02,943
+the system can once again
+suspend the application.
+
+77
+00:04:02,943 --> 00:04:06,012
+Let's dive into the details
+of a single background task
+
+78
+00:04:06,012 --> 00:04:07,814
+and see how it works.
+
+79
+00:04:07,814 --> 00:04:11,351
+To do that, we're going to take
+a closer look at the lifecycle
+
+80
+00:04:11,351 --> 00:04:14,321
+of a single app refresh
+background task.
+
+81
+00:04:14,321 --> 00:04:19,025
+Let's zoom in here a little bit.
+
+82
+00:04:19,025 --> 00:04:21,962
+First, the system
+will wake our application
+
+83
+00:04:21,962 --> 00:04:25,732
+and send it an app refresh
+background task.
+
+84
+00:04:25,732 --> 00:04:29,236
+Then, still in the background,
+we make a network request
+
+85
+00:04:29,236 --> 00:04:32,839
+to check whether
+it is stormy outside.
+
+86
+00:04:32,839 --> 00:04:35,775
+Ideally,
+our network request completes
+
+87
+00:04:35,775 --> 00:04:38,745
+within the allotted background
+runtime our application has
+
+88
+00:04:38,745 --> 00:04:41,948
+for app refresh.
+
+89
+00:04:41,948 --> 00:04:43,650
+When we get
+the network response,
+
+90
+00:04:43,650 --> 00:04:47,154
+we'd like to post
+the notification immediately.
+
+91
+00:04:47,154 --> 00:04:48,855
+With the notification posted,
+
+92
+00:04:48,855 --> 00:04:52,192
+we've completed everything we
+needed to do during app refresh
+
+93
+00:04:52,192 --> 00:04:56,296
+and the system can suspend
+the application again.
+
+94
+00:04:56,296 --> 00:04:59,232
+But what about when our
+network request for weather data
+
+95
+00:04:59,232 --> 00:05:02,068
+doesn't complete in time?
+
+96
+00:05:02,068 --> 00:05:04,838
+If an app is running low
+on background runtime
+
+97
+00:05:04,838 --> 00:05:06,239
+for the current task,
+
+98
+00:05:06,239 --> 00:05:08,942
+the system signals the app
+that the time is running low,
+
+99
+00:05:08,942 --> 00:05:13,113
+giving us a chance to handle
+this situation gracefully.
+
+100
+00:05:13,113 --> 00:05:15,515
+If applications do not signal
+that they've completed
+
+101
+00:05:15,515 --> 00:05:18,118
+their background work
+before runtime expires,
+
+102
+00:05:18,118 --> 00:05:20,720
+the application may be quit
+by the system and throttled
+
+103
+00:05:20,720 --> 00:05:24,524
+for future
+background task requests.
+
+104
+00:05:24,524 --> 00:05:27,427
+In this case, we should make
+sure that our network request
+
+105
+00:05:27,427 --> 00:05:29,829
+is a background
+network request,
+
+106
+00:05:29,829 --> 00:05:33,233
+which will allow us to complete
+our app refresh task immediately
+
+107
+00:05:33,233 --> 00:05:34,467
+and get woken again
+
+108
+00:05:34,467 --> 00:05:36,102
+for additional
+background runtime
+
+109
+00:05:36,102 --> 00:05:39,839
+when the network
+request completes.
+
+110
+00:05:39,839 --> 00:05:42,075
+With our background
+URLSession scheduled,
+
+111
+00:05:42,075 --> 00:05:45,645
+the system can suspend
+the application again.
+
+112
+00:05:45,645 --> 00:05:49,783
+Now, let's dive into how the
+BackgroundTask API in SwiftUI
+
+113
+00:05:49,783 --> 00:05:52,686
+can help us build Stormy.
+
+114
+00:05:52,686 --> 00:05:56,356
+To begin,
+we'll need a basic application.
+
+115
+00:05:56,356 --> 00:06:00,293
+Then, we'll write a function to
+schedule background app refresh
+
+116
+00:06:00,293 --> 00:06:02,796
+for noon tomorrow.
+
+117
+00:06:02,796 --> 00:06:07,601
+First, we create a date
+representing noon tomorrow.
+
+118
+00:06:07,601 --> 00:06:10,904
+Then, we create
+a background app refresh request
+
+119
+00:06:10,904 --> 00:06:13,406
+with an earliest begin date
+of noon tomorrow
+
+120
+00:06:13,406 --> 00:06:15,742
+and submit it to the scheduler.
+
+121
+00:06:15,742 --> 00:06:18,078
+This is what tells the system
+to wake our application
+
+122
+00:06:18,078 --> 00:06:21,014
+tomorrow at noon.
+
+123
+00:06:21,014 --> 00:06:22,916
+We'll want to call this function
+
+124
+00:06:22,916 --> 00:06:25,118
+when the user
+first opens the application
+
+125
+00:06:25,118 --> 00:06:29,122
+and requests daily
+storm notifications at noon.
+
+126
+00:06:29,122 --> 00:06:31,224
+We can register
+a handler corresponding
+
+127
+00:06:31,224 --> 00:06:32,859
+to the background
+task we scheduled
+
+128
+00:06:32,859 --> 00:06:38,098
+by using the new background task
+scene modifier.
+
+129
+00:06:38,098 --> 00:06:40,367
+When the app receives
+a background task,
+
+130
+00:06:40,367 --> 00:06:42,636
+any blocks registered
+with this modifier
+
+131
+00:06:42,636 --> 00:06:46,439
+that match the background task
+received are run.
+
+132
+00:06:46,439 --> 00:06:50,176
+In this case, we used
+the appRefresh task type
+
+133
+00:06:50,176 --> 00:06:51,745
+which can be scheduled
+in advance
+
+134
+00:06:51,745 --> 00:06:54,447
+to provide our application
+with a limited amount of runtime
+
+135
+00:06:54,447 --> 00:06:57,584
+in the background
+at a desired date.
+
+136
+00:06:57,584 --> 00:06:59,953
+Using the same identifier
+for the request
+
+137
+00:06:59,953 --> 00:07:02,822
+and the handler
+in the background task modifier
+
+138
+00:07:02,822 --> 00:07:05,592
+lets the system identify
+which handler to call
+
+139
+00:07:05,592 --> 00:07:10,730
+when the corresponding task
+is received by your application.
+
+140
+00:07:10,730 --> 00:07:12,265
+In order for us to be sure that
+
+141
+00:07:12,265 --> 00:07:14,134
+we are scheduled again
+for tomorrow,
+
+142
+00:07:14,134 --> 00:07:16,369
+we'll start our background task
+by calling
+
+143
+00:07:16,369 --> 00:07:19,339
+the scheduleAppRefresh
+function we just wrote
+
+144
+00:07:19,339 --> 00:07:24,911
+to schedule background runtime
+again for tomorrow at noon.
+
+145
+00:07:24,911 --> 00:07:28,281
+Now that our background runtime
+at noon is recurring,
+
+146
+00:07:28,281 --> 00:07:29,783
+we make our network request
+
+147
+00:07:29,783 --> 00:07:31,718
+to check whether
+it is stormy outside
+
+148
+00:07:31,718 --> 00:07:36,323
+and wait for the result
+using the await Swift keyword.
+
+149
+00:07:36,323 --> 00:07:38,858
+Then, if our network request
+has returned
+
+150
+00:07:38,858 --> 00:07:40,927
+and it is indeed stormy outside,
+
+151
+00:07:40,927 --> 00:07:43,697
+we await sending
+the notification to the user
+
+152
+00:07:43,697 --> 00:07:46,833
+prompting them to upload
+a photo of the sky.
+
+153
+00:07:46,833 --> 00:07:48,902
+When the body
+of our closure returns,
+
+154
+00:07:48,902 --> 00:07:50,403
+the underlying background task
+
+155
+00:07:50,403 --> 00:07:52,305
+assigned to our application
+by the system
+
+156
+00:07:52,305 --> 00:07:54,708
+is implicitly marked
+as complete,
+
+157
+00:07:54,708 --> 00:07:58,511
+and the system can suspend
+our application again.
+
+158
+00:07:58,511 --> 00:08:01,748
+Here, using Swift Concurrency
+has let do potentially
+
+159
+00:08:01,748 --> 00:08:04,250
+long-running operations
+in our background task
+
+160
+00:08:04,250 --> 00:08:06,419
+without the need
+for an explicit callback
+
+161
+00:08:06,419 --> 00:08:08,588
+for when the work
+has completed.
+
+162
+00:08:08,588 --> 00:08:11,024
+Many APIs
+across Apple Platforms,
+
+163
+00:08:11,024 --> 00:08:12,726
+such as adding a notification,
+
+164
+00:08:12,726 --> 00:08:14,661
+already support
+Swift Concurrency
+
+165
+00:08:14,661 --> 00:08:16,830
+for asynchronous operations.
+
+166
+00:08:16,830 --> 00:08:19,999
+Here, the notifyForPhoto
+async function
+
+167
+00:08:19,999 --> 00:08:22,135
+can be implemented
+in a straightforward way
+
+168
+00:08:22,135 --> 00:08:24,804
+using the asynchronous
+addNotification method
+
+169
+00:08:24,804 --> 00:08:29,075
+found on
+UserNotificationCenter.
+
+170
+00:08:29,075 --> 00:08:32,512
+Let's dive in to how Swift
+Concurrency and async/await
+
+171
+00:08:32,512 --> 00:08:34,314
+do some heavy lifting for us
+
+172
+00:08:34,314 --> 00:08:38,451
+and make it easier than ever
+to handle background tasks.
+
+173
+00:08:38,451 --> 00:08:41,121
+Let's write the asynchronous
+isStormy function
+
+174
+00:08:41,121 --> 00:08:43,490
+that we've been referencing.
+
+175
+00:08:43,490 --> 00:08:46,292
+This async function is going to
+need to make a network request
+
+176
+00:08:46,292 --> 00:08:49,562
+checking the weather outside.
+
+177
+00:08:49,562 --> 00:08:52,198
+To start, we'll get
+the shared URLSession
+
+178
+00:08:52,198 --> 00:08:56,336
+and instantiate a request
+for weather data.
+
+179
+00:08:56,336 --> 00:08:59,005
+URLSession has adopted
+Swift Concurrency
+
+180
+00:08:59,005 --> 00:09:01,274
+and has a method for downloading
+data from the network
+
+181
+00:09:01,274 --> 00:09:06,479
+that can be awaited
+from async contexts.
+
+182
+00:09:06,479 --> 00:09:08,581
+With the network response
+in hand,
+
+183
+00:09:08,581 --> 00:09:12,786
+we can read the weather data
+and return our result.
+
+184
+00:09:12,786 --> 00:09:14,788
+But what about
+when our application
+
+185
+00:09:14,788 --> 00:09:16,656
+can't complete
+the network request
+
+186
+00:09:16,656 --> 00:09:19,926
+before our runtime expires?
+
+187
+00:09:19,926 --> 00:09:23,296
+Recall that in this case,
+we wanted to make sure that
+
+188
+00:09:23,296 --> 00:09:27,167
+we had set up our URLSession
+as a background session
+
+189
+00:09:27,167 --> 00:09:30,103
+and to ensure that it will send
+launch events to our application
+
+190
+00:09:30,103 --> 00:09:34,441
+using a URLSession
+background task.
+
+191
+00:09:34,441 --> 00:09:37,010
+Back to our code.
+
+192
+00:09:37,010 --> 00:09:41,448
+We had used
+the shared URLSession.
+
+193
+00:09:41,448 --> 00:09:44,451
+Instead, we should create
+a URLSession
+
+194
+00:09:44,451 --> 00:09:46,953
+from a background
+configuration with
+
+195
+00:09:46,953 --> 00:09:51,191
+the sessionSendsLaunchEvents
+property set to true.
+
+196
+00:09:51,191 --> 00:09:54,661
+This tells the system that some
+network requests should run
+
+197
+00:09:54,661 --> 00:09:58,398
+even when the app is suspended
+and to then wake the app
+
+198
+00:09:58,398 --> 00:10:02,902
+for a URLSession background task
+when that request completes.
+
+199
+00:10:02,902 --> 00:10:06,372
+Note that this is especially
+important on watchOS
+
+200
+00:10:06,372 --> 00:10:09,409
+as all network requests made by
+apps running in the background
+
+201
+00:10:09,409 --> 00:10:16,049
+on watchOS must be requested
+through background URLSessions.
+
+202
+00:10:16,049 --> 00:10:18,318
+We're not quite done though.
+
+203
+00:10:18,318 --> 00:10:22,322
+Recall that when our background
+task runtime is expiring,
+
+204
+00:10:22,322 --> 00:10:24,390
+the system will cancel
+the async task
+
+205
+00:10:24,390 --> 00:10:26,025
+that is running
+the closure provided
+
+206
+00:10:26,025 --> 00:10:28,928
+to the background task
+modifier.
+
+207
+00:10:28,928 --> 00:10:32,465
+This means that
+the network request made here
+
+208
+00:10:32,465 --> 00:10:38,771
+will also be cancelled when our
+background runtime is expiring.
+
+209
+00:10:38,771 --> 00:10:41,040
+To respond to and handle
+that cancellation,
+
+210
+00:10:41,040 --> 00:10:43,810
+we can use the
+withTaskCancellationHandler
+
+211
+00:10:43,810 --> 00:10:47,113
+function built
+in to Swift Concurrency.
+
+212
+00:10:47,113 --> 00:10:49,482
+Instead of awaiting
+the result directly,
+
+213
+00:10:49,482 --> 00:10:54,721
+we place our download into a
+withTaskCancellationHandler call
+
+214
+00:10:54,721 --> 00:10:57,056
+and await this as well.
+
+215
+00:10:57,056 --> 00:11:00,326
+The first block passed to
+withTaskCancellationHandler
+
+216
+00:11:00,326 --> 00:11:03,897
+is the async procedure
+we'd like to run and await.
+
+217
+00:11:03,897 --> 00:11:07,767
+The second onCancel trailing
+closure is code that will run
+
+218
+00:11:07,767 --> 00:11:10,236
+when the task is cancelled.
+
+219
+00:11:10,236 --> 00:11:13,506
+Here, when the immediate
+network request is cancelled
+
+220
+00:11:13,506 --> 00:11:15,441
+due to our runtime expiring,
+
+221
+00:11:15,441 --> 00:11:19,112
+we promote the network request
+to a background download task,
+
+222
+00:11:19,112 --> 00:11:20,647
+on which we can call resume,
+
+223
+00:11:20,647 --> 00:11:23,149
+triggering the background
+download that will persist
+
+224
+00:11:23,149 --> 00:11:26,286
+even when our app is suspended.
+
+225
+00:11:26,286 --> 00:11:30,023
+This code is not making the
+underlying network request twice
+
+226
+00:11:30,023 --> 00:11:33,226
+as we're using the same
+URLSession to back both,
+
+227
+00:11:33,226 --> 00:11:36,930
+and URLSession will deduplicate
+any in-process requests
+
+228
+00:11:36,930 --> 00:11:41,301
+under the hood.
+
+229
+00:11:41,301 --> 00:11:44,604
+Finally, we need to ensure
+that our application is set up
+
+230
+00:11:44,604 --> 00:11:48,274
+to handle a launch
+from a background URLSession.
+
+231
+00:11:48,274 --> 00:11:51,077
+We can use the background task
+modifier again,
+
+232
+00:11:51,077 --> 00:11:54,781
+but this time with
+the URLSession task type.
+
+233
+00:11:54,781 --> 00:11:56,482
+By using the same identifier
+
+234
+00:11:56,482 --> 00:11:59,886
+for the background URLSession
+configuration we made earlier,
+
+235
+00:11:59,886 --> 00:12:02,755
+we can ensure
+this block is only called
+
+236
+00:12:02,755 --> 00:12:08,661
+when that specific URLSession
+produces a background task.
+
+237
+00:12:08,661 --> 00:12:12,131
+We've taken a dive into
+the new unified SwiftUI API
+
+238
+00:12:12,131 --> 00:12:13,766
+for handling background tasks
+
+239
+00:12:13,766 --> 00:12:16,302
+and discovered how Swift
+Concurrency makes it easier
+
+240
+00:12:16,302 --> 00:12:20,607
+than ever for us to manage task
+completion and expiration.
+
+241
+00:12:20,607 --> 00:12:23,376
+For more information
+about Swift Concurrency,
+
+242
+00:12:23,376 --> 00:12:25,945
+check out the
+"Meet Async/await in Swift" talk
+
+243
+00:12:25,945 --> 00:12:29,048
+from WWDC 2021.
+
+244
+00:12:29,048 --> 00:12:31,384
+And to learn more about
+concurrency in SwiftUI,
+
+245
+00:12:31,384 --> 00:12:34,053
+we recommend "Discover
+Concurrency in SwiftUI,"
+
+246
+00:12:34,053 --> 00:12:37,090
+also from WWDC 2021.
+
+247
+00:12:37,090 --> 00:12:38,091
+Thanks for watching
+
+248
+00:12:38,091 --> 00:12:41,794
+"Efficiency awaits:
+Background Tasks in SwiftUI."
+
+249
+00:12:41,794 --> 00:12:46,132
+♪
+

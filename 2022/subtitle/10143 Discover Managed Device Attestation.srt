@@ -1,0 +1,1700 @@
+1
+00:00:00,501 --> 00:00:08,509
+♪ ♪
+
+2
+00:00:09,309 --> 00:00:11,178
+Bob: Hi, I'm Bob Whiteman,
+
+3
+00:00:11,211 --> 00:00:13,747
+Senior iOS Device Management Engineer.
+
+4
+00:00:13,780 --> 00:00:17,651
+It is my pleasure to share with you
+an important new security feature
+
+5
+00:00:17,684 --> 00:00:22,623
+for managed devices in enterprise
+and education environments.
+
+6
+00:00:22,656 --> 00:00:26,593
+Let's start by reviewing
+the device security landscape.
+
+7
+00:00:26,627 --> 00:00:29,596
+Your users need to access
+organization resources,
+
+8
+00:00:29,630 --> 00:00:34,067
+such as websites,
+application servers, and databases.
+
+9
+00:00:34,101 --> 00:00:39,006
+And there's attackers who also
+want to access those resources.
+
+10
+00:00:39,039 --> 00:00:43,277
+The classic model for securing resources
+is perimeter security.
+
+11
+00:00:43,310 --> 00:00:46,413
+You draw a security boundary
+around an intranet,
+
+12
+00:00:46,446 --> 00:00:49,216
+and stand up a firewall or VPN
+
+13
+00:00:49,249 --> 00:00:53,020
+that permits legitimate clients
+and rejects threats.
+
+14
+00:00:53,053 --> 00:00:59,259
+But this model hasn't kept up with the way
+people interact with modern organizations.
+
+15
+00:00:59,293 --> 00:01:04,331
+Cloud service providers put resources
+outside the perimeter.
+
+16
+00:01:04,364 --> 00:01:07,501
+Threats can start
+from inside the perimeter.
+
+17
+00:01:08,902 --> 00:01:13,707
+And threats can spoof legitimate clients
+to penetrate the perimeter.
+
+18
+00:01:15,442 --> 00:01:20,080
+A more modern security model
+does not trust a network perimeter.
+
+19
+00:01:20,113 --> 00:01:24,451
+Instead, each resource performs
+its own trust evaluation.
+
+20
+00:01:24,484 --> 00:01:28,188
+This is a core principle
+of zero trust architecture.
+
+21
+00:01:29,623 --> 00:01:33,193
+You can think of trust evaluation
+as a function:
+
+22
+00:01:33,227 --> 00:01:36,864
+the input is posture information
+about the client,
+
+23
+00:01:36,897 --> 00:01:41,502
+and the output is the decision
+to grant or deny access.
+
+24
+00:01:41,535 --> 00:01:45,873
+It's critical to get
+trust evaluation right.
+
+25
+00:01:45,906 --> 00:01:49,643
+A false negative gets in the way
+of user activities,
+
+26
+00:01:49,676 --> 00:01:55,682
+or worse, a false positive allows
+an attacker to access your resources.
+
+27
+00:01:55,716 --> 00:02:00,521
+And that means having accurate
+posture information is also critical.
+
+28
+00:02:00,554 --> 00:02:03,824
+Let's investigate
+common components of posture.
+
+29
+00:02:03,857 --> 00:02:08,161
+You use all available information about
+the client and its request:
+
+30
+00:02:08,195 --> 00:02:09,897
+who is making the request,
+
+31
+00:02:09,930 --> 00:02:13,667
+what device they're using,
+where they are, and so on.
+
+32
+00:02:13,700 --> 00:02:16,103
+Trust evaluation may use different details
+
+33
+00:02:16,136 --> 00:02:20,240
+within the posture
+for accessing different resources.
+
+34
+00:02:20,274 --> 00:02:25,245
+Accessing a low-security resource
+may only require the user's identity,
+
+35
+00:02:25,279 --> 00:02:30,684
+but accessing critical infrastructure
+may require evaluating all posture items.
+
+36
+00:02:30,717 --> 00:02:34,555
+It's up to the organization
+to decide which details are relevant.
+
+37
+00:02:36,190 --> 00:02:40,093
+One central element of posture
+is the user's identity.
+
+38
+00:02:40,127 --> 00:02:42,896
+This indicates who is making the request.
+
+39
+00:02:44,364 --> 00:02:48,435
+Apple devices provide several technologies
+to support user identity,
+
+40
+00:02:48,468 --> 00:02:51,605
+such as the Extensible Single Sign On
+feature,
+
+41
+00:02:51,638 --> 00:02:54,208
+including the built-in Kerberos extension,
+
+42
+00:02:54,241 --> 00:02:59,146
+to facilitate user authentication
+for apps, websites, and accounts.
+
+43
+00:02:59,179 --> 00:03:02,015
+And the new
+Enrollment Single Sign On feature
+
+44
+00:03:02,049 --> 00:03:05,853
+lets an app facilitate
+user authentications during and after
+
+45
+00:03:05,886 --> 00:03:09,323
+the enrollment process
+of User Enrollments.
+
+46
+00:03:09,356 --> 00:03:12,359
+But this session isn't about
+user identity,
+
+47
+00:03:12,392 --> 00:03:15,262
+it's about device identity.
+
+48
+00:03:15,295 --> 00:03:20,434
+This element of posture indicates
+which device is making the request.
+
+49
+00:03:22,102 --> 00:03:26,406
+The UDID that the device reports
+in each MDM communication
+
+50
+00:03:26,440 --> 00:03:31,945
+is the primary way that your MDM server
+knows which device it's managing.
+
+51
+00:03:31,979 --> 00:03:35,582
+The DeviceInformation query
+also provides to the MDM server
+
+52
+00:03:35,616 --> 00:03:39,887
+attributes of the device,
+including the serial number.
+
+53
+00:03:39,920 --> 00:03:44,625
+A managed device often communicates
+with other systems inside the organization
+
+54
+00:03:44,658 --> 00:03:47,528
+aside from the MDM server.
+
+55
+00:03:47,561 --> 00:03:52,766
+So, often the MDM server configures
+the device with client certificates
+
+56
+00:03:52,799 --> 00:03:57,504
+that declare the device's identity
+to those other systems.
+
+57
+00:03:57,538 --> 00:04:01,041
+These methods of identifying a device
+have served us well,
+
+58
+00:04:01,074 --> 00:04:06,980
+but they amount to trusting that the
+device is the one that it claims to be.
+
+59
+00:04:07,014 --> 00:04:08,982
+As the landscape has changed,
+
+60
+00:04:09,016 --> 00:04:11,818
+with devices more distributed
+than ever before,
+
+61
+00:04:11,852 --> 00:04:14,488
+our security needs have evolved.
+
+62
+00:04:14,521 --> 00:04:18,225
+To address this,
+I'm excited to share a powerful new method
+
+63
+00:04:18,258 --> 00:04:21,094
+for proving a device's identity,
+
+64
+00:04:21,128 --> 00:04:24,598
+Managed Device Attestation.
+
+65
+00:04:24,631 --> 00:04:30,237
+With Managed Device Attestation, a device
+provides strong evidence about itself
+
+66
+00:04:30,270 --> 00:04:32,039
+when making a request.
+
+67
+00:04:32,072 --> 00:04:34,908
+It improves posture information,
+
+68
+00:04:34,942 --> 00:04:39,012
+so trust evaluations based on that
+are more accurate.
+
+69
+00:04:39,046 --> 00:04:43,283
+In short, Managed Device Attestation
+means legitimate devices
+
+70
+00:04:43,317 --> 00:04:48,889
+reliably access resources,
+and attackers are thwarted.
+
+71
+00:04:48,922 --> 00:04:53,360
+This release brings
+Managed Device Attestation for iOS 16,
+
+72
+00:04:53,393 --> 00:04:58,031
+iPadOS 16, and tvOS 16.
+
+73
+00:04:58,065 --> 00:05:02,803
+This session we'll start with an overview
+of the new attestation features,
+
+74
+00:05:02,836 --> 00:05:06,673
+explain the benefits
+of using attestations,
+
+75
+00:05:06,707 --> 00:05:10,644
+and then dive into
+the implementation details.
+
+76
+00:05:10,677 --> 00:05:14,648
+First, what are attestations?
+
+77
+00:05:14,681 --> 00:05:18,185
+An attestation is a declaration of a fact.
+
+78
+00:05:18,218 --> 00:05:21,788
+If you trust the entity making the claim,
+
+79
+00:05:21,822 --> 00:05:25,092
+you accept that the fact is true.
+
+80
+00:05:25,125 --> 00:05:30,297
+In software, an attestation is a fact
+that is cryptographically signed.
+
+81
+00:05:30,330 --> 00:05:33,400
+This is usually an X.509 certificate.
+
+82
+00:05:33,433 --> 00:05:38,105
+If you trust the signer,
+you accept that the fact is true.
+
+83
+00:05:38,138 --> 00:05:40,674
+For Managed Device Attestation,
+
+84
+00:05:40,707 --> 00:05:45,012
+the facts are the identity
+and other properties of a device,
+
+85
+00:05:45,045 --> 00:05:47,648
+and the signer is Apple.
+
+86
+00:05:47,681 --> 00:05:51,885
+Accepting the accuracy of these
+device facts requires trusting Apple.
+
+87
+00:05:51,919 --> 00:05:57,658
+However, it doesn't require trusting
+every line of code ever written by Apple.
+
+88
+00:05:58,525 --> 00:06:01,795
+It only requires trusting
+the Secure Enclave
+
+89
+00:06:01,828 --> 00:06:03,997
+and Apple's attestation servers,
+
+90
+00:06:04,031 --> 00:06:08,635
+which access Apple's manufacturing records
+and operating system catalog.
+
+91
+00:06:08,669 --> 00:06:11,939
+And if you keep your data
+on Apple devices at all,
+
+92
+00:06:11,972 --> 00:06:15,309
+you're implicitly trusting those.
+
+93
+00:06:15,342 --> 00:06:20,747
+Here's how we're bringing the power
+of attestations to managed devices.
+
+94
+00:06:20,781 --> 00:06:26,119
+Managed Device Attestation offers two ways
+to use attestation certificates.
+
+95
+00:06:26,153 --> 00:06:29,623
+We've enhanced
+the DeviceInformation MDM command,
+
+96
+00:06:29,656 --> 00:06:34,661
+which makes the benefits of attestation
+available to the MDM server.
+
+97
+00:06:34,695 --> 00:06:39,366
+And we've added support for the Automatic
+Certificate Management Environment,
+
+98
+00:06:39,399 --> 00:06:44,004
+or ACME, protocol
+by adding an ACME profile payload,
+
+99
+00:06:44,037 --> 00:06:46,306
+which makes the benefits of attestation
+available
+
+100
+00:06:46,340 --> 00:06:49,543
+throughout the organization's
+infrastructure.
+
+101
+00:06:50,711 --> 00:06:53,046
+For DeviceInformation attestation,
+
+102
+00:06:53,080 --> 00:06:58,919
+the MDM server issues a DeviceInformation
+query and specifies some new keys.
+
+103
+00:06:58,952 --> 00:07:02,489
+The device obtains an attestation
+from Apple’s servers
+
+104
+00:07:02,523 --> 00:07:05,225
+and returns it to the MDM server.
+
+105
+00:07:05,259 --> 00:07:08,462
+Then the MDM server
+evaluates the attestation.
+
+106
+00:07:10,297 --> 00:07:11,965
+But be careful.
+
+107
+00:07:11,999 --> 00:07:16,036
+DeviceInformation attestation declares
+to the MDM server,
+
+108
+00:07:16,069 --> 00:07:18,972
+"A device exists with these properties."
+
+109
+00:07:19,006 --> 00:07:23,510
+It does not prove that the device the MDM
+server is currently communicating with
+
+110
+00:07:23,544 --> 00:07:25,712
+is that same device.
+
+111
+00:07:25,746 --> 00:07:28,815
+For that,
+you need ACME payload attestation.
+
+112
+00:07:31,151 --> 00:07:34,721
+ACME payload attestation
+provides the strongest proof
+
+113
+00:07:34,755 --> 00:07:37,090
+of the identity of the device.
+
+114
+00:07:37,124 --> 00:07:40,427
+When you install a profile
+containing an ACME payload,
+
+115
+00:07:40,460 --> 00:07:45,299
+the device requests a certificate
+from an organization ACME server.
+
+116
+00:07:45,332 --> 00:07:49,503
+This is very similar
+to installing a SCEP payload.
+
+117
+00:07:49,536 --> 00:07:53,440
+The device provides an attestation
+to the ACME server.
+
+118
+00:07:53,473 --> 00:07:57,244
+Based upon this strong proof
+of the identity of the device,
+
+119
+00:07:57,277 --> 00:08:00,447
+the ACME server issues
+a new client certificate
+
+120
+00:08:00,480 --> 00:08:04,017
+that the rest of
+your organization's servers trust.
+
+121
+00:08:04,051 --> 00:08:06,820
+These two new features use
+attestation certificates
+
+122
+00:08:06,854 --> 00:08:08,689
+to prove several things:
+
+123
+00:08:08,722 --> 00:08:11,792
+the device is genuine Apple hardware;
+
+124
+00:08:11,825 --> 00:08:15,495
+the device is a specific device;
+
+125
+00:08:15,529 --> 00:08:18,832
+the device has certain properties;
+
+126
+00:08:18,866 --> 00:08:22,836
+and a private key is bound to the device.
+
+127
+00:08:22,870 --> 00:08:26,573
+And it proves to different servers
+that they are communicating
+
+128
+00:08:26,607 --> 00:08:28,642
+with the same device.
+
+129
+00:08:28,675 --> 00:08:32,079
+How do these attestations benefit you?
+
+130
+00:08:32,112 --> 00:08:34,982
+Attestations are primarily
+a security feature,
+
+131
+00:08:35,015 --> 00:08:39,419
+so I'll describe some of the threats
+and how attestations mitigate them.
+
+132
+00:08:40,420 --> 00:08:45,125
+First, a compromised device
+lies about its properties,
+
+133
+00:08:45,158 --> 00:08:47,895
+so Apple attests to the properties.
+
+134
+00:08:47,928 --> 00:08:49,596
+Even if the OS is compromised,
+
+135
+00:08:49,630 --> 00:08:52,766
+that doesn't affect the reliability
+of the attestation.
+
+136
+00:08:52,799 --> 00:08:56,703
+It only requires the Secure Enclave
+to be intact.
+
+137
+00:08:56,737 --> 00:09:01,441
+Or a compromised device provides
+an outdated attestation of properties
+
+138
+00:09:01,475 --> 00:09:03,744
+that have since changed.
+
+139
+00:09:03,777 --> 00:09:09,116
+A nonce in the attestation ensures
+that the facts are up to date.
+
+140
+00:09:09,149 --> 00:09:12,953
+ACME payload attestation
+mitigates other threats.
+
+141
+00:09:12,986 --> 00:09:16,990
+A compromised device
+sends a different device's identifiers
+
+142
+00:09:17,024 --> 00:09:20,127
+when communicating with the MDM server.
+
+143
+00:09:20,160 --> 00:09:25,799
+So Apple attests device identifiers in
+a way that's tied to the client identity
+
+144
+00:09:25,832 --> 00:09:29,837
+that the device uses
+to authenticate its TLS connection.
+
+145
+00:09:29,870 --> 00:09:31,905
+This proves to your MDM server
+
+146
+00:09:31,939 --> 00:09:36,210
+and other organization servers
+which device they are communicating with.
+
+147
+00:09:37,678 --> 00:09:42,149
+Or, an attacker extracts a private key
+from a legitimate device
+
+148
+00:09:42,182 --> 00:09:47,120
+and uses it to make requests,
+spoofing the legitimate device.
+
+149
+00:09:47,154 --> 00:09:51,491
+Apple attests that the private key
+is protected by the Secure Enclave,
+
+150
+00:09:51,525 --> 00:09:53,794
+which has exceptionally strong protections
+
+151
+00:09:53,827 --> 00:09:57,297
+against exporting
+or importing private keys.
+
+152
+00:09:57,331 --> 00:10:01,335
+Last, an attacker hijacks
+a certificate request
+
+153
+00:10:01,368 --> 00:10:06,940
+to get a certificate authority to issue
+a certificate for a different device.
+
+154
+00:10:06,974 --> 00:10:10,177
+Apple attests the identity
+of the requesting device
+
+155
+00:10:10,210 --> 00:10:13,146
+in a way that ties it to the certificate
+request,
+
+156
+00:10:13,180 --> 00:10:15,949
+so the certificate authority
+only issues certificates
+
+157
+00:10:15,983 --> 00:10:19,052
+to the legitimate device.
+
+158
+00:10:19,086 --> 00:10:23,423
+Attestations give you security benefits
+that mitigate several threats.
+
+159
+00:10:23,457 --> 00:10:26,727
+So how do you use them
+in your environment?
+
+160
+00:10:26,760 --> 00:10:31,965
+Let's get into the details of how to
+implement Managed Device Attestation.
+
+161
+00:10:31,999 --> 00:10:36,270
+First, there are the enhancements
+to the DeviceInformation command.
+
+162
+00:10:36,303 --> 00:10:40,741
+An MDM server can issue this command
+to a managed device.
+
+163
+00:10:40,774 --> 00:10:45,546
+The request includes a list of properties
+that the server wants to know.
+
+164
+00:10:45,579 --> 00:10:49,883
+We've added a new property,
+DevicePropertiesAttestation.
+
+165
+00:10:49,917 --> 00:10:53,120
+Adding it to the Queries array
+means the MDM server
+
+166
+00:10:53,153 --> 00:10:56,323
+is requesting an attestation.
+
+167
+00:10:56,356 --> 00:10:59,059
+To ensure that the attestation is fresh,
+
+168
+00:10:59,092 --> 00:11:04,097
+the MDM server can use
+the DeviceAttestationNonce key.
+
+169
+00:11:04,131 --> 00:11:08,702
+This appears at the same level
+in the request as the Queries key.
+
+170
+00:11:08,735 --> 00:11:10,537
+This key is optional.
+
+171
+00:11:10,571 --> 00:11:15,809
+Its value is a data object,
+with a maximum size of 32 bytes.
+
+172
+00:11:15,843 --> 00:11:19,213
+Here's an example
+that requests attestation.
+
+173
+00:11:19,246 --> 00:11:23,383
+The Queries array contains
+the DevicePropertiesAttestation key,
+
+174
+00:11:23,417 --> 00:11:26,887
+and there's a 32 byte nonce.
+
+175
+00:11:26,920 --> 00:11:29,623
+When obtaining the attestation
+is successful,
+
+176
+00:11:29,656 --> 00:11:34,127
+the response contains
+a DevicePropertiesAttestation key.
+
+177
+00:11:34,161 --> 00:11:37,331
+Its value is an array of data objects.
+
+178
+00:11:37,364 --> 00:11:42,336
+Each element in the array
+is a certificate in a certificate chain.
+
+179
+00:11:42,369 --> 00:11:44,938
+This is an example response.
+
+180
+00:11:44,972 --> 00:11:48,775
+The leaf certificate
+appears first in the array,
+
+181
+00:11:48,809 --> 00:11:53,780
+and it contains device properties
+in custom OIDs.
+
+182
+00:11:53,814 --> 00:11:59,720
+The first two OIDs are device identifying
+properties, serial number and UDID.
+
+183
+00:11:59,753 --> 00:12:05,392
+They are omitted from the certificate if
+the MDM enrollment is a User Enrollment.
+
+184
+00:12:05,425 --> 00:12:10,797
+The remaining OIDs are anonymous,
+and available for all enrollment types.
+
+185
+00:12:10,831 --> 00:12:14,468
+sepOS version refers to the version
+of the operating system
+
+186
+00:12:14,501 --> 00:12:17,437
+that runs on the Secure Enclave.
+
+187
+00:12:17,471 --> 00:12:20,841
+And the presence of the correct value
+in the nonce OID
+
+188
+00:12:20,874 --> 00:12:24,811
+proves that the certificate
+was just generated.
+
+189
+00:12:24,845 --> 00:12:27,314
+When the MDM server
+receives an attestation
+
+190
+00:12:27,347 --> 00:12:30,851
+it must carefully validate it,
+in the following order.
+
+191
+00:12:30,884 --> 00:12:34,087
+It verifies that the cert chain is rooted
+with the expected
+
+192
+00:12:34,121 --> 00:12:36,757
+Apple certificate authority.
+
+193
+00:12:36,790 --> 00:12:38,959
+The Apple certificate authority
+is available
+
+194
+00:12:38,992 --> 00:12:42,963
+from the Apple Private PKI Repository.
+
+195
+00:12:42,996 --> 00:12:46,834
+It verifies that the nonce
+in the leaf certificate matches the nonce
+
+196
+00:12:46,867 --> 00:12:50,270
+in the DeviceInformation request,
+if one was specified.
+
+197
+00:12:50,304 --> 00:12:55,342
+And then it parses out the remaining
+OIDs and evaluates their values.
+
+198
+00:12:55,375 --> 00:12:59,546
+Generating new attestations uses
+significant resources on the device
+
+199
+00:12:59,580 --> 00:13:01,415
+and Apple's servers,
+
+200
+00:13:01,448 --> 00:13:06,286
+so there's a rate limit on how often new
+attestation certificates can be requested,
+
+201
+00:13:06,320 --> 00:13:10,824
+currently one new attestation
+every seven days.
+
+202
+00:13:10,858 --> 00:13:16,063
+You request a fresh attestation
+by specifying a new nonce.
+
+203
+00:13:16,096 --> 00:13:19,933
+Omitting a nonce indicates
+that freshness is not a concern,
+
+204
+00:13:19,967 --> 00:13:24,771
+so the device can return
+its most recent attestation instead.
+
+205
+00:13:24,805 --> 00:13:29,076
+And if the nonce is specified
+and matches that cached attestation,
+
+206
+00:13:29,109 --> 00:13:32,613
+the cached attestation is returned.
+
+207
+00:13:32,646 --> 00:13:36,316
+When the MDM server validates
+the nonce in an attestation,
+
+208
+00:13:36,350 --> 00:13:38,952
+it should detect a mismatched nonce
+
+209
+00:13:38,986 --> 00:13:44,057
+and determine whether that was expected
+due to caching or not.
+
+210
+00:13:44,091 --> 00:13:48,028
+But don't request a new attestation
+every seven days
+
+211
+00:13:48,061 --> 00:13:50,297
+just because that's the rate limit.
+
+212
+00:13:50,330 --> 00:13:54,201
+Doing that will only delay how quickly
+your MDM server discovers changes
+
+213
+00:13:54,234 --> 00:13:58,605
+in device properties,
+not to mention waste resources.
+
+214
+00:13:58,639 --> 00:14:03,677
+Instead, monitor for relevant changes
+in the other DeviceInformation properties,
+
+215
+00:14:03,710 --> 00:14:05,646
+such as the OS version.
+
+216
+00:14:05,679 --> 00:14:10,050
+When one of those changes,
+then request a fresh attestation.
+
+217
+00:14:10,083 --> 00:14:14,788
+This ensures the attestation is updated
+as quickly as possible after a change,
+
+218
+00:14:14,821 --> 00:14:18,392
+rather than waiting
+for the rate limit to expire.
+
+219
+00:14:18,425 --> 00:14:23,830
+And, just in case the device is compromised
+and lying about these other properties,
+
+220
+00:14:23,864 --> 00:14:27,701
+slip in the occasional random request
+for a fresh attestation
+
+221
+00:14:27,734 --> 00:14:29,803
+to keep the device honest.
+
+222
+00:14:29,837 --> 00:14:33,106
+Requesting an attestation may fail.
+
+223
+00:14:33,140 --> 00:14:36,243
+When that happens,
+the device still responds
+
+224
+00:14:36,276 --> 00:14:38,779
+but some information is omitted.
+
+225
+00:14:38,812 --> 00:14:43,450
+Either the DevicePropertiesAttestation
+field is omitted from the response,
+
+226
+00:14:43,483 --> 00:14:47,254
+or an expected OID
+or its value is omitted.
+
+227
+00:14:47,287 --> 00:14:49,990
+There are many potential reasons
+for a failure:
+
+228
+00:14:50,023 --> 00:14:55,429
+the device experiences a network issue
+reaching Apple's attestation servers.
+
+229
+00:14:55,462 --> 00:14:58,098
+No server is up 100% of the time,
+
+230
+00:14:58,131 --> 00:15:02,202
+so there may be an issue
+with Apple's attestation servers.
+
+231
+00:15:02,236 --> 00:15:05,906
+Or the device hardware or software
+may be compromised,
+
+232
+00:15:05,939 --> 00:15:08,542
+or it's not even genuine Apple hardware.
+
+233
+00:15:08,575 --> 00:15:12,212
+In these last three cases,
+Apple's attestation servers
+
+234
+00:15:12,246 --> 00:15:17,584
+refuse to issue an attestation
+for properties that they cannot verify.
+
+235
+00:15:17,618 --> 00:15:20,187
+The different causes
+of a failed attestation
+
+236
+00:15:20,220 --> 00:15:24,625
+range from a harmless network glitch
+to an active attack.
+
+237
+00:15:24,658 --> 00:15:27,361
+Unfortunately,
+there is no trustworthy way
+
+238
+00:15:27,394 --> 00:15:30,931
+for the MDM server
+to know the exact cause.
+
+239
+00:15:30,964 --> 00:15:34,101
+This is because the only source
+of information about the failure
+
+240
+00:15:34,134 --> 00:15:39,439
+is the device itself, which may be
+a compromised device that's lying.
+
+241
+00:15:39,473 --> 00:15:43,277
+So how should an MDM server
+interpret a failure?
+
+242
+00:15:43,310 --> 00:15:48,148
+Don't always assume the worst
+when attestation fails.
+
+243
+00:15:48,182 --> 00:15:50,484
+If you have a zero trust architecture,
+
+244
+00:15:50,517 --> 00:15:52,753
+here's how you would likely handle it.
+
+245
+00:15:52,786 --> 00:15:56,790
+The organization calculates a trust score
+for the device,
+
+246
+00:15:56,823 --> 00:16:02,896
+with a failed or unexpectedly stale
+attestation lowering that score.
+
+247
+00:16:02,930 --> 00:16:05,966
+A lowered trust score
+triggers different actions,
+
+248
+00:16:05,999 --> 00:16:08,969
+such as denying access to services,
+
+249
+00:16:09,002 --> 00:16:11,705
+flagging the device
+for manual investigation,
+
+250
+00:16:11,738 --> 00:16:15,642
+or remediating by wiping it
+and revoking its certificates.
+
+251
+00:16:15,676 --> 00:16:20,414
+This ensures an appropriate response
+to a failed attestation.
+
+252
+00:16:20,447 --> 00:16:24,952
+Let's move on to implementing
+ACME payload attestation.
+
+253
+00:16:24,985 --> 00:16:28,522
+Installing an ACME payload
+involves several steps.
+
+254
+00:16:28,555 --> 00:16:33,460
+I'll describe the different participants
+in the process, then each of those steps.
+
+255
+00:16:33,493 --> 00:16:37,764
+We start with an iPhone, iPad or Apple TV.
+
+256
+00:16:38,999 --> 00:16:43,737
+In most cases this is managed
+by an MDM server.
+
+257
+00:16:43,770 --> 00:16:45,606
+There's an ACME server.
+
+258
+00:16:45,639 --> 00:16:50,777
+This implements the ACME protocol,
+RFC 8555,
+
+259
+00:16:50,811 --> 00:16:56,783
+so it can issue client certificates from
+an organization certificate authority.
+
+260
+00:16:56,817 --> 00:17:01,555
+And there's Apple's attestation servers
+that issue the attestations.
+
+261
+00:17:03,390 --> 00:17:07,294
+The first step is for the MDM server
+to install a profile
+
+262
+00:17:07,327 --> 00:17:10,397
+containing an ACME payload.
+
+263
+00:17:10,430 --> 00:17:16,036
+The payload specifies properties
+of the key the device will generate,
+
+264
+00:17:16,069 --> 00:17:22,276
+properties of the certificate
+that the device will request,
+
+265
+00:17:22,309 --> 00:17:27,548
+and how to request the certificate
+from the ACME server.
+
+266
+00:17:27,581 --> 00:17:29,483
+To start installing the profile,
+
+267
+00:17:29,516 --> 00:17:33,587
+the device generates
+the requested type of key.
+
+268
+00:17:33,620 --> 00:17:37,991
+In order to use attestations,
+the key must be hardware-bound.
+
+269
+00:17:38,025 --> 00:17:42,296
+While the ACME payload supports RSA
+and various sizes of keys,
+
+270
+00:17:42,329 --> 00:17:47,801
+in order to get a hardware-bound key,
+you must use ECSECPrimeRandom.
+
+271
+00:17:47,835 --> 00:17:53,707
+Your best choice is
+a ECSECPrimeRandom 384 bit key
+
+272
+00:17:53,740 --> 00:17:58,345
+because that's the highest security
+hardware-bound key.
+
+273
+00:17:58,378 --> 00:18:03,217
+Once the key is created, the device makes
+initial contact with the ACME server.
+
+274
+00:18:05,052 --> 00:18:08,155
+The device requests the DirectoryURL,
+
+275
+00:18:08,188 --> 00:18:11,792
+which specifies the URLs to use
+for the rest of the process
+
+276
+00:18:11,825 --> 00:18:14,595
+of communicating with the ACME server.
+
+277
+00:18:14,628 --> 00:18:18,699
+Then the two systems create an account
+and an order.
+
+278
+00:18:18,732 --> 00:18:24,404
+The server offers
+the device-attest-01 validation type.
+
+279
+00:18:24,438 --> 00:18:27,508
+Then, the ACME server generates a nonce
+
+280
+00:18:27,541 --> 00:18:32,012
+and sends it to the device
+in the token field.
+
+281
+00:18:32,045 --> 00:18:36,483
+The ACME protocol was initially used
+to issue server certificates.
+
+282
+00:18:36,517 --> 00:18:39,319
+Here however,
+the validation type we use
+
+283
+00:18:39,353 --> 00:18:42,356
+was introduced in an IETF draft
+
+284
+00:18:42,389 --> 00:18:45,692
+specifying an extension
+of the ACME protocol
+
+285
+00:18:45,726 --> 00:18:49,730
+for receiving attestations
+and issuing client certificates.
+
+286
+00:18:50,931 --> 00:18:53,000
+Attestation is optional.
+
+287
+00:18:53,033 --> 00:18:55,502
+When the payload specifies attestation,
+
+288
+00:18:55,536 --> 00:18:59,106
+the device requests an attestation
+from Apple.
+
+289
+00:18:59,139 --> 00:19:03,443
+This is nearly identical
+to the DeviceInformation attestation.
+
+290
+00:19:03,477 --> 00:19:05,679
+It uses the same OIDs,
+
+291
+00:19:05,712 --> 00:19:10,751
+and device-identifying OIDs are omitted
+for User Enrollments.
+
+292
+00:19:10,784 --> 00:19:13,153
+But there's a few differences.
+
+293
+00:19:13,187 --> 00:19:20,394
+The nonce is hashed using SHA-256
+before embedding it in the attestation.
+
+294
+00:19:20,427 --> 00:19:25,165
+The nonce comes from the ACME server,
+not the MDM server.
+
+295
+00:19:25,199 --> 00:19:29,436
+And the private key that matches
+the attestation leaf certificate
+
+296
+00:19:29,469 --> 00:19:33,540
+is the one the device just generated.
+
+297
+00:19:33,574 --> 00:19:36,310
+The attestation certificate
+matches the private key,
+
+298
+00:19:36,343 --> 00:19:42,816
+however that certificate can't be used
+for any purposes besides attestation.
+
+299
+00:19:42,850 --> 00:19:46,687
+So the device requests from
+the ACME server another certificate
+
+300
+00:19:46,720 --> 00:19:50,824
+matching the private key,
+and this cert is good for TLS.
+
+301
+00:19:53,060 --> 00:19:56,029
+The device provides
+a certificate signing request
+
+302
+00:19:56,063 --> 00:20:00,367
+containing the certificate request
+properties from the payload.
+
+303
+00:20:00,400 --> 00:20:03,670
+It provides the attestation chain.
+
+304
+00:20:03,704 --> 00:20:08,041
+And it provides the ClientIdentifier
+from the ACME payload.
+
+305
+00:20:08,075 --> 00:20:10,344
+Typically this is used like a ticket
+
+306
+00:20:10,377 --> 00:20:13,413
+that is good for the issuance
+of a single certificate,
+
+307
+00:20:13,447 --> 00:20:15,883
+to prevent repeated requests.
+
+308
+00:20:15,916 --> 00:20:19,353
+The ACME server must carefully validate
+the request
+
+309
+00:20:19,386 --> 00:20:23,056
+before issuing a certificate,
+in this order.
+
+310
+00:20:23,090 --> 00:20:28,629
+It must verify that the ClientIdentifier
+is valid and unused.
+
+311
+00:20:28,662 --> 00:20:34,401
+The attestation certificate must chain up
+to the correct Apple CA.
+
+312
+00:20:34,434 --> 00:20:40,541
+The public key in the attestation
+leaf certificate must match the CSR.
+
+313
+00:20:40,574 --> 00:20:47,681
+The nonce must match the SHA-256 hash of
+the one that the ACME server sent earlier.
+
+314
+00:20:47,714 --> 00:20:52,386
+And then the ACME server can evaluate
+the remaining OIDs.
+
+315
+00:20:52,419 --> 00:20:55,389
+And remember that attestations may fail.
+
+316
+00:20:55,422 --> 00:21:00,093
+The ACME server should carefully consider
+a failure when issuing a certificate,
+
+317
+00:21:00,127 --> 00:21:05,532
+just like we reviewed with a failed
+attestation in the DeviceInformation case.
+
+318
+00:21:05,566 --> 00:21:08,402
+From here, things rapidly finish up.
+
+319
+00:21:08,435 --> 00:21:11,538
+The ACME server issues
+a client certificate
+
+320
+00:21:11,572 --> 00:21:14,842
+from the organization CA
+and returns it to the device.
+
+321
+00:21:17,077 --> 00:21:22,015
+The ACME server is the final authority
+for client certificate issuance.
+
+322
+00:21:22,049 --> 00:21:25,919
+It can choose to honor or override
+the properties in the CSR
+
+323
+00:21:25,953 --> 00:21:28,789
+such as the SubjectAltName.
+
+324
+00:21:28,822 --> 00:21:31,859
+The device stores
+the certificate in the keychain,
+
+325
+00:21:31,892 --> 00:21:35,095
+and this completes the installation
+of the ACME payload.
+
+326
+00:21:36,930 --> 00:21:38,999
+Let's tie all this together.
+
+327
+00:21:39,032 --> 00:21:42,469
+How do servers know
+the device communicating with them
+
+328
+00:21:42,503 --> 00:21:45,339
+is the one it claims to be?
+
+329
+00:21:45,372 --> 00:21:49,376
+The device uses the same private key
+in multiple ways:
+
+330
+00:21:49,409 --> 00:21:51,879
+when getting an attestation from Apple,
+
+331
+00:21:51,912 --> 00:21:55,048
+when getting a client certificate
+from the ACME server,
+
+332
+00:21:55,082 --> 00:21:58,785
+and when using TLS
+to communicate with other servers.
+
+333
+00:21:58,819 --> 00:22:01,421
+Because the key is hardware-bound,
+
+334
+00:22:01,455 --> 00:22:05,659
+we know all these actions were performed
+by the same device.
+
+335
+00:22:05,692 --> 00:22:11,465
+And we have an attestation certificate
+which describes that device.
+
+336
+00:22:11,498 --> 00:22:15,802
+Combining these,
+organization servers now have confidence
+
+337
+00:22:15,836 --> 00:22:19,173
+in the device's identity
+when granting access.
+
+338
+00:22:21,742 --> 00:22:24,745
+Just like with the certificate
+and SCEP payloads,
+
+339
+00:22:24,778 --> 00:22:28,081
+other payloads in the profile
+can reference the ACME payload
+
+340
+00:22:28,115 --> 00:22:30,350
+in order to use the certificate.
+
+341
+00:22:30,384 --> 00:22:33,820
+Use it for MDM, Wi-Fi, VPN,
+
+342
+00:22:33,854 --> 00:22:35,989
+Kerberos, Safari.
+
+343
+00:22:36,023 --> 00:22:39,626
+All these systems benefit
+from attestation.
+
+344
+00:22:42,196 --> 00:22:44,865
+A device can have up to 10 ACME payloads
+
+345
+00:22:44,898 --> 00:22:48,635
+that use attestation
+installed at the same time.
+
+346
+00:22:48,669 --> 00:22:52,105
+Note that hardware-bound keys
+are not preserved
+
+347
+00:22:52,139 --> 00:22:54,808
+when a managed device's backup
+is restored,
+
+348
+00:22:54,842 --> 00:22:58,011
+even when restoring to the same device.
+
+349
+00:22:58,045 --> 00:23:02,149
+And if you do nothing else
+with Managed Device Attestation,
+
+350
+00:23:02,182 --> 00:23:05,819
+use an ACME payload
+for the MDM client identity
+
+351
+00:23:05,853 --> 00:23:10,290
+so the MDM server can be sure
+which device it's managing.
+
+352
+00:23:10,324 --> 00:23:12,059
+Let's wrap up.
+
+353
+00:23:12,092 --> 00:23:17,898
+You use Managed Device Attestation
+to remediate multiple classes of threats.
+
+354
+00:23:17,931 --> 00:23:23,403
+You leverage DeviceInformation attestation
+to improve the device identity component
+
+355
+00:23:23,437 --> 00:23:27,107
+of posture for better trust evaluation.
+
+356
+00:23:27,140 --> 00:23:33,113
+And, you can now prove a device's identity
+as it accesses organization resources
+
+357
+00:23:33,146 --> 00:23:35,349
+using ACME attestation.
+
+358
+00:23:35,382 --> 00:23:40,053
+We look forward to your implementation
+of Managed Device Attestation.
+
+359
+00:23:40,087 --> 00:23:44,725
+Together, we'll improve the security
+of your device deployments.
+
+360
+00:23:44,758 --> 00:23:48,395
+Thank you, and have a great WWDC.
+
