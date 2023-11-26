@@ -2,6 +2,13 @@
 WWDC videos/ subtitles / pdfs / sample codes
 
 
+
+The Video and sample code is so bigger,So you can here go to this link to download.
+
+视频和代码太大，可以去云盘下载。
+
+
+
 # Souce
 
 These resource form these web or repo.
