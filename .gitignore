@@ -92,4 +92,9 @@ iOSInjectionProject/
 
 # Video
 *.mov
+*.mp4
+*.srt
 *.zip
+**/*.zip
+2015/sample code/*.zip
+2015/**/*.zip
